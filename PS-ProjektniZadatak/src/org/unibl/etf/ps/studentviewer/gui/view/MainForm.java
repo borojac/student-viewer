@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.gui;
+package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+
+import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
 
 public class MainForm extends JFrame {
 
