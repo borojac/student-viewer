@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 
+import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
 
 public class MainForm extends JFrame {
@@ -35,7 +36,7 @@ public class MainForm extends JFrame {
 
 	private JScrollPane scrollPane = null;
 
-	private JTable mainTable = null;
+	private MainTable mainTable = null;
 
 	// ------- EndComponents!!! ------- //
 
@@ -84,7 +85,7 @@ public class MainForm extends JFrame {
 	}
 
 	private void initTable() {
-		mainTable = new JTable();
+		mainTable = new MainTable();
 		scrollPane.setViewportView(mainTable);
 		mainTable.setModel(new MainTableModel());
 	}
