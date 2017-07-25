@@ -1,9 +1,12 @@
 package org.unibl.etf.ps.studentviewer.exec;
 
+import org.unibl.etf.ps.studentviewer.gui.controler.MainFormControler;
+
 public class Exec extends Thread {
-//	protected MainFormControler mainFormControler = null;
+	protected MainFormControler mainFormControler;
 	
-	public void run() {
-		
-	}
+	
+//	protected ArrayList<Student> firstParam();
+	protected String secondParam = null;
+	
 }

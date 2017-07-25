@@ -5,6 +5,7 @@ import javax.swing.table.TableModel;
 
 public class MainTable extends JTable {
 	public MainTable() {
+		super();
 		initView();
 	}
 
