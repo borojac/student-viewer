@@ -7,10 +7,21 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import org.unibl.etf.ps.studentviewer.utility.Filter;
+
+import javax.swing.JLabel;
+import javax.swing.JComboBox;
+
 public class FilterForm extends JFrame {
 
 	private JPanel contentPane;
 
+	private JComboBox examTypeComboBox ;
+	private JComboBox examStatusComboBox;
+	private JLabel lblStatusIspita;
+	private JComboBox comboBox;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -32,11 +43,47 @@ public class FilterForm extends JFrame {
 	 */
 	public FilterForm() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 507, 345);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblTipIspita = new JLabel("Tip ispita:");
+		lblTipIspita.setBounds(10, 54, 86, 14);
+		contentPane.add(lblTipIspita);
+		
+		lblStatusIspita = new JLabel("Status ispita:");
+		lblStatusIspita.setBounds(10, 85, 86, 14);
+		contentPane.add(lblStatusIspita);
+		
+		initComboBoxes();
+		
+		
+	}
+	
+	private void initComboBoxes() {
+		examTypeComboBox = new JComboBox();
+		examTypeComboBox.setBounds(106, 51, 86, 20);
+		contentPane.add(examTypeComboBox);
+		initExamTypeComboBox();
+		
+		examStatusComboBox = new JComboBox();
+		examStatusComboBox.setBounds(106, 82, 89, 20);
+		contentPane.add(examStatusComboBox);
+		initExamStatusComboBox();
 	}
 
+	private void initExamStatusComboBox() {
+		examStatusComboBox.addItem("");
+		examStatusComboBox.addItem("Polozen");
+		examStatusComboBox.addItem("Nepolozen");
+	}
+
+	private void initExamTypeComboBox() {
+		examTypeComboBox.addItem("");
+		examTypeComboBox.addItem("Integralni ispit");
+		examTypeComboBox.addItem("Kolokvijum");
+		examTypeComboBox.addItem("Prakticni ispit");
+	}
 }

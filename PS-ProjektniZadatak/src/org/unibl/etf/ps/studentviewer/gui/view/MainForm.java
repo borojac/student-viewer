@@ -3,17 +3,25 @@ package org.unibl.etf.ps.studentviewer.gui.view;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 
+import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
+import java.awt.Color;
+import java.awt.Font;
 
 public class MainForm extends JFrame {
 
@@ -57,26 +65,40 @@ public class MainForm extends JFrame {
 	}
 
 	/**
+	 * @throws IOException 
 	 * Create the frame.
+	 * @throws  
 	 */
-	public MainForm() {
+	public MainForm() throws IOException   {
 		setResizable(false);
 		setTitle("StudentViewer_v1.0");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 589);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 65, 558, 382);
+		scrollPane.setBounds(10, 148, 558, 382);
 		contentPane.add(scrollPane);
 
 		panel_1 = new JPanel();
-		panel_1.setBounds(578, 65, 147, 382);
+		panel_1.setBackground(new Color(0, 0, 139));
+		panel_1.setBounds(578, 148, 147, 382);
 		contentPane.add(panel_1);
 		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 12));
+		
+		BufferedImage img = ImageIO.read(new File("F:\\Slika.png"));
+		
+		
+		JLabel label = new JLabel("");
+		label.setBounds(0, 0, 994, 119);
+		img = Scalr.resize(img, label.getWidth(), label.getHeight(), null);
+		ImageIcon icon = new ImageIcon(img);
+		label.setIcon(icon);
+		contentPane.add(label);
 
 		initButtons();
 		initTable();
@@ -86,6 +108,9 @@ public class MainForm extends JFrame {
 
 	private void initTable() {
 		mainTable = new MainTable();
+		mainTable.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		mainTable.setForeground(new Color(0, 0, 139));
+		mainTable.setBackground(new Color(176, 224, 230));
 		scrollPane.setViewportView(mainTable);
 		mainTable.setModel(new MainTableModel());
 	}
