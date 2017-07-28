@@ -15,13 +15,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
+import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
+
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainForm extends JFrame {
 
@@ -45,6 +50,14 @@ public class MainForm extends JFrame {
 	private JScrollPane scrollPane = null;
 
 	private MainTable mainTable = null;
+	
+
+	private JPanel testoviPanel;
+	private JTable testoviTable;
+	private JScrollPane testoviScrollPane;
+	private JButton btnDodaj;
+	private JButton btnIzmjeni;
+	private JButton btnBrii;
 
 	// ------- EndComponents!!! ------- //
 
@@ -73,7 +86,7 @@ public class MainForm extends JFrame {
 		setResizable(false);
 		setTitle("StudentViewer_v1.0");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1000, 589);
+		setBounds(100, 100, 1200, 589);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -90,7 +103,7 @@ public class MainForm extends JFrame {
 		contentPane.add(panel_1);
 		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 12));
 		
-		BufferedImage img = ImageIO.read(new File("F:\\Slika.png"));
+		BufferedImage img = ImageIO.read(new File("img\\Slika.png"));
 		
 		
 		JLabel label = new JLabel("");
@@ -100,6 +113,38 @@ public class MainForm extends JFrame {
 		label.setIcon(icon);
 		contentPane.add(label);
 
+
+		testoviPanel = new JPanel();
+		testoviPanel.setBounds(735, 330, 449, 200);
+		contentPane.add(testoviPanel);
+		testoviPanel.setLayout(null);
+
+		testoviTable = new JTable();
+		testoviTable.setModel(new TestoviTableModel());
+		
+		testoviScrollPane = new JScrollPane();
+		testoviScrollPane.setBounds(10, 11, 429, 145);
+		testoviPanel.add(testoviScrollPane);
+		testoviScrollPane.setViewportView(testoviTable);
+		
+		btnDodaj = new JButton("Dodaj");
+		btnDodaj.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				TestForm tf = new TestForm();
+				tf.setVisible(true);
+			}
+		});
+		btnDodaj.setBounds(10, 166, 89, 23);
+		testoviPanel.add(btnDodaj);
+		
+		btnIzmjeni = new JButton("Izmjeni");
+		btnIzmjeni.setBounds(109, 166, 89, 23);
+		testoviPanel.add(btnIzmjeni);
+		
+		btnBrii = new JButton("Bri\u0161i");
+		btnBrii.setBounds(208, 166, 89, 23);
+		testoviPanel.add(btnBrii);
+		
 		initButtons();
 		initTable();
 		setButtonsSize();
