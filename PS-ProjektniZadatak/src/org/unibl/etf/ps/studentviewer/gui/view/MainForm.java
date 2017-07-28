@@ -1,14 +1,20 @@
 package org.unibl.etf.ps.studentviewer.gui.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.jws.WebParam.Mode;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,11 +28,8 @@ import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
 import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.SwingConstants;
+import java.awt.SystemColor;
 
 public class MainForm extends JFrame {
 
@@ -58,6 +61,7 @@ public class MainForm extends JFrame {
 	private JButton btnDodaj;
 	private JButton btnIzmjeni;
 	private JButton btnBrii;
+	private JLabel correct2Label;
 
 	// ------- EndComponents!!! ------- //
 
@@ -104,11 +108,12 @@ public class MainForm extends JFrame {
 		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 12));
 		
 		BufferedImage img = ImageIO.read(new File("img\\BellTower-RGB(JPG).jpg"));
-		
+		BufferedImage correctionImage = ImageIO.read(new File("img\\whiteCorrection.png"));
 		
 		JLabel label = new JLabel("");
-		label.setBounds(0, 0, 994, 119);
-		img = Scalr.resize(img, label.getWidth(), label.getHeight(), null);
+		label.setBounds(515, 0, 170, 120);
+		
+		img = Scalr.resize(img, Scalr.Mode.FIT_EXACT ,label.getWidth(), label.getHeight(), null);
 		ImageIcon icon = new ImageIcon(img);
 		label.setIcon(icon);
 		contentPane.add(label);
@@ -145,6 +150,27 @@ public class MainForm extends JFrame {
 		btnBrii.setBounds(208, 166, 89, 23);
 		testoviPanel.add(btnBrii);
 		
+		JLabel correct1Label = new JLabel("STUDENT");
+		correct1Label.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 45));
+		correct1Label.setHorizontalAlignment(SwingConstants.CENTER);
+		correct1Label.setOpaque(true);
+		correct1Label.setForeground(new Color(0, 0, 139));
+		correct1Label.setBackground(new Color(255, 255, 255));
+		correct1Label.setBounds(0, 0, 515, 120);
+		contentPane.add(correct1Label);
+//		correct1Label.setIcon(new ImageIcon(correctionImage));
+
+		
+		correct2Label = new JLabel("VIEWER");
+		correct2Label.setBackground(SystemColor.text);
+		correct2Label.setForeground(new Color(0, 0, 139));
+		correct2Label.setHorizontalAlignment(SwingConstants.CENTER);
+		correct2Label.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 45));
+		correct2Label.setOpaque(true);
+		correct2Label.setBounds(685, 0, 509, 120);
+		contentPane.add(correct2Label);
+		
+		
 		initButtons();
 		initTable();
 		setButtonsSize();
@@ -155,7 +181,7 @@ public class MainForm extends JFrame {
 		mainTable = new MainTable();
 		mainTable.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		mainTable.setForeground(new Color(0, 0, 139));
-		mainTable.setBackground(new Color(176, 224, 230));
+		mainTable.setBackground(new Color(173, 216, 230));
 		scrollPane.setViewportView(mainTable);
 		mainTable.setModel(new MainTableModel());
 	}
