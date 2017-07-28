@@ -90,7 +90,7 @@ public class MainForm extends JFrame {
 		contentPane.add(panel_1);
 		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 12));
 		
-		BufferedImage img = ImageIO.read(new File("F:\\Slika.png"));
+		BufferedImage img = ImageIO.read(new File("img\\BellTower-RGB(JPG).jpg"));
 		
 		
 		JLabel label = new JLabel("");
