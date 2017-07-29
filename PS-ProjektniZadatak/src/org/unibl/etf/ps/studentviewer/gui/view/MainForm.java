@@ -30,6 +30,8 @@ import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
 import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
 import javax.swing.SwingConstants;
 import java.awt.SystemColor;
+import javax.swing.border.BevelBorder;
+import javax.swing.UIManager;
 
 public class MainForm extends JFrame {
 
@@ -98,6 +100,7 @@ public class MainForm extends JFrame {
 		contentPane.setLayout(null);
 
 		scrollPane = new JScrollPane();
+		scrollPane.setBorder(UIManager.getBorder("Button.border"));
 		scrollPane.setBounds(10, 148, 558, 382);
 		contentPane.add(scrollPane);
 
@@ -132,23 +135,6 @@ public class MainForm extends JFrame {
 		testoviPanel.add(testoviScrollPane);
 		testoviScrollPane.setViewportView(testoviTable);
 		
-		btnDodaj = new JButton("Dodaj");
-		btnDodaj.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				TestForm tf = new TestForm();
-				tf.setVisible(true);
-			}
-		});
-		btnDodaj.setBounds(10, 166, 89, 23);
-		testoviPanel.add(btnDodaj);
-		
-		btnIzmjeni = new JButton("Izmjeni");
-		btnIzmjeni.setBounds(109, 166, 89, 23);
-		testoviPanel.add(btnIzmjeni);
-		
-		btnBrii = new JButton("Bri\u0161i");
-		btnBrii.setBounds(208, 166, 89, 23);
-		testoviPanel.add(btnBrii);
 		
 		JLabel correct1Label = new JLabel("STUDENT");
 		correct1Label.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 45));
@@ -158,7 +144,6 @@ public class MainForm extends JFrame {
 		correct1Label.setBackground(new Color(255, 255, 255));
 		correct1Label.setBounds(0, 0, 515, 120);
 		contentPane.add(correct1Label);
-//		correct1Label.setIcon(new ImageIcon(correctionImage));
 
 		
 		correct2Label = new JLabel("VIEWER");
@@ -224,6 +209,26 @@ public class MainForm extends JFrame {
 		accountBtn = new JButton("Nalog");
 		panel_1.add(accountBtn);
 		buttons.add(accountBtn);
+		
+		/* Buttons by Stokuca */
+		btnDodaj = new JButton("Dodaj");
+		btnDodaj.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				TestForm tf = new TestForm();
+				tf.setVisible(true);
+			}
+		});
+		btnDodaj.setBounds(10, 166, 89, 23);
+		testoviPanel.add(btnDodaj);
+		
+		btnIzmjeni = new JButton("Izmjeni");
+		btnIzmjeni.setBounds(109, 166, 89, 23);
+		testoviPanel.add(btnIzmjeni);
+		
+		btnBrii = new JButton("Bri\u0161i");
+		btnBrii.setBounds(208, 166, 89, 23);
+		testoviPanel.add(btnBrii);
+		
 
 	}
 }
