@@ -9,17 +9,19 @@ public class TestDTO {
 	private String naziv;
 	private Date datum;
 	private String napomena;
+	private int predmetId;
 	
-	private List<StudentDTO> studenti;
+	private List<StudentNaTestuDTO> studenti;
 	
 	public TestDTO() {}
 
-	public TestDTO(int testId, String naziv, Date datum, String napomena) {
+	public TestDTO(int testId, String naziv, Date datum, String napomena, int predmetId) {
 		super();
 		this.testId = testId;
 		this.naziv = naziv;
 		this.datum = datum;
 		this.napomena = napomena;
+		this.predmetId = predmetId;
 	}
 
 	public int getTestId() {
@@ -54,12 +56,22 @@ public class TestDTO {
 		this.napomena = napomena;
 	}
 
-	public List<StudentDTO> getStudenti() {
+	public List<StudentNaTestuDTO> getStudenti() {
 		return studenti;
 	}
 
-	public void setStudenti(List<StudentDTO> studenti) {
+	public void setStudenti(List<StudentNaTestuDTO> studenti) {
 		this.studenti = studenti;
+	}
+
+	
+	
+	public int getPredmetId() {
+		return predmetId;
+	}
+
+	public void setPredmetId(int predmetId) {
+		this.predmetId = predmetId;
 	}
 
 	@Override

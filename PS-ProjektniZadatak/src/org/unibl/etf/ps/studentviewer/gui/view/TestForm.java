@@ -6,6 +6,14 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import org.unibl.etf.ps.studentviewer.command.Command;
+import org.unibl.etf.ps.studentviewer.command.DodajNapomenuTestCommand;
+import org.unibl.etf.ps.studentviewer.command.IzmjenaNazivaTestaCommand;
+import org.unibl.etf.ps.studentviewer.command.IzmjenaDatumaTestCommand;
+import org.unibl.etf.ps.studentviewer.gui.controler.TestController;
+import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -15,7 +23,14 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import datechooser.beans.DateChooserDialog;
+import datechooser.events.CommitEvent;
+import datechooser.events.CommitListener;
 import datechooser.beans.DateChooserCombo;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.ParseException;
 
 public class TestForm extends JFrame {
 
@@ -24,15 +39,28 @@ public class TestForm extends JFrame {
 	private JTextArea napomenaTextArea;
 	private JTable studentiTable;
 	private JScrollPane studentiScrollPane;
-	private JButton btnSauvaj;
+	private JButton btnSacuvaj;
 	private JTextField searchTextField;
 	private JButton btnPrint;
 	private JButton btnPretrazi;
 	private JButton btnEksport;
+	private JButton btnUkloni;
+	private JButton btnDodaj;
 
+	private TestDTO test = new TestDTO();
+	private TestController controller = new TestController();
+	private DateChooserCombo dateChooserCombo;
+	
 	public TestForm() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 540, 600);
+		setResizable(false);
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent ke) {
+				TestController.focusLostAction(ke);
+			}
+		});
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 540, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -57,45 +85,97 @@ public class TestForm extends JFrame {
 		contentPane.add(lblNapomena);
 		
 		nazivTextField = new JTextField();
+		nazivTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				TestController.focusLostAction(e);
+			}
+		});
+		nazivTextField.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				IzmjenaNazivaTestaCommand command = new IzmjenaNazivaTestaCommand(test, nazivTextField);
+				controller.executeCommand(command);
+			}
+		});
 		nazivTextField.setBounds(144, 12, 271, 20);
 		contentPane.add(nazivTextField);
 		nazivTextField.setColumns(10);
+		
+		JScrollPane napomenaScrollPane = new JScrollPane();
+		napomenaScrollPane.setBounds(144, 103, 271, 100);
+		contentPane.add(napomenaScrollPane);
 
 		napomenaTextArea = new JTextArea();
+		napomenaTextArea.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				Command command = new DodajNapomenuTestCommand(test, napomenaTextArea);
+				controller.executeCommand(command);
+			}
+		});
+		napomenaTextArea.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				TestController.focusLostAction(e);
+			}
+		});
+		napomenaScrollPane.setViewportView(napomenaTextArea);
 		napomenaTextArea.setRows(5);
-		napomenaTextArea.setBounds(144, 103, 271, 100);
-		contentPane.add(napomenaTextArea);
 		
 		studentiScrollPane = new JScrollPane();
-		studentiScrollPane.setBounds(10, 319, 504, 196);
+		studentiScrollPane.setBounds(10, 420, 504, 196);
 		contentPane.add(studentiScrollPane);
 		
 		studentiTable = new JTable();
 		studentiScrollPane.setViewportView(studentiTable);
 		
-		btnSauvaj = new JButton("Sa\u010Duvaj");
-		btnSauvaj.setBounds(425, 527, 89, 23);
-		contentPane.add(btnSauvaj);
-		
-		DateChooserCombo dateChooserCombo = new DateChooserCombo();
-		dateChooserCombo.setBounds(144, 55, 271, 20);
-		contentPane.add(dateChooserCombo);
+		btnSacuvaj = new JButton("Sa\u010Duvaj");
+		btnSacuvaj.setBounds(434, 627, 80, 23);
+		contentPane.add(btnSacuvaj);
 		
 		searchTextField = new JTextField();
-		searchTextField.setBounds(10, 288, 405, 20);
+		searchTextField.setBounds(10, 389, 405, 20);
 		contentPane.add(searchTextField);
 		searchTextField.setColumns(10);
 		
 		btnPretrazi = new JButton("Pretra\u017Ei");
-		btnPretrazi.setBounds(425, 285, 89, 23);
+		btnPretrazi.setBounds(424, 388, 90, 23);
 		contentPane.add(btnPretrazi);
 		
 		btnPrint = new JButton("Print");
-		btnPrint.setBounds(10, 220, 70, 23);
+		btnPrint.setBounds(10, 627, 80, 23);
 		contentPane.add(btnPrint);
 		
 		btnEksport = new JButton("Eksport");
-		btnEksport.setBounds(10, 254, 70, 23);
+		btnEksport.setBounds(100, 627, 80, 23);
 		contentPane.add(btnEksport);
+		
+		btnDodaj = new JButton("Dodaj");
+		btnDodaj.setBounds(190, 627, 80, 23);
+		contentPane.add(btnDodaj);
+		
+		btnUkloni = new JButton("Ukloni");
+		btnUkloni.setBounds(280, 627, 80, 23);
+		contentPane.add(btnUkloni);
+		
+		dateChooserCombo = new DateChooserCombo();
+		dateChooserCombo.setBounds(144, 55, 271, 20);
+		dateChooserCombo.addCommitListener(new CommitListener() {
+			
+			@Override
+			public void onCommit(CommitEvent arg0) {
+				Command command = new IzmjenaDatumaTestCommand(test, dateChooserCombo);
+				controller.executeCommand(command);
+				
+			}
+		});
+		dateChooserCombo.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				TestController.focusLostAction(e);
+			}
+		});
+		contentPane.add(dateChooserCombo);
 	}
 }

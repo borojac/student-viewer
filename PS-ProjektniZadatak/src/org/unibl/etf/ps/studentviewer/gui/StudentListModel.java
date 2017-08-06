@@ -1,0 +1,35 @@
+package org.unibl.etf.ps.studentviewer.gui;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.AbstractListModel;
+
+import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
+
+public class StudentListModel extends AbstractListModel<StudentNaTestuDTO> {
+
+	private static final long serialVersionUID = 6353517380860715L;
+	private List<StudentNaTestuDTO> data = new ArrayList<>();
+	
+	public void setData(List<StudentNaTestuDTO> data) {
+		this.data = data;
+	}
+	
+	public List<StudentNaTestuDTO> getData() {
+		return data;
+	}
+	
+	@Override
+	public StudentNaTestuDTO getElementAt(int index) {
+		if (index >= 0 && index < data.size())
+			return data.get(index);
+		return null;
+	}
+
+	@Override
+	public int getSize() {
+		return data.size();
+	}
+
+}
