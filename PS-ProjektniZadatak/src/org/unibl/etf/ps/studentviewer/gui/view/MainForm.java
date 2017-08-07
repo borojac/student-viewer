@@ -5,16 +5,17 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import javax.jws.WebParam.Mode;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,16 +23,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
 import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
-import javax.swing.SwingConstants;
-import java.awt.SystemColor;
-import javax.swing.border.BevelBorder;
-import javax.swing.UIManager;
+import org.unibl.etf.ps.studentviewer.gui.controler.MainFormControler;
 
 public class MainForm extends JFrame {
 
@@ -40,6 +41,8 @@ public class MainForm extends JFrame {
 	// ------- Components!!! ------- //
 	ArrayList<JButton> buttons = new ArrayList<JButton>();
 
+
+	private JButton searchButton = null;
 	private JButton showViewBtn = null;
 	private JButton sortBtn = null;
 	private JButton filterBtn = null;
@@ -51,6 +54,7 @@ public class MainForm extends JFrame {
 
 	private JPanel panel = null;
 	private JPanel panel_1 = null;
+	private JPanel buttonPanel;
 
 	private JScrollPane scrollPane = null;
 
@@ -64,6 +68,7 @@ public class MainForm extends JFrame {
 	private JButton btnIzmjeni;
 	private JButton btnBrii;
 	private JLabel correct2Label;
+	private JTextField textField;
 
 	// ------- EndComponents!!! ------- //
 
@@ -92,7 +97,7 @@ public class MainForm extends JFrame {
 		setResizable(false);
 		setTitle("StudentViewer_v1.0");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1200, 589);
+		setBounds(100, 100, 1200, 640);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -101,14 +106,14 @@ public class MainForm extends JFrame {
 
 		scrollPane = new JScrollPane();
 		scrollPane.setBorder(UIManager.getBorder("Button.border"));
-		scrollPane.setBounds(10, 148, 558, 382);
+		scrollPane.setBounds(10, 219, 558, 382);
 		contentPane.add(scrollPane);
 
-		panel_1 = new JPanel();
-		panel_1.setBackground(new Color(0, 0, 139));
-		panel_1.setBounds(578, 148, 147, 382);
-		contentPane.add(panel_1);
-		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 12));
+		buttonPanel = new JPanel();
+		buttonPanel.setBackground(new Color(0, 0, 139));
+		buttonPanel.setBounds(578, 219, 147, 382);
+		contentPane.add(buttonPanel);
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 12));
 		
 		BufferedImage img = ImageIO.read(new File("img\\BellTower-RGB(JPG).jpg"));
 		BufferedImage correctionImage = ImageIO.read(new File("img\\whiteCorrection.png"));
@@ -123,7 +128,7 @@ public class MainForm extends JFrame {
 
 
 		testoviPanel = new JPanel();
-		testoviPanel.setBounds(735, 330, 449, 200);
+		testoviPanel.setBounds(735, 401, 449, 200);
 		contentPane.add(testoviPanel);
 		testoviPanel.setLayout(null);
 
@@ -155,11 +160,50 @@ public class MainForm extends JFrame {
 		correct2Label.setBounds(685, 0, 509, 120);
 		contentPane.add(correct2Label);
 		
+		JLabel lblPretraga = new JLabel("Pretraga:");
+		lblPretraga.setForeground(Color.WHITE);
+		lblPretraga.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		lblPretraga.setBounds(10, 172, 78, 25);
+		contentPane.add(lblPretraga);
+		
+		textField = new JTextField();
+		textField.setForeground(new Color(0, 0, 139));
+		textField.setFont(new Font("Century Gothic", Font.BOLD | Font.ITALIC, 15));
+		textField.setBounds(97, 172, 418, 25);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		
 		
 		initButtons();
+		initButtonsListeners();
 		initTable();
 		setButtonsSize();
 
+	}
+	
+	public String getSearchParams() {
+		return textField.getText();
+	}
+	
+	public void setSearchParams(String params) {
+		textField.setText(params);
+	}
+	
+	private void initButtonsListeners() {
+		sortBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				new MainFormControler(MainForm.this).createSortForm();
+			}
+		});
+		
+		searchButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new MainFormControler(MainForm.this).search(MainForm.this);
+			}
+		});
 	}
 
 	private void initTable() {
@@ -178,36 +222,54 @@ public class MainForm extends JFrame {
 	}
 
 	private void initButtons() {
+		
+
+		searchButton = new JButton("");
+		
+
+		searchButton.setBounds(526, 172, 42, 26);
+		try {
+			BufferedImage searchImg = ImageIO.read(new File("img\\searchIcon.png"));
+			searchImg = Scalr.resize(searchImg, Scalr.Mode.FIT_EXACT, searchButton.getHeight(), searchButton.getHeight(),null);
+			searchButton.setIcon(new ImageIcon(searchImg));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		contentPane.add(searchButton);
+		
+		
 		showViewBtn = new JButton("Prikaz");
-		panel_1.add(showViewBtn);
+		buttonPanel.add(showViewBtn);
 		buttons.add(showViewBtn);
 
 		sortBtn = new JButton("Sortiraj");
-		panel_1.add(sortBtn);
+		buttonPanel.add(sortBtn);
 		buttons.add(sortBtn);
 
 		filterBtn = new JButton("Filtriraj");
-		panel_1.add(filterBtn);
+		buttonPanel.add(filterBtn);
 		buttons.add(filterBtn);
 
 		addBtn = new JButton("Dodaj studente");
-		panel_1.add(addBtn);
+		buttonPanel.add(addBtn);
 		buttons.add(addBtn);
 
 		deleteBtn = new JButton("Obri\u0161i studente");
-		panel_1.add(deleteBtn);
+		buttonPanel.add(deleteBtn);
 		buttons.add(deleteBtn);
 
 		changeBtn = new JButton("Izmijeni studente");
-		panel_1.add(changeBtn);
+		buttonPanel.add(changeBtn);
 		buttons.add(changeBtn);
 
 		exportBtn = new JButton("Eksportuj");
-		panel_1.add(exportBtn);
+		buttonPanel.add(exportBtn);
 		buttons.add(exportBtn);
 
 		accountBtn = new JButton("Nalog");
-		panel_1.add(accountBtn);
+		buttonPanel.add(accountBtn);
 		buttons.add(accountBtn);
 		
 		/* Buttons by Stokuca */

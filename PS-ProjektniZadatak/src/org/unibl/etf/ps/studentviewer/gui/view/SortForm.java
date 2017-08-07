@@ -1,42 +1,227 @@
 package org.unibl.etf.ps.studentviewer.gui.view;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
+
+import org.imgscalr.Scalr;
+import org.unibl.etf.ps.studentviewer.gui.controler.MainFormControler;
+import org.unibl.etf.ps.studentviewer.gui.controler.SortFormControler;
+import org.unibl.etf.ps.studentviewer.utility.Sort;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class SortForm extends JFrame {
 
 	private JPanel contentPane;
 
+	private JCheckBox imeCheckBox = null;
+	private JCheckBox prezimeCheckBox = null;
+	private JCheckBox brojIndeksaCheckBox = null;
+	private JCheckBox komentarCheckBox = null;
+	private JCheckBox elektrijadaCheckBox = null;
+	private JCheckBox ispitCheckBox = null;
+	private JCheckBox kolokvijumCheckBox = null;
+
+	private JTextArea textArea = null;
+	private MainFormControler mainFormControler = null;
+
+	private JPanel panel = null;
+
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SortForm frame = new SortForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public SortForm() {
+	public SortForm(MainFormControler mainFormControler) {
+		this.mainFormControler = mainFormControler;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 318, 465);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		panel = new JPanel();
+		panel.setBackground(new Color(0, 0, 139));
+		panel.setBounds(10, 159, 121, 205);
+		contentPane.add(panel);
+		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(414, 111, -143, 276);
+		contentPane.add(panel_1);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(141, 159, 151, 205);
+		contentPane.add(scrollPane);
+
+		textArea = new JTextArea();
+		textArea.setEditable(false);
+		scrollPane.setViewportView(textArea);
+
+		JLabel label = new JLabel("");
+		label.setBounds(66, 0, 170, 120);
+		try {
+			BufferedImage headerImage = ImageIO.read(new File("img\\BellTower-RGB(JPG).jpg"));
+			headerImage = Scalr.resize(headerImage, Scalr.Mode.FIT_EXACT, label.getWidth(), label.getHeight(), null);
+			label.setIcon(new ImageIcon(headerImage));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		contentPane.add(label);
+		
+		JLabel label_1 = new JLabel("");
+		label_1.setBackground(Color.WHITE);
+		label_1.setOpaque(true);
+		label_1.setBounds(0, 0, 66, 120);
+		contentPane.add(label_1);
+		
+		JLabel label_2 = new JLabel("");
+		label_2.setBackground(Color.WHITE);
+		label_2.setOpaque(true);
+		label_2.setBounds(236, 0, 66, 120);
+		contentPane.add(label_2);
+		
+		JButton btnSort = new JButton("Sort");
+		btnSort.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				new SortFormControler(mainFormControler, SortForm.this);
+			}
+		});
+		btnSort.setBounds(104, 387, 89, 29);
+		contentPane.add(btnSort);
+
+		initCheckBoxes();
+		initCheckBoxesListeners();
 	}
 
+	public boolean getStateOfCheckBox(String TYPE) {
+		if (Sort.IME.equals(TYPE)) {
+			return imeCheckBox.isSelected();
+		}else if (Sort.PREZIME.equals(TYPE)) {
+			return prezimeCheckBox.isSelected();
+		}else if (Sort.BROJ_INDEKSA.equals(TYPE)) {
+			return brojIndeksaCheckBox.isSelected();
+		}else if (Sort.ELEKTRIJADA.equals(TYPE)) {
+			return elektrijadaCheckBox.isSelected();
+		}
+		return false;
+	}
+	
+	private void initCheckBoxesListeners() {
+		
+		imeCheckBox.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new SortFormControler().addToSortParams(Sort.IME, SortForm.this);
+			}
+		});
+
+		prezimeCheckBox.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new SortFormControler().addToSortParams(Sort.PREZIME, SortForm.this);
+			}
+		});
+
+		brojIndeksaCheckBox.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new SortFormControler().addToSortParams(Sort.BROJ_INDEKSA, SortForm.this);
+			}
+		});
+
+		komentarCheckBox.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new SortFormControler().addToSortParams(Sort.KOMENTAR, SortForm.this);
+			}
+		});
+
+		elektrijadaCheckBox.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new SortFormControler().addToSortParams(Sort.ELEKTRIJADA, SortForm.this);
+			}
+		});
+
+	}
+
+	public String getSortParams() {
+		return textArea.getText();
+	}
+
+	public void setSortParams(String params) {
+		textArea.setText(params);
+	}
+
+	private void initCheckBoxes() {
+
+		imeCheckBox = new JCheckBox("Ime");
+		
+		imeCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		imeCheckBox.setBackground(new Color(0, 0, 139));
+		imeCheckBox.setForeground(new Color(255, 255, 255));
+		panel.add(imeCheckBox);
+
+		prezimeCheckBox = new JCheckBox("Prezime");
+		prezimeCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		prezimeCheckBox.setBackground(new Color(0, 0, 139));
+		prezimeCheckBox.setForeground(new Color(255, 255, 255));
+		panel.add(prezimeCheckBox);
+
+		brojIndeksaCheckBox = new JCheckBox("Broj indeksa");
+		brojIndeksaCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		brojIndeksaCheckBox.setBackground(new Color(0, 0, 139));
+		brojIndeksaCheckBox.setForeground(new Color(255, 255, 255));
+		panel.add(brojIndeksaCheckBox);
+
+		komentarCheckBox = new JCheckBox("Komentar");
+		komentarCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		komentarCheckBox.setBackground(new Color(0, 0, 139));
+		komentarCheckBox.setForeground(new Color(255, 255, 255));
+		panel.add(komentarCheckBox);
+
+		elektrijadaCheckBox = new JCheckBox("Elektrijada");
+		elektrijadaCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		elektrijadaCheckBox.setBackground(new Color(0, 0, 139));
+		elektrijadaCheckBox.setForeground(new Color(255, 255, 255));
+		panel.add(elektrijadaCheckBox);
+
+		ispitCheckBox = new JCheckBox("Ispit");
+		ispitCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		ispitCheckBox.setBackground(new Color(0, 0, 139));
+		ispitCheckBox.setForeground(new Color(255, 255, 255));
+		panel.add(ispitCheckBox);
+
+		kolokvijumCheckBox = new JCheckBox("Kolokvijum");
+		kolokvijumCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		kolokvijumCheckBox.setBackground(new Color(0, 0, 139));
+		kolokvijumCheckBox.setForeground(new Color(255, 255, 255));
+		panel.add(kolokvijumCheckBox);
+	}
+	
 }
