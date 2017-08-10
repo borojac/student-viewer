@@ -4,10 +4,10 @@ import javax.swing.table.AbstractTableModel;
 
 public class MainTableModel extends AbstractTableModel {
 
-	private String[][] data = {{"Example1", "Example2"}, {"Data1", "Data2"}};// null;
+	private String[][] data = {{"Example1", "Example2"}, {"Data1", "Data2"}};
 	
 	
-	
+			
 	@Override
 	public int getColumnCount() {
 		if (data == null || data[0] == null)
