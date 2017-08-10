@@ -10,6 +10,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import org.unibl.etf.ps.studentviewer.gui.StudentListModel;
+import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 
 import javax.swing.JList;
@@ -30,10 +33,10 @@ public class TestDodajStudenteDialog extends JDialog {
 	private JButton btnRemoveAll;
 	private JList<StudentNaTestuDTO> allStudentsList;
 	private JList<StudentNaTestuDTO> toAddStudentsList;
-	private StudentListModel toAddModel = new StudentListModel();
 
+	private JDialog thisDialog;
 	
-	public TestDodajStudenteDialog(StudentListModel model) {
+	public TestDodajStudenteDialog() {
 		setAlwaysOnTop(true);
 		setBounds(100, 100, 700, 350);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -41,13 +44,28 @@ public class TestDodajStudenteDialog extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
+		thisDialog = this;
 		
-		allStudentsList = new JList<>(model);
+		DAOFactory factory = new MySQLDAOFactory();
+//		 TODO - cekam StudentDAO da povadim studente na testu
+//		StudentDAO studentDAO = factory.getStudentDAO();
+		
+		StudentListModel allStudentsListModel = new StudentListModel();
+		
+		
+		List<StudentNaTestuDTO> data = new ArrayList<>();
+		
+		data.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuca", 0, null));
+		data.add(new StudentNaTestuDTO(2, "1141/13", "Dragana", "Volas", 0, null));
+		
+		allStudentsListModel.setData(data);
+		
+		allStudentsList = new JList<>(allStudentsListModel);
 		allStudentsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		allStudentsList.setBounds(10, 11, 290, 256);
 		contentPanel.add(allStudentsList);
 		
-		toAddStudentsList = new JList<>(toAddModel);
+		toAddStudentsList = new JList<>(new StudentListModel());
 		toAddStudentsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		toAddStudentsList.setBounds(384, 11, 290, 256);
 		contentPanel.add(toAddStudentsList);
@@ -55,9 +73,20 @@ public class TestDodajStudenteDialog extends JDialog {
 		btnAdd = new JButton(">");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Set<StudentNaTestuDTO> toAdd = new HashSet<>(((StudentListModel) toAddStudentsList.getModel()).getData());
-				toAdd.addAll(allStudentsList.getSelectedValuesList());
-				((StudentListModel) toAddStudentsList.getModel()).setData(new ArrayList<StudentNaTestuDTO>(toAdd));
+				System.out.println(toAddStudentsList.getModel().getClass().getName());
+				List<StudentNaTestuDTO> selectedStudents = allStudentsList.getSelectedValuesList();
+				StudentListModel model = (StudentListModel) toAddStudentsList.getModel();
+				List<StudentNaTestuDTO> toAddList = model.getData();
+				for (StudentNaTestuDTO student : selectedStudents) {
+					if (!toAddList.contains(student))
+						toAddList.add(student);
+				}
+				
+				model.setData(toAddList);
+				model.fireContentsChanged(this, 0, toAddList.size() - 1);
+				
+				// TODO - da se lista svih studenata mijenja kad se dodaju
+				
 			}
 		});
 		btnAdd.setBounds(320, 24, 50, 40);
@@ -66,9 +95,12 @@ public class TestDodajStudenteDialog extends JDialog {
 		btnAddAll = new JButton(">>");
 		btnAddAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Set<StudentNaTestuDTO> toAdd = new HashSet<>(((StudentListModel) toAddStudentsList.getModel()).getData());
+				StudentListModel model = (StudentListModel) toAddStudentsList.getModel();
+				Set<StudentNaTestuDTO> toAdd = new HashSet<>(model.getData());
 				toAdd.addAll(((StudentListModel) allStudentsList.getModel()).getData());
-				((StudentListModel) toAddStudentsList.getModel()).setData(new ArrayList<StudentNaTestuDTO>(toAdd));
+				model.setData(new ArrayList<StudentNaTestuDTO>(toAdd));
+				
+				model.fireContentsChanged(this, 0, toAdd.size() - 1);
 			}
 		});
 		btnAddAll.setBounds(320, 75, 50, 40);
@@ -77,8 +109,10 @@ public class TestDodajStudenteDialog extends JDialog {
 		btnRemove = new JButton("<");
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				List<StudentNaTestuDTO> toAdd = ((StudentListModel) toAddStudentsList.getModel()).getData();
+				StudentListModel model = ((StudentListModel) toAddStudentsList.getModel());
+				List<StudentNaTestuDTO> toAdd = model.getData();
 				toAdd.removeAll(toAddStudentsList.getSelectedValuesList());
+				model.fireContentsChanged(this, 0, toAdd.size() - 1);
 			}
 		});
 		btnRemove.setBounds(320, 156, 50, 40);
@@ -87,7 +121,9 @@ public class TestDodajStudenteDialog extends JDialog {
 		btnRemoveAll = new JButton("<<");
 		btnRemoveAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				((StudentListModel) toAddStudentsList.getModel()).getData().clear();
+				StudentListModel model = ((StudentListModel) toAddStudentsList.getModel());
+				model.getData().clear();
+				model.fireContentsChanged(this, 0, 0);
 			}
 		});
 		btnRemoveAll.setBounds(320, 207, 50, 40);
@@ -98,12 +134,23 @@ public class TestDodajStudenteDialog extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						// TODO - napraviti cuvanje izmjena kao komandu
+						thisDialog.dispose();
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						thisDialog.dispose();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}

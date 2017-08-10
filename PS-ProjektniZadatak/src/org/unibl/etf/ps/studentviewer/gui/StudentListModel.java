@@ -31,5 +31,10 @@ public class StudentListModel extends AbstractListModel<StudentNaTestuDTO> {
 	public int getSize() {
 		return data.size();
 	}
+	
+	@Override
+	public void fireContentsChanged(Object obj, int index1, int index2) {
+		super.fireContentsChanged(obj, index1, index2);
+	}
 
 }

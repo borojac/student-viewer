@@ -11,7 +11,10 @@ import org.unibl.etf.ps.studentviewer.command.Command;
 import org.unibl.etf.ps.studentviewer.command.DodajNapomenuTestCommand;
 import org.unibl.etf.ps.studentviewer.command.IzmjenaNazivaTestaCommand;
 import org.unibl.etf.ps.studentviewer.command.IzmjenaDatumaTestCommand;
+import org.unibl.etf.ps.studentviewer.gui.StudentListModel;
+import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
 import org.unibl.etf.ps.studentviewer.gui.controler.TestController;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
 import javax.swing.JLabel;
@@ -22,6 +25,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+
 import datechooser.beans.DateChooserDialog;
 import datechooser.events.CommitEvent;
 import datechooser.events.CommitListener;
@@ -31,6 +36,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TestForm extends JFrame {
 
@@ -60,7 +69,7 @@ public class TestForm extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 540, 700);
+		setBounds(200, 10, 540, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -127,7 +136,12 @@ public class TestForm extends JFrame {
 		studentiScrollPane.setBounds(10, 420, 504, 196);
 		contentPane.add(studentiScrollPane);
 		
-		studentiTable = new JTable();
+		///////////////////////////////////////////////////////////////////
+		List<StudentNaTestuDTO> studenti = new ArrayList<>();
+		studenti.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuca", 65, "Glup ko tocak"));
+		StudentTableModel model = new StudentTableModel(studenti);
+		// TODO - popuniti tabelu
+		studentiTable = new JTable(model);
 		studentiScrollPane.setViewportView(studentiTable);
 		
 		btnSacuvaj = new JButton("Sa\u010Duvaj");
@@ -152,6 +166,13 @@ public class TestForm extends JFrame {
 		contentPane.add(btnEksport);
 		
 		btnDodaj = new JButton("Dodaj");
+		btnDodaj.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				JDialog dodajStudenteDialog = new TestDodajStudenteDialog();
+				dodajStudenteDialog.setVisible(true);
+			}
+		});
 		btnDodaj.setBounds(190, 627, 80, 23);
 		contentPane.add(btnDodaj);
 		
