@@ -169,7 +169,7 @@ public class TestForm extends JFrame {
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				JDialog dodajStudenteDialog = new TestDodajStudenteDialog();
+				JDialog dodajStudenteDialog = new TestDodajStudenteDialog((StudentTableModel) studentiTable.getModel());
 				dodajStudenteDialog.setVisible(true);
 			}
 		});

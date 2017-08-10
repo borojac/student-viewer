@@ -10,6 +10,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import org.unibl.etf.ps.studentviewer.gui.StudentListModel;
+import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
@@ -36,7 +37,9 @@ public class TestDodajStudenteDialog extends JDialog {
 
 	private JDialog thisDialog;
 	
-	public TestDodajStudenteDialog() {
+	private StudentTableModel tableModel;
+	
+	public TestDodajStudenteDialog(StudentTableModel tableModel) {
 		setAlwaysOnTop(true);
 		setBounds(100, 100, 700, 350);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -45,6 +48,7 @@ public class TestDodajStudenteDialog extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		thisDialog = this;
+		this.tableModel = tableModel;
 		
 		DAOFactory factory = new MySQLDAOFactory();
 //		 TODO - cekam StudentDAO da povadim studente na testu
@@ -137,6 +141,13 @@ public class TestDodajStudenteDialog extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						// TODO - napraviti cuvanje izmjena kao komandu
+						
+						Set<StudentNaTestuDTO> studentsSet = new HashSet<>(tableModel.getData());
+						studentsSet.addAll(((StudentListModel) toAddStudentsList.getModel()).getData());
+						
+						tableModel.setData(new ArrayList<>(studentsSet));
+						tableModel.fireTableDataChanged();
+						
 						thisDialog.dispose();
 					}
 				});
