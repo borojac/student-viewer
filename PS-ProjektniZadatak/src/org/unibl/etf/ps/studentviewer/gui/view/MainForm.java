@@ -34,6 +34,7 @@ import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
 import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormControler;
+import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
 public class MainForm extends JFrame {
 
@@ -103,7 +104,7 @@ public class MainForm extends JFrame {
 		setResizable(false);
 		setTitle("StudentViewer_v1.0");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1200, 640);
+		setBounds(100, 10, 1200, 640);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -139,6 +140,13 @@ public class MainForm extends JFrame {
 		testoviPanel.setLayout(null);
 
 		testoviTable = new JTable();
+		testoviTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (testoviTable.getSelectedRow() != -1)
+					btnIzmjeni.setEnabled(true);
+			}
+		});
 		testoviTable.setModel(new TestoviTableModel());
 		
 		testoviScrollPane = new JScrollPane();
@@ -179,13 +187,11 @@ public class MainForm extends JFrame {
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
-		
-		
 		initButtons();
 		initButtonsListeners();
 		initTable();
 		setButtonsSize();
-
+		
 	}
 	
 	public String getSearchParams() {
@@ -282,7 +288,7 @@ public class MainForm extends JFrame {
 		btnDodaj = new JButton("Dodaj");
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TestForm tf = new TestForm();
+				TestForm tf = new TestForm(null);
 				tf.setVisible(true);
 			}
 		});
@@ -290,6 +296,15 @@ public class MainForm extends JFrame {
 		testoviPanel.add(btnDodaj);
 		
 		btnIzmjeni = new JButton("Izmjeni");
+		btnIzmjeni.setEnabled(false);
+		btnIzmjeni.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				int row = testoviTable.getSelectedRow();
+				TestDTO selected = ((TestoviTableModel) testoviTable.getModel()).getRowAt(row);
+				TestForm tf = new TestForm(selected);
+				tf.setVisible(true);
+			}
+		});
 		btnIzmjeni.setBounds(109, 166, 89, 23);
 		testoviPanel.add(btnIzmjeni);
 		

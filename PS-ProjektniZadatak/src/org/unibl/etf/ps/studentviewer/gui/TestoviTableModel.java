@@ -27,6 +27,12 @@ public class TestoviTableModel extends AbstractTableModel {
 			return columns[columnIndex];
 		return null;
 	}
+	
+	public TestDTO getRowAt(int row) {
+		if (row >= 0 && row < data.size())
+			return data.get(row);
+		return null;
+	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {

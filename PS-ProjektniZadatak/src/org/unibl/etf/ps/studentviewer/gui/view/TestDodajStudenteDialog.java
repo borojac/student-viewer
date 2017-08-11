@@ -152,9 +152,11 @@ public class TestDodajStudenteDialog extends JDialog {
 								testForm.getModel(),
 								(StudentTableModel) testForm.getStudentiTable().getModel(), 
 								studentsList);
+						
 						TestController controller = TestController.getInstance();
 						controller.executeCommand(dodajStudente);
 						thisDialog.dispose();
+						
 					}
 				});
 				okButton.setActionCommand("OK");

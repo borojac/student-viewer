@@ -1,7 +1,5 @@
 package org.unibl.etf.ps.studentviewer.gui.view;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,7 +9,6 @@ import org.unibl.etf.ps.studentviewer.command.Command;
 import org.unibl.etf.ps.studentviewer.command.DodajNapomenuTestCommand;
 import org.unibl.etf.ps.studentviewer.command.IzmjenaNazivaTestaCommand;
 import org.unibl.etf.ps.studentviewer.command.IzmjenaDatumaTestCommand;
-import org.unibl.etf.ps.studentviewer.gui.StudentListModel;
 import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
 import org.unibl.etf.ps.studentviewer.gui.controler.TestController;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
@@ -41,7 +38,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 
-import datechooser.beans.DateChooserDialog;
 import datechooser.events.CommitEvent;
 import datechooser.events.CommitListener;
 import datechooser.beans.DateChooserCombo;
@@ -49,17 +45,13 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -81,10 +73,11 @@ public class TestForm extends JFrame {
 
 	private TestDTO test = new TestDTO();
 	private DateChooserCombo dateChooserCombo;
+	private boolean update = false;
 	
 	private JFrame thisFrame;
 	
-	public TestForm() {
+	public TestForm(TestDTO testParam) {
 		setResizable(false);
 		addKeyListener(new KeyAdapter() {
 			@Override
@@ -99,6 +92,11 @@ public class TestForm extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		this.thisFrame = this;
+		
+		if (testParam != null) {
+			test = testParam;
+			update = true;
+		}
 		
 		JLabel lblNaziv = new JLabel("Naziv:");
 		lblNaziv.setHorizontalAlignment(SwingConstants.CENTER);
@@ -168,6 +166,8 @@ public class TestForm extends JFrame {
 		studenti.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuca", 65, "Hahhahahah"));
 		test.setStudenti(studenti);
 		StudentTableModel model = new StudentTableModel(studenti);
+		
+		
 		// TODO - popuniti tabelu
 		studentiTable = new JTable(model);
 		studentiScrollPane.setViewportView(studentiTable);
