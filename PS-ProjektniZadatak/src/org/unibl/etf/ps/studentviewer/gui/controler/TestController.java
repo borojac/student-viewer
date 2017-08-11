@@ -8,17 +8,24 @@ import org.unibl.etf.ps.studentviewer.command.CommandStack;
 
 public class TestController {
 
-	private static CommandStack undoStack = new CommandStack();
-	private static CommandStack redoStack = new CommandStack();
+	private CommandStack undoStack = new CommandStack();
+	private CommandStack redoStack = new CommandStack();
 	
-	public static void focusLostAction(KeyEvent ke) {
+	private static TestController instance = null;
+	
+	public static TestController getInstance() {
+		if (instance == null)
+			instance = new TestController();
+		return instance;
+	}
+	
+	private TestController() {}
+	
+	public void focusLostAction(KeyEvent ke) {
 		if (ke.getKeyCode() == KeyEvent.VK_Z && ke.isControlDown()) {
-			TestController control = new TestController();
-			control.undo();
+			instance.undo();
 		} else if (ke.getKeyCode() == KeyEvent.VK_Y && ke.isControlDown()) {
-
-			TestController control = new TestController();
-			control.redo();
+			instance.redo();
 		}
 	}
 	

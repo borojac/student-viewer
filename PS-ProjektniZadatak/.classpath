@@ -4,5 +4,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="libs/imgscalr-lib-4.2.jar"/>
 	<classpathentry kind="lib" path="libs/DateChooser.jar"/>
+	<classpathentry kind="lib" path="libs/iText-5.0.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -15,7 +15,7 @@ public class IzmjenaDatumaTestCommand extends TestCommand {
 	public IzmjenaDatumaTestCommand(TestDTO test, DateChooserCombo dateChooser) {
 		super(test);
 		this.dateChooser = dateChooser;
-		prethodniDatum = new Date();
+		prethodniDatum = test.getDatum();
 		sljedeciDatum = dateChooser.getSelectedDate().getTime();
 	}
 	

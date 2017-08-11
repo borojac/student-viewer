@@ -9,8 +9,11 @@ import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
+import org.unibl.etf.ps.studentviewer.command.Command;
+import org.unibl.etf.ps.studentviewer.command.DodajStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.gui.StudentListModel;
 import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
+import org.unibl.etf.ps.studentviewer.gui.controler.TestController;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
@@ -39,7 +42,9 @@ public class TestDodajStudenteDialog extends JDialog {
 	
 	private StudentTableModel tableModel;
 	
-	public TestDodajStudenteDialog(StudentTableModel tableModel) {
+	private TestForm testForm;
+	
+	public TestDodajStudenteDialog(TestForm testForm) {
 		setAlwaysOnTop(true);
 		setBounds(100, 100, 700, 350);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -48,7 +53,8 @@ public class TestDodajStudenteDialog extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		thisDialog = this;
-		this.tableModel = tableModel;
+		this.testForm = testForm;
+		this.tableModel = (StudentTableModel) testForm.getStudentiTable().getModel();
 		
 		DAOFactory factory = new MySQLDAOFactory();
 //		 TODO - cekam StudentDAO da povadim studente na testu
@@ -56,11 +62,9 @@ public class TestDodajStudenteDialog extends JDialog {
 		
 		StudentListModel allStudentsListModel = new StudentListModel();
 		
-		
 		List<StudentNaTestuDTO> data = new ArrayList<>();
-		
-		data.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuca", 0, null));
-		data.add(new StudentNaTestuDTO(2, "1141/13", "Dragana", "Volas", 0, null));
+		data.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuca", 0, ""));
+		data.add(new StudentNaTestuDTO(2, "1141/13", "Dragana", "Volas", 0, ""));
 		
 		allStudentsListModel.setData(data);
 		
@@ -77,7 +81,6 @@ public class TestDodajStudenteDialog extends JDialog {
 		btnAdd = new JButton(">");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println(toAddStudentsList.getModel().getClass().getName());
 				List<StudentNaTestuDTO> selectedStudents = allStudentsList.getSelectedValuesList();
 				StudentListModel model = (StudentListModel) toAddStudentsList.getModel();
 				List<StudentNaTestuDTO> toAddList = model.getData();
@@ -144,10 +147,13 @@ public class TestDodajStudenteDialog extends JDialog {
 						
 						Set<StudentNaTestuDTO> studentsSet = new HashSet<>(tableModel.getData());
 						studentsSet.addAll(((StudentListModel) toAddStudentsList.getModel()).getData());
-						
-						tableModel.setData(new ArrayList<>(studentsSet));
-						tableModel.fireTableDataChanged();
-						
+						List<StudentNaTestuDTO> studentsList = new ArrayList<>(studentsSet);
+						Command dodajStudente = new DodajStudenteTestCommand(
+								testForm.getModel(),
+								(StudentTableModel) testForm.getStudentiTable().getModel(), 
+								studentsList);
+						TestController controller = TestController.getInstance();
+						controller.executeCommand(dodajStudente);
 						thisDialog.dispose();
 					}
 				});
