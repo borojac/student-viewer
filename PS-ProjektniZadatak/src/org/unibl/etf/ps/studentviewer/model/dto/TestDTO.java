@@ -1,5 +1,6 @@
 package org.unibl.etf.ps.studentviewer.model.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +14,13 @@ public class TestDTO {
 	
 	private List<StudentNaTestuDTO> studenti;
 	
-	public TestDTO() {}
+	public TestDTO() {
+		naziv = napomena = "";
+		datum = new Date();
+		testId = 0;
+		predmetId = 0;
+		studenti = new ArrayList<>();
+	}
 
 	public TestDTO(int testId, String naziv, Date datum, String napomena, int predmetId) {
 		super();

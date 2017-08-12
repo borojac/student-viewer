@@ -68,7 +68,7 @@ public class MainForm extends JFrame {
 	private JScrollPane testoviScrollPane;
 	private JButton btnDodaj;
 	private JButton btnIzmjeni;
-	private JButton btnBrii;
+	private JButton btnBrisi;
 	private JLabel correct2Label;
 	private JTextField textField;
 
@@ -308,9 +308,9 @@ public class MainForm extends JFrame {
 		btnIzmjeni.setBounds(109, 166, 89, 23);
 		testoviPanel.add(btnIzmjeni);
 		
-		btnBrii = new JButton("Bri\u0161i");
-		btnBrii.setBounds(208, 166, 89, 23);
-		testoviPanel.add(btnBrii);
+		btnBrisi = new JButton("Bri\u0161i");
+		btnBrisi.setBounds(208, 166, 89, 23);
+		testoviPanel.add(btnBrisi);
 		
 
 	}
