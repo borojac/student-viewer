@@ -14,6 +14,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.printing.PDFPageable;
 import org.unibl.etf.ps.studentviewer.command.Command;
 import org.unibl.etf.ps.studentviewer.command.DodajNapomenuTestCommand;
+import org.unibl.etf.ps.studentviewer.command.DodajStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.command.IzmjenaNazivaTestaCommand;
 import org.unibl.etf.ps.studentviewer.command.UkloniStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.command.IzmjenaDatumaTestCommand;
@@ -61,7 +62,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -91,6 +94,7 @@ public class TestForm extends JFrame {
 	private boolean update = false;
 
 	private JFrame thisFrame;
+	private JButton btnImport;
 
 	public TestForm(TestDTO testParam) {
 		setResizable(false);
@@ -195,7 +199,7 @@ public class TestForm extends JFrame {
 		studentiScrollPane.setViewportView(studentiTable);
 
 		btnSacuvaj = new JButton("Sa\u010Duvaj");
-		btnSacuvaj.setBounds(434, 627, 80, 23);
+		btnSacuvaj.setBounds(444, 627, 70, 23);
 		contentPane.add(btnSacuvaj);
 
 		searchTextField = new JTextField();
@@ -218,7 +222,7 @@ public class TestForm extends JFrame {
 				}
 			}
 		});
-		btnPrint.setBounds(10, 627, 80, 23);
+		btnPrint.setBounds(10, 627, 70, 23);
 		contentPane.add(btnPrint);
 
 		btnEksport = new JButton("Eksport");
@@ -232,7 +236,7 @@ public class TestForm extends JFrame {
 				}
 			}
 		});
-		btnEksport.setBounds(100, 627, 80, 23);
+		btnEksport.setBounds(90, 627, 70, 23);
 		contentPane.add(btnEksport);
 
 		btnDodaj = new JButton("Dodaj");
@@ -243,7 +247,7 @@ public class TestForm extends JFrame {
 				dodajStudenteDialog.setVisible(true);
 			}
 		});
-		btnDodaj.setBounds(190, 627, 80, 23);
+		btnDodaj.setBounds(170, 627, 70, 23);
 		contentPane.add(btnDodaj);
 
 		btnUkloni = new JButton("Ukloni");
@@ -262,7 +266,7 @@ public class TestForm extends JFrame {
 				}
 			}
 		});
-		btnUkloni.setBounds(280, 627, 80, 23);
+		btnUkloni.setBounds(330, 627, 70, 23);
 		contentPane.add(btnUkloni);
 
 		dateChooserCombo = new DateChooserCombo();
@@ -284,6 +288,32 @@ public class TestForm extends JFrame {
 			}
 		});
 		contentPane.add(dateChooserCombo);
+		
+		btnImport = new JButton("Import");
+		btnImport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					List<StudentNaTestuDTO> data = TestController.getInstance().importFromExcel();
+					
+					
+					TestController.getInstance().executeCommand(
+							new DodajStudenteTestCommand(
+									test, 
+									(StudentTableModel) studentiTable.getModel(), 
+									data));
+					
+					
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		btnImport.setBounds(250, 627, 70, 23);
+		contentPane.add(btnImport);
 	}
 
 	private void export() throws Exception {
@@ -292,30 +322,34 @@ public class TestForm extends JFrame {
 		if (retVal != JFileChooser.APPROVE_OPTION)
 			return;
 		File chosenFile = fileChooser.getSelectedFile();
+		if (!chosenFile.getAbsolutePath().endsWith(".pdf")) {
+			final String aPath = chosenFile.getAbsolutePath();
+			chosenFile = new File(aPath + ".pdf");
+		}
 		Document doc = new Document();
-		SimpleDateFormat date = new SimpleDateFormat("dd.MM.yyyy");
-		OutputStream fos = new FileOutputStream(chosenFile);
-		PdfWriter writer = PdfWriter.getInstance(doc, fos);
-		doc.addTitle(test.getNaziv());
-		doc.setPageSize(PageSize.A4);
-		doc.open();
-		Paragraph paragraph = new Paragraph(test.getNaziv());
-		paragraph.add("\n");
-		paragraph.add(date.format(test.getDatum()));
-		paragraph.add("\n");
-		paragraph.add(test.getNapomena());
-		doc.add(paragraph);
-		Paragraph content = new Paragraph();
+		OutputStream os = new FileOutputStream(chosenFile);
+		PdfWriter writer = PdfWriter.getInstance(doc, os);
+		Paragraph title = new Paragraph();
+		title.add(test.getNaziv());
+		title.add("\n\n");
+		title.add("Datum: " + new SimpleDateFormat("dd.MM.yyyy").format(test.getDatum()));
+		title.add("\n\n");
+		title.add("Napomena: " + test.getNapomena());
+		title.add("\n\n");
+		Paragraph body = new Paragraph();
 		for (StudentNaTestuDTO student : test.getStudenti()) {
 			final String studentString = student.getBrojIndeksa() + " " + student.getIme() + " " + student.getPrezime()
 			+ " " + student.getBrojBodova() + " " + student.getKomentar();
-			content.add(studentString);
-			content.add("\n");
+			body.add(studentString);
+			body.add("\n");
 		}
-		doc.add(content);
+		doc.open();
+		doc.add(title);
+		doc.add(body);
 		doc.close();
 		writer.flush();
 		writer.close();
+		os.close();
 	}
 
 	// TODO - ne radi u ovom obliku

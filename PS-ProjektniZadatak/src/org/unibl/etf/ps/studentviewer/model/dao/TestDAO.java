@@ -13,5 +13,4 @@ public interface TestDAO {
 	public boolean deleteTest(TestDTO test);
 	public List<StudentNaTestuDTO> pretraga(String parameter);
 	public List<StudentNaTestuDTO> filter(int brojBodova, char diskriminator);
-	
 }
