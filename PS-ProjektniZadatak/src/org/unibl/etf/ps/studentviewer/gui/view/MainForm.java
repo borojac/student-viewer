@@ -34,6 +34,7 @@ import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
 import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormControler;
+import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
 public class MainForm extends JFrame {
@@ -223,8 +224,9 @@ public class MainForm extends JFrame {
 		mainTable.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		mainTable.setForeground(new Color(0, 0, 139));
 		mainTable.setBackground(new Color(173, 216, 230));
-		scrollPane.setViewportView(mainTable);
 		mainTable.setModel(new MainTableModel());
+		mainTable.setStudents(StudentsForMainTable.getAllStudents());
+		scrollPane.setViewportView(mainTable);
 	}
 
 	private void setButtonsSize() {
@@ -251,7 +253,7 @@ public class MainForm extends JFrame {
 		
 		contentPane.add(searchButton);
 		
-		
+		/* Buttons by Boroja */
 		showViewBtn = new JButton("Prikaz");
 		buttonPanel.add(showViewBtn);
 		buttons.add(showViewBtn);
@@ -313,5 +315,9 @@ public class MainForm extends JFrame {
 		testoviPanel.add(btnBrisi);
 		
 
+	}
+	
+	public MainTable getMainTable() {
+		return mainTable;
 	}
 }
