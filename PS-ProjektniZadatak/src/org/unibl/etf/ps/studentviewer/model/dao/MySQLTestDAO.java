@@ -11,7 +11,11 @@ import java.util.List;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 import org.unibl.etf.ps.studentviewer.utility.DBUtility;
-
+/**
+ * Nezavrseno, netestirano
+ * @author Nemanja Stokuca
+ *
+ */
 public class MySQLTestDAO implements TestDAO {
 
 	@Override
@@ -35,6 +39,7 @@ public class MySQLTestDAO implements TestDAO {
 			}
 
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			DBUtility.close(rs);
@@ -53,6 +58,7 @@ public class MySQLTestDAO implements TestDAO {
 			retVal.setStudenti(students);
 			
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			DBUtility.close(conn, rs);
@@ -80,6 +86,7 @@ public class MySQLTestDAO implements TestDAO {
 			}
 			
 		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -101,6 +108,7 @@ public class MySQLTestDAO implements TestDAO {
 					deleted &= ps.executeUpdate() == 1;
 
 				} catch (SQLException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -129,6 +137,7 @@ public class MySQLTestDAO implements TestDAO {
 					inserted &= ps.executeUpdate() == 1;
 
 				} catch (SQLException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -146,6 +155,7 @@ public class MySQLTestDAO implements TestDAO {
 			retVal &= ps.executeUpdate() == 1;
 
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -185,6 +195,7 @@ public class MySQLTestDAO implements TestDAO {
 			}
 
 		} catch (SQLException ex) {
+			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		} finally {
 			DBUtility.close(conn);
@@ -195,7 +206,8 @@ public class MySQLTestDAO implements TestDAO {
 	@Override
 	/*
 	 * Samo se moze obrisati prazan test (nema unesenih studenata)
-	 * Ako ima unesenih studenata na testu, potrebno ih je prvo ukloniti prije brisanja
+	 * Ako ima unesenih studenata na testu, potrebno ih je prvo otvoriti test i 
+	 * ukloniti ih prije brisanja samog testa
 	 */
 	public boolean deleteTest(TestDTO test) {
 		boolean retVal = false;
@@ -210,6 +222,7 @@ public class MySQLTestDAO implements TestDAO {
 
 		} catch (SQLException e) {
 			// Ima studenata na ispitu pa se ne moze obrisati
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			DBUtility.close(conn);
@@ -219,18 +232,19 @@ public class MySQLTestDAO implements TestDAO {
 	}
 
 	@Override
-	public List<StudentNaTestuDTO> pretraga(String parameter) {
+	public List<StudentNaTestuDTO> pretraga(int idTesta, String parameter) {
 		List<StudentNaTestuDTO> retVals = new ArrayList<>();
 		String query = "SELECT StudentId, BrojIndeksa, Ime, Prezime, BrojBodova, Komentar"
 				+ " FROM student INNER JOIN izlazi_na USING (StudentId)"
-				+ " WHERE BrojIndeksa LIKE '?%' OR Ime LIKE '?%' OR Prezime LIKE '?%'";
+				+ " WHERE TestId = ? AND BrojIndeksa LIKE '?%' OR Ime LIKE '?%' OR Prezime LIKE '?%'";
 		Connection conn = null;
 		ResultSet rs = null;
 		try (PreparedStatement ps = conn.prepareStatement(query)) {
 
-			ps.setString(1, parameter);
+			ps.setInt(1, idTesta);
 			ps.setString(2, parameter);
 			ps.setString(3, parameter);
+			ps.setString(4, parameter);
 
 			rs = ps.executeQuery();
 
@@ -241,6 +255,7 @@ public class MySQLTestDAO implements TestDAO {
 
 
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			DBUtility.close(conn, rs);
@@ -249,16 +264,17 @@ public class MySQLTestDAO implements TestDAO {
 	}
 
 	@Override
-	public List<StudentNaTestuDTO> filter(int brojBodova, char diskriminator) {
+	public List<StudentNaTestuDTO> filter(int idTesta, int brojBodova, String diskriminator) {
 		List<StudentNaTestuDTO> retVals = new ArrayList<>();
 		String query = "SELECT StudentId, BrojIndeksa, Ime, Prezime, BrojBodova, Komentar"
 				+ " FROM student INNER JOIN izlazi_na USING(StudentId) "
-				+ "WHERE BrojBodova " + diskriminator + " ?";
+				+ "WHERE TestId = ? AND BrojBodova " + diskriminator + " ?";
 		Connection conn = null;
 		ResultSet rs = null;
 		try (PreparedStatement ps = conn.prepareStatement(query)) {
 
-			ps.setInt(1, brojBodova);
+			ps.setInt(1, idTesta);
+			ps.setInt(2, brojBodova);
 
 			rs = ps.executeQuery();
 
@@ -268,10 +284,41 @@ public class MySQLTestDAO implements TestDAO {
 			}
 
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			DBUtility.close(conn, rs);
 		}
+		return retVals;
+	}
+
+	@Override
+	public List<StudentNaTestuDTO> getAllStudents(int idTesta) {
+		List<StudentNaTestuDTO> retVals = new ArrayList<>();
+		String query = "SELECT StudentId, BrojIndeksa, Ime, Prezime, BrojBodova, Komentar"
+				+ " FROM student INNER JOIN izlazi_na USING(StudentId) WHERE TestId = ?";
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			
+			ps.setInt(1, idTesta);
+			
+			rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				StudentNaTestuDTO tmp = new StudentNaTestuDTO(rs.getInt(1), rs.getString(2),
+						rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6));
+				retVals.add(tmp);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs);
+		}
+		
 		return retVals;
 	}
 

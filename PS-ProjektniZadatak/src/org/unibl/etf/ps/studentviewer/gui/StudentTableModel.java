@@ -5,7 +5,11 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import org.unibl.etf.ps.studentviewer.command.IzmjenaBrojaBodovaTestCommand;
+import org.unibl.etf.ps.studentviewer.command.IzmjenaKomentaraTestCommand;
+import org.unibl.etf.ps.studentviewer.gui.controler.TestController;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
 public class StudentTableModel extends AbstractTableModel {
 	
@@ -15,6 +19,7 @@ public class StudentTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 8429148563151885068L;
 
 	private List<StudentNaTestuDTO> data = new ArrayList<>();
+	private TestDTO test = null;
 	
 	private String[] columns = { "Broj indeksa", "Ime", "Prezime", "Broj bodova", "Komentar" };
 
@@ -27,7 +32,13 @@ public class StudentTableModel extends AbstractTableModel {
 		this.data = data;
 	}
 	
+	public void setTestDTO(TestDTO test) {
+		this.test = test;
+	}
 	
+	public TestDTO getTestDTO() {
+		return test;
+	}
 	
 	public List<StudentNaTestuDTO> getData() {
 		return data;
@@ -55,6 +66,15 @@ public class StudentTableModel extends AbstractTableModel {
 			return columns[index];
 		return null;
 	}
+	
+	
+
+	@Override
+	public boolean isCellEditable(int row, int column) {
+		if (column == 3 || column == 4)
+			return true;
+		return false;
+	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
@@ -71,5 +91,24 @@ public class StudentTableModel extends AbstractTableModel {
 			return row.getKomentar();
 		return null;
 	}
+
+	@Override
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+		StudentNaTestuDTO student = data.get(rowIndex);
+		if (columnIndex == 3 && aValue instanceof String) {
+			try {
+				int brBodova = Integer.parseInt((String) aValue);
+				TestController.getInstance().executeCommand(
+						new IzmjenaBrojaBodovaTestCommand(this, student, brBodova));
+			} catch (NumberFormatException ex) {}
+		} else if (columnIndex == 4 && aValue instanceof String) {
+			String komentar = (String) aValue;
+			TestController.getInstance().executeCommand(
+					new IzmjenaKomentaraTestCommand(this, student, komentar));
+		}
+		
+	}
+	
+	
 
 }
