@@ -24,8 +24,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.LookAndFeel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
@@ -62,7 +64,7 @@ public class MainForm extends JFrame {
 	private JScrollPane scrollPane = null;
 
 	private MainTable mainTable = null;
-	
+
 
 	private JPanel testoviPanel;
 	private JTable testoviTable;
@@ -122,13 +124,13 @@ public class MainForm extends JFrame {
 		buttonPanel.setBounds(578, 219, 147, 382);
 		contentPane.add(buttonPanel);
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 12));
-		
+
 		BufferedImage img = ImageIO.read(new File("img\\BellTower-RGB(JPG).jpg"));
 		BufferedImage correctionImage = ImageIO.read(new File("img\\whiteCorrection.png"));
-		
+
 		JLabel label = new JLabel("");
 		label.setBounds(515, 0, 170, 120);
-		
+
 		img = Scalr.resize(img, Scalr.Mode.FIT_EXACT ,label.getWidth(), label.getHeight(), null);
 		ImageIcon icon = new ImageIcon(img);
 		label.setIcon(icon);
@@ -149,13 +151,13 @@ public class MainForm extends JFrame {
 			}
 		});
 		testoviTable.setModel(new TestoviTableModel());
-		
+
 		testoviScrollPane = new JScrollPane();
 		testoviScrollPane.setBounds(10, 11, 429, 145);
 		testoviPanel.add(testoviScrollPane);
 		testoviScrollPane.setViewportView(testoviTable);
-		
-		
+
+
 		JLabel correct1Label = new JLabel("STUDENT");
 		correct1Label.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 45));
 		correct1Label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -165,7 +167,7 @@ public class MainForm extends JFrame {
 		correct1Label.setBounds(0, 0, 515, 120);
 		contentPane.add(correct1Label);
 
-		
+
 		correct2Label = new JLabel("VIEWER");
 		correct2Label.setBackground(SystemColor.text);
 		correct2Label.setForeground(new Color(0, 0, 139));
@@ -174,35 +176,35 @@ public class MainForm extends JFrame {
 		correct2Label.setOpaque(true);
 		correct2Label.setBounds(685, 0, 509, 120);
 		contentPane.add(correct2Label);
-		
+
 		JLabel lblPretraga = new JLabel("Pretraga:");
 		lblPretraga.setForeground(Color.WHITE);
 		lblPretraga.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		lblPretraga.setBounds(10, 172, 78, 25);
 		contentPane.add(lblPretraga);
-		
+
 		textField = new JTextField();
 		textField.setForeground(new Color(0, 0, 139));
 		textField.setFont(new Font("Century Gothic", Font.BOLD | Font.ITALIC, 15));
 		textField.setBounds(97, 172, 418, 25);
 		contentPane.add(textField);
 		textField.setColumns(10);
-		
+
 		initButtons();
 		initButtonsListeners();
 		initTable();
 		setButtonsSize();
-		
+
 	}
-	
+
 	public String getSearchParams() {
 		return textField.getText();
 	}
-	
+
 	public void setSearchParams(String params) {
 		textField.setText(params);
 	}
-	
+
 	private void initButtonsListeners() {
 		sortBtn.addMouseListener(new MouseAdapter() {
 			@Override
@@ -210,7 +212,7 @@ public class MainForm extends JFrame {
 				new MainFormControler(MainForm.this).createSortForm();
 			}
 		});
-		
+
 		searchButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -236,10 +238,10 @@ public class MainForm extends JFrame {
 	}
 
 	private void initButtons() {
-		
+
 
 		searchButton = new JButton("");
-		
+
 
 		searchButton.setBounds(526, 172, 42, 26);
 		try {
@@ -250,9 +252,9 @@ public class MainForm extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		contentPane.add(searchButton);
-		
+
 		/* Buttons by Boroja */
 		showViewBtn = new JButton("Prikaz");
 		buttonPanel.add(showViewBtn);
@@ -285,7 +287,7 @@ public class MainForm extends JFrame {
 		accountBtn = new JButton("Nalog");
 		buttonPanel.add(accountBtn);
 		buttons.add(accountBtn);
-		
+
 		/* Buttons by Stokuca */
 		btnDodaj = new JButton("Dodaj");
 		btnDodaj.addActionListener(new ActionListener() {
@@ -296,7 +298,7 @@ public class MainForm extends JFrame {
 		});
 		btnDodaj.setBounds(10, 166, 89, 23);
 		testoviPanel.add(btnDodaj);
-		
+
 		btnIzmjeni = new JButton("Izmjeni");
 		btnIzmjeni.setEnabled(false);
 		btnIzmjeni.addActionListener(new ActionListener() {
@@ -309,14 +311,14 @@ public class MainForm extends JFrame {
 		});
 		btnIzmjeni.setBounds(109, 166, 89, 23);
 		testoviPanel.add(btnIzmjeni);
-		
+
 		btnBrisi = new JButton("Bri\u0161i");
 		btnBrisi.setBounds(208, 166, 89, 23);
 		testoviPanel.add(btnBrisi);
-		
+
 
 	}
-	
+
 	public MainTable getMainTable() {
 		return mainTable;
 	}

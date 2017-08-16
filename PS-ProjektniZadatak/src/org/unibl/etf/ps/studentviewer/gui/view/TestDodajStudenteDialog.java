@@ -153,8 +153,8 @@ public class TestDodajStudenteDialog extends JDialog {
 								(StudentTableModel) testForm.getStudentiTable().getModel(), 
 								studentsList);
 						
-						TestController controller = TestController.getInstance();
-						controller.executeCommand(dodajStudente);
+						TestController.getInstance().executeCommand(dodajStudente);
+						testForm.refreshStatistics();
 						thisDialog.dispose();
 						
 					}

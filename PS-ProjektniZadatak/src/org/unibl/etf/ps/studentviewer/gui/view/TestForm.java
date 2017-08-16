@@ -36,6 +36,8 @@ import com.itextpdf.text.pdf.PdfPrinterGraphics2D;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.InputStream;
 import javax.swing.JLabel;
+
+import java.awt.Color;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -56,7 +58,13 @@ import javax.swing.JFileChooser;
 
 import datechooser.events.CommitEvent;
 import datechooser.events.CommitListener;
+import datechooser.model.multiple.MultyModelBehavior;
 import datechooser.beans.DateChooserCombo;
+import datechooser.beans.DateChooserComboBeanInfo;
+import datechooser.beans.DateChooserPanelCustomizer;
+import datechooser.beans.DateChooserVisual;
+import datechooser.controller.DateChooseController;
+
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -308,6 +316,7 @@ public class TestForm extends JFrame {
 					}
 					studentList.removeAll(forDelete);
 					TestController.getInstance().executeCommand(new UkloniStudenteTestCommand(test, model, studentList));
+					refreshStatistics();
 				}
 			}
 		});
@@ -317,14 +326,8 @@ public class TestForm extends JFrame {
 		dateChooserCombo = new DateChooserCombo();
 		test.setDatum(dateChooserCombo.getSelectedDate().getTime());
 		dateChooserCombo.setBounds(144, 55, 271, 20);
-		
-		dateChooserCombo.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				Command command = new IzmjenaDatumaTestCommand(test, dateChooserCombo);
-				TestController.getInstance().executeCommand(command);
-			}
-		});
+		dateChooserCombo.setCalendarBackground(Color.WHITE);
+		dateChooserCombo.setDateFormat(new SimpleDateFormat("dd.MM.yyyy"));
 		
 		dateChooserCombo.addCommitListener(new CommitListener() {
 
@@ -335,12 +338,16 @@ public class TestForm extends JFrame {
 
 			}
 		});
+		
 		dateChooserCombo.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				TestController.getInstance().focusLostAction(e);
 			}
 		});
+		
+		
+		
 		contentPane.add(dateChooserCombo);
 		
 		btnImport = new JButton("Import");
@@ -349,13 +356,14 @@ public class TestForm extends JFrame {
 				try {
 					List<StudentNaTestuDTO> data = TestController.getInstance().importFromExcel();
 					
-					
-					TestController.getInstance().executeCommand(
-							new DodajStudenteTestCommand(
-									test, 
-									(StudentTableModel) studentiTable.getModel(), 
-									data));
-					
+					if (data != null) {
+						TestController.getInstance().executeCommand(
+								new DodajStudenteTestCommand(
+										test, 
+										(StudentTableModel) studentiTable.getModel(), 
+										data));
+						refreshStatistics();
+					}
 					
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -406,5 +414,9 @@ public class TestForm extends JFrame {
 
 	public TestDTO getModel() {
 		return test;
+	}
+	
+	public void refreshStatistics() {
+		statistikaTextArea.setText(TestController.getInstance().getStatistika(test));
 	}
 }

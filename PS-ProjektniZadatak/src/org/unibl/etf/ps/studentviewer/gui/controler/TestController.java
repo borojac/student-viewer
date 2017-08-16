@@ -15,7 +15,6 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import javax.swing.JFileChooser;
 
@@ -130,7 +129,7 @@ public class TestController {
 				Row row = sheet.getRow(i);
 				Cell cell = row.getCell(0);
 				String brojIndeksa = cell.getStringCellValue().trim();
-
+				System.out.println(brojIndeksa);
 //				TODO - potreban StudentDAO za dobijanje informacija o ispitu
 //				StudentNaTestuDTO tmp = new StudentNaTestuDTO(studentId, brojIndeksa, ime, prezime, 0, "");
 //				data.add(tmp);
@@ -140,7 +139,9 @@ public class TestController {
 			
 			workbook.close();
 			chosenFileInputStream.close();
-		}
+		} else
+			return null;
+		
 		return data;
 	}
 
