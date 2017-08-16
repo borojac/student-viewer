@@ -24,10 +24,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.LookAndFeel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -72,10 +70,6 @@ public class MainForm extends JFrame {
 	private JScrollPane scrollPane = null;
 
 	private MainTable mainTable = null;
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'master' of https://github.com/borojac/student-viewer.git
 
 	private JPanel testoviPanel;
 	private JTable testoviTable;
@@ -143,11 +137,7 @@ public class MainForm extends JFrame {
 		JLabel label = new JLabel("");
 		label.setBounds(515, 0, 170, 120);
 
-<<<<<<< HEAD
 		img = Scalr.resize(img, Scalr.Mode.FIT_EXACT, label.getWidth(), label.getHeight(), null);
-=======
-		img = Scalr.resize(img, Scalr.Mode.FIT_EXACT ,label.getWidth(), label.getHeight(), null);
->>>>>>> branch 'master' of https://github.com/borojac/student-viewer.git
 		ImageIcon icon = new ImageIcon(img);
 		label.setIcon(icon);
 		contentPane.add(label);
@@ -172,10 +162,6 @@ public class MainForm extends JFrame {
 		testoviPanel.add(testoviScrollPane);
 		testoviScrollPane.setViewportView(testoviTable);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'master' of https://github.com/borojac/student-viewer.git
 		JLabel correct1Label = new JLabel("STUDENT");
 		correct1Label.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 45));
 		correct1Label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -185,10 +171,6 @@ public class MainForm extends JFrame {
 		correct1Label.setBounds(0, 0, 515, 120);
 		contentPane.add(correct1Label);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'master' of https://github.com/borojac/student-viewer.git
 		correct2Label = new JLabel("VIEWER");
 		correct2Label.setBackground(SystemColor.text);
 		correct2Label.setForeground(new Color(0, 0, 139));
@@ -222,10 +204,6 @@ public class MainForm extends JFrame {
 		initButtonsListeners();
 		initTable();
 		setButtonsSize();
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'master' of https://github.com/borojac/student-viewer.git
 	}
 
 	public String getSearchParams() {
@@ -286,17 +264,9 @@ public class MainForm extends JFrame {
 	}
 
 	private void initButtons() {
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'master' of https://github.com/borojac/student-viewer.git
 
 		searchButton = new JButton("");
-<<<<<<< HEAD
 		searchButton.setToolTipText("Pretrazi");
-=======
-
->>>>>>> branch 'master' of https://github.com/borojac/student-viewer.git
 
 		searchButton.setBounds(474, 171, 42, 26);
 		try {
@@ -345,7 +315,6 @@ public class MainForm extends JFrame {
 		buttonPanel.add(accountBtn);
 		buttons.add(accountBtn);
 
-<<<<<<< HEAD
 
 		restoreButton = new JButton("");
 		restoreButton.setToolTipText("Ucitaj podatke o svim studentima");
@@ -359,8 +328,6 @@ public class MainForm extends JFrame {
 		}
 		contentPane.add(restoreButton);
 		
-=======
->>>>>>> branch 'master' of https://github.com/borojac/student-viewer.git
 		/* Buttons by Stokuca */
 		btnDodaj = new JButton("Dodaj");
 		btnDodaj.addActionListener(new ActionListener() {
@@ -388,7 +355,7 @@ public class MainForm extends JFrame {
 		btnBrisi = new JButton("Bri\u0161i");
 		btnBrisi.setBounds(208, 166, 89, 23);
 		testoviPanel.add(btnBrisi);
-
+		
 
 	}
 
