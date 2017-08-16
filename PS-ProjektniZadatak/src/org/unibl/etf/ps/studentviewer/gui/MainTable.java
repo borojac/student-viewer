@@ -1,12 +1,11 @@
 package org.unibl.etf.ps.studentviewer.gui;
 
-import java.awt.print.PrinterException;
 import java.util.ArrayList;
 
 import javax.swing.JTable;
-import javax.swing.table.TableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STDecimalNumber;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class MainTable extends JTable {
@@ -17,8 +16,13 @@ public class MainTable extends JTable {
 		this.students = students;
 		MainTableModel model = (MainTableModel)getModel();
 		model.setData(getStudentsForModel());
+		model.setColumnIdentifiers(new String[]{"Indeks", "Ime", "Prezime"});
+		repaint();
 	}
 	
+	public void changeView() {
+		TableColumnModel tcm = getColumnModel();
+	}
 	
 	
 	public ArrayList<StudentMainTableDTO> getStudents() {

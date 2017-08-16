@@ -6,7 +6,9 @@ import org.unibl.etf.ps.studentviewer.exec.ExecScheduler;
 import org.unibl.etf.ps.studentviewer.exec.SearchExec;
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
+import org.unibl.etf.ps.studentviewer.gui.view.ShowForm;
 import org.unibl.etf.ps.studentviewer.gui.view.SortForm;
+import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class MainFormControler {
@@ -51,7 +53,11 @@ public class MainFormControler {
 		sortForm.setVisible(true);
 		return true;
 	}
-
+	
+	public void restoreTable() {
+		getMainTable().setStudents(StudentsForMainTable.getAllStudents());
+	}
+	
 	public void search(MainForm mainForm) {
 		String params = mainForm.getSearchParams();
 		mainForm.setSearchParams("");
@@ -60,5 +66,10 @@ public class MainFormControler {
 			paramsList.add(x);
 		SearchExec exec = new SearchExec(this, paramsList);
 
+	}
+
+	public void createShowForm() {
+		ShowForm form = new ShowForm();
+		form.setVisible(true);
 	}
 }
