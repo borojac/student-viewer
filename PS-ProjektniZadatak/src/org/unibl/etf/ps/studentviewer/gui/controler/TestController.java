@@ -15,8 +15,11 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
+import javax.swing.JTextField;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
@@ -31,6 +34,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.unibl.etf.ps.studentviewer.command.Command;
 import org.unibl.etf.ps.studentviewer.command.CommandStack;
+import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
+import org.unibl.etf.ps.studentviewer.gui.view.TestForm;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
@@ -57,11 +62,13 @@ public class TestController {
 
 	private TestController() {}
 
-	public void focusLostAction(KeyEvent ke) {
+	public void focusLostAction(TestForm testForm, KeyEvent ke) {
 		if (ke.getKeyCode() == KeyEvent.VK_Z && ke.isControlDown()) {
 			instance.undo();
+			testForm.refreshStatistics();
 		} else if (ke.getKeyCode() == KeyEvent.VK_Y && ke.isControlDown()) {
 			instance.redo();
+			testForm.refreshStatistics();
 		}
 	}
 
@@ -254,17 +261,72 @@ public class TestController {
 
 		statisticsBuilder.append("Izaslo: " + izaslo).append('\n');
 		statisticsBuilder.append("Polozilo: " + polozilo
-				+ String.format("(%.2f %%)", (double)polozilo / (double) izaslo)).append('\n');
+				+ String.format("(%.2f %%)", (double)polozilo / (double) izaslo * 100.0)).append('\n');
 		statisticsBuilder.append("Palo: " + (izaslo - polozilo)
-				+ String.format("(%.2f %%)", (double)(izaslo-polozilo) / (double)izaslo)).append('\n');
+				+ String.format("(%.2f %%)", (double)(izaslo-polozilo) / (double)izaslo * 100.0)).append('\n');
 		statisticsBuilder.append("Odlican-izuzetan (10): " + deset
-				+ String.format("(%.2f %%)", (double)deset / (double)polozilo)).append('\n');
-		statisticsBuilder.append("Odlican (9): " + devet + String.format("(%.2f %%)", (double)devet / (double)polozilo)).append('\n');
-		statisticsBuilder.append("Vrlo dobar (8): " + osam + String.format("(%.2f %%)", (double)osam / (double)polozilo)).append('\n');
-		statisticsBuilder.append("Dobar (7): " + sedam + String.format("(%.2f %%)", (double)sedam / (double)polozilo)).append('\n');
-		statisticsBuilder.append("Zadovoljava (6): " + sest + String.format("(%.2f %%)", (double)sest / (double)polozilo));
+				+ String.format("(%.2f %%)", (double)deset / (double)polozilo * 100.0)).append('\n');
+		statisticsBuilder.append("Odlican (9): " + devet + String.format("(%.2f %%)", (double)devet / (double)polozilo * 100.0)).append('\n');
+		statisticsBuilder.append("Vrlo dobar (8): " + osam + String.format("(%.2f %%)", (double)osam / (double)polozilo * 100.0)).append('\n');
+		statisticsBuilder.append("Dobar (7): " + sedam + String.format("(%.2f %%)", (double)sedam / (double)polozilo * 100.0)).append('\n');
+		statisticsBuilder.append("Zadovoljava (6): " + sest + String.format("(%.2f %%)", (double)sest / (double)polozilo * 100.0));
 
 		return statisticsBuilder.toString();
+	}
+	/**
+	 * NETESTIRANO - ZAKOMENTARISANI POZIVI PRETRAGE U BAZI
+	 * @param test
+	 * @param model
+	 * @param searchText
+	 */
+	public void initiateStudentSearch(TestDTO test, StudentTableModel model, String searchText) {
+		if (test == null || model == null || searchText == null)
+			return;
+		List<StudentNaTestuDTO> searchedList = null;
+		
+		
+		DAOFactory factory = new MySQLDAOFactory();
+		TestDAO testDAO = factory.getTestDAO();
+		
+		
+		Matcher matcher = Pattern.compile("[<,>,=]+").matcher(searchText);
+		Matcher numberMatcher = Pattern.compile("\\d+").matcher(searchText);
+		int count = 0;
+		while (matcher.find()) 
+			++count;
+		if (count == 1) {
+			count = 0;
+			matcher = matcher.reset();
+			matcher.find();
+			String diskriminator = matcher.group();
+			while (numberMatcher.find()) 
+				++count;
+			if (count == 1) {
+				numberMatcher = numberMatcher.reset();
+				numberMatcher.find();
+				int brojBodova = Integer.parseInt(numberMatcher.group());
+				// TODO - kad se baza uradi
+//				searchedList = testDAO.filter(test.getTestId(), brojBodova, diskriminator);
+			} else {
+//				searchedList = testDAO.pretraga(test.getTestId(), searchText + "%");
+			}
+		} else {
+//			searchedList = testDAO.pretraga(test.getTestId(), searchText + "%");
+		}
+		
+//		model.setData(searchedList);
+		
+	}
+	
+	public void resetSearch(TestDTO test, StudentTableModel model, JTextField searchField) {
+		if (test == null || model == null || searchField == null)
+			return;
+		DAOFactory factory = new MySQLDAOFactory();
+		TestDAO testDAO = factory.getTestDAO();
+		List<StudentNaTestuDTO> data = testDAO.getAllStudents(test.getTestId());
+		test.setStudenti(data);
+		model.setData(data);
+		searchField.setText("");
 	}
 
 }

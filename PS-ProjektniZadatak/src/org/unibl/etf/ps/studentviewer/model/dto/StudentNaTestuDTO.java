@@ -8,9 +8,8 @@ public class StudentNaTestuDTO {
 	
 	public StudentNaTestuDTO() {}
 
-	public StudentNaTestuDTO(int studentId, String brojIndeksa, String ime, String prezime, int brojBodova,
-			String komentar) {
-		super();
+	public StudentNaTestuDTO(int studentId, String brojIndeksa, String ime, String prezime, 
+			int brojBodova, String komentar) {
 		this.studentId = studentId;
 		this.brojIndeksa = brojIndeksa;
 		this.ime = ime;

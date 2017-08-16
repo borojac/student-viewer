@@ -15,6 +15,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.printing.PDFPageable;
+import org.bouncycastle.asn1.cmp.KeyRecRepContent;
 import org.unibl.etf.ps.studentviewer.command.Command;
 import org.unibl.etf.ps.studentviewer.command.DodajNapomenuTestCommand;
 import org.unibl.etf.ps.studentviewer.command.DodajStudenteTestCommand;
@@ -86,6 +87,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.border.MatteBorder;
+import java.awt.SystemColor;
 
 public class TestForm extends JFrame {
 
@@ -105,10 +108,11 @@ public class TestForm extends JFrame {
 	private TestDTO test = new TestDTO();
 	private DateChooserCombo dateChooserCombo;
 	private boolean update = false;
+	private boolean needsRefresh = false;
 
 	private JFrame thisFrame;
 	private JButton btnImport;
-	
+
 	private Logger logger = Logger.getLogger(TestForm.class);
 	private JTextArea statistikaTextArea;
 
@@ -116,22 +120,23 @@ public class TestForm extends JFrame {
 		setResizable(false);
 		addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyReleased(KeyEvent ke) {
-				TestController.getInstance().focusLostAction(ke);
+			public void keyReleased(KeyEvent e) {
+				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
 			}
 		});
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(200, 10, 540, 700);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		
+
 		contentPane.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction(e);
+				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
 			}
 		});
-		
+
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		this.thisFrame = this;
@@ -140,7 +145,7 @@ public class TestForm extends JFrame {
 			test = testParam;
 			update = true;
 		}
-		
+
 		try {
 			logger.addAppender(new FileAppender(new SimpleLayout(), TestForm.class.getSimpleName() + ".log"));
 		} catch (IOException e1) {
@@ -167,10 +172,11 @@ public class TestForm extends JFrame {
 		contentPane.add(lblNapomena);
 
 		nazivTextField = new JTextField();
+		nazivTextField.setBorder(new MatteBorder(2, 2, 2, 2, (Color) SystemColor.textHighlight));
 		nazivTextField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction(e);
+				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
 			}
 		});
 		nazivTextField.addFocusListener(new FocusAdapter() {
@@ -189,6 +195,7 @@ public class TestForm extends JFrame {
 		contentPane.add(napomenaScrollPane);
 
 		napomenaTextArea = new JTextArea();
+		napomenaTextArea.setBorder(new MatteBorder(2, 2, 2, 2, (Color) SystemColor.textHighlight));
 		napomenaTextArea.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
@@ -199,41 +206,55 @@ public class TestForm extends JFrame {
 		napomenaTextArea.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction(e);
+				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
 			}
 		});
 		napomenaScrollPane.setViewportView(napomenaTextArea);
 
 		studentiScrollPane = new JScrollPane();
+		studentiScrollPane.setBorder(new MatteBorder(2, 2, 2, 2, (Color) SystemColor.textHighlight));
 		studentiScrollPane.setBounds(10, 420, 504, 196);
+		studentiScrollPane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				studentiTable.clearSelection();
+				refreshStatistics();
+			}
+		});
 		contentPane.add(studentiScrollPane);
 
 		// TODO - popuniti tabelu
 
-		List<StudentNaTestuDTO> studenti = new ArrayList<>();
+		List<StudentNaTestuDTO> studenti = test.getStudenti();
 		studenti.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuca", 65, "Hahhahahah"));
 		test.setStudenti(studenti);
 		StudentTableModel model = new StudentTableModel(studenti);
-
+		model.setTestDTO(test);
 
 		studentiTable = new JTable(model);
+		studentiTable.setFillsViewportHeight(true);
 		studentiTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if (studentiTable.getSelectedRow() != -1)
 					btnUkloni.setEnabled(true);
-				else
+				else {
 					btnUkloni.setEnabled(false);
+					studentiTable.clearSelection();
+					refreshStatistics();
+				}
 			}
 		});
-		
+
 		studentiTable.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction(e);
+				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+					refreshStatistics();
 			}
 		});
-		
+
 		studentiScrollPane.setViewportView(studentiTable);
 
 		btnSacuvaj = new JButton("Sa\u010Duvaj");
@@ -241,18 +262,40 @@ public class TestForm extends JFrame {
 		contentPane.add(btnSacuvaj);
 
 		searchTextField = new JTextField();
+		searchTextField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				needsRefresh = true;
+				final String searchText = searchTextField.getText();
+				TestController.getInstance().initiateStudentSearch(
+						test,
+						(StudentTableModel)studentiTable.getModel(),
+						searchText);
+			}
+		});
+		searchTextField.setBorder(new MatteBorder(2, 2, 2, 2, (Color) SystemColor.textHighlight));
+		searchTextField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		searchTextField.setBounds(10, 389, 405, 20);
 		contentPane.add(searchTextField);
 		searchTextField.setColumns(10);
-		
+
 		searchTextField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction(e);
+				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
 			}
 		});
 
 		btnPretrazi = new JButton("Pretra\u017Ei");
+		btnPretrazi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				needsRefresh = true;
+				final String searchText = searchTextField.getText();
+				TestController.getInstance().initiateStudentSearch(
+						test,
+						(StudentTableModel)studentiTable.getModel(),
+						searchText);
+			}
+		});
 		btnPretrazi.setBounds(424, 388, 90, 23);
 		contentPane.add(btnPretrazi);
 
@@ -272,7 +315,7 @@ public class TestForm extends JFrame {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 			}
 		});
 		btnPrint.setBounds(10, 627, 70, 23);
@@ -295,7 +338,10 @@ public class TestForm extends JFrame {
 		btnDodaj = new JButton("Dodaj");
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				if (needsRefresh) {
+					TestController.getInstance().resetSearch(test, (StudentTableModel) studentiTable.getModel(), searchTextField);
+					needsRefresh = false;
+				}
 				JDialog dodajStudenteDialog = new TestDodajStudenteDialog((TestForm) thisFrame);
 				dodajStudenteDialog.setVisible(true);
 			}
@@ -307,7 +353,7 @@ public class TestForm extends JFrame {
 		btnUkloni.setEnabled(false);
 		btnUkloni.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (studentiTable.getSelectedRows().length > 0) {
+				if (!needsRefresh && studentiTable.getSelectedRows().length > 0) {
 					StudentTableModel model = (StudentTableModel) studentiTable.getModel();
 					List<StudentNaTestuDTO> studentList = new ArrayList<>(model.getData());
 					List<StudentNaTestuDTO> forDelete = new ArrayList<>();
@@ -324,11 +370,12 @@ public class TestForm extends JFrame {
 		contentPane.add(btnUkloni);
 
 		dateChooserCombo = new DateChooserCombo();
+		dateChooserCombo.setBehavior(MultyModelBehavior.SELECT_SINGLE);
 		test.setDatum(dateChooserCombo.getSelectedDate().getTime());
 		dateChooserCombo.setBounds(144, 55, 271, 20);
 		dateChooserCombo.setCalendarBackground(Color.WHITE);
 		dateChooserCombo.setDateFormat(new SimpleDateFormat("dd.MM.yyyy"));
-		
+
 		dateChooserCombo.addCommitListener(new CommitListener() {
 
 			@Override
@@ -338,24 +385,24 @@ public class TestForm extends JFrame {
 
 			}
 		});
-		
+
 		dateChooserCombo.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction(e);
+				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
 			}
 		});
-		
-		
-		
+
+
+
 		contentPane.add(dateChooserCombo);
-		
+
 		btnImport = new JButton("Import");
 		btnImport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					List<StudentNaTestuDTO> data = TestController.getInstance().importFromExcel();
-					
+
 					if (data != null) {
 						TestController.getInstance().executeCommand(
 								new DodajStudenteTestCommand(
@@ -363,8 +410,9 @@ public class TestForm extends JFrame {
 										(StudentTableModel) studentiTable.getModel(), 
 										data));
 						refreshStatistics();
+						searchTextField.setText("");
 					}
-					
+
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -376,12 +424,14 @@ public class TestForm extends JFrame {
 		});
 		btnImport.setBounds(250, 627, 70, 23);
 		contentPane.add(btnImport);
-		
+
 		JLabel lblStatistika = new JLabel("Statistika:");
+		lblStatistika.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblStatistika.setBounds(41, 233, 70, 20);
 		contentPane.add(lblStatistika);
-		
+
 		statistikaTextArea = new JTextArea();
+		statistikaTextArea.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(51, 153, 255)));
 		statistikaTextArea.setEditable(false);
 		statistikaTextArea.setBounds(144, 231, 271, 147);
 		statistikaTextArea.setText(TestController.getInstance().getStatistika(test));
@@ -415,7 +465,7 @@ public class TestForm extends JFrame {
 	public TestDTO getModel() {
 		return test;
 	}
-	
+
 	public void refreshStatistics() {
 		statistikaTextArea.setText(TestController.getInstance().getStatistika(test));
 	}
