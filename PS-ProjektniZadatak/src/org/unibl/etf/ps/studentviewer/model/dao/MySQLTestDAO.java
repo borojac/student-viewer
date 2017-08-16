@@ -195,7 +195,8 @@ public class MySQLTestDAO implements TestDAO {
 	@Override
 	/*
 	 * Samo se moze obrisati prazan test (nema unesenih studenata)
-	 * Ako ima unesenih studenata na testu, potrebno ih je prvo ukloniti prije brisanja
+	 * Ako ima unesenih studenata na testu, potrebno ih je prvo otvoriti test i 
+	 * ukloniti ih prije brisanja samog testa
 	 */
 	public boolean deleteTest(TestDTO test) {
 		boolean retVal = false;

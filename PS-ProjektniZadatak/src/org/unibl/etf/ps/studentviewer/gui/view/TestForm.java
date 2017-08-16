@@ -5,6 +5,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.Logger;
+import org.apache.log4j.SimpleLayout;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -24,6 +27,7 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfAction;
@@ -57,6 +61,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -95,6 +100,9 @@ public class TestForm extends JFrame {
 
 	private JFrame thisFrame;
 	private JButton btnImport;
+	
+	private Logger logger = Logger.getLogger(TestForm.class);
+	private JTextArea statistikaTextArea;
 
 	public TestForm(TestDTO testParam) {
 		setResizable(false);
@@ -108,6 +116,14 @@ public class TestForm extends JFrame {
 		setBounds(200, 10, 540, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
+		contentPane.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				TestController.getInstance().focusLostAction(e);
+			}
+		});
+		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		this.thisFrame = this;
@@ -115,6 +131,13 @@ public class TestForm extends JFrame {
 		if (testParam != null) {
 			test = testParam;
 			update = true;
+		}
+		
+		try {
+			logger.addAppender(new FileAppender(new SimpleLayout(), TestForm.class.getSimpleName() + ".log"));
+		} catch (IOException e1) {
+			this.dispose();
+			throw new RuntimeException(e1);
 		}
 
 		JLabel lblNaziv = new JLabel("Naziv:");
@@ -172,7 +195,6 @@ public class TestForm extends JFrame {
 			}
 		});
 		napomenaScrollPane.setViewportView(napomenaTextArea);
-		napomenaTextArea.setRows(5);
 
 		studentiScrollPane = new JScrollPane();
 		studentiScrollPane.setBounds(10, 420, 504, 196);
@@ -196,6 +218,14 @@ public class TestForm extends JFrame {
 					btnUkloni.setEnabled(false);
 			}
 		});
+		
+		studentiTable.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				TestController.getInstance().focusLostAction(e);
+			}
+		});
+		
 		studentiScrollPane.setViewportView(studentiTable);
 
 		btnSacuvaj = new JButton("Sa\u010Duvaj");
@@ -206,6 +236,13 @@ public class TestForm extends JFrame {
 		searchTextField.setBounds(10, 389, 405, 20);
 		contentPane.add(searchTextField);
 		searchTextField.setColumns(10);
+		
+		searchTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				TestController.getInstance().focusLostAction(e);
+			}
+		});
 
 		btnPretrazi = new JButton("Pretra\u017Ei");
 		btnPretrazi.setBounds(424, 388, 90, 23);
@@ -214,12 +251,20 @@ public class TestForm extends JFrame {
 		btnPrint = new JButton("Print");
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+
 				try {
-					print();
-				} catch (Exception e) {
+					TestController.getInstance().print(test);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (DocumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (PrinterException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				
 			}
 		});
 		btnPrint.setBounds(10, 627, 70, 23);
@@ -229,7 +274,7 @@ public class TestForm extends JFrame {
 		btnEksport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					export();
+					TestController.getInstance().export(test);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -272,6 +317,15 @@ public class TestForm extends JFrame {
 		dateChooserCombo = new DateChooserCombo();
 		test.setDatum(dateChooserCombo.getSelectedDate().getTime());
 		dateChooserCombo.setBounds(144, 55, 271, 20);
+		
+		dateChooserCombo.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				Command command = new IzmjenaDatumaTestCommand(test, dateChooserCombo);
+				TestController.getInstance().executeCommand(command);
+			}
+		});
+		
 		dateChooserCombo.addCommitListener(new CommitListener() {
 
 			@Override
@@ -314,80 +368,23 @@ public class TestForm extends JFrame {
 		});
 		btnImport.setBounds(250, 627, 70, 23);
 		contentPane.add(btnImport);
-	}
-
-	private void export() throws Exception {
-		JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
-		int retVal = fileChooser.showSaveDialog(this);
-		if (retVal != JFileChooser.APPROVE_OPTION)
-			return;
-		File chosenFile = fileChooser.getSelectedFile();
-		if (!chosenFile.getAbsolutePath().endsWith(".pdf")) {
-			final String aPath = chosenFile.getAbsolutePath();
-			chosenFile = new File(aPath + ".pdf");
-		}
-		Document doc = new Document();
-		OutputStream os = new FileOutputStream(chosenFile);
-		PdfWriter writer = PdfWriter.getInstance(doc, os);
-		Paragraph title = new Paragraph();
-		title.add(test.getNaziv());
-		title.add("\n\n");
-		title.add("Datum: " + new SimpleDateFormat("dd.MM.yyyy").format(test.getDatum()));
-		title.add("\n\n");
-		title.add("Napomena: " + test.getNapomena());
-		title.add("\n\n");
-		Paragraph body = new Paragraph();
-		for (StudentNaTestuDTO student : test.getStudenti()) {
-			final String studentString = student.getBrojIndeksa() + " " + student.getIme() + " " + student.getPrezime()
-			+ " " + student.getBrojBodova() + " " + student.getKomentar();
-			body.add(studentString);
-			body.add("\n");
-		}
-		doc.open();
-		doc.add(title);
-		doc.add(body);
-		doc.close();
-		writer.flush();
-		writer.close();
-		os.close();
-	}
-
-	// TODO - ne radi u ovom obliku
-	private void print() throws Exception {
-		Document doc = new Document();
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		PdfWriter writer = PdfWriter.getInstance(doc, os);
-		Paragraph title = new Paragraph();
-		title.add(test.getNaziv());
-		title.add("\n\n");
-		title.add("Datum: " + new SimpleDateFormat("dd.MM.yyyy").format(test.getDatum()));
-		title.add("\n\n");
-		title.add("Napomena: " + test.getNapomena());
-		title.add("\n\n");
-		Paragraph body = new Paragraph();
-		for (StudentNaTestuDTO student : test.getStudenti()) {
-			final String studentString = student.getBrojIndeksa() + " " + student.getIme() + " " + student.getPrezime()
-			+ " " + student.getBrojBodova() + " " + student.getKomentar();
-			body.add(studentString);
-			body.add("\n");
-		}
-		doc.open();
-		doc.add(title);
-		doc.add(body);
-		doc.close();
-		writer.flush();
-		writer.close();
 		
-		PDDocument printDoc = PDDocument.load(os.toByteArray());
+		JLabel lblStatistika = new JLabel("Statistika:");
+		lblStatistika.setBounds(41, 233, 70, 20);
+		contentPane.add(lblStatistika);
 		
-		PrinterJob job = PrinterJob.getPrinterJob();
-		job.setPageable(new PDFPageable(printDoc));
-		if (job.printDialog()) {
-			job.print();
-		}
-		printDoc.close();
+		statistikaTextArea = new JTextArea();
+		statistikaTextArea.setEditable(false);
+		statistikaTextArea.setBounds(144, 231, 271, 147);
+		statistikaTextArea.setText(TestController.getInstance().getStatistika(test));
+		contentPane.add(statistikaTextArea);
 	}
 
+
+	/**
+	 * @deprecated - trebalo bi ukloniti prije posljenje verzije
+	 * @param data
+	 */
 	public void setTableData(List<StudentNaTestuDTO> data) {
 		if (studentiTable != null) {
 			StudentTableModel model = (StudentTableModel) studentiTable.getModel();
@@ -401,7 +398,6 @@ public class TestForm extends JFrame {
 		else {
 			studentiTable = new JTable(new StudentTableModel(data));
 		}
-
 	}
 
 	public JTable getStudentiTable() {
