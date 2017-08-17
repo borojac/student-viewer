@@ -9,14 +9,13 @@ import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ShowForm;
 import org.unibl.etf.ps.studentviewer.gui.view.SortForm;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class MainFormControler {
 	private static boolean sortFormOpened = false;
 	private static boolean filterFormOpened = false;
 	private MainForm mainForm;
 	private static ExecScheduler scheduler = new ExecScheduler();
-	
+	private ShowForm showForm = new ShowForm(this);
 	
 	
 	
@@ -69,7 +68,6 @@ public class MainFormControler {
 	}
 
 	public void createShowForm() {
-		ShowForm form = new ShowForm();
-		form.setVisible(true);
+		showForm.setVisible(true);
 	}
 }

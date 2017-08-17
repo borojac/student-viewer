@@ -4,6 +4,11 @@ import java.util.HashMap;
 
 public class ShowViewData {
 	static HashMap<String, Boolean> dataMap = new HashMap<String, Boolean>();
+
+	public static void setNewHashMap(HashMap<String, Boolean> newHashMap) {
+		dataMap = newHashMap;
+		
+	}
 	
 	public static boolean getValue(String s) {
 		return dataMap.get(s);

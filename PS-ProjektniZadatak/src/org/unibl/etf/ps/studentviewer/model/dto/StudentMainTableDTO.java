@@ -1,5 +1,7 @@
 package org.unibl.etf.ps.studentviewer.model.dto;
 
+import org.unibl.etf.ps.studentviewer.gui.ShowViewData;
+
 public class StudentMainTableDTO {
 	private String brojIndeksa;
 	private String ime;
@@ -35,7 +37,21 @@ public class StudentMainTableDTO {
 		this.ime = ime;
 		this.prezime = prezime;
 	}
-
+	
+	public String getProperty(String type) {
+		if (ShowViewData.D_BROJINDEKSA.equals(type))
+			return brojIndeksa;
+		
+		if (ShowViewData.D_IME.equals(type))
+			return ime;
+		
+		if (ShowViewData.D_PREZIME.equals(type))
+			return prezime;
+		
+		return null;
+	}
+	
+	
 	
 	
 }

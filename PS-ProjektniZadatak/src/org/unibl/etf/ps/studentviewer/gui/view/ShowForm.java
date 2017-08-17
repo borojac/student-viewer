@@ -18,26 +18,33 @@ import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.gui.ShowViewData;
+import org.unibl.etf.ps.studentviewer.gui.controler.MainFormControler;
+import org.unibl.etf.ps.studentviewer.gui.controler.ShowFormControler;
 
 import java.awt.Font;
 import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ShowForm extends JFrame {
 
 	private JPanel contentPane;
-
+	private MainFormControler mainFormControler;
+	
 	ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 	
 	/**
 	 * Launch the application.
-	 */
+	 *
 
 	/**
 	 * Create the frame.
+	 * @param mainFormControler 
 	 */
-	public ShowForm() {
+	public ShowForm(MainFormControler mainFormControler) {
+		this.mainFormControler = mainFormControler;
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 267, 367);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 205));
@@ -76,35 +83,45 @@ public class ShowForm extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		JCheckBox chckbxIndeks = new JCheckBox("Indeks");
-		chckbxIndeks.setFont(new Font("Century Gothic", Font.BOLD, 13));
-		chckbxIndeks.setForeground(new Color(255, 255, 255));
-		chckbxIndeks.setBackground(new Color(0, 0, 205));
-		panel.add(chckbxIndeks);
-		boxes.add(chckbxIndeks);
+		JCheckBox indeksCheckBox = new JCheckBox("Indeks");
+		indeksCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		indeksCheckBox.setForeground(new Color(255, 255, 255));
+		indeksCheckBox.setBackground(new Color(0, 0, 205));
+		panel.add(indeksCheckBox);
+		boxes.add(indeksCheckBox);
 		if (ShowViewData.getValue(ShowViewData.D_BROJINDEKSA))
-			chckbxIndeks.setSelected(true);
+			indeksCheckBox.setSelected(true);
 		
-		JCheckBox chckbxIme = new JCheckBox("Ime");
-		chckbxIme.setFont(new Font("Century Gothic", Font.BOLD, 13));
-		chckbxIme.setForeground(new Color(255, 255, 255));
-		chckbxIme.setBackground(new Color(0, 0, 205));
-		panel.add(chckbxIme);
-		boxes.add(chckbxIme);
+		JCheckBox imeCheckBox = new JCheckBox("Ime");
+		imeCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		imeCheckBox.setForeground(new Color(255, 255, 255));
+		imeCheckBox.setBackground(new Color(0, 0, 205));
+		panel.add(imeCheckBox);
+		boxes.add(imeCheckBox);
 		if(ShowViewData.getValue(ShowViewData.D_IME))
-			chckbxIme.setSelected(true);
+			imeCheckBox.setSelected(true);
 		
-		JCheckBox chckbxPrezime = new JCheckBox("Prezime");
-		chckbxPrezime.setFont(new Font("Century Gothic", Font.BOLD, 13));
-		chckbxPrezime.setForeground(new Color(255, 255, 255));
-		chckbxPrezime.setBackground(new Color(0, 0, 205));
-		panel.add(chckbxPrezime);
-		boxes.add(chckbxPrezime);
+		JCheckBox prezimeCheckBox = new JCheckBox("Prezime");
+		prezimeCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		prezimeCheckBox.setForeground(new Color(255, 255, 255));
+		prezimeCheckBox.setBackground(new Color(0, 0, 205));
+		panel.add(prezimeCheckBox);
+		boxes.add(prezimeCheckBox);
 		if (ShowViewData.getValue(ShowViewData.D_PREZIME))
-			chckbxPrezime.setSelected(true);
+			prezimeCheckBox.setSelected(true);
 		
 		
 		JButton btnSacuvaj = new JButton("Sacuvaj");
+		btnSacuvaj.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				ArrayList<Boolean> list = new ArrayList<Boolean>();
+				list.add(indeksCheckBox.isSelected());
+				list.add(imeCheckBox.isSelected());
+				list.add(prezimeCheckBox.isSelected());
+				new ShowFormControler(mainFormControler).updateShowView(list);
+			}
+		});
 		btnSacuvaj.setMaximumSize(new Dimension(100, 28));
 		btnSacuvaj.setBounds(87, 285, 90, 25);
 		btnSacuvaj.setPreferredSize(new Dimension(90,25));

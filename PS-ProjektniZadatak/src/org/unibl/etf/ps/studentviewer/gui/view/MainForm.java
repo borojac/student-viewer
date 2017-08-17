@@ -48,7 +48,8 @@ import java.awt.event.KeyEvent;
 public class MainForm extends JFrame {
 
 	private JPanel contentPane;
-
+	private MainFormControler mainFormControler = new MainFormControler(this);
+	
 	// ------- Components!!! ------- //
 	ArrayList<JButton> buttons = new ArrayList<JButton>();
 
@@ -191,7 +192,7 @@ public class MainForm extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if (arg0.toString().contains("keyText=Enter"))
-					new MainFormControler(MainForm.this).search(MainForm.this);
+					mainFormControler.search(MainForm.this);
 			}
 		});
 		textField.setForeground(new Color(0, 0, 139));
@@ -219,28 +220,28 @@ public class MainForm extends JFrame {
 		sortBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				new MainFormControler(MainForm.this).createSortForm();
+				mainFormControler.createSortForm();
 			}
 		});
 
 		searchButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new MainFormControler(MainForm.this).search(MainForm.this);
+				mainFormControler.search(MainForm.this);
 			}
 		});
 		
 		restoreButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				new MainFormControler(MainForm.this).restoreTable();
+				mainFormControler.restoreTable();
 			}
 		});
 		
 		showViewBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				new MainFormControler(MainForm.this).createShowForm();
+				mainFormControler.createShowForm();
 			}
 		});
 		
