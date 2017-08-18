@@ -14,14 +14,12 @@ public class MainTable extends JTable {
 	private String[] columnIdentifiers = { "Indeks", "Ime", "Prezime" };
 	private HashMap<String, String> map = new HashMap<String, String>();
 
+	
 	public void setStudents(ArrayList<StudentMainTableDTO> students) {
 		this.students = students;
 		MainTableModel model = (MainTableModel) getModel();
 		model.setData(getStudentsForModel());
 		model.setColumnIdentifiers(columnIdentifiers);
-		map.put("Indeks", ShowViewData.D_BROJINDEKSA);
-		map.put("Ime", ShowViewData.D_IME);
-		map.put("Prezime", ShowViewData.D_PREZIME);
 		repaint();
 	}
 
@@ -77,6 +75,9 @@ public class MainTable extends JTable {
 
 	public MainTable() {
 		super();
+		map.put("Indeks", ShowViewData.D_BROJINDEKSA);
+		map.put("Ime", ShowViewData.D_IME);
+		map.put("Prezime", ShowViewData.D_PREZIME);
 		initView();
 	}
 

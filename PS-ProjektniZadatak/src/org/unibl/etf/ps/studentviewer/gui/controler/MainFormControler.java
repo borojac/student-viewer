@@ -19,6 +19,10 @@ public class MainFormControler {
 	
 	
 	
+	public static void resetSortFormOpened(){
+		sortFormOpened = false;
+	}
+	
 	public ExecScheduler getScheduler() {
 		return scheduler;
 	}

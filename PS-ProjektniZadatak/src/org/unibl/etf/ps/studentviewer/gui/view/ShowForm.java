@@ -43,6 +43,7 @@ public class ShowForm extends JFrame {
 	 */
 	public ShowForm(MainFormControler mainFormControler) {
 		this.mainFormControler = mainFormControler;
+		setTitle("Prikaz");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 267, 367);
@@ -120,6 +121,7 @@ public class ShowForm extends JFrame {
 				list.add(imeCheckBox.isSelected());
 				list.add(prezimeCheckBox.isSelected());
 				new ShowFormControler(mainFormControler).updateShowView(list);
+				setVisible(false);
 			}
 		});
 		btnSacuvaj.setMaximumSize(new Dimension(100, 28));

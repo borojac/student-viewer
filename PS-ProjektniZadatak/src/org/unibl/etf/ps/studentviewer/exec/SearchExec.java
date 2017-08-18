@@ -40,6 +40,9 @@ public class SearchExec extends Exec {
 			table.repaint();
 		} else {
 			JOptionPane.showMessageDialog(null, "Nije pronadjen niti jedan student!");
+			return;
 		}
+		this.students = searchedStudents;
+		super.execute();
 	}
 }

@@ -39,14 +39,18 @@ import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
 import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
+import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormControler;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class MainForm extends JFrame {
 
+	
+	
 	private JPanel contentPane;
 	private MainFormControler mainFormControler = new MainFormControler(this);
 	
@@ -63,7 +67,9 @@ public class MainForm extends JFrame {
 	private JButton exportBtn = null;
 	private JButton accountBtn = null;
 	private JButton restoreButton = null;
-
+	private JButton undoButton = null;
+	private JButton redoButton = null;
+	
 	private JPanel panel = null;
 	private JPanel panel_1 = null;
 	private JPanel buttonPanel;
@@ -197,7 +203,7 @@ public class MainForm extends JFrame {
 		});
 		textField.setForeground(new Color(0, 0, 139));
 		textField.setFont(new Font("Century Gothic", Font.BOLD | Font.ITALIC, 15));
-		textField.setBounds(97, 172, 367, 25);
+		textField.setBounds(97, 172, 263, 25);
 		contentPane.add(textField);
 		textField.setColumns(10);
 
@@ -245,6 +251,16 @@ public class MainForm extends JFrame {
 			}
 		});
 		
+		undoButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				ArrayList<StudentMainTableDTO> students = UndoRedoData.undo();
+				if (students != null)
+				mainTable.setStudents(students);
+//				((MainTableModel)mainTable.getModel()).fire
+			}
+		});
+		
 	}
 
 	private void initTable() {
@@ -269,7 +285,7 @@ public class MainForm extends JFrame {
 		searchButton = new JButton("");
 		searchButton.setToolTipText("Pretrazi");
 
-		searchButton.setBounds(474, 171, 42, 26);
+		searchButton.setBounds(370, 171, 42, 26);
 		try {
 			BufferedImage searchImg = ImageIO.read(new File("img" + File.separator +"searchIcon.png"));
 			searchImg = Scalr.resize(searchImg, Scalr.Mode.FIT_EXACT, searchButton.getWidth(),
@@ -319,7 +335,7 @@ public class MainForm extends JFrame {
 
 		restoreButton = new JButton("");
 		restoreButton.setToolTipText("Ucitaj podatke o svim studentima");
-		restoreButton.setBounds(526, 171, 42, 26);
+		restoreButton.setBounds(422, 171, 42, 26);
 		try {
 			BufferedImage restoreImg = ImageIO.read(new File("img" + File.separator + "restoreIcon.png"));
 			restoreImg = Scalr.resize(restoreImg, Scalr.Mode.FIT_EXACT, restoreButton.getWidth(), restoreButton.getHeight(), null);
@@ -328,6 +344,28 @@ public class MainForm extends JFrame {
 			ex.printStackTrace();
 		}
 		contentPane.add(restoreButton);
+		
+		undoButton = new JButton("<");
+		undoButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+		undoButton.setToolTipText("Undo");
+		undoButton.setBounds(474, 171, 42, 26);
+		contentPane.add(undoButton);
+		
+		redoButton = new JButton(">");
+		redoButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				ArrayList<StudentMainTableDTO> students = UndoRedoData.redo();
+				if(students != null)
+					mainTable.setStudents(students);
+			}
+		});
+		redoButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+		redoButton.setToolTipText("Redo");
+		redoButton.setBounds(526, 171, 42, 26);
+		contentPane.add(redoButton);
+		
+		
 		
 		/* Buttons by Stokuca */
 		btnDodaj = new JButton("Dodaj");
@@ -357,7 +395,6 @@ public class MainForm extends JFrame {
 		btnBrisi.setBounds(208, 166, 89, 23);
 		testoviPanel.add(btnBrisi);
 		
-
 	}
 
 	public MainTable getMainTable() {

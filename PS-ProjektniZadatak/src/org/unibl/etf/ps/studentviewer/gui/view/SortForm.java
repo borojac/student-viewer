@@ -1,11 +1,12 @@
 package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -25,8 +26,6 @@ import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormControler;
 import org.unibl.etf.ps.studentviewer.gui.controler.SortFormControler;
 import org.unibl.etf.ps.studentviewer.utility.Sort;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
 
 public class SortForm extends JFrame {
 
@@ -53,8 +52,15 @@ public class SortForm extends JFrame {
 	 * Create the frame.
 	 */
 	public SortForm(MainFormControler mainFormControler) {
+		
+		addWindowListener(new WindowAdapter() {
+			   public void windowClosing(WindowEvent evt) {
+				   mainFormControler.resetSortFormOpened();
+			   }
+			  });
+		
 		this.mainFormControler = mainFormControler;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 318, 465);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
@@ -104,15 +110,17 @@ public class SortForm extends JFrame {
 		label_2.setBounds(236, 0, 66, 120);
 		contentPane.add(label_2);
 		
-		JButton btnSort = new JButton("Sort");
-		btnSort.addMouseListener(new MouseAdapter() {
+		JButton sortButton = new JButton("Sort");
+		sortButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				new SortFormControler(mainFormControler, SortForm.this);
+				   mainFormControler.resetSortFormOpened();
+				   SortForm.this.dispose();
 			}
 		});
-		btnSort.setBounds(104, 387, 89, 29);
-		contentPane.add(btnSort);
+		sortButton.setBounds(104, 387, 89, 29);
+		contentPane.add(sortButton);
 
 		initCheckBoxes();
 		initCheckBoxesListeners();

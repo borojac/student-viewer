@@ -1,9 +1,12 @@
 package org.unibl.etf.ps.studentviewer.exec;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormControler;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
+import org.unibl.etf.ps.studentviewer.utility.SortUtil;
 
 public class SortExec extends Exec {
 	
@@ -16,12 +19,15 @@ public class SortExec extends Exec {
 		for(Object o : params) {
 			this.params.add((String)o);
 		}
-//		secondParam = (String)params.get(1);
-//		thirdParam = (Date)params.get(2);
+		students = mainFormControler.getMainTable().getStudents();
 		mainFormControler.getScheduler().add(this);
 	}
 	
 	public void execute() {
-		System.out.println("SortExecute");
+		Comparator<StudentMainTableDTO> comparator = SortUtil.getComparator(students, params);
+		students.sort(comparator);
+		mainFormControler.getMainTable().setStudents(students);
+		mainFormControler.getMainTable().changeView();
+		super.execute();
 	}
 }
