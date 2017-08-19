@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import org.unibl.etf.ps.studentviewer.exec.ExecScheduler;
 import org.unibl.etf.ps.studentviewer.exec.SearchExec;
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
+import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
 import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ShowForm;
 import org.unibl.etf.ps.studentviewer.gui.view.SortForm;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 
-public class MainFormControler {
+public class MainFormController {
 	private static boolean sortFormOpened = false;
 	private static boolean filterFormOpened = false;
 	private MainForm mainForm;
@@ -37,12 +38,12 @@ public class MainFormControler {
 	
 	
 	
-	public MainFormControler() {
+	public MainFormController() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public MainFormControler(MainForm mainForm) {
+	public MainFormController(MainForm mainForm) {
 		this.mainForm = mainForm;
 	}
 
@@ -59,11 +60,14 @@ public class MainFormControler {
 	
 	public void restoreTable() {
 		getMainTable().setStudents(StudentsForMainTable.getAllStudents());
+		UndoRedoData.addState(StudentsForMainTable.getAllStudents());
 	}
 	
 	public void search(MainForm mainForm) {
 		String params = mainForm.getSearchParams();
 		mainForm.setSearchParams("");
+		if ("".equals(params))
+			return;
 		ArrayList<Object> paramsList = new ArrayList<Object>();
 		for (String x : params.split(" "))
 			paramsList.add(x);

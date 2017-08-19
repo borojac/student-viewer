@@ -6,13 +6,13 @@ import java.util.Date;
 import org.unibl.etf.ps.studentviewer.exec.FilterExec;
 import org.unibl.etf.ps.studentviewer.gui.view.FilterForm;
 
-public class FilterFormControler {
+public class FilterFormController {
 	// ArrayList<Student> firstParam;
 	String secondParam;
 	Date thirdParam;
-	MainFormControler mainFormControler;
+	MainFormController mainFormControler;
 
-	public FilterFormControler(MainFormControler mainFormControler) {
+	public FilterFormController(MainFormController mainFormControler) {
 		super();
 		this.mainFormControler = mainFormControler;
 	}

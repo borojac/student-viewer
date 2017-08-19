@@ -17,8 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import org.unibl.etf.ps.studentviewer.gui.controler.FilterFormControler;
-import org.unibl.etf.ps.studentviewer.gui.controler.MainFormControler;
+import org.unibl.etf.ps.studentviewer.gui.controler.FilterFormController;
+import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
 import org.unibl.etf.ps.studentviewer.utility.Filter;
 
 public class FilterForm extends JFrame {
@@ -36,7 +36,7 @@ public class FilterForm extends JFrame {
 	private JButton btnPrakticniIspit = null;
 	private JButton btnFilter = null;	
 	
-	private MainFormControler mainFormControler = null;
+	private MainFormController mainFormControler = null;
 	/**
 	 * Launch the application.
 	 */
@@ -44,7 +44,7 @@ public class FilterForm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public FilterForm(MainFormControler mainFormControler) {
+	public FilterForm(MainFormController mainFormControler) {
 		this.mainFormControler = mainFormControler;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 358, 345);
@@ -138,7 +138,7 @@ public class FilterForm extends JFrame {
 		btnFilter.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new FilterFormControler(mainFormControler).filter(FilterForm.this);
+				new FilterFormController(mainFormControler).filter(FilterForm.this);
 			}
 		});
 		btnFilter.setBounds(172, 235, 155, 61);

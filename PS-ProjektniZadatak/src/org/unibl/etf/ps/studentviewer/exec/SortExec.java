@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 
-import org.unibl.etf.ps.studentviewer.gui.controler.MainFormControler;
+import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 import org.unibl.etf.ps.studentviewer.utility.SortUtil;
 
@@ -14,7 +14,7 @@ public class SortExec extends Exec {
 	ArrayList<String> params = new ArrayList<String>();
 	
 	
-	public SortExec(MainFormControler mainFormControler, ArrayList<Object> params) {
+	public SortExec(MainFormController mainFormControler, ArrayList<Object> params) {
 		this.mainFormControler = mainFormControler;
 		for(Object o : params) {
 			this.params.add((String)o);

@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import org.unibl.etf.ps.studentviewer.exec.SortExec;
 import org.unibl.etf.ps.studentviewer.gui.view.SortForm;
 
-public class SortFormControler {
-	MainFormControler mainFormControler = null;
+public class SortFormController {
+	MainFormController mainFormControler = null;
 
-	public SortFormControler() {
+	public SortFormController() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public SortFormControler(MainFormControler mainFormControler, SortForm sortForm) {
+	public SortFormController(MainFormController mainFormControler, SortForm sortForm) {
 		this.mainFormControler = mainFormControler;
 		ArrayList<Object> paramsList = new ArrayList<Object>();
 		for (String x : sortForm.getSortParams().split(System.lineSeparator()))

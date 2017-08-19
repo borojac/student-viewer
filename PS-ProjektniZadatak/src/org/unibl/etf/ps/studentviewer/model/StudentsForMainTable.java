@@ -1,5 +1,9 @@
 package org.unibl.etf.ps.studentviewer.model;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
@@ -10,12 +14,25 @@ public class StudentsForMainTable {
 
 	static {
 		allStudents = new ArrayList<StudentMainTableDTO>();
-		allStudents.add(new StudentMainTableDTO("0001/14", "Sinisa", "Poletanovic", "0000"));
-		allStudents.add(new StudentMainTableDTO("0004/14", "Ljubisa", "Peric", "0001"));
-		allStudents.add(new StudentMainTableDTO("0003/13", "Petar", "Markanovic", "0002"));
-		allStudents.add(new StudentMainTableDTO("0013/13", "Dejan", "Danilovic", "0003"));
-		allStudents.add(new StudentMainTableDTO("0021/15", "Stojan", "Lekic", "0004"));
-
+		try {
+			BufferedReader in = new BufferedReader(new FileReader("data.txt"));
+			String line = null;
+			int i = 0;
+			while((line = in.readLine()) != null) {
+				i++;
+				String ime = line.split(" ")[0];
+				String prezime = line.split(" ")[1];
+				allStudents.add(new StudentMainTableDTO(i + "/14", ime, prezime, i+""));
+			}
+		
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		ArrayList<String> state = new ArrayList<String>();
 		for (int i = 0; i < allStudents.size(); i ++) 
 			state.add(allStudents.get(i).getJmbg());

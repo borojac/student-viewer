@@ -5,10 +5,10 @@ import java.util.HashMap;
 
 import org.unibl.etf.ps.studentviewer.gui.ShowViewData;
 
-public class ShowFormControler {
-	MainFormControler mainFormControler;
+public class ShowFormController {
+	MainFormController mainFormControler;
 	
-	public ShowFormControler(MainFormControler mainFormControler) {
+	public ShowFormController(MainFormController mainFormControler) {
 		this.mainFormControler = mainFormControler;
 	}
 
@@ -17,6 +17,8 @@ public class ShowFormControler {
 		updatedHashMap.put(ShowViewData.D_BROJINDEKSA, showViewList.get(0));
 		updatedHashMap.put(ShowViewData.D_IME, showViewList.get(1));
 		updatedHashMap.put(ShowViewData.D_PREZIME, showViewList.get(2));
+		updatedHashMap.put(ShowViewData.D_ELEKTRIJADA, showViewList.get(3));
+		updatedHashMap.put(ShowViewData.D_KOMENTAR, showViewList.get(4));
 		
 		ShowViewData.setNewHashMap(updatedHashMap);
 		mainFormControler.getMainTable().changeView();

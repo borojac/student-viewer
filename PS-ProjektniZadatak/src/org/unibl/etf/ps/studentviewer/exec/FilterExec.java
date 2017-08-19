@@ -3,7 +3,7 @@ package org.unibl.etf.ps.studentviewer.exec;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.unibl.etf.ps.studentviewer.gui.controler.MainFormControler;
+import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
 
 public class FilterExec extends Exec {
 	private String thirdParam;
@@ -11,7 +11,7 @@ public class FilterExec extends Exec {
 	private double fifthParam;
 	private double sixthParam;
 	
-	public FilterExec(MainFormControler mainFormControler, ArrayList<Object> params) {
+	public FilterExec(MainFormController mainFormControler, ArrayList<Object> params) {
 		this.mainFormControler = mainFormControler;
 		//firstParam = params.get(0);
 		secondParam = (String)params.get(1);

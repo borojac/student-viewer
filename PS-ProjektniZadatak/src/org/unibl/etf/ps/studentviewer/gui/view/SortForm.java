@@ -23,8 +23,8 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
-import org.unibl.etf.ps.studentviewer.gui.controler.MainFormControler;
-import org.unibl.etf.ps.studentviewer.gui.controler.SortFormControler;
+import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
+import org.unibl.etf.ps.studentviewer.gui.controler.SortFormController;
 import org.unibl.etf.ps.studentviewer.utility.Sort;
 
 public class SortForm extends JFrame {
@@ -40,7 +40,7 @@ public class SortForm extends JFrame {
 	private JCheckBox kolokvijumCheckBox = null;
 
 	private JTextArea textArea = null;
-	private MainFormControler mainFormControler = null;
+	private MainFormController mainFormControler = null;
 
 	private JPanel panel = null;
 
@@ -51,7 +51,7 @@ public class SortForm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SortForm(MainFormControler mainFormControler) {
+	public SortForm(MainFormController mainFormControler) {
 		
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
@@ -114,7 +114,7 @@ public class SortForm extends JFrame {
 		sortButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				new SortFormControler(mainFormControler, SortForm.this);
+				new SortFormController(mainFormControler, SortForm.this);
 				   mainFormControler.resetSortFormOpened();
 				   SortForm.this.dispose();
 			}
@@ -144,35 +144,35 @@ public class SortForm extends JFrame {
 		imeCheckBox.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new SortFormControler().addToSortParams(Sort.IME, SortForm.this);
+				new SortFormController().addToSortParams(Sort.IME, SortForm.this);
 			}
 		});
 
 		prezimeCheckBox.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new SortFormControler().addToSortParams(Sort.PREZIME, SortForm.this);
+				new SortFormController().addToSortParams(Sort.PREZIME, SortForm.this);
 			}
 		});
 
 		brojIndeksaCheckBox.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new SortFormControler().addToSortParams(Sort.BROJ_INDEKSA, SortForm.this);
+				new SortFormController().addToSortParams(Sort.BROJ_INDEKSA, SortForm.this);
 			}
 		});
 
 		komentarCheckBox.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new SortFormControler().addToSortParams(Sort.KOMENTAR, SortForm.this);
+				new SortFormController().addToSortParams(Sort.KOMENTAR, SortForm.this);
 			}
 		});
 
 		elektrijadaCheckBox.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new SortFormControler().addToSortParams(Sort.ELEKTRIJADA, SortForm.this);
+				new SortFormController().addToSortParams(Sort.ELEKTRIJADA, SortForm.this);
 			}
 		});
 

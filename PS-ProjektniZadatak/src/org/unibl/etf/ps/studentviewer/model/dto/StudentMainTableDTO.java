@@ -1,5 +1,8 @@
 package org.unibl.etf.ps.studentviewer.model.dto;
 
+import java.util.Date;
+import java.util.HashMap;
+
 import org.unibl.etf.ps.studentviewer.gui.ShowViewData;
 import org.unibl.etf.ps.studentviewer.utility.Sort;
 
@@ -8,6 +11,12 @@ public class StudentMainTableDTO {
 	private String ime;
 	private String prezime;
 	private String jmbg;
+	private String komentar = ""; // Mozda lista komentara
+	private String elektrijada = "NE";
+	private HashMap<Date, String> ispiti  = new HashMap<Date, String>();
+	private HashMap<Date, String> kolokvijumi = new HashMap<Date, String>();
+	private HashMap<Date, String> usmeniIspiti = new HashMap<Date, String>();
+	
 	
 	public String getJmbg() {
 		return jmbg;
@@ -58,6 +67,12 @@ public class StudentMainTableDTO {
 		
 		if (ShowViewData.D_PREZIME.equals(type) || Sort.PREZIME.equals(type))
 			return prezime;
+		
+		if (ShowViewData.D_ELEKTRIJADA.equals(type) || Sort.ELEKTRIJADA.equals(type))
+			return elektrijada;
+		
+		if (ShowViewData.D_KOMENTAR.equals(type) || Sort.KOMENTAR.equals(type))
+			return komentar;
 		
 		return null;
 	}

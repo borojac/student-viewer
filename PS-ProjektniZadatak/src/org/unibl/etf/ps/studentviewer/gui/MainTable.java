@@ -11,7 +11,7 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 public class MainTable extends JTable {
 
 	private ArrayList<StudentMainTableDTO> students = null;
-	private String[] columnIdentifiers = { "Indeks", "Ime", "Prezime" };
+	private String[] columnIdentifiers = { "Indeks", "Ime", "Prezime", "Elektrijada", "Komentar"};
 	private HashMap<String, String> map = new HashMap<String, String>();
 
 	
@@ -31,7 +31,7 @@ public class MainTable extends JTable {
 			columnNames.add(getColumnName(i));
 		int ii = 0;
 		for (String s : columnIdentifiers) {
-
+			
 			if (columnNames.contains(s))
 				ii++;
 			
@@ -78,6 +78,8 @@ public class MainTable extends JTable {
 		map.put("Indeks", ShowViewData.D_BROJINDEKSA);
 		map.put("Ime", ShowViewData.D_IME);
 		map.put("Prezime", ShowViewData.D_PREZIME);
+		map.put("Elektrijada", ShowViewData.D_ELEKTRIJADA);
+		map.put("Komentar", ShowViewData.D_KOMENTAR);
 		initView();
 	}
 

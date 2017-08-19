@@ -14,7 +14,6 @@ public class UndoRedoData {
 	}
 	
 	public synchronized static void addState(ArrayList<StudentMainTableDTO> students) {
-		// save IDs -> for unique representation
 		if (position != stateList.size() -1){ 
 			for (int i = position + 1; i < stateList.size(); i ++)
 				stateList.remove(i);
@@ -28,6 +27,10 @@ public class UndoRedoData {
 	
 		stateList.add(state);
 		position ++;
+		if (position == 20) {
+			position --;
+			stateList.remove(0);
+		}
 	}
 	
 	public static ArrayList<StudentMainTableDTO> undo(){

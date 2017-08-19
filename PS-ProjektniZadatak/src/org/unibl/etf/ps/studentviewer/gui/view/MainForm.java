@@ -40,7 +40,7 @@ import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
 import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
 import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
-import org.unibl.etf.ps.studentviewer.gui.controler.MainFormControler;
+import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
@@ -52,7 +52,7 @@ public class MainForm extends JFrame {
 	
 	
 	private JPanel contentPane;
-	private MainFormControler mainFormControler = new MainFormControler(this);
+	private MainFormController mainFormControler = new MainFormController(this);
 	
 	// ------- Components!!! ------- //
 	ArrayList<JButton> buttons = new ArrayList<JButton>();
@@ -257,7 +257,6 @@ public class MainForm extends JFrame {
 				ArrayList<StudentMainTableDTO> students = UndoRedoData.undo();
 				if (students != null)
 				mainTable.setStudents(students);
-//				((MainTableModel)mainTable.getModel()).fire
 			}
 		});
 		

@@ -18,8 +18,8 @@ import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.gui.ShowViewData;
-import org.unibl.etf.ps.studentviewer.gui.controler.MainFormControler;
-import org.unibl.etf.ps.studentviewer.gui.controler.ShowFormControler;
+import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
+import org.unibl.etf.ps.studentviewer.gui.controler.ShowFormController;
 
 import java.awt.Font;
 import javax.swing.JButton;
@@ -29,7 +29,7 @@ import java.awt.event.MouseEvent;
 public class ShowForm extends JFrame {
 
 	private JPanel contentPane;
-	private MainFormControler mainFormControler;
+	private MainFormController mainFormControler;
 	
 	ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 	
@@ -41,7 +41,7 @@ public class ShowForm extends JFrame {
 	 * Create the frame.
 	 * @param mainFormControler 
 	 */
-	public ShowForm(MainFormControler mainFormControler) {
+	public ShowForm(MainFormController mainFormControler) {
 		this.mainFormControler = mainFormControler;
 		setTitle("Prikaz");
 		setResizable(false);
@@ -111,6 +111,22 @@ public class ShowForm extends JFrame {
 		if (ShowViewData.getValue(ShowViewData.D_PREZIME))
 			prezimeCheckBox.setSelected(true);
 		
+		JCheckBox elektrijadaCheckBox = new JCheckBox("Elektrijada");
+		elektrijadaCheckBox.setForeground(new Color(255, 255, 255));
+		elektrijadaCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		elektrijadaCheckBox.setBackground(new Color(0, 0, 205));
+		panel.add(elektrijadaCheckBox);
+		if (ShowViewData.getValue(ShowViewData.D_ELEKTRIJADA))
+			elektrijadaCheckBox.setSelected(true);
+		
+		JCheckBox komentarCheckBox = new JCheckBox("Komentar");
+		komentarCheckBox.setForeground(new Color(255, 255, 255));
+		komentarCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		komentarCheckBox.setBackground(new Color(0, 0, 205));
+		panel.add(komentarCheckBox);
+		if (ShowViewData.getValue(ShowViewData.D_KOMENTAR))
+			komentarCheckBox.setSelected(true);
+		
 		
 		JButton btnSacuvaj = new JButton("Sacuvaj");
 		btnSacuvaj.addMouseListener(new MouseAdapter() {
@@ -120,7 +136,9 @@ public class ShowForm extends JFrame {
 				list.add(indeksCheckBox.isSelected());
 				list.add(imeCheckBox.isSelected());
 				list.add(prezimeCheckBox.isSelected());
-				new ShowFormControler(mainFormControler).updateShowView(list);
+				list.add(elektrijadaCheckBox.isSelected());
+				list.add(komentarCheckBox.isSelected());
+				new ShowFormController(mainFormControler).updateShowView(list);
 				setVisible(false);
 			}
 		});

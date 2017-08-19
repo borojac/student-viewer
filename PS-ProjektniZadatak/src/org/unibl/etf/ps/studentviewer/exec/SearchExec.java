@@ -7,13 +7,13 @@ import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
-import org.unibl.etf.ps.studentviewer.gui.controler.MainFormControler;
+import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class SearchExec extends Exec {
 	ArrayList<String> params = new ArrayList<String>();
 
-	public SearchExec(MainFormControler mainFormControler, ArrayList<Object> params) {
+	public SearchExec(MainFormController mainFormControler, ArrayList<Object> params) {
 		this.mainFormControler = mainFormControler;
 		for (Object o : params)
 			this.params.add((String) o);
