@@ -151,10 +151,14 @@ public class MainForm extends JFrame {
 
 		testoviPanel = new JPanel();
 		testoviPanel.setBounds(735, 401, 449, 200);
+		testoviPanel.setBackground(new Color(0, 0, 139));
 		contentPane.add(testoviPanel);
 		testoviPanel.setLayout(null);
 
 		testoviTable = new JTable();
+		testoviTable.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		testoviTable.setForeground(new Color(0, 0, 139));
+		testoviTable.setBackground(new Color(173, 216, 230));
 		testoviTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -166,6 +170,8 @@ public class MainForm extends JFrame {
 
 		testoviScrollPane = new JScrollPane();
 		testoviScrollPane.setBounds(10, 11, 429, 145);
+		testoviScrollPane.setBackground(Color.WHITE);
+		testoviScrollPane.setBorder(UIManager.getBorder("Button.border"));
 		testoviPanel.add(testoviScrollPane);
 		testoviScrollPane.setViewportView(testoviTable);
 
@@ -368,6 +374,7 @@ public class MainForm extends JFrame {
 		
 		/* Buttons by Stokuca */
 		btnDodaj = new JButton("Dodaj");
+		btnDodaj.setBackground(new Color(0, 0, 139));
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				TestForm tf = new TestForm(null);
@@ -378,6 +385,7 @@ public class MainForm extends JFrame {
 		testoviPanel.add(btnDodaj);
 
 		btnIzmjeni = new JButton("Izmjeni");
+		btnIzmjeni.setBackground(new Color(0, 0, 139));
 		btnIzmjeni.setEnabled(false);
 		btnIzmjeni.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -391,6 +399,7 @@ public class MainForm extends JFrame {
 		testoviPanel.add(btnIzmjeni);
 
 		btnBrisi = new JButton("Bri\u0161i");
+		btnBrisi.setBackground(new Color(0, 0, 139));
 		btnBrisi.setBounds(208, 166, 89, 23);
 		testoviPanel.add(btnBrisi);
 		
