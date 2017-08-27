@@ -13,7 +13,10 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -155,8 +158,27 @@ public class MainForm extends JFrame {
 		contentPane.add(testoviPanel);
 		testoviPanel.setLayout(null);
 
-		testoviTable = new JTable();
-		testoviTable.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		
+		/*
+		 * 
+		 * 
+		 */
+		TestoviTableModel model = new TestoviTableModel();
+		try {
+			List<TestDTO> data = new ArrayList<>();
+			data.add(new TestDTO(1, "Prvi kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("12.4.2017"), "Zadnji zadatak niko nije uradio", 7));
+			model.setData(data);
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		/*
+		 * 
+		 * 
+		 */
+		testoviTable = new JTable(model);
+		testoviTable.setFont(new Font("Century Gothic", Font.BOLD, 12));
+		testoviTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		testoviTable.setForeground(new Color(0, 0, 139));
 		testoviTable.setBackground(new Color(173, 216, 230));
 		testoviTable.addMouseListener(new MouseAdapter() {
@@ -166,7 +188,6 @@ public class MainForm extends JFrame {
 					btnIzmjeni.setEnabled(true);
 			}
 		});
-		testoviTable.setModel(new TestoviTableModel());
 
 		testoviScrollPane = new JScrollPane();
 		testoviScrollPane.setBounds(10, 11, 429, 145);

@@ -1,5 +1,6 @@
 package org.unibl.etf.ps.studentviewer.gui;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,22 @@ public class TestoviTableModel extends AbstractTableModel {
 
 	private List<TestDTO> data = new ArrayList<>();
 	private String[] columns = {"Naziv", "Datum", "Napomena"};
+	
+	public TestoviTableModel() {
+	}
+	
+	public TestoviTableModel(List<TestDTO> data) {
+		this.setData(data);
+	}
+	
+	public void setData(List<TestDTO> data) {
+		this.data = data;
+	}
+	
+	public List<TestDTO> getData() {
+		return data;
+	}
+	
 	@Override
 	public int getColumnCount() {
 		return columns.length;
@@ -40,7 +57,7 @@ public class TestoviTableModel extends AbstractTableModel {
 		if (columnIndex == 0) 
 			return row.getNaziv();
 		else if (columnIndex == 1)
-			return row.getDatum();
+			return new SimpleDateFormat("dd.MM.yyyy").format(row.getDatum());
 		else if (columnIndex == 2)
 			return row.getNapomena();
 		return null;
