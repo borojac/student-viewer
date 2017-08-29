@@ -278,7 +278,7 @@ public class TestController {
 		return statisticsBuilder.toString();
 	}
 	/**
-	 * NETESTIRANO - ZAKOMENTARISANI POZIVI PRETRAGE U BAZI
+	 * NETESTIRANO ***********************
 	 * @param test
 	 * @param model
 	 * @param searchText
@@ -286,6 +286,11 @@ public class TestController {
 	public void initiateStudentSearch(TestDTO test, StudentTableModel model, String searchText) {
 		if (test == null || model == null || searchText == null)
 			return;
+		if ("".equals(searchText)) {
+			model.setData(test.getStudenti());
+			model.fireTableDataChanged();
+			return;
+		}
 		List<StudentNaTestuDTO> searchedList = null;
 		
 		Matcher matcher = Pattern.compile("[<,>,=]+").matcher(searchText);
@@ -325,11 +330,10 @@ public class TestController {
 	public void resetSearch(TestDTO test, StudentTableModel model, JTextField searchField) {
 		if (test == null || model == null || searchField == null)
 			return;
-		DAOFactory factory = new MySQLDAOFactory();
-		TestDAO testDAO = factory.getTestDAO();
-		List<StudentNaTestuDTO> data = testDAO.getAllStudents(test.getTestId());
+		List<StudentNaTestuDTO> data = test.getStudenti();
 		test.setStudenti(data);
 		model.setData(data);
+		model.fireTableDataChanged();
 		searchField.setText("");
 	}
 	
