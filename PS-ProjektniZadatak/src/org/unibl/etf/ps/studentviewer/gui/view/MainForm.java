@@ -267,6 +267,13 @@ public class MainForm extends JFrame {
 			}
 		});
 		
+		accountBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				mainFormControler.createAccountForm();
+			}
+		});
+		
 	}
 
 	private void initTable() {

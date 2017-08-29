@@ -6,6 +6,7 @@ import org.unibl.etf.ps.studentviewer.exec.ExecScheduler;
 import org.unibl.etf.ps.studentviewer.exec.SearchExec;
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
+import org.unibl.etf.ps.studentviewer.gui.view.AccountForm;
 import org.unibl.etf.ps.studentviewer.gui.view.FilterForm;
 import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ShowForm;
@@ -15,6 +16,7 @@ import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 public class MainFormController {
 	private static boolean sortFormOpened = false;
 	private static boolean filterFormOpened = false;
+	private static boolean accountFormOpened = false;
 	private MainForm mainForm;
 	private static ExecScheduler scheduler = new ExecScheduler();
 	private ShowForm showForm = new ShowForm(this);
@@ -23,6 +25,10 @@ public class MainFormController {
 	
 	public static void resetSortFormOpened(){
 		sortFormOpened = false;
+	}
+	
+	public static void resetAccountFormOpened() {
+		accountFormOpened = false;
 	}
 	
 	public ExecScheduler getScheduler() {
@@ -56,6 +62,17 @@ public class MainFormController {
 
 		SortForm sortForm = new SortForm(this);
 		sortForm.setVisible(true);
+		return true;
+	}
+	
+	public synchronized boolean createAccountForm() {
+		if(accountFormOpened)
+			return false;
+		
+		accountFormOpened = true;
+		AccountForm accountForm = new AccountForm(this);
+		accountForm.setVisible(true);
+		
 		return true;
 	}
 	
