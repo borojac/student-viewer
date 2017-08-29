@@ -227,7 +227,9 @@ public class TestForm extends JFrame {
 		// TODO - popuniti tabelu
 
 		List<StudentNaTestuDTO> studenti = test.getStudenti();
-		studenti.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuca", 65, "Hahhahahah"));
+		studenti.add(new StudentNaTestuDTO(2, "1111/14", "Dejan", "Mijić", 78, ""));
+		studenti.add(new StudentNaTestuDTO(3, "1127/14", "Milan", "Pavičić", 72, ""));
+		studenti.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuća", 65, "Neki komentar"));
 		test.setStudenti(studenti);
 		StudentTableModel model = new StudentTableModel(studenti);
 		model.setTestDTO(test);

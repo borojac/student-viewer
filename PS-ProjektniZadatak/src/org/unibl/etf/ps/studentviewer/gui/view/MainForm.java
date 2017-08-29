@@ -166,7 +166,8 @@ public class MainForm extends JFrame {
 		TestoviTableModel model = new TestoviTableModel();
 		try {
 			List<TestDTO> data = new ArrayList<>();
-			data.add(new TestDTO(1, "Prvi kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("12.4.2017"), "Zadnji zadatak niko nije uradio", 7));
+			data.add(new TestDTO(1, "I kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("20.4.2017"), "Treći zadatak nije niko uradio", 7));
+			data.add(new TestDTO(1, "II kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("28.5.2017"), "Treći zadatak nije niko uradio", 7));
 			model.setData(data);
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
