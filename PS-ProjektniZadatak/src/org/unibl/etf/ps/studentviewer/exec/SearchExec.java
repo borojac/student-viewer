@@ -20,7 +20,7 @@ public class SearchExec extends Exec {
 		mainFormControler.getScheduler().add(this);
 	}
 
-	public void execute() {
+	public void execute() { // move to SearchUtil
 		MainTableModel model = (MainTableModel) mainFormControler.getMainTable().getModel();
 		MainTable table = mainFormControler.getMainTable();
 		ArrayList<StudentMainTableDTO> students = mainFormControler.getMainTable().getStudents();
