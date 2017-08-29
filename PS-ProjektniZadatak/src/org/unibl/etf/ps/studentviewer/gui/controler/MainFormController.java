@@ -6,6 +6,7 @@ import org.unibl.etf.ps.studentviewer.exec.ExecScheduler;
 import org.unibl.etf.ps.studentviewer.exec.SearchExec;
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
+import org.unibl.etf.ps.studentviewer.gui.view.FilterForm;
 import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ShowForm;
 import org.unibl.etf.ps.studentviewer.gui.view.SortForm;
@@ -77,5 +78,15 @@ public class MainFormController {
 
 	public void createShowForm() {
 		showForm.setVisible(true);
+	}
+
+	public void createFilterForm() {
+		if (filterFormOpened)
+			return;
+		
+		filterFormOpened = true;
+		
+		FilterForm f = new FilterForm(this);
+		f.setVisible(true);
 	}
 }

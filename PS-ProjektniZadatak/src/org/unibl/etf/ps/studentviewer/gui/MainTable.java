@@ -48,6 +48,7 @@ public class MainTable extends JTable {
 				model.insertColumn(ii, values);
 				columnNames.add(ii, s);
 				model.setColumnIdentifiers(columnNames.toArray());
+				ii++;
 			}
 		}
 		

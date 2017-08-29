@@ -1,0 +1,2 @@
+* premjestiti execute searchExec-a u SearchUtil
+* mozda premjestiti djelove execute-a sortExec-a u SortUtil

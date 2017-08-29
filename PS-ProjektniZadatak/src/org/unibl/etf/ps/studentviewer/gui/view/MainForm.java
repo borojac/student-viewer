@@ -223,6 +223,13 @@ public class MainForm extends JFrame {
 
 	private void initButtonsListeners() {
 		
+		filterBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				mainFormControler.createFilterForm();
+			}
+		});
+		
 		sortBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
