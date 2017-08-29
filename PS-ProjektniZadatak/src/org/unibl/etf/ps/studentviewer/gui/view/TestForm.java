@@ -121,7 +121,7 @@ public class TestForm extends JFrame {
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
+				TestController.getInstance().undoRedoAction((TestForm) thisFrame, e);
 			}
 		});
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -133,7 +133,7 @@ public class TestForm extends JFrame {
 		contentPane.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
+				TestController.getInstance().undoRedoAction((TestForm) thisFrame, e);
 			}
 		});
 
@@ -178,7 +178,7 @@ public class TestForm extends JFrame {
 		nazivTextField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
+				TestController.getInstance().undoRedoAction((TestForm) thisFrame, e);
 			}
 		});
 		nazivTextField.addFocusListener(new FocusAdapter() {
@@ -207,7 +207,7 @@ public class TestForm extends JFrame {
 		napomenaTextArea.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
+				TestController.getInstance().undoRedoAction((TestForm) thisFrame, e);
 			}
 		});
 		napomenaScrollPane.setViewportView(napomenaTextArea);
@@ -225,14 +225,20 @@ public class TestForm extends JFrame {
 		contentPane.add(studentiScrollPane);
 
 		// TODO - popuniti tabelu
-
+		/*
+		 * 
+		 */
 		List<StudentNaTestuDTO> studenti = test.getStudenti();
 		studenti.add(new StudentNaTestuDTO(2, "1111/14", "Dejan", "Mijić", 78, ""));
 		studenti.add(new StudentNaTestuDTO(3, "1127/14", "Milan", "Pavičić", 72, ""));
 		studenti.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuća", 65, "Neki komentar"));
 		test.setStudenti(studenti);
+		/*
+		 * 
+		 */
+		
+		
 		StudentTableModel model = new StudentTableModel(studenti);
-		model.setTestDTO(test);
 
 		studentiTable = new JTable(model);
 		studentiTable.setForeground(new Color(0, 0, 139));
@@ -255,7 +261,7 @@ public class TestForm extends JFrame {
 		studentiTable.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
+				TestController.getInstance().undoRedoAction((TestForm) thisFrame, e);
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 					refreshStatistics();
 			}
@@ -290,7 +296,7 @@ public class TestForm extends JFrame {
 		searchTextField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
+				TestController.getInstance().undoRedoAction((TestForm) thisFrame, e);
 			}
 		});
 
@@ -403,7 +409,7 @@ public class TestForm extends JFrame {
 		dateChooserCombo.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
+				TestController.getInstance().undoRedoAction((TestForm) thisFrame, e);
 			}
 		});
 
@@ -483,5 +489,8 @@ public class TestForm extends JFrame {
 
 	public void refreshStatistics() {
 		statistikaTextArea.setText(TestController.getInstance().getStatistika(test));
+	}
+	public void refreshStudentiTable() {
+		((StudentTableModel) studentiTable.getModel()).fireTableDataChanged();
 	}
 }
