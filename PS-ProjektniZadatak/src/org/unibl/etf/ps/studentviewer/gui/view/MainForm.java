@@ -100,9 +100,10 @@ public class MainForm extends JFrame {
 	 * @throws InstantiationException
 	 * @throws ClassNotFoundException
 	 */
-	public static void main(String[] args) throws ClassNotFoundException, InstantiationException,
-			IllegalAccessException, UnsupportedLookAndFeelException {
-		UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (Exception ex) {}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -161,16 +162,15 @@ public class MainForm extends JFrame {
 		
 		/*
 		 * 
-		 * 
+		 * TODO
 		 */
 		TestoviTableModel model = new TestoviTableModel();
 		try {
 			List<TestDTO> data = new ArrayList<>();
 			data.add(new TestDTO(1, "I kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("20.4.2017"), "Treći zadatak nije niko uradio", 7));
-			data.add(new TestDTO(1, "II kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("28.5.2017"), "Treći zadatak nije niko uradio", 7));
+			data.add(new TestDTO(1, "II kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("28.5.2017"), "", 7));
 			model.setData(data);
 		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		/*
