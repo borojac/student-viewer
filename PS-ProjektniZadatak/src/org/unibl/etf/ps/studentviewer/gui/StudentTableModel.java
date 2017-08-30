@@ -19,7 +19,6 @@ public class StudentTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 8429148563151885068L;
 
 	private List<StudentNaTestuDTO> data = new ArrayList<>();
-	private TestDTO test = null;
 	
 	private String[] columns = { "Broj indeksa", "Ime", "Prezime", "Broj bodova", "Komentar" };
 
@@ -30,14 +29,6 @@ public class StudentTableModel extends AbstractTableModel {
 	
 	public void setData(List<StudentNaTestuDTO> data) {
 		this.data = data;
-	}
-	
-	public void setTestDTO(TestDTO test) {
-		this.test = test;
-	}
-	
-	public TestDTO getTestDTO() {
-		return test;
 	}
 	
 	public List<StudentNaTestuDTO> getData() {
@@ -99,12 +90,12 @@ public class StudentTableModel extends AbstractTableModel {
 			try {
 				int brBodova = Integer.parseInt((String) aValue);
 				TestController.getInstance().executeCommand(
-						new IzmjenaBrojaBodovaTestCommand(this, student, brBodova));
+						new IzmjenaBrojaBodovaTestCommand(student, brBodova));
 			} catch (NumberFormatException ex) {}
 		} else if (columnIndex == 4 && aValue instanceof String) {
 			String komentar = (String) aValue;
 			TestController.getInstance().executeCommand(
-					new IzmjenaKomentaraTestCommand(this, student, komentar));
+					new IzmjenaKomentaraTestCommand(student, komentar));
 		}
 		
 	}

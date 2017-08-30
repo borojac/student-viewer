@@ -121,19 +121,19 @@ public class TestForm extends JFrame {
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
+				TestController.getInstance().undoRedoAction((TestForm) thisFrame, e);
 			}
 		});
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(200, 10, 540, 700);
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
+		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		contentPane.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
+				TestController.getInstance().undoRedoAction((TestForm) thisFrame, e);
 			}
 		});
 
@@ -154,29 +154,31 @@ public class TestForm extends JFrame {
 		}
 
 		JLabel lblNaziv = new JLabel("Naziv:");
+		lblNaziv.setForeground(Color.WHITE);
 		lblNaziv.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNaziv.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblNaziv.setBounds(41, 11, 70, 20);
 		contentPane.add(lblNaziv);
 
 		JLabel lblDatum = new JLabel("Datum:");
+		lblDatum.setForeground(Color.WHITE);
 		lblDatum.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDatum.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblDatum.setBounds(41, 55, 70, 20);
 		contentPane.add(lblDatum);
 
 		JLabel lblNapomena = new JLabel("Napomena:");
+		lblNapomena.setForeground(Color.WHITE);
 		lblNapomena.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNapomena.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblNapomena.setBounds(41, 104, 70, 20);
 		contentPane.add(lblNapomena);
 
 		nazivTextField = new JTextField();
-		nazivTextField.setBorder(new MatteBorder(2, 2, 2, 2, (Color) SystemColor.textHighlight));
 		nazivTextField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
+				TestController.getInstance().undoRedoAction((TestForm) thisFrame, e);
 			}
 		});
 		nazivTextField.addFocusListener(new FocusAdapter() {
@@ -195,7 +197,6 @@ public class TestForm extends JFrame {
 		contentPane.add(napomenaScrollPane);
 
 		napomenaTextArea = new JTextArea();
-		napomenaTextArea.setBorder(new MatteBorder(2, 2, 2, 2, (Color) SystemColor.textHighlight));
 		napomenaTextArea.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
@@ -206,13 +207,13 @@ public class TestForm extends JFrame {
 		napomenaTextArea.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
+				TestController.getInstance().undoRedoAction((TestForm) thisFrame, e);
 			}
 		});
 		napomenaScrollPane.setViewportView(napomenaTextArea);
 
 		studentiScrollPane = new JScrollPane();
-		studentiScrollPane.setBorder(new MatteBorder(2, 2, 2, 2, (Color) SystemColor.textHighlight));
+		studentiScrollPane.setBackground(new Color(0, 0, 139));
 		studentiScrollPane.setBounds(10, 420, 504, 196);
 		studentiScrollPane.addMouseListener(new MouseAdapter() {
 			@Override
@@ -224,14 +225,25 @@ public class TestForm extends JFrame {
 		contentPane.add(studentiScrollPane);
 
 		// TODO - popuniti tabelu
-
+		/*
+		 * 
+		 */
 		List<StudentNaTestuDTO> studenti = test.getStudenti();
-		studenti.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuca", 65, "Hahhahahah"));
+		studenti.add(new StudentNaTestuDTO(2, "1111/14", "Dejan", "Mijić", 78, ""));
+		studenti.add(new StudentNaTestuDTO(3, "1127/14", "Milan", "Pavičić", 72, ""));
+		studenti.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuća", 65, "Neki komentar"));
 		test.setStudenti(studenti);
+		/*
+		 * 
+		 */
+		
+		
 		StudentTableModel model = new StudentTableModel(studenti);
-		model.setTestDTO(test);
 
 		studentiTable = new JTable(model);
+		studentiTable.setForeground(new Color(0, 0, 139));
+		studentiTable.setBackground(new Color(173, 216, 230));
+		studentiTable.setFont(new Font("Century Gothic", Font.BOLD, 11));
 		studentiTable.setFillsViewportHeight(true);
 		studentiTable.addMouseListener(new MouseAdapter() {
 			@Override
@@ -249,7 +261,7 @@ public class TestForm extends JFrame {
 		studentiTable.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
+				TestController.getInstance().undoRedoAction((TestForm) thisFrame, e);
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 					refreshStatistics();
 			}
@@ -258,10 +270,14 @@ public class TestForm extends JFrame {
 		studentiScrollPane.setViewportView(studentiTable);
 
 		btnSacuvaj = new JButton("Sa\u010Duvaj");
+		btnSacuvaj.setBackground(new Color(0, 0, 139));
 		btnSacuvaj.setBounds(444, 627, 70, 23);
 		contentPane.add(btnSacuvaj);
 
 		searchTextField = new JTextField();
+		searchTextField.setForeground(new Color(0, 0, 139));
+		searchTextField.setBackground(new Color(173, 216, 230));
+		searchTextField.setFont(new Font("Century Gothic", Font.BOLD, 11));
 		searchTextField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				needsRefresh = true;
@@ -272,7 +288,6 @@ public class TestForm extends JFrame {
 						searchText);
 			}
 		});
-		searchTextField.setBorder(new MatteBorder(2, 2, 2, 2, (Color) SystemColor.textHighlight));
 		searchTextField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		searchTextField.setBounds(10, 389, 405, 20);
 		contentPane.add(searchTextField);
@@ -281,11 +296,12 @@ public class TestForm extends JFrame {
 		searchTextField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
+				TestController.getInstance().undoRedoAction((TestForm) thisFrame, e);
 			}
 		});
 
 		btnPretrazi = new JButton("Pretra\u017Ei");
+		btnPretrazi.setBackground(new Color(0, 0, 139));
 		btnPretrazi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				needsRefresh = true;
@@ -300,6 +316,7 @@ public class TestForm extends JFrame {
 		contentPane.add(btnPretrazi);
 
 		btnPrint = new JButton("Print");
+		btnPrint.setBackground(new Color(0, 0, 139));
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -322,6 +339,7 @@ public class TestForm extends JFrame {
 		contentPane.add(btnPrint);
 
 		btnEksport = new JButton("Eksport");
+		btnEksport.setBackground(new Color(0, 0, 139));
 		btnEksport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -336,6 +354,7 @@ public class TestForm extends JFrame {
 		contentPane.add(btnEksport);
 
 		btnDodaj = new JButton("Dodaj");
+		btnDodaj.setBackground(new Color(0, 0, 139));
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (needsRefresh) {
@@ -350,6 +369,7 @@ public class TestForm extends JFrame {
 		contentPane.add(btnDodaj);
 
 		btnUkloni = new JButton("Ukloni");
+		btnUkloni.setBackground(new Color(0, 0, 139));
 		btnUkloni.setEnabled(false);
 		btnUkloni.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -389,7 +409,7 @@ public class TestForm extends JFrame {
 		dateChooserCombo.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				TestController.getInstance().focusLostAction((TestForm) thisFrame, e);
+				TestController.getInstance().undoRedoAction((TestForm) thisFrame, e);
 			}
 		});
 
@@ -398,6 +418,7 @@ public class TestForm extends JFrame {
 		contentPane.add(dateChooserCombo);
 
 		btnImport = new JButton("Import");
+		btnImport.setBackground(new Color(0, 0, 139));
 		btnImport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -426,12 +447,12 @@ public class TestForm extends JFrame {
 		contentPane.add(btnImport);
 
 		JLabel lblStatistika = new JLabel("Statistika:");
+		lblStatistika.setForeground(Color.WHITE);
 		lblStatistika.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblStatistika.setBounds(41, 233, 70, 20);
 		contentPane.add(lblStatistika);
 
 		statistikaTextArea = new JTextArea();
-		statistikaTextArea.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(51, 153, 255)));
 		statistikaTextArea.setEditable(false);
 		statistikaTextArea.setBounds(144, 231, 271, 147);
 		statistikaTextArea.setText(TestController.getInstance().getStatistika(test));
@@ -468,5 +489,8 @@ public class TestForm extends JFrame {
 
 	public void refreshStatistics() {
 		statistikaTextArea.setText(TestController.getInstance().getStatistika(test));
+	}
+	public void refreshStudentiTable() {
+		((StudentTableModel) studentiTable.getModel()).fireTableDataChanged();
 	}
 }

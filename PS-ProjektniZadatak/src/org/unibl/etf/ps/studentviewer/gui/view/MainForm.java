@@ -13,7 +13,10 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -97,9 +100,10 @@ public class MainForm extends JFrame {
 	 * @throws InstantiationException
 	 * @throws ClassNotFoundException
 	 */
-	public static void main(String[] args) throws ClassNotFoundException, InstantiationException,
-			IllegalAccessException, UnsupportedLookAndFeelException {
-		UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (Exception ex) {}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -151,10 +155,33 @@ public class MainForm extends JFrame {
 
 		testoviPanel = new JPanel();
 		testoviPanel.setBounds(735, 401, 449, 200);
+		testoviPanel.setBackground(new Color(0, 0, 139));
 		contentPane.add(testoviPanel);
 		testoviPanel.setLayout(null);
 
-		testoviTable = new JTable();
+		
+		/*
+		 * 
+		 * TODO
+		 */
+		TestoviTableModel model = new TestoviTableModel();
+		try {
+			List<TestDTO> data = new ArrayList<>();
+			data.add(new TestDTO(1, "I kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("20.4.2017"), "Treći zadatak nije niko uradio", 7));
+			data.add(new TestDTO(1, "II kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("28.5.2017"), "", 7));
+			model.setData(data);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		/*
+		 * 
+		 * 
+		 */
+		testoviTable = new JTable(model);
+		testoviTable.setFont(new Font("Century Gothic", Font.BOLD, 12));
+		testoviTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		testoviTable.setForeground(new Color(0, 0, 139));
+		testoviTable.setBackground(new Color(173, 216, 230));
 		testoviTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -162,10 +189,11 @@ public class MainForm extends JFrame {
 					btnIzmjeni.setEnabled(true);
 			}
 		});
-		testoviTable.setModel(new TestoviTableModel());
 
 		testoviScrollPane = new JScrollPane();
 		testoviScrollPane.setBounds(10, 11, 429, 145);
+		testoviScrollPane.setBackground(Color.WHITE);
+		testoviScrollPane.setBorder(UIManager.getBorder("Button.border"));
 		testoviPanel.add(testoviScrollPane);
 		testoviScrollPane.setViewportView(testoviTable);
 
@@ -389,6 +417,7 @@ public class MainForm extends JFrame {
 		
 		/* Buttons by Stokuca */
 		btnDodaj = new JButton("Dodaj");
+		btnDodaj.setBackground(new Color(0, 0, 139));
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				TestForm tf = new TestForm(null);
@@ -399,6 +428,7 @@ public class MainForm extends JFrame {
 		testoviPanel.add(btnDodaj);
 
 		btnIzmjeni = new JButton("Izmjeni");
+		btnIzmjeni.setBackground(new Color(0, 0, 139));
 		btnIzmjeni.setEnabled(false);
 		btnIzmjeni.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -412,6 +442,7 @@ public class MainForm extends JFrame {
 		testoviPanel.add(btnIzmjeni);
 
 		btnBrisi = new JButton("Bri\u0161i");
+		btnBrisi.setBackground(new Color(0, 0, 139));
 		btnBrisi.setBounds(208, 166, 89, 23);
 		testoviPanel.add(btnBrisi);
 		

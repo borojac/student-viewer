@@ -232,67 +232,6 @@ public class MySQLTestDAO implements TestDAO {
 	}
 
 	@Override
-	public List<StudentNaTestuDTO> pretraga(int idTesta, String parameter) {
-		List<StudentNaTestuDTO> retVals = new ArrayList<>();
-		String query = "SELECT StudentId, BrojIndeksa, Ime, Prezime, BrojBodova, Komentar"
-				+ " FROM student INNER JOIN izlazi_na USING (StudentId)"
-				+ " WHERE TestId = ? AND BrojIndeksa LIKE '?%' OR Ime LIKE '?%' OR Prezime LIKE '?%'";
-		Connection conn = null;
-		ResultSet rs = null;
-		try (PreparedStatement ps = conn.prepareStatement(query)) {
-
-			ps.setInt(1, idTesta);
-			ps.setString(2, parameter);
-			ps.setString(3, parameter);
-			ps.setString(4, parameter);
-
-			rs = ps.executeQuery();
-
-			while (rs.next()) {
-				retVals.add(new StudentNaTestuDTO(rs.getInt(1), rs.getString(2), 
-						rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6)));
-			}
-
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			DBUtility.close(conn, rs);
-		}
-		return retVals;
-	}
-
-	@Override
-	public List<StudentNaTestuDTO> filter(int idTesta, int brojBodova, String diskriminator) {
-		List<StudentNaTestuDTO> retVals = new ArrayList<>();
-		String query = "SELECT StudentId, BrojIndeksa, Ime, Prezime, BrojBodova, Komentar"
-				+ " FROM student INNER JOIN izlazi_na USING(StudentId) "
-				+ "WHERE TestId = ? AND BrojBodova " + diskriminator + " ?";
-		Connection conn = null;
-		ResultSet rs = null;
-		try (PreparedStatement ps = conn.prepareStatement(query)) {
-
-			ps.setInt(1, idTesta);
-			ps.setInt(2, brojBodova);
-
-			rs = ps.executeQuery();
-
-			while (rs.next()) {
-				retVals.add(new StudentNaTestuDTO(rs.getInt(1), rs.getString(2),
-						rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6)));
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			DBUtility.close(conn, rs);
-		}
-		return retVals;
-	}
-
-	@Override
 	public List<StudentNaTestuDTO> getAllStudents(int idTesta) {
 		List<StudentNaTestuDTO> retVals = new ArrayList<>();
 		String query = "SELECT StudentId, BrojIndeksa, Ime, Prezime, BrojBodova, Komentar"

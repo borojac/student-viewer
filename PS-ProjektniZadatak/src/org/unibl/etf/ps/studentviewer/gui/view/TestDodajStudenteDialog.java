@@ -14,6 +14,7 @@ import org.unibl.etf.ps.studentviewer.command.DodajStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.gui.StudentListModel;
 import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
 import org.unibl.etf.ps.studentviewer.gui.controler.TestController;
+import org.unibl.etf.ps.studentviewer.gui.controler.TestDodajStudenteController;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
@@ -64,7 +65,7 @@ public class TestDodajStudenteDialog extends JDialog {
 		
 		List<StudentNaTestuDTO> data = new ArrayList<>();
 		data.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuca", 0, ""));
-		data.add(new StudentNaTestuDTO(2, "1141/13", "Dragana", "Volas", 0, ""));
+		data.add(new StudentNaTestuDTO(50, "1141/13", "Dragana", "Volas", 0, ""));
 		
 		allStudentsListModel.setData(data);
 		
@@ -81,19 +82,7 @@ public class TestDodajStudenteDialog extends JDialog {
 		btnAdd = new JButton(">");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				List<StudentNaTestuDTO> selectedStudents = allStudentsList.getSelectedValuesList();
-				StudentListModel model = (StudentListModel) toAddStudentsList.getModel();
-				List<StudentNaTestuDTO> toAddList = model.getData();
-				for (StudentNaTestuDTO student : selectedStudents) {
-					if (!toAddList.contains(student))
-						toAddList.add(student);
-				}
-				
-				model.setData(toAddList);
-				model.fireContentsChanged(this, 0, toAddList.size() - 1);
-				
-				// TODO - da se lista svih studenata mijenja kad se dodaju
-				
+				TestDodajStudenteController.getInstance().addStudents(allStudentsList, toAddStudentsList);
 			}
 		});
 		btnAdd.setBounds(320, 24, 50, 40);
@@ -102,12 +91,7 @@ public class TestDodajStudenteDialog extends JDialog {
 		btnAddAll = new JButton(">>");
 		btnAddAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				StudentListModel model = (StudentListModel) toAddStudentsList.getModel();
-				Set<StudentNaTestuDTO> toAdd = new HashSet<>(model.getData());
-				toAdd.addAll(((StudentListModel) allStudentsList.getModel()).getData());
-				model.setData(new ArrayList<StudentNaTestuDTO>(toAdd));
-				
-				model.fireContentsChanged(this, 0, toAdd.size() - 1);
+				TestDodajStudenteController.getInstance().addAll(allStudentsList, toAddStudentsList);
 			}
 		});
 		btnAddAll.setBounds(320, 75, 50, 40);
@@ -116,10 +100,7 @@ public class TestDodajStudenteDialog extends JDialog {
 		btnRemove = new JButton("<");
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				StudentListModel model = ((StudentListModel) toAddStudentsList.getModel());
-				List<StudentNaTestuDTO> toAdd = model.getData();
-				toAdd.removeAll(toAddStudentsList.getSelectedValuesList());
-				model.fireContentsChanged(this, 0, toAdd.size() - 1);
+				TestDodajStudenteController.getInstance().removeStudents(allStudentsList, toAddStudentsList);
 			}
 		});
 		btnRemove.setBounds(320, 156, 50, 40);
@@ -128,9 +109,7 @@ public class TestDodajStudenteDialog extends JDialog {
 		btnRemoveAll = new JButton("<<");
 		btnRemoveAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				StudentListModel model = ((StudentListModel) toAddStudentsList.getModel());
-				model.getData().clear();
-				model.fireContentsChanged(this, 0, 0);
+				TestDodajStudenteController.getInstance().removeAll(allStudentsList, toAddStudentsList);
 			}
 		});
 		btnRemoveAll.setBounds(320, 207, 50, 40);
@@ -143,18 +122,18 @@ public class TestDodajStudenteDialog extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						// TODO - napraviti cuvanje izmjena kao komandu
 						
 						Set<StudentNaTestuDTO> studentsSet = new HashSet<>(tableModel.getData());
-						studentsSet.addAll(((StudentListModel) toAddStudentsList.getModel()).getData());
-						List<StudentNaTestuDTO> studentsList = new ArrayList<>(studentsSet);
+						boolean a = studentsSet.addAll(((StudentListModel) toAddStudentsList.getModel()).getData());
+						
 						Command dodajStudente = new DodajStudenteTestCommand(
 								testForm.getModel(),
 								(StudentTableModel) testForm.getStudentiTable().getModel(), 
-								studentsList);
+								new ArrayList<>(studentsSet));
 						
 						TestController.getInstance().executeCommand(dodajStudente);
 						testForm.refreshStatistics();
+						testForm.refreshStudentiTable();
 						thisDialog.dispose();
 						
 					}

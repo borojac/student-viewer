@@ -12,6 +12,4 @@ public interface TestDAO {
 	public boolean addTest(TestDTO test);
 	public boolean deleteTest(TestDTO test);
 	public List<StudentNaTestuDTO> getAllStudents(int idTesta);
-	public List<StudentNaTestuDTO> pretraga(int idTesta, String parameter);
-	public List<StudentNaTestuDTO> filter(int idTesta, int brojBodova, String diskriminator);
 }

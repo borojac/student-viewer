@@ -32,8 +32,10 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.experimental.categories.IncludeCategories;
 import org.unibl.etf.ps.studentviewer.command.Command;
 import org.unibl.etf.ps.studentviewer.command.CommandStack;
+import org.unibl.etf.ps.studentviewer.command.IzmjenaBrojaBodovaTestCommand;
 import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
 import org.unibl.etf.ps.studentviewer.gui.view.TestForm;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
@@ -62,13 +64,15 @@ public class TestController {
 
 	private TestController() {}
 
-	public void focusLostAction(TestForm testForm, KeyEvent ke) {
+	public void undoRedoAction(TestForm testForm, KeyEvent ke) {
 		if (ke.getKeyCode() == KeyEvent.VK_Z && ke.isControlDown()) {
 			instance.undo();
 			testForm.refreshStatistics();
+			testForm.refreshStudentiTable();
 		} else if (ke.getKeyCode() == KeyEvent.VK_Y && ke.isControlDown()) {
 			instance.redo();
 			testForm.refreshStatistics();
+			testForm.refreshStudentiTable();
 		}
 	}
 
@@ -77,6 +81,13 @@ public class TestController {
 			Command command = undoStack.pop();
 			command.unExecute();
 			redoStack.push(command);
+		}
+	}
+	public void redo() {
+		if (!redoStack.isEmpty()) {
+			Command command = redoStack.pop();
+			command.reExecute();
+			undoStack.push(command);
 		}
 	}
 
@@ -157,13 +168,6 @@ public class TestController {
 		undoStack.push(command);
 	}
 
-	public void redo() {
-		if (!redoStack.isEmpty()) {
-			Command command = redoStack.pop();
-			command.reExecute();
-			undoStack.push(command);
-		}
-	}
 
 	public void export(TestDTO test) throws DocumentException, IOException {
 		JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
@@ -274,7 +278,7 @@ public class TestController {
 		return statisticsBuilder.toString();
 	}
 	/**
-	 * NETESTIRANO - ZAKOMENTARISANI POZIVI PRETRAGE U BAZI
+	 * NETESTIRANO ***********************
 	 * @param test
 	 * @param model
 	 * @param searchText
@@ -282,12 +286,12 @@ public class TestController {
 	public void initiateStudentSearch(TestDTO test, StudentTableModel model, String searchText) {
 		if (test == null || model == null || searchText == null)
 			return;
+		if ("".equals(searchText)) {
+			model.setData(test.getStudenti());
+			model.fireTableDataChanged();
+			return;
+		}
 		List<StudentNaTestuDTO> searchedList = null;
-		
-		
-		DAOFactory factory = new MySQLDAOFactory();
-		TestDAO testDAO = factory.getTestDAO();
-		
 		
 		Matcher matcher = Pattern.compile("[<,>,=]+").matcher(searchText);
 		Matcher numberMatcher = Pattern.compile("\\d+").matcher(searchText);
@@ -305,28 +309,62 @@ public class TestController {
 				numberMatcher = numberMatcher.reset();
 				numberMatcher.find();
 				int brojBodova = Integer.parseInt(numberMatcher.group());
-				// TODO - kad se baza uradi
-//				searchedList = testDAO.filter(test.getTestId(), brojBodova, diskriminator);
+				searchedList = this.filter(test, brojBodova, diskriminator);
 			} else {
-//				searchedList = testDAO.pretraga(test.getTestId(), searchText + "%");
+				searchedList = this.pretraga(test, searchText);
 			}
 		} else {
-//			searchedList = testDAO.pretraga(test.getTestId(), searchText + "%");
+			try {
+				int brojBodova = Integer.parseInt(searchText);
+				searchedList = this.filter(test, brojBodova, "");
+			} catch (NumberFormatException e) {
+				searchedList = this.pretraga(test, searchText);
+			}
 		}
 		
-//		model.setData(searchedList);
+		model.setData(searchedList);
+		model.fireTableDataChanged();
 		
 	}
 	
 	public void resetSearch(TestDTO test, StudentTableModel model, JTextField searchField) {
 		if (test == null || model == null || searchField == null)
 			return;
-		DAOFactory factory = new MySQLDAOFactory();
-		TestDAO testDAO = factory.getTestDAO();
-		List<StudentNaTestuDTO> data = testDAO.getAllStudents(test.getTestId());
+		List<StudentNaTestuDTO> data = test.getStudenti();
 		test.setStudenti(data);
 		model.setData(data);
+		model.fireTableDataChanged();
 		searchField.setText("");
+	}
+	
+	public List<StudentNaTestuDTO> filter(TestDTO test, int brojBodova, String diskriminator) {
+		List<StudentNaTestuDTO> retList = new ArrayList<>();
+		for (StudentNaTestuDTO student : test.getStudenti()) {
+			if ("<".equals(diskriminator) && student.getBrojBodova() < brojBodova)
+				retList.add(student);
+			else if ("<=".equals(diskriminator) && student.getBrojBodova() <= brojBodova)
+					retList.add(student);
+			else if (("=".equals(diskriminator) || "".equals(diskriminator)) && student.getBrojBodova() == brojBodova)
+				retList.add(student);
+			else if ("<=".equals(diskriminator) && student.getBrojBodova() <= brojBodova)
+				retList.add(student);
+			else if (">=".equals(diskriminator) && student.getBrojBodova() >= brojBodova)
+				retList.add(student);
+			else if (">".equals(diskriminator) && student.getBrojBodova() > brojBodova)
+				retList.add(student);
+			else if (("<>".equals(diskriminator) || "!=".equals(diskriminator)) && student.getBrojBodova() != brojBodova)
+				retList.add(student);
+		}
+		return retList;
+	}
+	
+	public List<StudentNaTestuDTO> pretraga(TestDTO test, String query) {
+		List<StudentNaTestuDTO> retList = new ArrayList<>();
+		for (StudentNaTestuDTO student : test.getStudenti()) {
+			if (student.getIme().startsWith(query) || student.getPrezime().startsWith(query) || student.getBrojIndeksa().startsWith(query))
+				retList.add(student);
+		}
+		return retList;
 	}
 
 }
