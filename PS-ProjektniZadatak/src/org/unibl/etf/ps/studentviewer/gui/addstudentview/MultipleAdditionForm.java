@@ -99,7 +99,12 @@ public class MultipleAdditionForm extends JFrame {
 		btnPDF.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				ImportController importController = new ImportController(mainFormController);
+				try {
+					ImportController importController = new ImportController(mainFormController);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		panel2.add(btnPDF);

@@ -1,11 +1,16 @@
 package org.unibl.etf.ps.studentviewer.gui.addstudentcontroller;
 
-import org.unibl.etf.ps.studentviewer.addstudentexec.ImportExec;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.unibl.etf.ps.studentviewer.addstudentexec.ImporterExcel;
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
 
 public class ImportController {
-	public ImportController(MainFormController mainFormController) {
+	public ImportController(MainFormController mainFormController) throws IOException {
 		// TODO Auto-generated constructor stub
-		ImportExec importExec = new ImportExec(mainFormController);
+		ImporterExcel importerExcel = new ImporterExcel();
+		ArrayList<String[]> studenti = importerExcel.getData(3);
+		
 	}
 }
