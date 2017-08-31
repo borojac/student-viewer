@@ -47,6 +47,7 @@ public class AddForm extends JFrame {
 	 * Create the frame.
 	 */
 public AddForm(MainFormController mainFormController) {
+		setResizable(false);
 		
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
@@ -57,7 +58,7 @@ public AddForm(MainFormController mainFormController) {
 		
 		this.mainFormController = mainFormController;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 263, 307);
+		setBounds(100, 100, 245, 307);
 		contentPane =new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -79,7 +80,7 @@ public AddForm(MainFormController mainFormController) {
 		panel.add(lblBrojIndeksa);
 		
 		JLabel label = new JLabel("");
-		label.setBounds(44, 0, 171, 120);
+		label.setBounds(30, 0, 171, 120);
 		try {
 			BufferedImage headerImage = ImageIO.read(new File("img\\BellTower-RGB(JPG).jpg"));
 			headerImage = Scalr.resize(headerImage, Scalr.Mode.FIT_EXACT, label.getWidth(), label.getHeight(), null);
@@ -93,7 +94,7 @@ public AddForm(MainFormController mainFormController) {
 		JLabel label_1 = new JLabel("");
 		label_1.setBackground(Color.WHITE);
 		label_1.setOpaque(true);
-		label_1.setBounds(0, 0, 52, 120);
+		label_1.setBounds(0, 0, 44, 120);
 		contentPane.add(label_1);
 		
 		JLabel label_2 = new JLabel("");

@@ -3,10 +3,13 @@
  */
 package org.unibl.etf.ps.studentviewer.addstudentexec;
 
+import java.io.IOException;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.exec.Exec;
+import org.unibl.etf.ps.studentviewer.gui.addstudentcontroller.ImportController;
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
 
 
@@ -22,7 +25,13 @@ public class ChooseAddTypeExec extends Exec {
 		}else if(jedan) {
 			while(!mainFormController.createAddForm());
 		}else {
-			while(!mainFormController.createMultipleAddform());
+			try {
+				ImportController importController = new ImportController(mainFormController);
+				MainFormController.resetChooseAddTypeFormOpened();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }

@@ -73,7 +73,7 @@ public class ChooseAddTypeForm extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel label = new JLabel("");
-		label.setBounds(44, 0, 171, 120);
+		label.setBounds(56, 0, 171, 120);
 		try {
 			BufferedImage headerImage = ImageIO.read(new File("img\\BellTower-RGB(JPG).jpg"));
 			headerImage = Scalr.resize(headerImage, Scalr.Mode.FIT_EXACT, label.getWidth(), label.getHeight(), null);
@@ -102,9 +102,9 @@ public class ChooseAddTypeForm extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				boolean jedan = chckbxNewCheckBoxJedan.isSelected();
 				boolean vise = chckbxNewCheckBoxVise.isSelected();
-				//MainFormController.resetChooseAddTypeFormOpened();
-				new ChooseAddTypeController(mainFormController, jedan, vise);
 				ChooseAddTypeForm.this.dispose();
+				new ChooseAddTypeController(mainFormController, jedan, vise);
+				
 			}
 		});
 		chooseButton.setBounds(96, 217, 89, 29);

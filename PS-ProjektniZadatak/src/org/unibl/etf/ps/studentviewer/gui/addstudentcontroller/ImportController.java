@@ -11,6 +11,5 @@ public class ImportController {
 		// TODO Auto-generated constructor stub
 		ImporterExcel importerExcel = new ImporterExcel();
 		ArrayList<String[]> studenti = importerExcel.getData(3);
-		
 	}
 }

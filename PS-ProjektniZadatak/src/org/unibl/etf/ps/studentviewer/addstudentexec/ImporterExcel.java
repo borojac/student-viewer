@@ -47,7 +47,11 @@ public class ImporterExcel {
 				String[] tmp = new String[numOfColumns];
 				for(int j = 0; j < numOfColumns; j++) {
 					HSSFCell cell = row.getCell(j);
+					if(cell != null)
 					tmp[j] = cell.getStringCellValue().trim();
+					else{
+						tmp[j] = "";
+					}
 				}
 				data.add(tmp);
 			}
@@ -64,7 +68,11 @@ public class ImporterExcel {
 				String[] tmp = new String[numOfColumns];
 				for(int j = 0; j < numOfColumns; j++) {
 					Cell cell = row.getCell(j);
+					if(cell != null)
 					tmp[j] = cell.getStringCellValue().trim();
+					else{
+						tmp[j] = "";
+					}
 				}
 				data.add(tmp);
 			}

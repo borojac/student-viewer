@@ -8,7 +8,6 @@ import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
 import org.unibl.etf.ps.studentviewer.gui.addstudentview.AddForm;
 import org.unibl.etf.ps.studentviewer.gui.addstudentview.ChooseAddTypeForm;
-import org.unibl.etf.ps.studentviewer.gui.addstudentview.MultipleAdditionForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AccountForm;
 import org.unibl.etf.ps.studentviewer.gui.view.FilterForm;
 import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
@@ -26,7 +25,7 @@ public class MainFormController {
 	/*Stankovic*/
 	private static boolean addFormOpened = false;
 	private static boolean chooseAddTypeFormOpened = false;
-	private static boolean multipleAdditionFormOpened = false;
+
 	
 	public static void resetAddFormOpened() {
 		addFormOpened = false;
@@ -34,9 +33,7 @@ public class MainFormController {
 	public static void resetChooseAddTypeFormOpened() {
 		chooseAddTypeFormOpened = false;
 	}
-	public static void resetMultipleAdditionFormOpened() {
-		multipleAdditionFormOpened = false;
-	}
+
 	/*Stankovic end*/
 	
 	
@@ -142,13 +139,5 @@ public class MainFormController {
 		return true;
 	}
 	
-	public synchronized boolean createMultipleAddform() {
-		if(multipleAdditionFormOpened)
-			return false;
-		multipleAdditionFormOpened = true;
-		MultipleAdditionForm multipleAdditionForm = new MultipleAdditionForm(this);
-		multipleAdditionForm.setVisible(true);
-		return true;
-	}
 	/*Stankovic end*/
 }
