@@ -91,6 +91,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.border.MatteBorder;
 import java.awt.SystemColor;
+import javax.swing.JComboBox;
 
 public class TestForm extends JFrame {
 
@@ -118,6 +119,7 @@ public class TestForm extends JFrame {
 
 	private Logger logger = Logger.getLogger(TestForm.class);
 	private JTextArea statistikaTextArea;
+	private JComboBox procenatComboBox;
 
 	public TestForm(TestDTO testParam) {
 		setResizable(false);
@@ -128,7 +130,7 @@ public class TestForm extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(200, 10, 540, 700);
+		setBounds(200, 10, 540, 686);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -147,7 +149,7 @@ public class TestForm extends JFrame {
 
 		if (testParam != null) {
 			test = new TestDTO(testParam.getTestId(), testParam.getNaziv(), testParam.getDatum(),
-					testParam.getNapomena(), testParam.getPredmetId());
+					testParam.getNapomena(), testParam.getProcenat(), testParam.getPredmetId());
 			test.setStudenti(testParam.getStudenti());
 			update = true;
 		} else 
@@ -453,6 +455,26 @@ public class TestForm extends JFrame {
 		statistikaTextArea.setText(testController.getStatistika(test));
 		contentPane.add(statistikaTextArea);
 		
+		JLabel lblProcenat = new JLabel("Procenat:");
+		lblProcenat.setHorizontalAlignment(SwingConstants.CENTER);
+		lblProcenat.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblProcenat.setForeground(Color.WHITE);
+		lblProcenat.setBounds(434, 24, 90, 20);
+		contentPane.add(lblProcenat);
+		
+		procenatComboBox = new JComboBox();
+		procenatComboBox.setBounds(434, 55, 90, 20);
+		contentPane.add(procenatComboBox);
+		
+		int tmpProcenat = 0;
+		while (tmpProcenat <= 100) {
+			procenatComboBox.addItem("" + tmpProcenat);
+			tmpProcenat += 5;
+		}
+		
+		procenatComboBox.setSelectedItem("" + 50);
+		
+		
 		if (update)
 			setFields();
 	}
@@ -474,6 +496,8 @@ public class TestForm extends JFrame {
 	}
 	
 	private void setFields() {
+		procenatComboBox.setSelectedItem("" + test.getProcenat());
+		procenatComboBox.setEnabled(false);
 		nazivTextField.setText(test.getNaziv());
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(test.getDatum());

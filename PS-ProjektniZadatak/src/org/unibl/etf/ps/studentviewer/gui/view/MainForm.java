@@ -169,7 +169,7 @@ public class MainForm extends JFrame {
 		try {
 			List<TestDTO> data = new ArrayList<>();
 			
-			TestDTO test = new TestDTO(1, "I kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("20.4.2017"), "Treći zadatak nije niko uradio", 7);
+			TestDTO test = new TestDTO(1, "I kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("20.4.2017"), "Treći zadatak nije niko uradio", 30, 7);
 			List<StudentNaTestuDTO> studenti = test.getStudenti();
 			studenti.add(new StudentNaTestuDTO(2, "1111/14", "Dejan", "Mijić", 78, ""));
 			studenti.add(new StudentNaTestuDTO(3, "1127/14", "Milan", "Pavičić", 72, ""));
@@ -177,7 +177,7 @@ public class MainForm extends JFrame {
 			test.setStudenti(studenti);
 			data.add(test);
 			
-			TestDTO test2 = new TestDTO(1, "II kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("28.5.2017"), "", 7);
+			TestDTO test2 = new TestDTO(1, "II kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("28.5.2017"), "", 30, 7);
 			data.add(test2);
 			
 			model.setData(data);

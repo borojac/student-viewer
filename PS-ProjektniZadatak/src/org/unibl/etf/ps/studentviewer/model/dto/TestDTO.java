@@ -10,6 +10,7 @@ public class TestDTO {
 	private String naziv;
 	private Date datum;
 	private String napomena;
+	private int procenat;
 	private int predmetId;
 	
 	private List<StudentNaTestuDTO> studenti;
@@ -19,16 +20,26 @@ public class TestDTO {
 		datum = new Date();
 		testId = 0;
 		predmetId = 0;
+		procenat = 50;
 		studenti = new ArrayList<>();
 	}
 
-	public TestDTO(int testId, String naziv, Date datum, String napomena, int predmetId) {
+	public TestDTO(int testId, String naziv, Date datum, String napomena, int procenat, int predmetId) {
 		this.testId = testId;
 		this.naziv = naziv;
 		this.datum = datum;
 		this.napomena = napomena;
+		this.procenat = procenat;
 		this.predmetId = predmetId;
 		studenti = new ArrayList<>();
+	}
+
+	public int getProcenat() {
+		return procenat;
+	}
+
+	public void setProcenat(int procenat) {
+		this.procenat = procenat;
 	}
 
 	public int getTestId() {

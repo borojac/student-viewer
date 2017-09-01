@@ -1,11 +1,14 @@
 package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
@@ -30,6 +33,11 @@ import java.util.Set;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import javax.swing.JScrollPane;
 
 public class TestDodajStudenteDialog extends JDialog {
 
@@ -47,11 +55,15 @@ public class TestDodajStudenteDialog extends JDialog {
 	
 	private TestForm testForm;
 	private TestController testController;
+	private TestDodajStudenteController dodajStudenteController;
+	private JScrollPane scrollPane;
+	private JScrollPane scrollPane_1;
 	
 	public TestDodajStudenteDialog(TestForm testForm, TestController testController) {
 		setAlwaysOnTop(true);
 		setBounds(100, 100, 700, 350);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		contentPanel.setBackground(new Color(0, 0, 139));
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -59,6 +71,7 @@ public class TestDodajStudenteDialog extends JDialog {
 		thisDialog = this;
 		this.testForm = testForm;
 		this.testController = testController;
+		this.dodajStudenteController = new TestDodajStudenteController();
 		this.tableModel = (StudentTableModel) testForm.getStudentiTable().getModel();
 		
 		DAOFactory factory = new MySQLDAOFactory();
@@ -66,70 +79,84 @@ public class TestDodajStudenteDialog extends JDialog {
 //		StudentDAO studentDAO = factory.getStudentDAO();
 		
 		StudentListModel allStudentsListModel = new StudentListModel();
-		
-		List<StudentNaTestuDTO> data = new ArrayList<>();
-		data.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuca", 0, ""));
-		data.add(new StudentNaTestuDTO(50, "1141/13", "Dragana", "Volas", 0, ""));
-		
+
+		// TODO - DODAVANJE STUDENATA
+		List<StudentNaTestuDTO> data = loadStudents();
 		allStudentsListModel.setData(data);
 		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 11, 290, 256);
+		contentPanel.add(scrollPane);
+		
 		allStudentsList = new JList<>(allStudentsListModel);
+		scrollPane.setViewportView(allStudentsList);
+		allStudentsList.setFont(new Font("Century Gothic", Font.BOLD, 12));
+		allStudentsList.setForeground(new Color(0, 0, 139));
+		allStudentsList.setBackground(new Color(173, 216, 230));
 		allStudentsList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent me) {
 				if (me.getClickCount() == 2) {
-					TestDodajStudenteController.getInstance().addStudents(allStudentsList, toAddStudentsList);
+					dodajStudenteController.addStudents(allStudentsList, toAddStudentsList);
 				}
 			}
 		});
 		allStudentsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		allStudentsList.setBounds(10, 11, 290, 256);
-		contentPanel.add(allStudentsList);
+		
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(384, 11, 290, 256);
+		contentPanel.add(scrollPane_1);
 		
 		toAddStudentsList = new JList<>(new StudentListModel());
+		scrollPane_1.setViewportView(toAddStudentsList);
+		toAddStudentsList.setFont(new Font("Century Gothic", Font.BOLD, 12));
+		toAddStudentsList.setForeground(new Color(0, 0, 139));
+		toAddStudentsList.setBackground(new Color(173, 216, 230));
 		toAddStudentsList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent me) {
 				if (me.getClickCount() == 2) {
-					TestDodajStudenteController.getInstance().removeStudents(allStudentsList, toAddStudentsList);
+					dodajStudenteController.removeStudents(allStudentsList, toAddStudentsList);
 				}
 			}
 		});
 		toAddStudentsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		toAddStudentsList.setBounds(384, 11, 290, 256);
-		contentPanel.add(toAddStudentsList);
 		
 		btnAdd = new JButton(">");
+		btnAdd.setBackground(new Color(0, 0, 139));
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TestDodajStudenteController.getInstance().addStudents(allStudentsList, toAddStudentsList);
+				dodajStudenteController.addStudents(allStudentsList, toAddStudentsList);
 			}
 		});
 		btnAdd.setBounds(320, 24, 50, 40);
 		contentPanel.add(btnAdd);
 		
 		btnAddAll = new JButton(">>");
+		btnAddAll.setBackground(new Color(0, 0, 139));
 		btnAddAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TestDodajStudenteController.getInstance().addAll(allStudentsList, toAddStudentsList);
+				dodajStudenteController.addAll(allStudentsList, toAddStudentsList);
 			}
 		});
 		btnAddAll.setBounds(320, 75, 50, 40);
 		contentPanel.add(btnAddAll);
 		
 		btnRemove = new JButton("<");
+		btnRemove.setBackground(new Color(0, 0, 139));
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TestDodajStudenteController.getInstance().removeStudents(allStudentsList, toAddStudentsList);
+				dodajStudenteController.removeStudents(allStudentsList, toAddStudentsList);
 			}
 		});
 		btnRemove.setBounds(320, 156, 50, 40);
 		contentPanel.add(btnRemove);
 		
 		btnRemoveAll = new JButton("<<");
+		btnRemoveAll.setBackground(new Color(0, 0, 139));
 		btnRemoveAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TestDodajStudenteController.getInstance().removeAll(allStudentsList, toAddStudentsList);
+				dodajStudenteController.removeAll(allStudentsList, toAddStudentsList);
 			}
 		});
 		btnRemoveAll.setBounds(320, 207, 50, 40);
@@ -173,5 +200,24 @@ public class TestDodajStudenteDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+	
+	private List<StudentNaTestuDTO> loadStudents() {
+		List<StudentNaTestuDTO> students = new ArrayList<>();
+		try (BufferedReader reader = new BufferedReader(new FileReader("data.txt"))) {
+			String line = null;
+			int lineno = 1;
+			while ((line = reader.readLine()) != null) {
+				String index = lineno + "/14";
+				String ime = line.split(" ")[0];
+				String prezime = line.split(" ")[1];
+				students.add(new StudentNaTestuDTO(lineno, index, ime, prezime, 0, ""));
+				++lineno;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return students;
 	}
 }

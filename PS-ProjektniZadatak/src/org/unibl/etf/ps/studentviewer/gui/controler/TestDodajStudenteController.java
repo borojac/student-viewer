@@ -11,16 +11,8 @@ import org.unibl.etf.ps.studentviewer.gui.StudentListModel;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 
 public class TestDodajStudenteController {
-
-	private static TestDodajStudenteController instance = null;
 	
-	public static TestDodajStudenteController getInstance() {
-		if (instance == null)
-			instance = new TestDodajStudenteController();
-		return instance;
-	}
-	
-	private TestDodajStudenteController() {}
+	public TestDodajStudenteController() {}
 	
 	public void addStudents(JList<StudentNaTestuDTO> allStudentsList, JList<StudentNaTestuDTO> toAddStudentsList) {
 		List<StudentNaTestuDTO> selectedStudents = allStudentsList.getSelectedValuesList();
