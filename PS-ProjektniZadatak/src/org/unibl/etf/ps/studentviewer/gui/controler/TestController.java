@@ -44,9 +44,14 @@ import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.TabSettings;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
 
 public class TestController {
@@ -178,25 +183,51 @@ public class TestController {
 			final String aPath = chosenFile.getAbsolutePath();
 			chosenFile = new File(aPath + ".pdf");
 		}
+		
+		Font font = FontFactory.getFont("fonts/tahoma.ttf", BaseFont.IDENTITY_H, 12);
 		Document doc = new Document();
 		OutputStream os = new FileOutputStream(chosenFile);
 		PdfWriter writer = PdfWriter.getInstance(doc, os);
+		
 		Paragraph title = new Paragraph();
+		title.setIndentationLeft(60f);
+		title.setFont(font);
 		title.add(test.getNaziv());
 		title.add("\n\n");
 		title.add("Datum: " + new SimpleDateFormat("dd.MM.yyyy").format(test.getDatum()));
 		title.add("\n\n");
-		title.add("Napomena: " + test.getNapomena());
+		title.add("Napomena:\t" + test.getNapomena());
 		title.add("\n\n");
+		
+		Paragraph spacing = new Paragraph("\n\n");
+		spacing.add("Studenti na testu:");
+		spacing.add("\n\n");
+		
 		Paragraph body = new Paragraph();
+		body.setIndentationLeft(60f);
+		body.setFont(font);
+		body.setTabSettings(new TabSettings());
 		for (StudentNaTestuDTO student : test.getStudenti()) {
-			final String studentString = student.getBrojIndeksa() + " " + student.getIme() + " " + student.getPrezime()
-			+ " " + student.getBrojBodova() + " " + student.getKomentar();
-			body.add(studentString);
+			final String studentString = student.getBrojIndeksa() + " " + student.getIme() + " " + student.getPrezime();
+			final String bodovi = "" + student.getBrojBodova();
+			final String komentar = student.getKomentar();
+			body.add(new Chunk(studentString));
+			body.add(Chunk.TABBING);
+			body.add(Chunk.TABBING);
+			body.add(Chunk.TABBING);
+			body.add(Chunk.TABBING);
+			body.add(new Chunk(bodovi));
+			body.add(Chunk.TABBING);
+			body.add(Chunk.TABBING);
+			body.add(Chunk.TABBING);
+			body.add(Chunk.TABBING);
+			body.add(new Chunk(komentar));
+			body.add("\n");
 			body.add("\n");
 		}
 		doc.open();
 		doc.add(title);
+		doc.add(spacing);
 		doc.add(body);
 		doc.close();
 		writer.flush();
@@ -205,25 +236,50 @@ public class TestController {
 	}
 
 	public void print(TestDTO test) throws IOException, DocumentException, PrinterException {
+		
+		Font font = FontFactory.getFont("fonts/tahoma.ttf", BaseFont.IDENTITY_H, 12);
 		Document doc = new Document();
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		PdfWriter writer = PdfWriter.getInstance(doc, os);
 		Paragraph title = new Paragraph();
+		title.setIndentationLeft(60f);
+		title.setFont(font);
 		title.add(test.getNaziv());
 		title.add("\n\n");
 		title.add("Datum: " + new SimpleDateFormat("dd.MM.yyyy").format(test.getDatum()));
 		title.add("\n\n");
-		title.add("Napomena: " + test.getNapomena());
+		title.add("Napomena:\t" + test.getNapomena());
 		title.add("\n\n");
+		
+		Paragraph spacing = new Paragraph("\n\n");
+		spacing.add("Studenti na testu:");
+		spacing.add("\n\n");
+		
 		Paragraph body = new Paragraph();
+		body.setIndentationLeft(60f);
+		body.setFont(font);
+		body.setTabSettings(new TabSettings());
 		for (StudentNaTestuDTO student : test.getStudenti()) {
-			final String studentString = student.getBrojIndeksa() + " " + student.getIme() + " " + student.getPrezime()
-			+ " " + student.getBrojBodova() + " " + student.getKomentar();
-			body.add(studentString);
+			final String studentString = student.getBrojIndeksa() + " " + student.getIme() + " " + student.getPrezime();
+			final String bodovi = "" + student.getBrojBodova();
+			final String komentar = student.getKomentar();
+			body.add(new Chunk(studentString));
+			body.add(Chunk.TABBING);
+			body.add(Chunk.TABBING);
+			body.add(Chunk.TABBING);
+			body.add(Chunk.TABBING);
+			body.add(new Chunk(bodovi));
+			body.add(Chunk.TABBING);
+			body.add(Chunk.TABBING);
+			body.add(Chunk.TABBING);
+			body.add(Chunk.TABBING);
+			body.add(new Chunk(komentar));
+			body.add("\n");
 			body.add("\n");
 		}
 		doc.open();
 		doc.add(title);
+		doc.add(spacing);
 		doc.add(body);
 		doc.close();
 		writer.flush();
