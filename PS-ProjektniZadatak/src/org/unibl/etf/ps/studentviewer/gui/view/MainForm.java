@@ -171,9 +171,12 @@ public class MainForm extends JFrame {
 			
 			TestDTO test = new TestDTO(1, "I kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("20.4.2017"), "Treći zadatak nije niko uradio", 30, 7);
 			List<StudentNaTestuDTO> studenti = test.getStudenti();
-			studenti.add(new StudentNaTestuDTO(2, "1111/14", "Dejan", "Mijić", 78, ""));
+			studenti.add(new StudentNaTestuDTO(2, "1111/14", "Dejan", "Mijić", 78, "Neki komentar"));
 			studenti.add(new StudentNaTestuDTO(3, "1127/14", "Milan", "Pavičić", 72, ""));
-			studenti.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuća", 65, "Neki komentar"));
+			studenti.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuća", 65, ""));
+			studenti.add(new StudentNaTestuDTO(4, "1103/14", "Milan", "Boroja", 92, ""));
+			studenti.add(new StudentNaTestuDTO(5, "1113/14", "Dejan", "Stanković", 67, ""));
+			studenti.add(new StudentNaTestuDTO(6, "1118/14", "Predrag", "Petrović", 70, ""));
 			test.setStudenti(studenti);
 			data.add(test);
 			

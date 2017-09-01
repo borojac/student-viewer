@@ -239,7 +239,7 @@ public class TestController {
 		printDoc.close();
 	}
 
-	public String getStatistika(TestDTO test) {
+	public String getStatistika() {
 		//		TODO - dodati ukupan broj studenata na predmetu - potreban StudentDTO
 		StringBuilder statisticsBuilder = new StringBuilder();
 
@@ -263,16 +263,16 @@ public class TestController {
 		}
 
 		statisticsBuilder.append("Izaslo: " + izaslo).append('\n');
-		statisticsBuilder.append("Polozilo: " + polozilo
+		statisticsBuilder.append(">50%: " + polozilo
 				+ String.format("(%.2f %%)", (double)polozilo / (double) izaslo * 100.0)).append('\n');
-		statisticsBuilder.append("Palo: " + (izaslo - polozilo)
+		statisticsBuilder.append("<50%: " + (izaslo - polozilo)
 				+ String.format("(%.2f %%)", (double)(izaslo-polozilo) / (double)izaslo * 100.0)).append('\n');
-		statisticsBuilder.append("Odlican-izuzetan (10): " + deset
+		statisticsBuilder.append(">90%: " + deset
 				+ String.format("(%.2f %%)", (double)deset / (double)polozilo * 100.0)).append('\n');
-		statisticsBuilder.append("Odlican (9): " + devet + String.format("(%.2f %%)", (double)devet / (double)polozilo * 100.0)).append('\n');
-		statisticsBuilder.append("Vrlo dobar (8): " + osam + String.format("(%.2f %%)", (double)osam / (double)polozilo * 100.0)).append('\n');
-		statisticsBuilder.append("Dobar (7): " + sedam + String.format("(%.2f %%)", (double)sedam / (double)polozilo * 100.0)).append('\n');
-		statisticsBuilder.append("Zadovoljava (6): " + sest + String.format("(%.2f %%)", (double)sest / (double)polozilo * 100.0));
+		statisticsBuilder.append("80%-90%: " + devet + String.format("(%.2f %%)", (double)devet / (double)polozilo * 100.0)).append('\n');
+		statisticsBuilder.append("70%-80%: " + osam + String.format("(%.2f %%)", (double)osam / (double)polozilo * 100.0)).append('\n');
+		statisticsBuilder.append("60%-70%: " + sedam + String.format("(%.2f %%)", (double)sedam / (double)polozilo * 100.0)).append('\n');
+		statisticsBuilder.append("50%-60%: " + sest + String.format("(%.2f %%)", (double)sest / (double)polozilo * 100.0));
 
 		return statisticsBuilder.toString();
 	}

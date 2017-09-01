@@ -163,15 +163,17 @@ public class TestDodajStudenteDialog extends JDialog {
 		contentPanel.add(btnRemoveAll);
 		{
 			JPanel buttonPane = new JPanel();
+			buttonPane.setBackground(new Color(0, 0, 139));
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.setBackground(new Color(0, 0, 139));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
 						Set<StudentNaTestuDTO> studentsSet = new HashSet<>(tableModel.getData());
-						boolean a = studentsSet.addAll(((StudentListModel) toAddStudentsList.getModel()).getData());
+						studentsSet.addAll(((StudentListModel) toAddStudentsList.getModel()).getData());
 						
 						Command dodajStudente = new DodajStudenteTestCommand(
 								testForm.getModel(),
@@ -191,6 +193,7 @@ public class TestDodajStudenteDialog extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.setBackground(new Color(0, 0, 139));
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						thisDialog.dispose();

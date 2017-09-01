@@ -145,7 +145,6 @@ public class TestForm extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		this.testForm = this;
-		testController = new TestController(test, this);
 
 		if (testParam != null) {
 			test = new TestDTO(testParam.getTestId(), testParam.getNaziv(), testParam.getDatum(),
@@ -155,6 +154,8 @@ public class TestForm extends JFrame {
 		} else 
 			test = new TestDTO();
 
+		testController = new TestController(test, this);
+		
 		try {
 			logger.addAppender(new FileAppender(new SimpleLayout(), TestForm.class.getSimpleName() + ".log"));
 		} catch (IOException e1) {
@@ -452,7 +453,7 @@ public class TestForm extends JFrame {
 		statistikaTextArea = new JTextArea();
 		statistikaTextArea.setEditable(false);
 		statistikaTextArea.setBounds(144, 231, 280, 147);
-		statistikaTextArea.setText(testController.getStatistika(test));
+		statistikaTextArea.setText(testController.getStatistika());
 		contentPane.add(statistikaTextArea);
 		
 		JLabel lblProcenat = new JLabel("Procenat:");
@@ -489,7 +490,7 @@ public class TestForm extends JFrame {
 	}
 
 	public void refreshStatistics() {
-		statistikaTextArea.setText(testController.getStatistika(test));
+		statistikaTextArea.setText(testController.getStatistika());
 	}
 	public void refreshStudentiTable() {
 		((StudentTableModel) studentiTable.getModel()).fireTableDataChanged();
