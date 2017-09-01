@@ -46,6 +46,7 @@ import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -167,8 +168,18 @@ public class MainForm extends JFrame {
 		TestoviTableModel model = new TestoviTableModel();
 		try {
 			List<TestDTO> data = new ArrayList<>();
-			data.add(new TestDTO(1, "I kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("20.4.2017"), "Treći zadatak nije niko uradio", 7));
-			data.add(new TestDTO(1, "II kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("28.5.2017"), "", 7));
+			
+			TestDTO test = new TestDTO(1, "I kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("20.4.2017"), "Treći zadatak nije niko uradio", 7);
+			List<StudentNaTestuDTO> studenti = test.getStudenti();
+			studenti.add(new StudentNaTestuDTO(2, "1111/14", "Dejan", "Mijić", 78, ""));
+			studenti.add(new StudentNaTestuDTO(3, "1127/14", "Milan", "Pavičić", 72, ""));
+			studenti.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuća", 65, "Neki komentar"));
+			test.setStudenti(studenti);
+			data.add(test);
+			
+			TestDTO test2 = new TestDTO(1, "II kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("28.5.2017"), "", 7);
+			data.add(test2);
+			
 			model.setData(data);
 		} catch (ParseException e1) {
 			e1.printStackTrace();
@@ -187,6 +198,9 @@ public class MainForm extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				if (testoviTable.getSelectedRow() != -1)
 					btnIzmjeni.setEnabled(true);
+				if (e.getClickCount() == 2) {
+					new MainFormController().editTestAction(testoviTable);
+				}
 			}
 		});
 
@@ -425,10 +439,7 @@ public class MainForm extends JFrame {
 		btnIzmjeni.setEnabled(false);
 		btnIzmjeni.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				int row = testoviTable.getSelectedRow();
-				TestDTO selected = ((TestoviTableModel) testoviTable.getModel()).getRowAt(row);
-				TestForm tf = new TestForm(selected);
-				tf.setVisible(true);
+				new MainFormController().editTestAction(testoviTable);
 			}
 		});
 		btnIzmjeni.setBounds(109, 166, 89, 23);

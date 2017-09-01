@@ -53,24 +53,23 @@ public class TestController {
 
 	private CommandStack undoStack = new CommandStack();
 	private CommandStack redoStack = new CommandStack();
+	
+	private TestDTO test;
+	private TestForm testForm;
 
-	private static TestController instance = null;
-
-	public static TestController getInstance() {
-		if (instance == null)
-			instance = new TestController();
-		return instance;
+	public TestController(TestDTO test, TestForm testForm) {
+		super();
+		this.test = test;
+		this.testForm = testForm;
 	}
-
-	private TestController() {}
 
 	public void undoRedoAction(TestForm testForm, KeyEvent ke) {
 		if (ke.getKeyCode() == KeyEvent.VK_Z && ke.isControlDown()) {
-			instance.undo();
+			undo();
 			testForm.refreshStatistics();
 			testForm.refreshStudentiTable();
 		} else if (ke.getKeyCode() == KeyEvent.VK_Y && ke.isControlDown()) {
-			instance.redo();
+			redo();
 			testForm.refreshStatistics();
 			testForm.refreshStudentiTable();
 		}
@@ -117,9 +116,9 @@ public class TestController {
 				HSSFCell cell = row.getCell(0);
 				String brojIndeksa = cell.getStringCellValue().trim();
 
-//				TODO - potreban StudentDAO za dobijanje informacija o ispitu
-//				StudentNaTestuDTO tmp = new StudentNaTestuDTO(studentId, brojIndeksa, ime, prezime, 0, "");
-//				data.add(tmp);
+				//				TODO - potreban StudentDAO za dobijanje informacija o ispitu
+				//				StudentNaTestuDTO tmp = new StudentNaTestuDTO(studentId, brojIndeksa, ime, prezime, 0, "");
+				//				data.add(tmp);
 
 
 			}
@@ -127,10 +126,10 @@ public class TestController {
 			workbook.close();
 			fileSystem.close();
 		} else if (chosenFile != null && chosenFile.exists() && chosenFile.getAbsolutePath().endsWith(".xlsx")) {
-			
+
 			InputStream chosenFileInputStream = 
 					new BufferedInputStream(new FileInputStream(chosenFile));
-			
+
 			XSSFWorkbook workbook = new XSSFWorkbook(chosenFileInputStream);
 			XSSFSheet sheet = workbook.getSheetAt(0);
 			int rowIndex = 0;
@@ -148,18 +147,18 @@ public class TestController {
 				Cell cell = row.getCell(0);
 				String brojIndeksa = cell.getStringCellValue().trim();
 				System.out.println(brojIndeksa);
-//				TODO - potreban StudentDAO za dobijanje informacija o ispitu
-//				StudentNaTestuDTO tmp = new StudentNaTestuDTO(studentId, brojIndeksa, ime, prezime, 0, "");
-//				data.add(tmp);
+				//				TODO - potreban StudentDAO za dobijanje informacija o ispitu
+				//				StudentNaTestuDTO tmp = new StudentNaTestuDTO(studentId, brojIndeksa, ime, prezime, 0, "");
+				//				data.add(tmp);
 
 
 			}
-			
+
 			workbook.close();
 			chosenFileInputStream.close();
 		} else
 			return null;
-		
+
 		return data;
 	}
 
@@ -277,12 +276,6 @@ public class TestController {
 
 		return statisticsBuilder.toString();
 	}
-	/**
-	 * NETESTIRANO ***********************
-	 * @param test
-	 * @param model
-	 * @param searchText
-	 */
 	public void initiateStudentSearch(TestDTO test, StudentTableModel model, String searchText) {
 		if (test == null || model == null || searchText == null)
 			return;
@@ -292,7 +285,7 @@ public class TestController {
 			return;
 		}
 		List<StudentNaTestuDTO> searchedList = null;
-		
+
 		Matcher matcher = Pattern.compile("[<,>,=]+").matcher(searchText);
 		Matcher numberMatcher = Pattern.compile("\\d+").matcher(searchText);
 		int count = 0;
@@ -314,36 +307,22 @@ public class TestController {
 				searchedList = this.pretraga(test, searchText);
 			}
 		} else {
-			try {
-				int brojBodova = Integer.parseInt(searchText);
-				searchedList = this.filter(test, brojBodova, "");
-			} catch (NumberFormatException e) {
-				searchedList = this.pretraga(test, searchText);
-			}
+			searchedList = this.pretraga(test, searchText);
+
 		}
-		
+
 		model.setData(searchedList);
 		model.fireTableDataChanged();
-		
+
 	}
-	
-	public void resetSearch(TestDTO test, StudentTableModel model, JTextField searchField) {
-		if (test == null || model == null || searchField == null)
-			return;
-		List<StudentNaTestuDTO> data = test.getStudenti();
-		test.setStudenti(data);
-		model.setData(data);
-		model.fireTableDataChanged();
-		searchField.setText("");
-	}
-	
+
 	public List<StudentNaTestuDTO> filter(TestDTO test, int brojBodova, String diskriminator) {
 		List<StudentNaTestuDTO> retList = new ArrayList<>();
 		for (StudentNaTestuDTO student : test.getStudenti()) {
 			if ("<".equals(diskriminator) && student.getBrojBodova() < brojBodova)
 				retList.add(student);
 			else if ("<=".equals(diskriminator) && student.getBrojBodova() <= brojBodova)
-					retList.add(student);
+				retList.add(student);
 			else if (("=".equals(diskriminator) || "".equals(diskriminator)) && student.getBrojBodova() == brojBodova)
 				retList.add(student);
 			else if ("<=".equals(diskriminator) && student.getBrojBodova() <= brojBodova)
@@ -357,14 +336,25 @@ public class TestController {
 		}
 		return retList;
 	}
-	
+
 	public List<StudentNaTestuDTO> pretraga(TestDTO test, String query) {
 		List<StudentNaTestuDTO> retList = new ArrayList<>();
 		for (StudentNaTestuDTO student : test.getStudenti()) {
-			if (student.getIme().startsWith(query) || student.getPrezime().startsWith(query) || student.getBrojIndeksa().startsWith(query))
+			String ime = student.getIme().toLowerCase();
+			String prezime = student.getPrezime().toLowerCase();
+			query = query.toLowerCase();
+			if (ime.startsWith(query) || prezime.startsWith(query) || student.getBrojIndeksa().startsWith(query))
 				retList.add(student);
 		}
 		return retList;
+	}
+
+	public void addTestAction(TestDTO test) {
+
+	}
+
+	public void updateTestAction(TestDTO test) {
+
 	}
 
 }

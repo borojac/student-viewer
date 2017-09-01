@@ -20,6 +20,16 @@ public class StudentTableModel extends AbstractTableModel {
 
 	private List<StudentNaTestuDTO> data = new ArrayList<>();
 	
+	private TestController testController = null;
+	
+	public TestController getTestController() {
+		return testController;
+	}
+
+	public void setTestController(TestController testController) {
+		this.testController = testController;
+	}
+
 	private String[] columns = { "Broj indeksa", "Ime", "Prezime", "Broj bodova", "Komentar" };
 
 	public StudentTableModel(List<StudentNaTestuDTO> data) {
@@ -89,12 +99,12 @@ public class StudentTableModel extends AbstractTableModel {
 		if (columnIndex == 3 && aValue instanceof String) {
 			try {
 				int brBodova = Integer.parseInt((String) aValue);
-				TestController.getInstance().executeCommand(
+				testController.executeCommand(
 						new IzmjenaBrojaBodovaTestCommand(student, brBodova));
 			} catch (NumberFormatException ex) {}
 		} else if (columnIndex == 4 && aValue instanceof String) {
 			String komentar = (String) aValue;
-			TestController.getInstance().executeCommand(
+			testController.executeCommand(
 					new IzmjenaKomentaraTestCommand(student, komentar));
 		}
 		

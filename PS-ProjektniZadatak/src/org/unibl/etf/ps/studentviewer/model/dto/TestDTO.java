@@ -23,12 +23,12 @@ public class TestDTO {
 	}
 
 	public TestDTO(int testId, String naziv, Date datum, String napomena, int predmetId) {
-		super();
 		this.testId = testId;
 		this.naziv = naziv;
 		this.datum = datum;
 		this.napomena = napomena;
 		this.predmetId = predmetId;
+		studenti = new ArrayList<>();
 	}
 
 	public int getTestId() {

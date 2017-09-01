@@ -28,6 +28,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class TestDodajStudenteDialog extends JDialog {
 
@@ -44,8 +46,9 @@ public class TestDodajStudenteDialog extends JDialog {
 	private StudentTableModel tableModel;
 	
 	private TestForm testForm;
+	private TestController testController;
 	
-	public TestDodajStudenteDialog(TestForm testForm) {
+	public TestDodajStudenteDialog(TestForm testForm, TestController testController) {
 		setAlwaysOnTop(true);
 		setBounds(100, 100, 700, 350);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -55,6 +58,7 @@ public class TestDodajStudenteDialog extends JDialog {
 		contentPanel.setLayout(null);
 		thisDialog = this;
 		this.testForm = testForm;
+		this.testController = testController;
 		this.tableModel = (StudentTableModel) testForm.getStudentiTable().getModel();
 		
 		DAOFactory factory = new MySQLDAOFactory();
@@ -70,11 +74,27 @@ public class TestDodajStudenteDialog extends JDialog {
 		allStudentsListModel.setData(data);
 		
 		allStudentsList = new JList<>(allStudentsListModel);
+		allStudentsList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				if (me.getClickCount() == 2) {
+					TestDodajStudenteController.getInstance().addStudents(allStudentsList, toAddStudentsList);
+				}
+			}
+		});
 		allStudentsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		allStudentsList.setBounds(10, 11, 290, 256);
 		contentPanel.add(allStudentsList);
 		
 		toAddStudentsList = new JList<>(new StudentListModel());
+		toAddStudentsList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				if (me.getClickCount() == 2) {
+					TestDodajStudenteController.getInstance().removeStudents(allStudentsList, toAddStudentsList);
+				}
+			}
+		});
 		toAddStudentsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		toAddStudentsList.setBounds(384, 11, 290, 256);
 		contentPanel.add(toAddStudentsList);
@@ -131,7 +151,7 @@ public class TestDodajStudenteDialog extends JDialog {
 								(StudentTableModel) testForm.getStudentiTable().getModel(), 
 								new ArrayList<>(studentsSet));
 						
-						TestController.getInstance().executeCommand(dodajStudente);
+						testController.executeCommand(dodajStudente);
 						testForm.refreshStatistics();
 						testForm.refreshStudentiTable();
 						thisDialog.dispose();
