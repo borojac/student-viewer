@@ -9,6 +9,8 @@ import org.unibl.etf.ps.studentviewer.exec.SearchExec;
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
 import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
+import org.unibl.etf.ps.studentviewer.gui.addstudentview.AddForm;
+import org.unibl.etf.ps.studentviewer.gui.addstudentview.ChooseAddTypeForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AccountForm;
 import org.unibl.etf.ps.studentviewer.gui.view.FilterForm;
 import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
@@ -25,7 +27,19 @@ public class MainFormController {
 	private MainForm mainForm;
 	private static ExecScheduler scheduler = new ExecScheduler();
 	private ShowForm showForm = new ShowForm(this);
+	/*Stankovic*/
+	private static boolean addFormOpened = false;
+	private static boolean chooseAddTypeFormOpened = false;
+
 	
+	public static void resetAddFormOpened() {
+		addFormOpened = false;
+	}
+	public static void resetChooseAddTypeFormOpened() {
+		chooseAddTypeFormOpened = false;
+	}
+
+	/*Stankovic end*/
 	
 	
 	public static void resetSortFormOpened(){

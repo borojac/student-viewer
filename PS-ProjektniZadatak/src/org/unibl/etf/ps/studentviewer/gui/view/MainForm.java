@@ -368,6 +368,13 @@ public class MainForm extends JFrame {
 		buttons.add(filterBtn);
 
 		addBtn = new JButton("Dodaj studente");
+		addBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				/*Stankovic*/
+				mainFormControler.createChooseAddTypeForm();
+			}
+		});
 		buttonPanel.add(addBtn);
 		buttons.add(addBtn);
 
