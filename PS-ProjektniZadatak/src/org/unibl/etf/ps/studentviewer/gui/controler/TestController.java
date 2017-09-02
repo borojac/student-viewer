@@ -19,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -66,6 +67,10 @@ public class TestController {
 		super();
 		this.test = test;
 		this.testForm = testForm;
+	}
+
+	public TestDTO getTest() {
+		return test;
 	}
 
 	public void undoRedoAction(TestForm testForm, KeyEvent ke) {
@@ -405,12 +410,26 @@ public class TestController {
 		return retList;
 	}
 
-	public void addTestAction(TestDTO test) {
+	public void addTestAction() {
+		DAOFactory factory = new MySQLDAOFactory();
+		TestDAO testDAO = factory.getTestDAO();
+		if (!testDAO.addTest(test)) {
+			JOptionPane.showMessageDialog(testForm, "Dodavanje nije uspjelo. Pokušajte ponovo.", "Greška", JOptionPane.ERROR_MESSAGE);
+		} else {
+			testForm.dispose();
+		}
 
 	}
 
-	public void updateTestAction(TestDTO test) {
-
+	public void updateTestAction() {
+		DAOFactory factory = new MySQLDAOFactory();
+		TestDAO testDAO = factory.getTestDAO();
+		
+		if (!testDAO.updateTest(test))
+			JOptionPane.showMessageDialog(testForm, "Ažuriranje nije uspjelo. Pokušajte ponovo.", "Greška", JOptionPane.ERROR_MESSAGE);
+		else
+			testForm.dispose();
 	}
+	
 
 }

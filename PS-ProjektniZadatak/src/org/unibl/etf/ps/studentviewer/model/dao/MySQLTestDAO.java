@@ -1,5 +1,6 @@
 package org.unibl.etf.ps.studentviewer.model.dao;
 
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,7 +11,8 @@ import java.util.List;
 
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
-import org.unibl.etf.ps.studentviewer.utility.DBUtility;
+import org.unibl.etf.ps.studentviewer.utility.dbutility.ConnectionPool;
+import org.unibl.etf.ps.studentviewer.utility.dbutility.DBUtility;
 /**
  * Nezavrseno, netestirano
  * @author Nemanja Stokuca
@@ -27,140 +29,95 @@ public class MySQLTestDAO implements TestDAO {
 		String getStudentsQuery = "SELECT StudentId, BrojIndeksa, Ime, Prezime, BrojBodova, Komentar"
 				+ " FROM izlazi_na INNER JOIN student USING(StudentId) WHERE TestId=?";
 		Connection conn = null;
+		PreparedStatement ps = null;
 		ResultSet rs = null;
-		try (PreparedStatement ps = conn.prepareStatement(getTestQuery)) {
+		try {
 
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getTestQuery);
 			ps.setInt(1, idTesta);
 
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				retVal = new TestDTO(rs.getInt(1), rs.getString(2), rs.getDate(3),
-						rs.getString(4), rs.getInt(5));
+						rs.getString(4), rs.getInt(5), rs.getInt(6));
 			}
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			DBUtility.close(rs);
 		}
-		List<StudentNaTestuDTO> students = new ArrayList<>();
 		
-		try (PreparedStatement ps = conn.prepareStatement(getStudentsQuery)) {
-			
+		List<StudentNaTestuDTO> students = new ArrayList<>();
+
+		try {
+			ps = conn.prepareStatement(getStudentsQuery);
 			ps.setInt(1, idTesta);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				students.add(new StudentNaTestuDTO(rs.getInt(1), rs.getString(2), rs.getString(3),
 						rs.getString(4), rs.getInt(5), rs.getString(6)));
 			}
-			
-			retVal.setStudenti(students);
-			
+			if (retVal != null)
+				retVal.setStudenti(students);
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			DBUtility.close(conn, rs);
+			DBUtility.close(conn, rs, ps);
 		}
 		return retVal;
 	}
 
 	@Override
 	public boolean updateTest(TestDTO test) {
+		boolean retVal = true;
 
-		String updateTest = "UPDATE test SET Naziv=?, Datum=?, Napomena=? WHERE TestId=?";
-		String getStudents = "SELECT StudentId FROM izlazi_na WHERE TestId=?";
-		String deleteStudent = "DELETE FROM izlazi_na WHERE StudentId=?";
-		String insertStudent = "INSERT INTO izlazi_na VALUE (?, ?, ?, ?)";
-		List<Integer> students = new ArrayList<>();
-		boolean retVal = false;
-		ResultSet rs = null;
+		String updateTestQuery = "UPDATE test SET Naziv=?, Datum=?, Napomena=?, Procenat=?, PredmetId=? WHERE TestId=?";
+		String addStudentsQuery = "INSERT INTO izlazi_na VALUES(?, ?, ?, ?)";
+		String deleteStudentsQuery = "DELETE FROM izlazi_na WHERE TestId=?";
+
 		Connection conn = null;
-		try (PreparedStatement ps = conn.prepareStatement(getStudents)) {
+		PreparedStatement ps = null;
 
+		try {
+
+			conn = DBUtility.open();
+			conn.setAutoCommit(false);
+			ps = conn.prepareStatement(deleteStudentsQuery);
 			ps.setInt(1, test.getTestId());
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				students.add(rs.getInt(1));
-			}
-			
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-
-		boolean deleted = true;
-		for (Integer i : students) {
-			boolean found = false;
-			for (StudentNaTestuDTO student : test.getStudenti()) {
-				if (i == student.getStudentId()) {
-					found = true;
-					break;
-				}
-			}
-			if (!found) {
-
-				try (PreparedStatement ps = conn.prepareStatement(deleteStudent)) {
-
-					ps.setInt(1, i);
-					deleted &= ps.executeUpdate() == 1;
-
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-
-		boolean inserted = true;
-		for (StudentNaTestuDTO student : test.getStudenti()) {
-			boolean found = false;
-			for (Integer i : students) {
-				if (i == student.getStudentId()) {
-					found = true;
-					break;
-				}
-			}
-
-			if (!found) {
-
-				try (PreparedStatement ps = conn.prepareStatement(insertStudent)) {
-
-					ps.setInt(1, student.getStudentId());
-					ps.setInt(2, test.getTestId());
-					ps.setInt(3, student.getBrojBodova());
-					ps.setString(4, student.getKomentar());
-					
-					
-					inserted &= ps.executeUpdate() == 1;
-
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-
-		retVal = deleted & inserted;
-
-		try (PreparedStatement ps = conn.prepareStatement(updateTest)) {
-
+			retVal = ps.executeUpdate() > 0;
+			ps = conn.prepareStatement(updateTestQuery);
 			ps.setString(1, test.getNaziv());
 			ps.setDate(2, new java.sql.Date(test.getDatum().getTime()));
 			ps.setString(3, test.getNapomena());
-			ps.setInt(4, test.getTestId());
-			
+			ps.setInt(4, test.getProcenat());
+			ps.setInt(5, test.getPredmetId());
+			ps.setInt(6, test.getTestId());
 			retVal &= ps.executeUpdate() == 1;
-
+			ps = conn.prepareStatement(addStudentsQuery);
+			for (StudentNaTestuDTO student : test.getStudenti()) {
+				ps.setInt(1, test.getTestId());
+				ps.setInt(2, student.getStudentId());
+				ps.setInt(3, student.getBrojBodova());
+				ps.setString(4, student.getKomentar());
+				retVal &= ps.executeUpdate() == 1;
+			}
+			
+			if (retVal) 
+				conn.commit();
+			else
+				conn.rollback();
+			
+			conn.setAutoCommit(true);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			// TODO: handle exception
 			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, ps);
 		}
 
-		DBUtility.close(conn, rs);
-		
 		return retVal;
 	}
 
@@ -172,7 +129,11 @@ public class MySQLTestDAO implements TestDAO {
 		boolean retVal = false;
 
 		Connection conn = null;
-		try (PreparedStatement ps = conn.prepareStatement(addTestQuery)) {
+		PreparedStatement ps = null;
+
+		try {
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(addTestQuery);
 
 			ps.setInt(1, test.getPredmetId());
 			ps.setString(2, test.getNaziv());
@@ -198,7 +159,7 @@ public class MySQLTestDAO implements TestDAO {
 			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		} finally {
-			DBUtility.close(conn);
+			DBUtility.close(conn, ps);
 		}
 		return retVal;
 	}
@@ -215,8 +176,12 @@ public class MySQLTestDAO implements TestDAO {
 		String query = "DELETE FROM test WHERE TestId=?";
 
 		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DBUtility.open();
 
-		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, test.getTestId());
 
 			retVal = ps.executeUpdate() == 1;
 
@@ -225,7 +190,7 @@ public class MySQLTestDAO implements TestDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			DBUtility.close(conn);
+			DBUtility.close(conn, ps);
 		}
 
 		return retVal;
@@ -236,26 +201,91 @@ public class MySQLTestDAO implements TestDAO {
 		List<StudentNaTestuDTO> retVals = new ArrayList<>();
 		String query = "SELECT StudentId, BrojIndeksa, Ime, Prezime, BrojBodova, Komentar"
 				+ " FROM student INNER JOIN izlazi_na USING(StudentId) WHERE TestId = ?";
-		
+
 		Connection conn = null;
 		ResultSet rs = null;
-		try (PreparedStatement ps = conn.prepareStatement(query)) {
-			
+		PreparedStatement ps = null;
+		try {
+			conn = DBUtility.open();
+
+			ps = conn.prepareStatement(query);
 			ps.setInt(1, idTesta);
-			
+
 			rs = ps.executeQuery();
-			
+
 			while (rs.next()) {
 				StudentNaTestuDTO tmp = new StudentNaTestuDTO(rs.getInt(1), rs.getString(2),
 						rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6));
 				retVals.add(tmp);
 			}
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			DBUtility.close(conn, rs);
+			DBUtility.close(conn, rs, ps);
+		}
+
+		return retVals;
+	}
+
+	@Override
+	public List<TestDTO> getAllTests() {
+		List<TestDTO> retVals = new ArrayList<>();
+
+		String query = "SELECT * FROM test";
+
+		Connection conn = null;
+		ResultSet rs = null;
+		Statement s = null;
+
+		try {
+			conn = DBUtility.open();
+
+			s = conn.createStatement();			
+			rs = s.executeQuery(query);
+
+			while (rs.next()) {
+				TestDTO tmp = new TestDTO(rs.getInt(1), rs.getString(3), new Date(rs.getDate(4).getTime()), rs.getString(5), rs.getInt(6), rs.getInt(2));
+				tmp.setStudenti(getAllStudents(tmp.getTestId()));
+				retVals.add(tmp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(rs, s, conn);
+		}
+
+
+		return retVals;
+	}
+
+	@Override
+	public List<StudentNaTestuDTO> getAllStudentsForPredmet(int predmetId) {
+		List<StudentNaTestuDTO> retVals = new ArrayList<>();
+		
+		String query = "SELECT StudentId, BrojIndeksa, Ime, Prezime FROM slusa INNER JOIN student USING(StudentId) WHERE PredmetId=?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			
+			ps.setInt(1, predmetId);
+			rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				StudentNaTestuDTO tmp = new StudentNaTestuDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), 0, "");
+				retVals.add(tmp);
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(rs, ps, conn);
 		}
 		
 		return retVals;

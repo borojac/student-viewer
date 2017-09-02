@@ -12,4 +12,6 @@ public interface TestDAO {
 	public boolean addTest(TestDTO test);
 	public boolean deleteTest(TestDTO test);
 	public List<StudentNaTestuDTO> getAllStudents(int idTesta);
+	public List<TestDTO> getAllTests();
+	public List<StudentNaTestuDTO> getAllStudentsForPredmet(int predmetId);
 }

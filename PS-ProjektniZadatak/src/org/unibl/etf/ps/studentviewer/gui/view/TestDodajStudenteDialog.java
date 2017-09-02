@@ -75,13 +75,12 @@ public class TestDodajStudenteDialog extends JDialog {
 		this.tableModel = (StudentTableModel) testForm.getStudentiTable().getModel();
 		
 		DAOFactory factory = new MySQLDAOFactory();
-//		 TODO - cekam StudentDAO da povadim studente na testu
-//		StudentDAO studentDAO = factory.getStudentDAO();
+		TestDAO testDAO = factory.getTestDAO();
 		
 		StudentListModel allStudentsListModel = new StudentListModel();
 
 		// TODO - DODAVANJE STUDENATA
-		List<StudentNaTestuDTO> data = loadStudents();
+		List<StudentNaTestuDTO> data = testDAO.getAllStudentsForPredmet(testController.getTest().getPredmetId());
 		allStudentsListModel.setData(data);
 		
 		scrollPane = new JScrollPane();

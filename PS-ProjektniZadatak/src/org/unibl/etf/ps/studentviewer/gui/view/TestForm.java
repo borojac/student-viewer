@@ -35,25 +35,14 @@ import datechooser.events.CommitEvent;
 import datechooser.events.CommitListener;
 import datechooser.model.multiple.MultyModelBehavior;
 import datechooser.beans.DateChooserCombo;
-import datechooser.beans.DateChooserComboBeanInfo;
-import datechooser.beans.DateChooserPanelCustomizer;
-import datechooser.beans.DateChooserVisual;
-import datechooser.controller.DateChooseController;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,8 +51,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.border.MatteBorder;
-import java.awt.SystemColor;
 import javax.swing.JComboBox;
 
 public class TestForm extends JFrame {
@@ -88,13 +75,14 @@ public class TestForm extends JFrame {
 	private boolean needsRefresh = false;
 
 	private TestForm testForm;
+	private MainForm parentForm;
 	private JButton btnImport;
 
 	private Logger logger = Logger.getLogger(TestForm.class);
 	private JTextArea statistikaTextArea;
 	private JComboBox procenatComboBox;
 
-	public TestForm(TestDTO testParam) {
+	public TestForm(TestDTO testParam, MainForm mainForm) {
 		setResizable(false);
 		addKeyListener(new KeyAdapter() {
 			@Override
@@ -128,6 +116,7 @@ public class TestForm extends JFrame {
 			test = new TestDTO();
 
 		testController = new TestController(test, this);
+		parentForm = mainForm;
 		
 		try {
 			logger.addAppender(new FileAppender(new SimpleLayout(), TestForm.class.getSimpleName() + ".log"));
@@ -242,6 +231,15 @@ public class TestForm extends JFrame {
 		studentiScrollPane.setViewportView(studentiTable);
 
 		btnSacuvaj = new JButton("Sa\u010Duvaj");
+		btnSacuvaj.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (update)
+					testController.updateTestAction();
+				else
+					testController.addTestAction();
+				parentForm.refreshStudentiTable();
+			}
+		});
 		btnSacuvaj.setBackground(new Color(0, 0, 139));
 		btnSacuvaj.setBounds(454, 627, 70, 23);
 		contentPane.add(btnSacuvaj);

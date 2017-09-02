@@ -126,9 +126,9 @@ public class MainFormController {
 		f.setVisible(true);
 	}
 	
-	public void editTestAction(JTable testoviTable) {
+	public void editTestAction(JTable testoviTable, MainForm mainForm) {
 		TestDTO selected = ((TestoviTableModel) testoviTable.getModel()).getData().get(testoviTable.getSelectedRow());
-		TestForm tf = new TestForm(selected);
+		TestForm tf = new TestForm(selected, mainForm);
 		tf.setVisible(true);
 	}
 }

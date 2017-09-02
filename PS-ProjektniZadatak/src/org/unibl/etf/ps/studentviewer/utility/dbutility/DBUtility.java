@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.utility;
+package org.unibl.etf.ps.studentviewer.utility.dbutility;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -10,7 +10,7 @@ import java.sql.Statement;
 public final class DBUtility {
 	private DBUtility() {}
 	
-	public static synchronized void close(ResultSet rs) {
+	private static void close(ResultSet rs) {
 		if (rs != null) {
 			try {
 				rs.close();
@@ -18,7 +18,7 @@ public final class DBUtility {
 		}
 	}
 	
-	public static synchronized void close(Statement s) {
+	private static void close(Statement s) {
 		if (s != null) {
 			try {
 				s.close();
@@ -26,14 +26,15 @@ public final class DBUtility {
 		}
 	}
 	
-	public static synchronized void close(Connection conn) {
-		
+	private static void close(Connection conn) {
+		ConnectionPool.getInstance().checkIn(conn);
 	}
 	
-	public static synchronized void close(Object... objects) {
+	public static void close(Object... objects) {
+		Connection conn = null;
 		for (Object obj : objects) {
 			if (obj instanceof Connection) {
-				close((Connection) obj);
+				conn = (Connection) obj;
 			} else if (obj instanceof Statement || 
 					   obj instanceof PreparedStatement ||
 					   obj instanceof CallableStatement) {
@@ -42,6 +43,12 @@ public final class DBUtility {
 				close((ResultSet) obj);
 			}
 		}
+		
+		close(conn);
+	}
+	
+	public static Connection open() throws SQLException {
+		return ConnectionPool.getInstance().checkOut();
 	}
 
 }

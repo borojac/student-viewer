@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -45,6 +46,9 @@ import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
 import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
+import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
@@ -53,7 +57,7 @@ import java.awt.event.KeyEvent;
 
 public class MainForm extends JFrame {
 
-	
+	private MainForm mainForm;
 	
 	private JPanel contentPane;
 	private MainFormController mainFormControler = new MainFormController(this);
@@ -143,6 +147,8 @@ public class MainForm extends JFrame {
 		contentPane.add(buttonPanel);
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 12));
 
+		mainForm = this;
+		
 		BufferedImage img = ImageIO.read(new File("img\\BellTower-RGB(JPG).jpg"));
 		BufferedImage correctionImage = ImageIO.read(new File("img\\whiteCorrection.png"));
 
@@ -165,28 +171,33 @@ public class MainForm extends JFrame {
 		 * 
 		 * TODO
 		 */
-		TestoviTableModel model = new TestoviTableModel();
-		try {
-			List<TestDTO> data = new ArrayList<>();
-			
-			TestDTO test = new TestDTO(1, "I kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("20.4.2017"), "Treći zadatak nije niko uradio", 30, 7);
-			List<StudentNaTestuDTO> studenti = test.getStudenti();
-			studenti.add(new StudentNaTestuDTO(2, "1111/14", "Dejan", "Mijić", 78, "Neki komentar"));
-			studenti.add(new StudentNaTestuDTO(3, "1127/14", "Milan", "Pavičić", 72, ""));
-			studenti.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuća", 65, ""));
-			studenti.add(new StudentNaTestuDTO(4, "1103/14", "Milan", "Boroja", 92, ""));
-			studenti.add(new StudentNaTestuDTO(5, "1113/14", "Dejan", "Stanković", 67, ""));
-			studenti.add(new StudentNaTestuDTO(6, "1118/14", "Predrag", "Petrović", 70, ""));
-			test.setStudenti(studenti);
-			data.add(test);
-			
-			TestDTO test2 = new TestDTO(1, "II kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("28.5.2017"), "", 30, 7);
-			data.add(test2);
-			
-			model.setData(data);
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-		}
+		
+		DAOFactory testFactory = new MySQLDAOFactory();
+		TestDAO testDAO = testFactory.getTestDAO();
+		List<TestDTO> data = testDAO.getAllTests();
+		
+		TestoviTableModel model = new TestoviTableModel(data);
+//		try {
+//			List<TestDTO> data = new ArrayList<>();
+//			
+//			TestDTO test = new TestDTO(1, "I kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("20.4.2017"), "Treći zadatak nije niko uradio", 30, 7);
+//			List<StudentNaTestuDTO> studenti = test.getStudenti();
+//			studenti.add(new StudentNaTestuDTO(2, "1111/14", "Dejan", "Mijić", 78, "Neki komentar"));
+//			studenti.add(new StudentNaTestuDTO(3, "1127/14", "Milan", "Pavičić", 72, ""));
+//			studenti.add(new StudentNaTestuDTO(1, "1145/14", "Nemanja", "Stokuća", 65, ""));
+//			studenti.add(new StudentNaTestuDTO(4, "1103/14", "Milan", "Boroja", 92, ""));
+//			studenti.add(new StudentNaTestuDTO(5, "1113/14", "Dejan", "Stanković", 67, ""));
+//			studenti.add(new StudentNaTestuDTO(6, "1118/14", "Predrag", "Petrović", 70, ""));
+//			test.setStudenti(studenti);
+//			data.add(test);
+//			
+//			TestDTO test2 = new TestDTO(1, "II kolokvijum", new SimpleDateFormat("dd.MM.yyyy").parse("28.5.2017"), "", 30, 7);
+//			data.add(test2);
+//			
+//			model.setData(data);
+//		} catch (ParseException e1) {
+//			e1.printStackTrace();
+//		}
 		/*
 		 * 
 		 * 
@@ -199,10 +210,16 @@ public class MainForm extends JFrame {
 		testoviTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (testoviTable.getSelectedRow() != -1)
+				if (testoviTable.getSelectedRow() != -1) {
 					btnIzmjeni.setEnabled(true);
+					btnBrisi.setEnabled(true);
+				} else {
+
+					btnIzmjeni.setEnabled(false);
+					btnBrisi.setEnabled(false);
+				}
 				if (e.getClickCount() == 2) {
-					new MainFormController().editTestAction(testoviTable);
+					new MainFormController().editTestAction(testoviTable, mainForm);
 				}
 			}
 		});
@@ -437,7 +454,7 @@ public class MainForm extends JFrame {
 		btnDodaj.setBackground(new Color(0, 0, 139));
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TestForm tf = new TestForm(null);
+				TestForm tf = new TestForm(null, mainForm);
 				tf.setVisible(true);
 			}
 		});
@@ -449,17 +466,39 @@ public class MainForm extends JFrame {
 		btnIzmjeni.setEnabled(false);
 		btnIzmjeni.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				new MainFormController().editTestAction(testoviTable);
+				new MainFormController().editTestAction(testoviTable, mainForm);
 			}
 		});
 		btnIzmjeni.setBounds(109, 166, 89, 23);
 		testoviPanel.add(btnIzmjeni);
 
 		btnBrisi = new JButton("Bri\u0161i");
+		btnBrisi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				DAOFactory factory = new MySQLDAOFactory();
+				TestDAO testDAO = factory.getTestDAO();
+				TestDTO test = ((TestoviTableModel) testoviTable.getModel()).getRowAt(testoviTable.getSelectedRow());
+				if (!testDAO.deleteTest(test)) {
+					JOptionPane.showMessageDialog(null, "Test ne može biti obrisan. Lista studenata na testu mora biti prazna da bi se test mogao brisati.", "Greška", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		});
 		btnBrisi.setBackground(new Color(0, 0, 139));
 		btnBrisi.setBounds(208, 166, 89, 23);
+		btnBrisi.setEnabled(false);
 		testoviPanel.add(btnBrisi);
 		
+	}
+	
+	public void refreshStudentiTable() {
+		TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
+		DAOFactory factory = new MySQLDAOFactory();
+		TestDAO testDAO = factory.getTestDAO();
+		
+		List<TestDTO> data = testDAO.getAllTests();
+		
+		model.setData(data);
+		model.fireTableDataChanged();
 	}
 
 	public MainTable getMainTable() {

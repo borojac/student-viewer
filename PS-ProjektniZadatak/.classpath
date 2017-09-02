@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="libs/commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="libs/junit-4.12.jar"/>
 	<classpathentry kind="lib" path="libs/itext5-itextpdf-5.5.12.jar"/>
+	<classpathentry kind="lib" path="libs/mysql-connector-java-5.1.43-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
