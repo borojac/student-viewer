@@ -80,7 +80,7 @@ public class TestDodajStudenteDialog extends JDialog {
 		StudentListModel allStudentsListModel = new StudentListModel();
 
 		// TODO - DODAVANJE STUDENATA
-		List<StudentNaTestuDTO> data = testDAO.getAllStudentsForPredmet(testController.getTest().getPredmetId());
+		List<StudentNaTestuDTO> data = testDAO.getStudentsOnPredmet(testController.getTest().getPredmetId());
 		allStudentsListModel.setData(data);
 		
 		scrollPane = new JScrollPane();

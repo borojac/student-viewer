@@ -261,7 +261,7 @@ public class MySQLTestDAO implements TestDAO {
 	}
 
 	@Override
-	public List<StudentNaTestuDTO> getAllStudentsForPredmet(int predmetId) {
+	public List<StudentNaTestuDTO> getStudentsOnPredmet(int predmetId) {
 		List<StudentNaTestuDTO> retVals = new ArrayList<>();
 		
 		String query = "SELECT StudentId, BrojIndeksa, Ime, Prezime FROM slusa INNER JOIN student USING(StudentId) WHERE PredmetId=?";

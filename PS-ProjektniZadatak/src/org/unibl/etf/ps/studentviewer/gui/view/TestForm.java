@@ -117,7 +117,7 @@ public class TestForm extends JFrame {
 
 		testController = new TestController(test, this);
 		parentForm = mainForm;
-		
+
 		try {
 			logger.addAppender(new FileAppender(new SimpleLayout(), TestForm.class.getSimpleName() + ".log"));
 		} catch (IOException e1) {
@@ -196,11 +196,11 @@ public class TestForm extends JFrame {
 		});
 		contentPane.add(studentiScrollPane);
 
-		
+
 		StudentTableModel tableModel = new StudentTableModel(test.getStudenti());
 		tableModel.setTestController(testController);
-		
-		
+
+
 		studentiTable = new JTable(tableModel);
 		studentiTable.setForeground(new Color(0, 0, 139));
 		studentiTable.setBackground(new Color(173, 216, 230));
@@ -327,12 +327,7 @@ public class TestForm extends JFrame {
 		btnDodaj.setBackground(new Color(0, 0, 139));
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (needsRefresh) {
-					testForm.resetSearch();
-					needsRefresh = false;
-				}
-				TestDodajStudenteDialog dodajStudenteDialog = new TestDodajStudenteDialog(testForm, testController);
-				dodajStudenteDialog.setVisible(true);
+				testController.addStudents();
 			}
 		});
 		btnDodaj.setBounds(170, 627, 70, 23);
@@ -344,15 +339,12 @@ public class TestForm extends JFrame {
 		btnUkloni.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!needsRefresh && studentiTable.getSelectedRows().length > 0) {
+					List<StudentNaTestuDTO> forRemoving = new ArrayList<>();
 					StudentTableModel model = (StudentTableModel) studentiTable.getModel();
-					List<StudentNaTestuDTO> studentList = new ArrayList<>(model.getData());
-					List<StudentNaTestuDTO> forDelete = new ArrayList<>();
-					for (int x : studentiTable.getSelectedRows()) {
-						forDelete.add(studentList.get(x));
+					for (int index : studentiTable.getSelectedRows()) {
+						forRemoving.add(model.getRowAt(index));
 					}
-					studentList.removeAll(forDelete);
-					testController.executeCommand(new UkloniStudenteTestCommand(test, model, studentList));
-					refreshStatistics();
+					testController.removeStudents(model, forRemoving);
 				}
 			}
 		});
@@ -424,29 +416,29 @@ public class TestForm extends JFrame {
 		statistikaTextArea = new JTextArea();
 		statistikaTextArea.setEditable(false);
 		statistikaTextArea.setBounds(144, 231, 280, 147);
-		statistikaTextArea.setText(testController.getStatistika());
+		statistikaTextArea.setText(testController.getTestStatistics());
 		contentPane.add(statistikaTextArea);
-		
+
 		JLabel lblProcenat = new JLabel("Procenat:");
 		lblProcenat.setHorizontalAlignment(SwingConstants.CENTER);
 		lblProcenat.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblProcenat.setForeground(Color.WHITE);
 		lblProcenat.setBounds(434, 24, 90, 20);
 		contentPane.add(lblProcenat);
-		
+
 		procenatComboBox = new JComboBox();
 		procenatComboBox.setBounds(434, 55, 90, 20);
 		contentPane.add(procenatComboBox);
-		
+
 		int tmpProcenat = 0;
 		while (tmpProcenat <= 100) {
 			procenatComboBox.addItem("" + tmpProcenat);
 			tmpProcenat += 5;
 		}
-		
+
 		procenatComboBox.setSelectedItem("" + 50);
-		
-		
+
+
 		if (update)
 			setFields();
 	}
@@ -461,12 +453,12 @@ public class TestForm extends JFrame {
 	}
 
 	public void refreshStatistics() {
-		statistikaTextArea.setText(testController.getStatistika());
+		statistikaTextArea.setText(testController.getTestStatistics());
 	}
 	public void refreshStudentiTable() {
 		((StudentTableModel) studentiTable.getModel()).fireTableDataChanged();
 	}
-	
+
 	private void setFields() {
 		procenatComboBox.setSelectedItem("" + test.getProcenat());
 		procenatComboBox.setEnabled(false);
@@ -480,13 +472,16 @@ public class TestForm extends JFrame {
 			model = new StudentTableModel(test.getStudenti());
 		else
 			model.setData(test.getStudenti());
-		
+
 	}
-	
-	private void resetSearch() {
-		StudentTableModel model = (StudentTableModel) studentiTable.getModel();
-		model.setData(test.getStudenti());
-		model.fireTableDataChanged();
-		searchTextField.setText("");
+
+	public void resetSearch() {
+		if (needsRefresh) {
+			StudentTableModel model = (StudentTableModel) studentiTable.getModel();
+			model.setData(test.getStudenti());
+			model.fireTableDataChanged();
+			searchTextField.setText("");
+			needsRefresh = false;
+		}
 	}
 }

@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -37,7 +38,9 @@ import org.junit.experimental.categories.IncludeCategories;
 import org.unibl.etf.ps.studentviewer.command.Command;
 import org.unibl.etf.ps.studentviewer.command.CommandStack;
 import org.unibl.etf.ps.studentviewer.command.IzmjenaBrojaBodovaTestCommand;
+import org.unibl.etf.ps.studentviewer.command.UkloniStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
+import org.unibl.etf.ps.studentviewer.gui.view.TestDodajStudenteDialog;
 import org.unibl.etf.ps.studentviewer.gui.view.TestForm;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
@@ -300,7 +303,7 @@ public class TestController {
 		printDoc.close();
 	}
 
-	public String getStatistika() {
+	public String getTestStatistics() {
 		//		TODO - dodati ukupan broj studenata na predmetu - potreban StudentDTO
 		StringBuilder statisticsBuilder = new StringBuilder();
 
@@ -429,6 +432,19 @@ public class TestController {
 			JOptionPane.showMessageDialog(testForm, "Ažuriranje nije uspjelo. Pokušajte ponovo.", "Greška", JOptionPane.ERROR_MESSAGE);
 		else
 			testForm.dispose();
+	
+	}
+	
+	public void addStudents() {
+		testForm.resetSearch();
+		TestDodajStudenteDialog dodajStudenteDialog = new TestDodajStudenteDialog(testForm, this);
+		dodajStudenteDialog.setVisible(true);
+	}
+	public void removeStudents(StudentTableModel model, List<StudentNaTestuDTO> forRemoving) {
+		List<StudentNaTestuDTO> studentList = new ArrayList<>(model.getData());
+		studentList.removeAll(forRemoving);
+		this.executeCommand(new UkloniStudenteTestCommand(test, model, studentList));
+		testForm.refreshStatistics();
 	}
 	
 
