@@ -39,8 +39,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import javax.swing.JScrollPane;
 
-public class TestDodajStudenteDialog extends JDialog {
+public class TestDodajStudenteForm extends JDialog {
 
+	private static final long serialVersionUID = -2611589723801370402L;
 	private final JPanel contentPanel = new JPanel();
 	private JButton btnRemove;
 	private JButton btnAddAll;
@@ -59,7 +60,7 @@ public class TestDodajStudenteDialog extends JDialog {
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPane_1;
 	
-	public TestDodajStudenteDialog(TestForm testForm, TestController testController) {
+	public TestDodajStudenteForm(TestForm testForm, TestController testController) {
 		setAlwaysOnTop(true);
 		setBounds(100, 100, 700, 350);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -79,7 +80,6 @@ public class TestDodajStudenteDialog extends JDialog {
 		
 		StudentListModel allStudentsListModel = new StudentListModel();
 
-		// TODO - DODAVANJE STUDENATA
 		List<StudentNaTestuDTO> data = testDAO.getStudentsOnPredmet(testController.getTest().getPredmetId());
 		allStudentsListModel.setData(data);
 		
@@ -202,24 +202,5 @@ public class TestDodajStudenteDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
-	}
-	
-	private List<StudentNaTestuDTO> loadStudents() {
-		List<StudentNaTestuDTO> students = new ArrayList<>();
-		try (BufferedReader reader = new BufferedReader(new FileReader("data.txt"))) {
-			String line = null;
-			int lineno = 1;
-			while ((line = reader.readLine()) != null) {
-				String index = lineno + "/14";
-				String ime = line.split(" ")[0];
-				String prezime = line.split(" ")[1];
-				students.add(new StudentNaTestuDTO(lineno, index, ime, prezime, 0, ""));
-				++lineno;
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return students;
 	}
 }

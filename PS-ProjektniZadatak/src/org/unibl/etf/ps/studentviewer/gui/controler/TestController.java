@@ -40,7 +40,7 @@ import org.unibl.etf.ps.studentviewer.command.CommandStack;
 import org.unibl.etf.ps.studentviewer.command.IzmjenaBrojaBodovaTestCommand;
 import org.unibl.etf.ps.studentviewer.command.UkloniStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
-import org.unibl.etf.ps.studentviewer.gui.view.TestDodajStudenteDialog;
+import org.unibl.etf.ps.studentviewer.gui.view.TestDodajStudenteForm;
 import org.unibl.etf.ps.studentviewer.gui.view.TestForm;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
@@ -437,7 +437,7 @@ public class TestController {
 	
 	public void addStudents() {
 		testForm.resetSearch();
-		TestDodajStudenteDialog dodajStudenteDialog = new TestDodajStudenteDialog(testForm, this);
+		TestDodajStudenteForm dodajStudenteDialog = new TestDodajStudenteForm(testForm, this);
 		dodajStudenteDialog.setVisible(true);
 	}
 	public void removeStudents(StudentTableModel model, List<StudentNaTestuDTO> forRemoving) {
