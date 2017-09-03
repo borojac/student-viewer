@@ -106,6 +106,10 @@ public class MainForm extends JFrame {
 	 * @throws ClassNotFoundException
 	 */
 	public static void main(String[] args) {
+//		System.setProperty("javax.net.ssl.keyStore", "StudentViewer.jks");
+//		System.setProperty("javax.net.ssl.keyStorePassword", "studentviewer");
+		System.setProperty("javax.net.ssl.trustStore", "StudentViewer.jks");
+		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (Exception ex) {}
