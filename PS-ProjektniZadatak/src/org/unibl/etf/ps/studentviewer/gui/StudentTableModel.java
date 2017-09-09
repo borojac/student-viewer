@@ -46,7 +46,7 @@ public class StudentTableModel extends AbstractTableModel {
 	}
 
 	public StudentNaTestuDTO getRowAt(int index) {
-		if (index > 0 && index < data.size())
+		if (index >= 0 && index < data.size())
 			return data.get(index);
 		return null;
 	}
@@ -99,15 +99,17 @@ public class StudentTableModel extends AbstractTableModel {
 		if (columnIndex == 3 && aValue instanceof String) {
 			try {
 				int brBodova = Integer.parseInt((String) aValue);
-				testController.executeCommand(
-						new IzmjenaBrojaBodovaTestCommand(student, brBodova));
+				if (brBodova != (int) getValueAt(rowIndex, columnIndex))
+					testController.executeCommand(
+							new IzmjenaBrojaBodovaTestCommand(student, brBodova));
 			} catch (NumberFormatException ex) {}
 		} else if (columnIndex == 4 && aValue instanceof String) {
 			String komentar = (String) aValue;
-			testController.executeCommand(
-					new IzmjenaKomentaraTestCommand(student, komentar));
+			if (!komentar.equals((String) getValueAt(rowIndex, columnIndex)))
+				testController.executeCommand(
+						new IzmjenaKomentaraTestCommand(student, komentar));
 		}
-		
+		fireTableDataChanged();
 	}
 	
 	

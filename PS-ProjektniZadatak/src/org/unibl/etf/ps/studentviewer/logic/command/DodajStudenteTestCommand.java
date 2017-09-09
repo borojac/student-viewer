@@ -1,5 +1,6 @@
 package org.unibl.etf.ps.studentviewer.logic.command;
 
+import java.awt.EventQueue;
 import java.util.List;
 
 import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
@@ -20,16 +21,28 @@ public class DodajStudenteTestCommand extends TestCommand {
 	public void execute() {
 
 		test.setStudenti(sljedecaLista);
-		model.setData(sljedecaLista);
-		model.fireTableDataChanged();
+		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				model.setData(sljedecaLista);
+				model.fireTableDataChanged();
+			}
+		});
 
 	}
 
 	@Override
 	public void unExecute() {
 		test.setStudenti(prethodnaLista);
-		model.setData(prethodnaLista);
-		model.fireTableDataChanged();
+		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				model.setData(prethodnaLista);
+				model.fireTableDataChanged();
+			}
+		});
 	}
 
 	@Override

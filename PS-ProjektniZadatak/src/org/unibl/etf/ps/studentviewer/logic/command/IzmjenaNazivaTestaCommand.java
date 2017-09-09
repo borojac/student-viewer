@@ -1,5 +1,7 @@
 package org.unibl.etf.ps.studentviewer.logic.command;
 
+import java.awt.EventQueue;
+
 import javax.swing.JTextField;
 
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
@@ -19,20 +21,33 @@ public class IzmjenaNazivaTestaCommand extends TestCommand {
 
 	@Override
 	public void execute() {
-		this.test.setNaziv(sljedeciNaziv);
+		test.setNaziv(sljedeciNaziv);
 
 	}
 
 	@Override
 	public void unExecute() {
-		this.nazivTextField.setText(prethodniNaziv);
-		this.test.setNaziv(prethodniNaziv);
+		test.setNaziv(prethodniNaziv);
+		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				nazivTextField.setText(prethodniNaziv);
+			}
+		});
+		
 	}
 	
 	@Override
 	public void reExecute() {
-		this.nazivTextField.setText(sljedeciNaziv);
 		this.test.setNaziv(sljedeciNaziv);
+		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				nazivTextField.setText(sljedeciNaziv);
+			}
+		});
 	}
 
 }

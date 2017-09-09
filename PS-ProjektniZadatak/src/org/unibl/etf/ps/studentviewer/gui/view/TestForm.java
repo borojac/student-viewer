@@ -15,6 +15,7 @@ import org.unibl.etf.ps.studentviewer.logic.command.DodajNapomenuTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.DodajStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaDatumaTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaNazivaTestaCommand;
+import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaProcentaTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.UkloniStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
@@ -23,7 +24,11 @@ import com.itextpdf.text.DocumentException;
 import javax.swing.JLabel;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
@@ -157,8 +162,10 @@ public class TestForm extends JFrame {
 		nazivTextField.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				IzmjenaNazivaTestaCommand command = new IzmjenaNazivaTestaCommand(test, nazivTextField);
-				testController.executeCommand(command);
+				if (!nazivTextField.getText().equals(test.getNaziv())) {
+					IzmjenaNazivaTestaCommand command = new IzmjenaNazivaTestaCommand(test, nazivTextField);
+					testController.executeCommand(command);
+				}
 			}
 		});
 		nazivTextField.setBounds(144, 12, 280, 20);
@@ -173,8 +180,10 @@ public class TestForm extends JFrame {
 		napomenaTextArea.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				Command command = new DodajNapomenuTestCommand(test, napomenaTextArea);
-				testController.executeCommand(command);
+				if (!napomenaTextArea.getText().equals(test.getNapomena())) {
+					Command command = new DodajNapomenuTestCommand(test, napomenaTextArea);
+					testController.executeCommand(command);
+				}
 			}
 		});
 		napomenaTextArea.addKeyListener(new KeyAdapter() {
@@ -239,7 +248,7 @@ public class TestForm extends JFrame {
 					testController.updateTestAction();
 				else
 					testController.addTestAction();
-				parentForm.refreshStudentiTable();
+				parentForm.refreshTestoviTable();
 			}
 		});
 		btnSacuvaj.setBackground(new Color(0, 0, 139));
@@ -345,7 +354,7 @@ public class TestForm extends JFrame {
 		btnUkloni.setEnabled(false);
 		btnUkloni.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (!needsRefresh && studentiTable.getSelectedRows().length > 0) {
+				if (studentiTable.getSelectedRows().length > 0) {
 					List<StudentNaTestuDTO> forRemoving = new ArrayList<>();
 					StudentTableModel model = (StudentTableModel) studentiTable.getModel();
 					for (int index : studentiTable.getSelectedRows()) {
@@ -368,8 +377,10 @@ public class TestForm extends JFrame {
 
 			@Override
 			public void onCommit(CommitEvent arg0) {
-				Command command = new IzmjenaDatumaTestCommand(test, dateChooserCombo);
-				testController.executeCommand(command);
+				if (dateChooserCombo.getSelectedDate().getTime().getTime() != test.getDatum().getTime()) {
+					Command command = new IzmjenaDatumaTestCommand(test, dateChooserCombo);
+					testController.executeCommand(command);
+				}
 
 			}
 		});
@@ -435,20 +446,32 @@ public class TestForm extends JFrame {
 		contentPane.add(lblProcenat);
 
 		procenatComboBox = new JComboBox();
+		initProcenatComboBox();
+		procenatComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				if (Integer.parseInt((String) procenatComboBox.getSelectedItem())
+						!= test.getProcenat()) {
+					
+					IzmjenaProcentaTestCommand command = 
+							new IzmjenaProcentaTestCommand(test, procenatComboBox);
+					testController.executeCommand(command);
+				}
+			}
+		});
 		procenatComboBox.setBounds(434, 55, 90, 20);
 		contentPane.add(procenatComboBox);
 
-		int tmpProcenat = 0;
-		while (tmpProcenat <= 100) {
-			procenatComboBox.addItem("" + tmpProcenat);
-			tmpProcenat += 5;
-		}
-
-		procenatComboBox.setSelectedItem("" + 50);
-
-
 		if (update)
 			setFields();
+		
+		KeyboardFocusManager.getCurrentKeyboardFocusManager()
+		.addKeyEventDispatcher(new KeyEventDispatcher() {
+			@Override
+			public boolean dispatchKeyEvent(KeyEvent e) {
+				testController.undoRedoAction(testForm, e);
+				return false;
+			}
+		});
 	}
 
 
@@ -461,24 +484,43 @@ public class TestForm extends JFrame {
 	}
 
 	public void refreshStatistics() {
-		statistikaTextArea.setText(testController.getTestStatistics());
+		EventQueue.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				statistikaTextArea.setText(testController.getTestStatistics());
+			}
+		});
 	}
 	public void refreshStudentiTable() {
-		((StudentTableModel) studentiTable.getModel()).fireTableDataChanged();
+		EventQueue.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				((StudentTableModel) studentiTable.getModel()).fireTableDataChanged();
+			}
+		});
 	}
 
 	private void setFields() {
-		procenatComboBox.setSelectedItem("" + test.getProcenat());
-		nazivTextField.setText(test.getNaziv());
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(test.getDatum());
-		dateChooserCombo.setSelectedDate(cal);
-		napomenaTextArea.setText(test.getNapomena());
-		StudentTableModel model = (StudentTableModel) studentiTable.getModel();
-		if (model == null) 
-			model = new StudentTableModel(test.getStudenti());
-		else
-			model.setData(test.getStudenti());
+		EventQueue.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				procenatComboBox.setSelectedItem("" + test.getProcenat());
+				nazivTextField.setText(test.getNaziv());
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(test.getDatum());
+				dateChooserCombo.setSelectedDate(cal);
+				napomenaTextArea.setText(test.getNapomena());
+				StudentTableModel model = (StudentTableModel) studentiTable.getModel();
+				if (model == null) 
+					model = new StudentTableModel(test.getStudenti());
+				else
+					model.setData(test.getStudenti());
+			}
+		});
+
 
 	}
 
@@ -490,5 +532,15 @@ public class TestForm extends JFrame {
 			searchTextField.setText("");
 			needsRefresh = false;
 		}
+	}
+	
+	private void initProcenatComboBox() {
+		int tmpProcenat = 0;
+		while (tmpProcenat <= 100) {
+			procenatComboBox.addItem("" + tmpProcenat);
+			tmpProcenat += 5;
+		}
+
+		procenatComboBox.setSelectedItem("" + 50);
 	}
 }

@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.gui.controler;
+package org.unibl.etf.ps.studentviewer.gui.controller;
 
 import org.unibl.etf.ps.studentviewer.gui.view.AccountForm;
 import org.unibl.etf.ps.studentviewer.gui.view.DodavanjePredmetaForm;

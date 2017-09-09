@@ -60,7 +60,7 @@ public class MainForm extends JFrame {
 	private MainForm mainForm;
 	
 	private JPanel contentPane;
-	private MainFormController mainFormControler = new MainFormController(this);
+	private MainFormController mainFormController = new MainFormController(this);
 	
 	// ------- Components!!! ------- //
 	ArrayList<JButton> buttons = new ArrayList<JButton>();
@@ -168,17 +168,34 @@ public class MainForm extends JFrame {
 		contentPane.add(testoviPanel);
 		testoviPanel.setLayout(null);
 
-		
-		DAOFactory testFactory = new MySQLDAOFactory();
-		TestDAO testDAO = testFactory.getTestDAO();
-		List<TestDTO> data = testDAO.getAllTests();
-		
-		TestoviTableModel model = new TestoviTableModel(data);
-		testoviTable = new JTable(model);
+		testoviTable = new JTable();
+		testoviTable.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent event) {
+				if (event.getKeyCode() == KeyEvent.VK_DELETE)
+					new Thread(new Runnable() {
+						
+						@Override
+						public void run() {
+
+							mainFormController.deleteTestAction(testoviTable);							
+						}
+					}).start();
+			}
+		});
 		testoviTable.setFont(new Font("Century Gothic", Font.BOLD, 12));
 		testoviTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		testoviTable.setForeground(new Color(0, 0, 139));
 		testoviTable.setBackground(new Color(173, 216, 230));
+		
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				mainFormController.initTestoviTable(testoviTable);
+			}
+		}).start();
+		
 		testoviTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -191,8 +208,18 @@ public class MainForm extends JFrame {
 					btnBrisi.setEnabled(false);
 				}
 				if (e.getClickCount() == 2) {
-					new MainFormController().editTestAction(testoviTable, mainForm);
+					mainFormController.editTestAction(testoviTable);
 				}
+			}
+			@Override
+			public void mouseEntered(MouseEvent event) {
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						mainFormController.initMouseHoverAction(event, testoviTable);
+					}
+				}).start();
 			}
 		});
 
@@ -232,7 +259,7 @@ public class MainForm extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if (arg0.toString().contains("keyText=Enter"))
-					mainFormControler.search(MainForm.this);
+					mainFormController.search(MainForm.this);
 			}
 		});
 		textField.setForeground(new Color(0, 0, 139));
@@ -260,35 +287,35 @@ public class MainForm extends JFrame {
 		filterBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				mainFormControler.createFilterForm();
+				mainFormController.createFilterForm();
 			}
 		});
 		
 		sortBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				mainFormControler.createSortForm();
+				mainFormController.createSortForm();
 			}
 		});
 
 		searchButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				mainFormControler.search(MainForm.this);
+				mainFormController.search(MainForm.this);
 			}
 		});
 		
 		restoreButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				mainFormControler.restoreTable();
+				mainFormController.restoreTable();
 			}
 		});
 		
 		showViewBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				mainFormControler.createShowForm();
+				mainFormController.createShowForm();
 			}
 		});
 		
@@ -304,7 +331,7 @@ public class MainForm extends JFrame {
 		accountBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				mainFormControler.createAccountForm();
+				mainFormController.createAccountForm();
 			}
 		});
 		
@@ -364,7 +391,7 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				/*Stankovic*/
-				mainFormControler.createChooseAddTypeForm();
+				mainFormController.createChooseAddTypeForm();
 			}
 		});
 		buttonPanel.add(addBtn);
@@ -440,7 +467,7 @@ public class MainForm extends JFrame {
 		btnIzmjeni.setEnabled(false);
 		btnIzmjeni.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				new MainFormController().editTestAction(testoviTable, mainForm);
+				mainFormController.editTestAction(testoviTable);
 			}
 		});
 		btnIzmjeni.setBounds(109, 166, 89, 23);
@@ -449,13 +476,14 @@ public class MainForm extends JFrame {
 		btnBrisi = new JButton("");
 		btnBrisi.setIcon(new ImageIcon("img/Delete_14.png"));
 		btnBrisi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				DAOFactory factory = new MySQLDAOFactory();
-				TestDAO testDAO = factory.getTestDAO();
-				TestDTO test = ((TestoviTableModel) testoviTable.getModel()).getRowAt(testoviTable.getSelectedRow());
-				if (!testDAO.deleteTest(test)) {
-					JOptionPane.showMessageDialog(null, "Test ne može biti obrisan. Lista studenata na testu mora biti prazna da bi se test mogao brisati.", "Greška", JOptionPane.INFORMATION_MESSAGE);
-				}
+			public void actionPerformed(ActionEvent event) {
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						mainFormController.deleteTestAction(testoviTable);						
+					}
+				}).start();
 			}
 		});
 		btnBrisi.setBackground(new Color(0, 0, 139));
@@ -465,18 +493,27 @@ public class MainForm extends JFrame {
 		
 	}
 	
-	public void refreshStudentiTable() {
+	public void refreshTestoviTable() {
 		TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
 		DAOFactory factory = new MySQLDAOFactory();
 		TestDAO testDAO = factory.getTestDAO();
 		
 		List<TestDTO> data = testDAO.getAllTests();
-		
-		model.setData(data);
-		model.fireTableDataChanged();
+		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				model.setData(data);
+				model.fireTableDataChanged();				
+			}
+		});
 	}
 
 	public MainTable getMainTable() {
 		return mainTable;
+	}
+	
+	public MainFormController getMainFormController() {
+		return mainFormController;
 	}
 }

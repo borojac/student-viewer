@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.gui.controler;
+package org.unibl.etf.ps.studentviewer.gui.controller;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

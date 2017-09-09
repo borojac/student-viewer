@@ -7,27 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/*
+ * Ovu klasu koristite za dobijanje konekcija za rad sa bazom podataka
+ * Ne koristite ConnectionPool
+ */
 public final class DBUtility {
-	private DBUtility() {}
-	
-	private static void close(ResultSet rs) {
-		if (rs != null) {
-			try {
-				rs.close();
-			} catch (SQLException ex) {}
-		}
-	}
-	
-	private static void close(Statement s) {
-		if (s != null) {
-			try {
-				s.close();
-			} catch (SQLException ex) {}
-		}
-	}
-	
-	private static void close(Connection conn) {
-		ConnectionPool.getInstance().checkIn(conn);
+
+	public static Connection open() throws SQLException {
+		return ConnectionPool.getInstance().checkOut();
 	}
 	
 	public static void close(Object... objects) {
@@ -43,12 +30,42 @@ public final class DBUtility {
 				close((ResultSet) obj);
 			}
 		}
-		
+
 		close(conn);
 	}
-	
-	public static Connection open() throws SQLException {
-		return ConnectionPool.getInstance().checkOut();
+
+
+
+
+
+
+
+
+
+
+
+
+
+	private DBUtility() {}
+
+	private static void close(ResultSet rs) {
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {}
+		}
+	}
+
+	private static void close(Statement s) {
+		if (s != null) {
+			try {
+				s.close();
+			} catch (SQLException ex) {}
+		}
+	}
+
+	private static void close(Connection conn) {
+		ConnectionPool.getInstance().checkIn(conn);
 	}
 
 }

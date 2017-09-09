@@ -416,11 +416,11 @@ public class TestController {
 	public void addTestAction() {
 		DAOFactory factory = new MySQLDAOFactory();
 		TestDAO testDAO = factory.getTestDAO();
-		if (!testDAO.addTest(test)) {
+		if (!testDAO.addTest(test))
 			JOptionPane.showMessageDialog(testForm, "Dodavanje nije uspjelo. Pokušajte ponovo.", "Greška", JOptionPane.ERROR_MESSAGE);
-		} else {
+		else 
 			testForm.dispose();
-		}
+		
 
 	}
 
@@ -441,10 +441,9 @@ public class TestController {
 		dodajStudenteDialog.setVisible(true);
 	}
 	public void removeStudents(StudentTableModel model, List<StudentNaTestuDTO> forRemoving) {
-		List<StudentNaTestuDTO> studentList = new ArrayList<>(model.getData());
-		studentList.removeAll(forRemoving);
-		this.executeCommand(new UkloniStudenteTestCommand(test, model, studentList));
+		this.executeCommand(new UkloniStudenteTestCommand(test, model, forRemoving));
 		testForm.refreshStatistics();
+		testForm.resetSearch();
 	}
 	
 

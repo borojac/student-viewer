@@ -1,5 +1,7 @@
 package org.unibl.etf.ps.studentviewer.logic.command;
 
+import java.awt.EventQueue;
+
 import javax.swing.JTextArea;
 
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
@@ -18,7 +20,6 @@ public class DodajNapomenuTestCommand extends TestCommand {
 
 	@Override
 	public void execute() {
-
 		this.test.setNapomena(sljedecaVrijednost);
 	}
 
@@ -26,7 +27,13 @@ public class DodajNapomenuTestCommand extends TestCommand {
 	public void unExecute() {
 
 		this.test.setNapomena(prethodnaVrijednost);
-		napomenaArea.setText(prethodnaVrijednost);
+		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				napomenaArea.setText(prethodnaVrijednost);
+			}
+		});
 
 	}
 
@@ -34,7 +41,13 @@ public class DodajNapomenuTestCommand extends TestCommand {
 	public void reExecute() {
 
 		this.test.setNapomena(sljedecaVrijednost);
-		napomenaArea.setText(sljedecaVrijednost);
+		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				napomenaArea.setText(sljedecaVrijednost);
+			}
+		});
 		
 	}
 
