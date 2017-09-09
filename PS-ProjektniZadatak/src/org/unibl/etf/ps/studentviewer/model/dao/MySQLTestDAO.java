@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.unibl.etf.ps.studentviewer.logic.utility.dbutility.ConnectionPool;
 import org.unibl.etf.ps.studentviewer.logic.utility.dbutility.DBUtility;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;

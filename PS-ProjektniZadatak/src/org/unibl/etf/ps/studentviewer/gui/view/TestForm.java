@@ -29,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import datechooser.events.CommitEvent;
@@ -230,7 +231,8 @@ public class TestForm extends JFrame {
 
 		studentiScrollPane.setViewportView(studentiTable);
 
-		btnSacuvaj = new JButton("Sa\u010Duvaj");
+		btnSacuvaj = new JButton("");
+		btnSacuvaj.setIcon(new ImageIcon("img/Save_14.png"));
 		btnSacuvaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (update)
@@ -270,7 +272,8 @@ public class TestForm extends JFrame {
 			}
 		});
 
-		btnPretrazi = new JButton("Pretra\u017Ei");
+		btnPretrazi = new JButton("");
+		btnPretrazi.setIcon(new ImageIcon("img/Lookup_14.png"));
 		btnPretrazi.setBackground(new Color(0, 0, 139));
 		btnPretrazi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -285,7 +288,8 @@ public class TestForm extends JFrame {
 		btnPretrazi.setBounds(434, 389, 90, 22);
 		contentPane.add(btnPretrazi);
 
-		btnPrint = new JButton("Print");
+		btnPrint = new JButton("");
+		btnPrint.setIcon(new ImageIcon("img/Print_14.png"));
 		btnPrint.setBackground(new Color(0, 0, 139));
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -308,7 +312,8 @@ public class TestForm extends JFrame {
 		btnPrint.setBounds(10, 627, 70, 23);
 		contentPane.add(btnPrint);
 
-		btnEksport = new JButton("Eksport");
+		btnEksport = new JButton("");
+		btnEksport.setIcon(new ImageIcon("img/PDF_14.png"));
 		btnEksport.setBackground(new Color(0, 0, 139));
 		btnEksport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -323,7 +328,8 @@ public class TestForm extends JFrame {
 		btnEksport.setBounds(90, 627, 70, 23);
 		contentPane.add(btnEksport);
 
-		btnDodaj = new JButton("Dodaj");
+		btnDodaj = new JButton("");
+		btnDodaj.setIcon(new ImageIcon("img/Add_14.png"));
 		btnDodaj.setBackground(new Color(0, 0, 139));
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -333,7 +339,8 @@ public class TestForm extends JFrame {
 		btnDodaj.setBounds(170, 627, 70, 23);
 		contentPane.add(btnDodaj);
 
-		btnUkloni = new JButton("Ukloni");
+		btnUkloni = new JButton("");
+		btnUkloni.setIcon(new ImageIcon("img/Delete_14.png"));
 		btnUkloni.setBackground(new Color(0, 0, 139));
 		btnUkloni.setEnabled(false);
 		btnUkloni.addActionListener(new ActionListener() {
@@ -378,7 +385,8 @@ public class TestForm extends JFrame {
 
 		contentPane.add(dateChooserCombo);
 
-		btnImport = new JButton("Import");
+		btnImport = new JButton("");
+		btnImport.setIcon(new ImageIcon("img/Import_14.png"));
 		btnImport.setBackground(new Color(0, 0, 139));
 		btnImport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -461,7 +469,6 @@ public class TestForm extends JFrame {
 
 	private void setFields() {
 		procenatComboBox.setSelectedItem("" + test.getProcenat());
-		procenatComboBox.setEnabled(false);
 		nazivTextField.setText(test.getNaziv());
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(test.getDatum());

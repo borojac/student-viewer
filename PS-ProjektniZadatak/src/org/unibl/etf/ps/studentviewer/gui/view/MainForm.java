@@ -422,7 +422,8 @@ public class MainForm extends JFrame {
 		
 		
 		/* Buttons by Stokuca */
-		btnDodaj = new JButton("Dodaj");
+		btnDodaj = new JButton("");
+		btnDodaj.setIcon(new ImageIcon("img/Add_14.png"));
 		btnDodaj.setBackground(new Color(0, 0, 139));
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -433,7 +434,8 @@ public class MainForm extends JFrame {
 		btnDodaj.setBounds(10, 166, 89, 23);
 		testoviPanel.add(btnDodaj);
 
-		btnIzmjeni = new JButton("Izmjeni");
+		btnIzmjeni = new JButton("");
+		btnIzmjeni.setIcon(new ImageIcon("img/Edit_14.png"));
 		btnIzmjeni.setBackground(new Color(0, 0, 139));
 		btnIzmjeni.setEnabled(false);
 		btnIzmjeni.addActionListener(new ActionListener() {
@@ -444,7 +446,8 @@ public class MainForm extends JFrame {
 		btnIzmjeni.setBounds(109, 166, 89, 23);
 		testoviPanel.add(btnIzmjeni);
 
-		btnBrisi = new JButton("Bri\u0161i");
+		btnBrisi = new JButton("");
+		btnBrisi.setIcon(new ImageIcon("img/Delete_14.png"));
 		btnBrisi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				DAOFactory factory = new MySQLDAOFactory();
