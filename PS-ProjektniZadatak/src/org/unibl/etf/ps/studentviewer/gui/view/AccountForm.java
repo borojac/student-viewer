@@ -3,6 +3,8 @@ package org.unibl.etf.ps.studentviewer.gui.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -19,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
+import org.unibl.etf.ps.studentviewer.gui.controler.AccountFormController;
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
 
 public class AccountForm extends JFrame {
@@ -27,20 +30,22 @@ public class AccountForm extends JFrame {
 	private JPanel buttonPane;
 	
 	private MainFormController mainFormController;
+	private AccountFormController accountFormController;
 	
 	ArrayList<JButton> buttons = new ArrayList<JButton>();
 	
 	private JButton promjenaLozinkeBtn;
 	private JButton promjenaKorImenaBtn;
-	private JButton dodavanjePredmeta;
-	private JButton brisanjePredmeta;
-	private JButton odjava;
+	private JButton dodavanjePredmetaBtn;
+	private JButton brisanjePredmetaBtn;
+	private JButton odjavaBtn;
 
 	/**
 	 * Create the frame.
 	 */
 	public AccountForm(MainFormController mainFormController) {
 		this.mainFormController = mainFormController;
+		accountFormController = new AccountFormController(this);
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -91,6 +96,7 @@ public class AccountForm extends JFrame {
 		contentPane.add(buttonPane);
 		
 		initButtons();
+		initButtonsListeners();
 		setButtonsSize();
 	}
 	
@@ -110,17 +116,56 @@ public class AccountForm extends JFrame {
 		buttons.add(promjenaKorImenaBtn);
 		buttonPane.add(promjenaKorImenaBtn);
 		
-		dodavanjePredmeta = new JButton("Dodaj predmet");
-		buttons.add(dodavanjePredmeta);
-		buttonPane.add(dodavanjePredmeta);
+		dodavanjePredmetaBtn = new JButton("Dodaj predmet");
+		buttons.add(dodavanjePredmetaBtn);
+		buttonPane.add(dodavanjePredmetaBtn);
 		
-		brisanjePredmeta = new JButton("Ukloni predmet");
-		buttons.add(brisanjePredmeta);
-		buttonPane.add(brisanjePredmeta);
+		brisanjePredmetaBtn = new JButton("Ukloni predmet");
+		buttons.add(brisanjePredmetaBtn);
+		buttonPane.add(brisanjePredmetaBtn);
 		
-		odjava = new JButton("Odjavi se");
-		buttons.add(odjava);
-		buttonPane.add(odjava);
+		odjavaBtn = new JButton("Odjavi se");
+		buttons.add(odjavaBtn);
+		buttonPane.add(odjavaBtn);
+		
+	}
+	
+	private void initButtonsListeners() {
+		
+		promjenaLozinkeBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				accountFormController.createPromjenaLozinkeForm();
+			}
+		});
+		
+		promjenaKorImenaBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				accountFormController.createPromjenaKorImenaForm();
+			}
+		});
+		
+		dodavanjePredmetaBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				accountFormController.createDodavanjePredmetaForm();
+			}
+		});
+		
+		brisanjePredmetaBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				accountFormController.createBrisanjePredmetaForm();
+			}
+		});
+		
+		odjavaBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				accountFormController.odjava();
+			}
+		});
 		
 	}
 
