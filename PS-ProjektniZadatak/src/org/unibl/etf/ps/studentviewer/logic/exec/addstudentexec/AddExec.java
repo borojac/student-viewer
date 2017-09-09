@@ -1,15 +1,15 @@
 /**
  * @author dejan
  */
-package org.unibl.etf.ps.studentviewer.addstudentexec;
+package org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec;
 
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import org.unibl.etf.ps.studentviewer.exec.Exec;
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
+import org.unibl.etf.ps.studentviewer.logic.exec.Exec;
 
 
 public class AddExec extends Exec {

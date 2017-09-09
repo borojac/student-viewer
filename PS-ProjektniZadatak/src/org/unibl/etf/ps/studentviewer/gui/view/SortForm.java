@@ -25,7 +25,7 @@ import javax.swing.border.EmptyBorder;
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
 import org.unibl.etf.ps.studentviewer.gui.controler.SortFormController;
-import org.unibl.etf.ps.studentviewer.utility.Sort;
+import org.unibl.etf.ps.studentviewer.logic.utility.Sort;
 
 public class SortForm extends JFrame {
 

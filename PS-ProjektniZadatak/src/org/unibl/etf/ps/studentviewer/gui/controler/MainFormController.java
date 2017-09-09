@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import javax.swing.JTable;
 
-import org.unibl.etf.ps.studentviewer.exec.ExecScheduler;
-import org.unibl.etf.ps.studentviewer.exec.SearchExec;
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
 import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
@@ -17,6 +15,8 @@ import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ShowForm;
 import org.unibl.etf.ps.studentviewer.gui.view.SortForm;
 import org.unibl.etf.ps.studentviewer.gui.view.TestForm;
+import org.unibl.etf.ps.studentviewer.logic.exec.ExecScheduler;
+import org.unibl.etf.ps.studentviewer.logic.exec.SearchExec;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 

@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.command;
+package org.unibl.etf.ps.studentviewer.logic.command;
 
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 

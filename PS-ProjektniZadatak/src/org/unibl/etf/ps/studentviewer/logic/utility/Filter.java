@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.utility;
+package org.unibl.etf.ps.studentviewer.logic.utility;
 
 public interface Filter {
 	public static String KOLOKVIJUM = "F_KOLOKVIJUM";

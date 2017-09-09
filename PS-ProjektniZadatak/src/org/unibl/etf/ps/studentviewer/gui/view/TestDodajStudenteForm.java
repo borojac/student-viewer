@@ -12,12 +12,12 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
-import org.unibl.etf.ps.studentviewer.command.Command;
-import org.unibl.etf.ps.studentviewer.command.DodajStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.gui.StudentListModel;
 import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
 import org.unibl.etf.ps.studentviewer.gui.controler.TestController;
 import org.unibl.etf.ps.studentviewer.gui.controler.TestDodajStudenteController;
+import org.unibl.etf.ps.studentviewer.logic.command.Command;
+import org.unibl.etf.ps.studentviewer.logic.command.DodajStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;

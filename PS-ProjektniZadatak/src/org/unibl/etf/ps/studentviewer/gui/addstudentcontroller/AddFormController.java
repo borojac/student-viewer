@@ -6,9 +6,9 @@ package org.unibl.etf.ps.studentviewer.gui.addstudentcontroller;
 
 import java.util.ArrayList;
 
-import org.unibl.etf.ps.studentviewer.addstudentexec.AddExec;
 import org.unibl.etf.ps.studentviewer.gui.addstudentview.AddForm;
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
+import org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec.AddExec;
 
 public class AddFormController {
 	MainFormController mainFormControler = null;

@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.unibl.etf.ps.studentviewer.command.IzmjenaBrojaBodovaTestCommand;
-import org.unibl.etf.ps.studentviewer.command.IzmjenaKomentaraTestCommand;
 import org.unibl.etf.ps.studentviewer.gui.controler.TestController;
+import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaBrojaBodovaTestCommand;
+import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaKomentaraTestCommand;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 

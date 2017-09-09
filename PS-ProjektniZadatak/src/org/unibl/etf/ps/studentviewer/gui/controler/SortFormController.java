@@ -2,8 +2,8 @@ package org.unibl.etf.ps.studentviewer.gui.controler;
 
 import java.util.ArrayList;
 
-import org.unibl.etf.ps.studentviewer.exec.SortExec;
 import org.unibl.etf.ps.studentviewer.gui.view.SortForm;
+import org.unibl.etf.ps.studentviewer.logic.exec.SortExec;
 
 public class SortFormController {
 	MainFormController mainFormControler = null;

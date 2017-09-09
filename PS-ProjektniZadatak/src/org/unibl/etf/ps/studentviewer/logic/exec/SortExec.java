@@ -1,12 +1,12 @@
-package org.unibl.etf.ps.studentviewer.exec;
+package org.unibl.etf.ps.studentviewer.logic.exec;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
+import org.unibl.etf.ps.studentviewer.logic.utility.SortUtil;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
-import org.unibl.etf.ps.studentviewer.utility.SortUtil;
 
 public class SortExec extends Exec {
 	

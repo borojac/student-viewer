@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.utility;
+package org.unibl.etf.ps.studentviewer.logic.utility;
 
 import java.util.ArrayList;
 import java.util.Comparator;

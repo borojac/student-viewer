@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import org.unibl.etf.ps.studentviewer.gui.ShowViewData;
-import org.unibl.etf.ps.studentviewer.utility.Sort;
+import org.unibl.etf.ps.studentviewer.logic.utility.Sort;
 
 public class StudentMainTableDTO {
 	private String brojIndeksa;

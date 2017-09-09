@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.utility.dbutility;
+package org.unibl.etf.ps.studentviewer.logic.utility.dbutility;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;

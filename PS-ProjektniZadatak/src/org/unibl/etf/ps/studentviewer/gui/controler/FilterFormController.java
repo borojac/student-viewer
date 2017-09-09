@@ -3,8 +3,8 @@ package org.unibl.etf.ps.studentviewer.gui.controler;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.unibl.etf.ps.studentviewer.exec.FilterExec;
 import org.unibl.etf.ps.studentviewer.gui.view.FilterForm;
+import org.unibl.etf.ps.studentviewer.logic.exec.FilterExec;
 
 public class FilterFormController {
 	// ArrayList<Student> firstParam;

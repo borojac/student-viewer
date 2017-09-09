@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.command;
+package org.unibl.etf.ps.studentviewer.logic.command;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

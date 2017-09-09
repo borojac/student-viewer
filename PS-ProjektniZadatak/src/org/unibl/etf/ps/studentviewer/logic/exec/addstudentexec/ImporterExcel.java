@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.addstudentexec;
+package org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec;
 
 import java.io.BufferedInputStream;
 import java.io.File;
