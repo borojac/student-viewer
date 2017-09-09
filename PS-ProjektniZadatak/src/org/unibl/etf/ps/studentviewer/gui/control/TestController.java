@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.gui.controler;
+package org.unibl.etf.ps.studentviewer.gui.control;
 
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;

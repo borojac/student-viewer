@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
+import org.unibl.etf.ps.studentviewer.gui.control.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.exec.Exec;
 
 

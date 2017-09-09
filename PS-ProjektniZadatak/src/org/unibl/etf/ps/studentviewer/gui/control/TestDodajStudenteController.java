@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.gui.controler;
+package org.unibl.etf.ps.studentviewer.gui.control;
 
 import java.util.ArrayList;
 import java.util.HashSet;

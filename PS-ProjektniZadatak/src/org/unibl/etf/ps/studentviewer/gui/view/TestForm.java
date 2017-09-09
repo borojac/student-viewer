@@ -9,7 +9,7 @@ import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
-import org.unibl.etf.ps.studentviewer.gui.controler.TestController;
+import org.unibl.etf.ps.studentviewer.gui.control.TestController;
 import org.unibl.etf.ps.studentviewer.logic.command.Command;
 import org.unibl.etf.ps.studentviewer.logic.command.DodajNapomenuTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.DodajStudenteTestCommand;

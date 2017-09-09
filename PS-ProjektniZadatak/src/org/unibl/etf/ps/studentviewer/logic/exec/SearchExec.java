@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
-import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
+import org.unibl.etf.ps.studentviewer.gui.control.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class SearchExec extends Exec {

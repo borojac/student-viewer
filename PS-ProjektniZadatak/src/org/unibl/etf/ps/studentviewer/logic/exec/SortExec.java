@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 
-import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
+import org.unibl.etf.ps.studentviewer.gui.control.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.utility.SortUtil;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 

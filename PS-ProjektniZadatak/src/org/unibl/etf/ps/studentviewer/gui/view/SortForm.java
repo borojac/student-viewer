@@ -23,8 +23,8 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
-import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
-import org.unibl.etf.ps.studentviewer.gui.controler.SortFormController;
+import org.unibl.etf.ps.studentviewer.gui.control.MainFormController;
+import org.unibl.etf.ps.studentviewer.gui.control.SortFormController;
 import org.unibl.etf.ps.studentviewer.logic.utility.Sort;
 
 public class SortForm extends JFrame {
