@@ -1,6 +1,7 @@
 package org.unibl.etf.ps.studentviewer.model.dto;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class NalogDTO {
 	
@@ -9,6 +10,7 @@ public class NalogDTO {
 	private String prezime;
 	private String korisnickoIme;
 	private String lozinka;
+	private Date datumRodjenja;
 	private ArrayList<PredmetDTO> predmeti;
 	
 	public NalogDTO() {
@@ -17,15 +19,17 @@ public class NalogDTO {
 		prezime = "";
 		korisnickoIme = "";
 		lozinka = "";
+		datumRodjenja = new Date();
 		predmeti = new ArrayList<>();
 	}
 	
-	public NalogDTO(int nalogId, String ime, String prezime, String korisnickoIme, String lozinka) {
+	public NalogDTO(int nalogId, String ime, String prezime, String korisnickoIme, String lozinka, Date datumRodjenja) {
 		this.nalogId = nalogId;
 		this.ime = ime;
 		this.prezime = prezime;
 		this.korisnickoIme = korisnickoIme;
 		this.lozinka = lozinka;
+		this.datumRodjenja = datumRodjenja;
 		predmeti = new ArrayList<>();
 	}
 
@@ -69,12 +73,28 @@ public class NalogDTO {
 		this.lozinka = lozinka;
 	}
 
+	public Date getDatumRodjenja() {
+		return datumRodjenja;
+	}
+
+	public void setDatumRodjenja(Date datumRodjenja) {
+		this.datumRodjenja = datumRodjenja;
+	}
+
 	public ArrayList<PredmetDTO> getPredmeti() {
 		return predmeti;
 	}
 
 	public void setPredmeti(ArrayList<PredmetDTO> predmeti) {
 		this.predmeti = predmeti;
+	}
+	
+	public void dodajPredmet(PredmetDTO predmet) {
+		predmeti.add(predmet);
+	}
+	
+	public void ukloniPredmet(PredmetDTO predmet) {
+		predmeti.remove(predmet);
 	}
 
 	@Override
