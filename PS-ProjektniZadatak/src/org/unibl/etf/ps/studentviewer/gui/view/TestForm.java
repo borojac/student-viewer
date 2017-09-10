@@ -22,6 +22,7 @@ import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
 import com.itextpdf.text.DocumentException;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -47,6 +48,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -78,7 +80,6 @@ public class TestForm extends JFrame {
 	private TestController testController;
 	private DateChooserCombo dateChooserCombo;
 	private boolean update = false;
-	private boolean needsRefresh = false;
 
 	private TestForm testForm;
 	private MainForm parentForm;
@@ -87,6 +88,7 @@ public class TestForm extends JFrame {
 	private Logger logger = Logger.getLogger(TestForm.class);
 	private JTextArea statistikaTextArea;
 	private JComboBox procenatComboBox;
+
 
 	public TestForm(TestDTO testParam, MainForm mainForm) {
 		setResizable(false);
@@ -125,10 +127,12 @@ public class TestForm extends JFrame {
 		parentForm = mainForm;
 
 		try {
-			logger.addAppender(new FileAppender(new SimpleLayout(), TestForm.class.getSimpleName() + ".log"));
+			File logFolder = new File("./log");
+			if (!logFolder.exists())
+				logFolder.mkdirs();
+			logger.addAppender(new FileAppender(new SimpleLayout(), "./log/" + TestForm.class.getSimpleName() + ".log"));
 		} catch (IOException e1) {
-			this.dispose();
-			throw new RuntimeException(e1);
+			e1.printStackTrace();
 		}
 
 		JLabel lblNaziv = new JLabel("Naziv:");
@@ -261,10 +265,8 @@ public class TestForm extends JFrame {
 		searchTextField.setFont(new Font("Century Gothic", Font.BOLD, 11));
 		searchTextField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				needsRefresh = true;
 				final String searchText = searchTextField.getText();
 				testController.initiateStudentSearch(
-						test,
 						(StudentTableModel)studentiTable.getModel(),
 						searchText);
 			}
@@ -286,10 +288,8 @@ public class TestForm extends JFrame {
 		btnPretrazi.setBackground(new Color(0, 0, 139));
 		btnPretrazi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				needsRefresh = true;
 				final String searchText = searchTextField.getText();
 				testController.initiateStudentSearch(
-						test,
 						(StudentTableModel)studentiTable.getModel(),
 						searchText);
 			}
@@ -305,15 +305,20 @@ public class TestForm extends JFrame {
 
 				try {
 					testController.print(test);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (DocumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (PrinterException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (Exception e) {
+					EventQueue.invokeLater(new Runnable() {
+
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(testForm,
+									"Štampanje nije uspjelo. Pogledajte log za detalje:\n" + new File("log" + "/" + TestForm.class.getSimpleName() + ".log").getAbsolutePath(), 
+									"Greška", 
+									JOptionPane.ERROR_MESSAGE);
+						}
+					});
+
+					logger.error("Štampanje nije uspjelo", e);
+
 				}
 
 			}
@@ -329,8 +334,18 @@ public class TestForm extends JFrame {
 				try {
 					testController.export(test);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					EventQueue.invokeLater(new Runnable() {
+
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(testForm,
+									"Eksportovanje nije uspjelo. Pogledajte log za detalje:\n" + new File("log" + "/" + TestForm.class.getSimpleName() + ".log").getAbsolutePath(), 
+									"Greška", 
+									JOptionPane.ERROR_MESSAGE);
+						}
+					});
+
+					logger.error("Eksportovanje nije uspjelo", e);
 				}
 			}
 		});
@@ -415,11 +430,29 @@ public class TestForm extends JFrame {
 					}
 
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					EventQueue.invokeLater(new Runnable() {
+
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(testForm,
+									"Fajl ne postoji na disku.",
+									"Greška", 
+									JOptionPane.ERROR_MESSAGE);
+						}
+					});
+					logger.error("Greška kod importa testa iz excela.", e);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					EventQueue.invokeLater(new Runnable() {
+
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(testForm,
+									"Import iz datog fajla nije uspio. Pokušajte ponovo. Pogledajte log za detalje:\n" + new File("./log/" + TestForm.class.getSimpleName() + ".log").getAbsolutePath(),
+									"Greška", 
+									JOptionPane.ERROR_MESSAGE);
+						}
+					});
+					logger.error("Greška kod importa testa iz excela.", e);
 				}
 			}
 		});
@@ -451,7 +484,7 @@ public class TestForm extends JFrame {
 			public void actionPerformed(ActionEvent event) {
 				if (Integer.parseInt((String) procenatComboBox.getSelectedItem())
 						!= test.getProcenat()) {
-					
+
 					IzmjenaProcentaTestCommand command = 
 							new IzmjenaProcentaTestCommand(test, procenatComboBox);
 					testController.executeCommand(command);
@@ -463,7 +496,7 @@ public class TestForm extends JFrame {
 
 		if (update)
 			setFields();
-		
+
 		KeyboardFocusManager.getCurrentKeyboardFocusManager()
 		.addKeyEventDispatcher(new KeyEventDispatcher() {
 			@Override
@@ -492,14 +525,23 @@ public class TestForm extends JFrame {
 			}
 		});
 	}
-	public void refreshStudentiTable() {
+	
+	public void resetStudentiTable() {
 		EventQueue.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
-				((StudentTableModel) studentiTable.getModel()).fireTableDataChanged();
+				((StudentTableModel) studentiTable.getModel()).setData(test.getStudenti());
 			}
 		});
+	}
+	
+	public void refreshStudentiTable() {
+		testController.initiateStudentSearch((StudentTableModel) studentiTable.getModel(),
+				searchTextField.getText());
+		List<StudentNaTestuDTO> data = ((StudentTableModel) studentiTable.getModel()).getData();
+		StudentTableModel newModel = new StudentTableModel(data);
+		studentiTable.setModel(newModel);
 	}
 
 	private void setFields() {
@@ -525,15 +567,11 @@ public class TestForm extends JFrame {
 	}
 
 	public void resetSearch() {
-		if (needsRefresh) {
-			StudentTableModel model = (StudentTableModel) studentiTable.getModel();
-			model.setData(test.getStudenti());
-			model.fireTableDataChanged();
-			searchTextField.setText("");
-			needsRefresh = false;
-		}
+		StudentTableModel model = (StudentTableModel) studentiTable.getModel();
+		model.setData(test.getStudenti());
+		searchTextField.setText("");
 	}
-	
+
 	private void initProcenatComboBox() {
 		int tmpProcenat = 0;
 		while (tmpProcenat <= 100) {

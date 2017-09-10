@@ -1,5 +1,6 @@
 package org.unibl.etf.ps.studentviewer.gui.control;
 
+import java.awt.EventQueue;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
@@ -22,6 +23,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
@@ -80,11 +83,11 @@ public class TestController {
 		if (ke.getKeyCode() == KeyEvent.VK_Z && ke.isControlDown()) {
 			undo();
 			testForm.refreshStatistics();
-			testForm.refreshStudentiTable();
+			testForm.resetStudentiTable();
 		} else if (ke.getKeyCode() == KeyEvent.VK_Y && ke.isControlDown()) {
 			redo();
 			testForm.refreshStatistics();
-			testForm.refreshStudentiTable();
+			testForm.resetStudentiTable();
 		}
 	}
 
@@ -106,7 +109,13 @@ public class TestController {
 	public List<StudentNaTestuDTO> importFromExcel() throws FileNotFoundException, IOException {
 		JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
 		fileChooser.setFileSelectionMode(JFileChooser.OPEN_DIALOG);
+		fileChooser.setMultiSelectionEnabled(false);
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		FileFilter excelFileFilter = new FileNameExtensionFilter("Microsoft Excel spreadsheet", ".xls", ".xlsx");
+		fileChooser.addChoosableFileFilter(excelFileFilter);
+		fileChooser.setFileFilter(excelFileFilter);
 		fileChooser.showOpenDialog(null);
+		
 		File chosenFile = fileChooser.getSelectedFile();
 		List<StudentNaTestuDTO> data = new ArrayList<>();
 
@@ -304,10 +313,12 @@ public class TestController {
 	}
 
 	public String getTestStatistics() {
-		//		TODO - dodati ukupan broj studenata na predmetu - potreban StudentDTO
+		//		TODO - dodati ukupan broj studenata na predmetu - potreban PredmetDTO
 		StringBuilder statisticsBuilder = new StringBuilder();
 
 		int izaslo = test.getStudenti().size();
+//		int ukupno = predmetDAO.getAllStudents().size();
+		int ukupno = 100;
 		int polozilo = 0, deset = 0, devet = 0, osam = 0, sedam = 0, sest = 0;
 
 		for (StudentNaTestuDTO student : test.getStudenti()) {
@@ -326,7 +337,9 @@ public class TestController {
 				++sest;
 		}
 
-		statisticsBuilder.append("Izaslo: " + izaslo).append('\n');
+		statisticsBuilder.append("Izaslo: " + izaslo + "/" + ukupno + " " + 
+		String.format("(%.2f %%)", (double)izaslo / (double) polozilo * 100.0)).append('\n');
+		
 		statisticsBuilder.append(">50%: " + polozilo
 				+ String.format("(%.2f %%)", (double)polozilo / (double) izaslo * 100.0)).append('\n');
 		statisticsBuilder.append("<50%: " + (izaslo - polozilo)
@@ -340,12 +353,11 @@ public class TestController {
 
 		return statisticsBuilder.toString();
 	}
-	public void initiateStudentSearch(TestDTO test, StudentTableModel model, String searchText) {
+	public void initiateStudentSearch(StudentTableModel model, String searchText) {
 		if (test == null || model == null || searchText == null)
 			return;
 		if ("".equals(searchText)) {
 			model.setData(test.getStudenti());
-			model.fireTableDataChanged();
 			return;
 		}
 		List<StudentNaTestuDTO> searchedList = null;
@@ -366,21 +378,19 @@ public class TestController {
 				numberMatcher = numberMatcher.reset();
 				numberMatcher.find();
 				int brojBodova = Integer.parseInt(numberMatcher.group());
-				searchedList = this.filter(test, brojBodova, diskriminator);
+				searchedList = this.filter(brojBodova, diskriminator);
 			} else {
-				searchedList = this.pretraga(test, searchText);
+				searchedList = this.pretraga(searchText);
 			}
 		} else {
-			searchedList = this.pretraga(test, searchText);
+			searchedList = this.pretraga(searchText);
 
 		}
-
 		model.setData(searchedList);
-		model.fireTableDataChanged();
 
 	}
 
-	public List<StudentNaTestuDTO> filter(TestDTO test, int brojBodova, String diskriminator) {
+	private List<StudentNaTestuDTO> filter(int brojBodova, String diskriminator) {
 		List<StudentNaTestuDTO> retList = new ArrayList<>();
 		for (StudentNaTestuDTO student : test.getStudenti()) {
 			if ("<".equals(diskriminator) && student.getBrojBodova() < brojBodova)
@@ -401,7 +411,7 @@ public class TestController {
 		return retList;
 	}
 
-	public List<StudentNaTestuDTO> pretraga(TestDTO test, String query) {
+	private List<StudentNaTestuDTO> pretraga(String query) {
 		List<StudentNaTestuDTO> retList = new ArrayList<>();
 		for (StudentNaTestuDTO student : test.getStudenti()) {
 			String ime = student.getIme().toLowerCase();
@@ -417,9 +427,21 @@ public class TestController {
 		DAOFactory factory = new MySQLDAOFactory();
 		TestDAO testDAO = factory.getTestDAO();
 		if (!testDAO.addTest(test))
-			JOptionPane.showMessageDialog(testForm, "Dodavanje nije uspjelo. Pokušajte ponovo.", "Greška", JOptionPane.ERROR_MESSAGE);
+			EventQueue.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					JOptionPane.showMessageDialog(testForm, "Dodavanje nije uspjelo. Pokušajte ponovo.", "Greška", JOptionPane.ERROR_MESSAGE);
+				}
+			});
 		else 
-			testForm.dispose();
+			EventQueue.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					testForm.dispose();
+				}
+			});
 		
 
 	}
@@ -429,21 +451,45 @@ public class TestController {
 		TestDAO testDAO = factory.getTestDAO();
 		
 		if (!testDAO.updateTest(test))
-			JOptionPane.showMessageDialog(testForm, "Ažuriranje nije uspjelo. Pokušajte ponovo.", "Greška", JOptionPane.ERROR_MESSAGE);
+			EventQueue.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					JOptionPane.showMessageDialog(testForm, "Ažuriranje nije uspjelo. Pokušajte ponovo.", "Greška", JOptionPane.ERROR_MESSAGE);
+				}
+			});
 		else
-			testForm.dispose();
-	
+			EventQueue.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					testForm.dispose();
+				}
+			});
 	}
 	
 	public void addStudents() {
-		testForm.resetSearch();
-		TestDodajStudenteForm dodajStudenteDialog = new TestDodajStudenteForm(testForm, this);
-		dodajStudenteDialog.setVisible(true);
+		final TestController testController = this;
+		EventQueue.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				TestDodajStudenteForm dodajStudenteDialog = new TestDodajStudenteForm(testForm, testController);
+				dodajStudenteDialog.setVisible(true);
+			}
+		});
 	}
 	public void removeStudents(StudentTableModel model, List<StudentNaTestuDTO> forRemoving) {
 		this.executeCommand(new UkloniStudenteTestCommand(test, model, forRemoving));
-		testForm.refreshStatistics();
-		testForm.resetSearch();
+
+		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				testForm.refreshStatistics();
+				testForm.refreshStudentiTable();
+			}
+		});
 	}
 	
 

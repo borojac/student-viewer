@@ -26,7 +26,6 @@ public class DodajStudenteTestCommand extends TestCommand {
 			@Override
 			public void run() {
 				model.setData(sljedecaLista);
-				model.fireTableDataChanged();
 			}
 		});
 
@@ -40,7 +39,6 @@ public class DodajStudenteTestCommand extends TestCommand {
 			@Override
 			public void run() {
 				model.setData(prethodnaLista);
-				model.fireTableDataChanged();
 			}
 		});
 	}

@@ -39,6 +39,7 @@ public class StudentTableModel extends AbstractTableModel {
 	
 	public void setData(List<StudentNaTestuDTO> data) {
 		this.data = data;
+		fireTableDataChanged();
 	}
 	
 	public List<StudentNaTestuDTO> getData() {

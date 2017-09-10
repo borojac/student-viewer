@@ -1,5 +1,6 @@
 package org.unibl.etf.ps.studentviewer.gui.control;
 
+import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -8,12 +9,23 @@ import java.util.Set;
 import javax.swing.JList;
 
 import org.unibl.etf.ps.studentviewer.gui.StudentListModel;
+import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
+import org.unibl.etf.ps.studentviewer.gui.view.TestDodajStudenteForm;
+import org.unibl.etf.ps.studentviewer.gui.view.TestForm;
+import org.unibl.etf.ps.studentviewer.logic.command.Command;
+import org.unibl.etf.ps.studentviewer.logic.command.DodajStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 
 public class TestDodajStudenteController {
+	private TestDodajStudenteForm testDodajStudenteForm;
 	
-	public TestDodajStudenteController() {}
 	
+	
+	public TestDodajStudenteController(TestDodajStudenteForm testDodajStudenteForm) {
+		super();
+		this.testDodajStudenteForm = testDodajStudenteForm;
+	}
+
 	public void addStudents(JList<StudentNaTestuDTO> allStudentsList, JList<StudentNaTestuDTO> toAddStudentsList) {
 		List<StudentNaTestuDTO> selectedStudents = allStudentsList.getSelectedValuesList();
 		StudentListModel toAddModel = (StudentListModel) toAddStudentsList.getModel();
@@ -60,5 +72,27 @@ public class TestDodajStudenteController {
 		toAddModel.getData().clear();
 		toAddModel.fireContentsChanged(this, 0, 0);
 		allStudentsModel.fireContentsChanged(this, 0, allStudentsModel.getSize() - 1);
+	}
+	
+	public void okButtonAction(TestForm testForm, TestController testController, StudentTableModel tableModel, JList<StudentNaTestuDTO> toAddStudentsList) {
+		Set<StudentNaTestuDTO> studentsSet = new HashSet<>(testController.getTest().getStudenti());
+		studentsSet.addAll(((StudentListModel) toAddStudentsList.getModel()).getData());
+		
+		Command dodajStudente = new DodajStudenteTestCommand(
+				testController.getTest(),
+				(StudentTableModel) testForm.getStudentiTable().getModel(), 
+				new ArrayList<>(studentsSet));
+		
+		testController.executeCommand(dodajStudente);
+		
+		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				testForm.refreshStatistics();
+				testForm.refreshStudentiTable();
+				testDodajStudenteForm.dispose();
+			}
+		});
 	}
 }

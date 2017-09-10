@@ -29,7 +29,6 @@ public class UkloniStudenteTestCommand extends TestCommand {
 			@Override
 			public void run() {
 				model.setData(sljedecaLista);
-				model.fireTableDataChanged();
 			}
 		});
 	}
@@ -42,7 +41,6 @@ public class UkloniStudenteTestCommand extends TestCommand {
 			@Override
 			public void run() {
 				model.setData(prethodnaLista);
-				model.fireTableDataChanged();
 			}
 		});
 	}

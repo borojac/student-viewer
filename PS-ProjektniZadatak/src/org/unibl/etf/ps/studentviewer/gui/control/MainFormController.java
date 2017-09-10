@@ -1,5 +1,6 @@
 package org.unibl.etf.ps.studentviewer.gui.control;
 
+import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -133,10 +134,27 @@ public class MainFormController {
 		f.setVisible(true);
 	}
 	
+	public void addTestAction() {
+		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				TestForm tf = new TestForm(null, mainForm);
+				tf.setVisible(true);
+			}
+		});
+	}
+	
 	public void editTestAction(JTable testoviTable) {
-		TestDTO selected = ((TestoviTableModel) testoviTable.getModel()).getData().get(testoviTable.getSelectedRow());
-		TestForm tf = new TestForm(selected, mainForm);
-		tf.setVisible(true);
+		final TestDTO selected = ((TestoviTableModel) testoviTable.getModel()).getData().get(testoviTable.getSelectedRow());
+		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				TestForm tf = new TestForm(selected, mainForm);
+				tf.setVisible(true);
+			}
+		});
 	}
 	
 	public void initTestoviTable(JTable testoviTable) {
@@ -157,8 +175,12 @@ public class MainFormController {
 		TestDTO test = ((TestoviTableModel) testoviTable.getModel()).getRowAt(testoviTable.getSelectedRow());
 		if (!testDAO.deleteTest(test))
 			JOptionPane.showMessageDialog(null, "Test ne može biti obrisan. Lista studenata na testu mora biti prazna da bi se test mogao brisati.", "Greška", JOptionPane.INFORMATION_MESSAGE);
-		else
-			((TestoviTableModel) testoviTable.getModel()).fireTableDataChanged();
+		else {
+			TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
+			List<TestDTO> data = model.getData();
+			data.remove(testoviTable.getSelectedRow());
+			model.fireTableDataChanged();
+		}
 			
 	}
 	

@@ -27,7 +27,7 @@ public class IzmjenaProcentaTestCommand extends TestCommand {
 			
 			@Override
 			public void run() {
-				procenatComboBox.setSelectedItem(prethodniProcenat);
+				procenatComboBox.setSelectedItem("" + prethodniProcenat);
 			}
 		});
 	}
@@ -39,7 +39,7 @@ public class IzmjenaProcentaTestCommand extends TestCommand {
 			
 			@Override
 			public void run() {
-				procenatComboBox.setSelectedItem(sljedeciProcenat);
+				procenatComboBox.setSelectedItem("" + sljedeciProcenat);
 			}
 		});
 	}

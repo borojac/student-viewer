@@ -454,8 +454,7 @@ public class MainForm extends JFrame {
 		btnDodaj.setBackground(new Color(0, 0, 139));
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TestForm tf = new TestForm(null, mainForm);
-				tf.setVisible(true);
+				mainFormController.addTestAction();
 			}
 		});
 		btnDodaj.setBounds(10, 166, 89, 23);
