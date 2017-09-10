@@ -16,7 +16,7 @@ public class ChangeExec extends Exec {
 	
 	public ChangeExec(MainFormController mainFormController, ArrayList<String> paramList, StudentMainTableDTO student, int numInList) {
 
-			this.mainFormControler = mainFormController;
+			this.mainFormController = mainFormController;
 			for (String ob : paramList) {
 				this.params.add(ob.trim());
 			}
@@ -37,16 +37,16 @@ public class ChangeExec extends Exec {
 				final String message = "Pogresan unos za ime studenta!";
 				JOptionPane.showMessageDialog(null, message);
 //				MainFormController.resetChangeFormOpened();
-//				this.mainFormControler.createChangeForm(numInList);
+//				this.mainFormController.createChangeForm(numInList);
 			}else if(valid == 2) {
 				final String message = "Pogresan unos za prezime studenta!";
 				JOptionPane.showMessageDialog(null, message);
-//				this.mainFormControler.createChangeForm(numInList);
+//				this.mainFormController.createChangeForm(numInList);
 			}else if(valid == 3) {
 				final String message = "Pogresan unos za broj indeksa! "
 						+ "Morate unijeti tacno jedan karakter '/'";
 				JOptionPane.showMessageDialog(null, message);
-//				this.mainFormControler.createChangeForm(numInList);
+//				this.mainFormController.createChangeForm(numInList);
 			}
 		}
 

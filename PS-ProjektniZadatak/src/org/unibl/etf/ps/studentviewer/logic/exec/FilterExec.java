@@ -11,8 +11,8 @@ public class FilterExec extends Exec {
 	private double fifthParam;
 	private double sixthParam;
 	
-	public FilterExec(MainFormController mainFormControler, ArrayList<Object> params) {
-		this.mainFormControler = mainFormControler;
+	public FilterExec(MainFormController mainFormController, ArrayList<Object> params) {
+		this.mainFormController = mainFormController;
 		//firstParam = params.get(0);
 		secondParam = (String)params.get(1);
 		thirdParam = (String)params.get(2);
@@ -22,6 +22,6 @@ public class FilterExec extends Exec {
 	}
 	
 	public void run() {
-		
+		mainFormController.resetFilterFormOpened();
 	}
 }
