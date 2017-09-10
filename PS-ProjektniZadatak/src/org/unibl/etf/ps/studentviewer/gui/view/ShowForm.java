@@ -18,8 +18,8 @@ import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.gui.ShowViewData;
-import org.unibl.etf.ps.studentviewer.gui.control.MainFormController;
-import org.unibl.etf.ps.studentviewer.gui.control.ShowFormController;
+import org.unibl.etf.ps.studentviewer.gui.controller.MainFormController;
+import org.unibl.etf.ps.studentviewer.gui.controller.ShowFormController;
 
 import java.awt.Font;
 import javax.swing.JButton;
@@ -151,6 +151,7 @@ public class ShowForm extends JFrame {
 		
 		initCheckBoxSize();
 	}
+
 
 	private void initCheckBoxSize() {
 		for (JCheckBox c : boxes) 

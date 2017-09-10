@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.gui.control;
+package org.unibl.etf.ps.studentviewer.gui.controller;
 
 import java.awt.EventQueue;
 import java.awt.event.KeyEvent;

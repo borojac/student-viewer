@@ -8,13 +8,13 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +23,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -32,28 +31,19 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
-import org.apache.poi.ss.usermodel.Table;
-import org.imgscalr.Main;
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
 import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
 import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
-import org.unibl.etf.ps.studentviewer.gui.control.MainFormController;
+import org.unibl.etf.ps.studentviewer.gui.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class MainForm extends JFrame {
 
@@ -391,17 +381,31 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				/*Stankovic*/
-				mainFormController.createChooseAddTypeForm();
+//				mainFormController.createChooseAddTypeForm();
 			}
 		});
 		buttonPanel.add(addBtn);
 		buttons.add(addBtn);
 
 		deleteBtn = new JButton("Obri\u0161i studente");
+		deleteBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int[] selectedRows = mainTable.getSelectedRows();
+//				MainFormController.deleteStudents(selectedRows);
+			}
+		});
 		buttonPanel.add(deleteBtn);
 		buttons.add(deleteBtn);
 
 		changeBtn = new JButton("Izmijeni studente");
+		changeBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int selectedRow = mainTable.getSelectedRow();
+//				mainFormControler.createChangeForm(selectedRow);
+			}
+		});
 		buttonPanel.add(changeBtn);
 		buttons.add(changeBtn);
 
@@ -512,6 +516,7 @@ public class MainForm extends JFrame {
 	public MainTable getMainTable() {
 		return mainTable;
 	}
+
 
 	public MainFormController getMainFormController() {
 		return mainFormController;
