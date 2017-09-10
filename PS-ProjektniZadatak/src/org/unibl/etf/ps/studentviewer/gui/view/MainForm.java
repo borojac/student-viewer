@@ -381,7 +381,7 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				/*Stankovic*/
-//				mainFormController.createChooseAddTypeForm();
+				mainFormController.createChooseAddTypeForm();
 			}
 		});
 		buttonPanel.add(addBtn);
@@ -392,7 +392,7 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				int[] selectedRows = mainTable.getSelectedRows();
-//				MainFormController.deleteStudents(selectedRows);
+				mainFormController.deleteStudents(selectedRows);
 			}
 		});
 		buttonPanel.add(deleteBtn);
@@ -403,7 +403,7 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				int selectedRow = mainTable.getSelectedRow();
-//				mainFormControler.createChangeForm(selectedRow);
+				mainFormController.createChangeForm(selectedRow);
 			}
 		});
 		buttonPanel.add(changeBtn);
