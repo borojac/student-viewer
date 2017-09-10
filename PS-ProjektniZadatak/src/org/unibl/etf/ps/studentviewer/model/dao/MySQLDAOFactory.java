@@ -6,5 +6,15 @@ public class MySQLDAOFactory implements DAOFactory {
 	public TestDAO getTestDAO() {
 		return new MySQLTestDAO();
 	}
+	
+	@Override
+	public PredmetDAO getPredmetDAO() {
+		return new MySQLPredmetDAO();
+	}
+	
+	@Override 
+	public NalogDAO getNalogDAO() {
+		return new MySQLNalogDAO();
+	}
 
 }
