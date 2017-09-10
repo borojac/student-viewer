@@ -3,7 +3,7 @@ package org.unibl.etf.ps.studentviewer.logic.exec;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.unibl.etf.ps.studentviewer.gui.control.MainFormController;
+import org.unibl.etf.ps.studentviewer.gui.controller.MainFormController;
 
 public class FilterExec extends Exec {
 	private String thirdParam;

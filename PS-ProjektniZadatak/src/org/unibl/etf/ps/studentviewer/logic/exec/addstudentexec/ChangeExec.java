@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
+import org.unibl.etf.ps.studentviewer.gui.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.exec.Exec;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
@@ -31,22 +31,22 @@ public class ChangeExec extends Exec {
 				
 				final String message = "Uspjesno cuvanje!";
 				JOptionPane.showMessageDialog(null, message);
-				MainFormController.resetChangeFormOpened();
+//				MainFormController.resetChangeFormOpened();
 				}
 			else if(valid == 1) {
 				final String message = "Pogresan unos za ime studenta!";
 				JOptionPane.showMessageDialog(null, message);
-				MainFormController.resetChangeFormOpened();
-				this.mainFormControler.createChangeForm(numInList);
+//				MainFormController.resetChangeFormOpened();
+//				this.mainFormControler.createChangeForm(numInList);
 			}else if(valid == 2) {
 				final String message = "Pogresan unos za prezime studenta!";
 				JOptionPane.showMessageDialog(null, message);
-				this.mainFormControler.createChangeForm(numInList);
+//				this.mainFormControler.createChangeForm(numInList);
 			}else if(valid == 3) {
 				final String message = "Pogresan unos za broj indeksa! "
 						+ "Morate unijeti tacno jedan karakter '/'";
 				JOptionPane.showMessageDialog(null, message);
-				this.mainFormControler.createChangeForm(numInList);
+//				this.mainFormControler.createChangeForm(numInList);
 			}
 		}
 

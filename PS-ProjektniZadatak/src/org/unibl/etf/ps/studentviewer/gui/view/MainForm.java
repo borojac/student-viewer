@@ -23,7 +23,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -38,7 +37,7 @@ import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
 import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
 import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
-import org.unibl.etf.ps.studentviewer.gui.control.MainFormController;
+import org.unibl.etf.ps.studentviewer.gui.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
@@ -382,7 +381,7 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				/*Stankovic*/
-				mainFormController.createChooseAddTypeForm();
+//				mainFormController.createChooseAddTypeForm();
 			}
 		});
 		buttonPanel.add(addBtn);
@@ -393,7 +392,7 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				int[] selectedRows = mainTable.getSelectedRows();
-				MainFormController.deleteStudents(selectedRows);
+//				MainFormController.deleteStudents(selectedRows);
 			}
 		});
 		buttonPanel.add(deleteBtn);
@@ -404,7 +403,7 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				int selectedRow = mainTable.getSelectedRow();
-				mainFormControler.createChangeForm(selectedRow);
+//				mainFormControler.createChangeForm(selectedRow);
 			}
 		});
 		buttonPanel.add(changeBtn);
@@ -516,16 +515,8 @@ public class MainForm extends JFrame {
 	public MainTable getMainTable() {
 		return mainTable;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> branch 'master' of https://github.com/borojac/student-viewer
 	public MainFormController getMainFormController() {
 		return mainFormController;
 	}
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'master' of https://github.com/borojac/student-viewer
 }

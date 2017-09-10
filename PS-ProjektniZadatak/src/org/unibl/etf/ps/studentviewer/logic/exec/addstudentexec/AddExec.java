@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import org.unibl.etf.ps.studentviewer.gui.control.MainFormController;
+import org.unibl.etf.ps.studentviewer.gui.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.exec.Exec;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
@@ -33,16 +33,16 @@ public class AddExec extends Exec {
 		else if(valid == 1) {
 			final String message = "Pogresan unos za ime studenta!";
 			JOptionPane.showMessageDialog(null, message);
-			this.mainFormControler.createAddForm();
+//			this.mainFormControler.createAddForm();
 		}else if(valid == 2) {
 			final String message = "Pogresan unos za prezime studenta!";
 			JOptionPane.showMessageDialog(null, message);
-			this.mainFormControler.createAddForm();
+//			this.mainFormControler.createAddForm();
 		}else if(valid == 3) {
 			final String message = "Pogresan unos za broj indeksa! "
 					+ "Morate unijeti tacno jedan karakter '/'";
 			JOptionPane.showMessageDialog(null, message);
-			this.mainFormControler.createAddForm();
+//			this.mainFormControler.createAddForm();
 		}
 	}
 

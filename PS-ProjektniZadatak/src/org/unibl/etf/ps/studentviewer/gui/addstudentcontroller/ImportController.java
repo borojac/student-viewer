@@ -3,7 +3,7 @@ package org.unibl.etf.ps.studentviewer.gui.addstudentcontroller;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.unibl.etf.ps.studentviewer.gui.control.MainFormController;
+import org.unibl.etf.ps.studentviewer.gui.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec.ImporterExcel;
 
 public class ImportController {

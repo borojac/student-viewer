@@ -28,7 +28,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.imgscalr.Scalr;
-import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
+import org.unibl.etf.ps.studentviewer.gui.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec.ChooseAddTypeExec;
 
 

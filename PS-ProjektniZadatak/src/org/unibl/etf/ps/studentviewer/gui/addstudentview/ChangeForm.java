@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
-import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
+import org.unibl.etf.ps.studentviewer.gui.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec.ChangeExec;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
@@ -52,7 +52,7 @@ public ChangeForm(MainFormController mainFormController,StudentMainTableDTO stud
 		
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
-				   MainFormController.resetChangeFormOpened();
+//				   MainFormController.resetChangeFormOpened();
 				   }
 			  });
 		
@@ -112,7 +112,7 @@ public ChangeForm(MainFormController mainFormController,StudentMainTableDTO stud
 				paramList.add(ChangeForm.this.textFieldPrezime.getText());
 				paramList.add(ChangeForm.this.textFieldBrIndeksa.getText());
 				
-				MainFormController.resetChangeFormOpened();
+//				MainFormController.resetChangeFormOpened();
 				new ChangeExec(ChangeForm.this.mainFormController, paramList, student, numInList);
 				ChangeForm.this.dispose();
 			}
