@@ -26,13 +26,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
-<<<<<<< HEAD
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec.AddExec;
-=======
-import org.unibl.etf.ps.studentviewer.gui.addstudentcontroller.AddFormController;
-import org.unibl.etf.ps.studentviewer.gui.control.MainFormController;
->>>>>>> branch 'master' of https://github.com/borojac/student-viewer
+//>>>>>>> branch 'master' of https://github.com/borojac/student-viewer
 
 public class AddForm extends JFrame {
 
