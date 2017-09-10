@@ -14,4 +14,5 @@ public interface TestDAO {
 	public List<StudentNaTestuDTO> getAllStudents(int idTesta);
 	public List<TestDTO> getAllTests();
 	public List<StudentNaTestuDTO> getStudentsOnPredmet(int predmetId);
+	public boolean verifyStudent(String brojIndeksa, int idTesta);
 }

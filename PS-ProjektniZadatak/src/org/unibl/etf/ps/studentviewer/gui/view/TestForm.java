@@ -464,7 +464,6 @@ public class TestForm extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					List<StudentNaTestuDTO> data = testController.importFromExcel();
-
 					if (data != null) {
 						testController.executeCommand(
 								new DodajStudenteTestCommand(
@@ -472,6 +471,7 @@ public class TestForm extends JFrame {
 										(StudentTableModel) studentiTable.getModel(), 
 										data));
 						refreshStatistics();
+						refreshStudentiTable();
 						searchTextField.setText("");
 					}
 
@@ -589,8 +589,8 @@ public class TestForm extends JFrame {
 	public void refreshStudentiTable() {
 		testController.initiateStudentSearch((StudentTableModel) studentiTable.getModel(),
 				searchTextField.getText());
-//		List<StudentNaTestuDTO> data = ((StudentTableModel) studentiTable.getModel()).getData();
-//		((StudentTableModel) studentiTable.getModel()).setData(new ArrayList<>(data));
+		List<StudentNaTestuDTO> data = ((StudentTableModel) studentiTable.getModel()).getData();
+		((StudentTableModel) studentiTable.getModel()).setData(new ArrayList<>(data));
 	}
 
 	private void setFields() {

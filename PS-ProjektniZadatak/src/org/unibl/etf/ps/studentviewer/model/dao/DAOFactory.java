@@ -7,5 +7,6 @@ public interface DAOFactory {
 	public TestDAO getTestDAO();
 	public PredmetDAO getPredmetDAO();
 	public NalogDAO getNalogDAO();
+	public StudentDAO getStudentDAO();
 
 }

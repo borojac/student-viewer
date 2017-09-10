@@ -15,7 +15,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,7 +49,9 @@ import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaBrojaBodovaTestComman
 import org.unibl.etf.ps.studentviewer.logic.command.UkloniStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.StudentDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
@@ -126,13 +130,18 @@ public class TestController {
 		fileChooser.setFileSelectionMode(JFileChooser.OPEN_DIALOG);
 		fileChooser.setMultiSelectionEnabled(false);
 		fileChooser.setAcceptAllFileFilterUsed(false);
-		FileFilter excelFileFilter = new FileNameExtensionFilter("Microsoft Excel spreadsheet", ".xls", ".xlsx");
+		FileFilter excelFileFilter = new FileNameExtensionFilter("Microsoft Excel spreadsheet", "xls", "xlsx");
 		fileChooser.addChoosableFileFilter(excelFileFilter);
 		fileChooser.setFileFilter(excelFileFilter);
 		fileChooser.showOpenDialog(null);
 		
 		File chosenFile = fileChooser.getSelectedFile();
-		List<StudentNaTestuDTO> data = new ArrayList<>();
+		
+		Set<StudentNaTestuDTO> data = new HashSet<>(test.getStudenti());
+		DAOFactory factory = new MySQLDAOFactory();
+		StudentDAO studentDAO = factory.getStudentDAO();
+		TestDAO testDAO = factory.getTestDAO();
+		
 
 		if (chosenFile != null && chosenFile.exists() && chosenFile.getAbsolutePath().endsWith(".xls")) {
 			POIFSFileSystem fileSystem = new POIFSFileSystem(new FileInputStream(chosenFile));
@@ -141,23 +150,46 @@ public class TestController {
 			int rowIndex = 0;
 			for (int i = 0; i < sheet.getPhysicalNumberOfRows(); ++i) {
 				HSSFRow row = sheet.getRow(i);
-				HSSFCell cell = row.getCell(1);
-				if ("Prezime".equalsIgnoreCase(cell.getStringCellValue().trim())) {
+				if ("Br. ind.".equalsIgnoreCase(row.getCell(0).getStringCellValue().trim())
+						|| "Prezime".equalsIgnoreCase(row.getCell(1).getStringCellValue().trim())
+						|| "Ime".equalsIgnoreCase(row.getCell(3).getStringCellValue().trim())) {
 					rowIndex = i + 1;
 					break;
 				}
 			}
-
+			
+			HSSFRow titleRow = sheet.getRow(rowIndex - 1);
+			
+			
 			for (int i = rowIndex; i < sheet.getPhysicalNumberOfRows(); ++i) {
 				HSSFRow row = sheet.getRow(i);
-				HSSFCell cell = row.getCell(0);
-				String brojIndeksa = cell.getStringCellValue().trim();
+				String brojIndeksa = row.getCell(0).getStringCellValue().trim();
 
-				//				TODO - potreban StudentDAO za dobijanje informacija o ispitu
-				//				StudentNaTestuDTO tmp = new StudentNaTestuDTO(studentId, brojIndeksa, ime, prezime, 0, "");
-				//				data.add(tmp);
-
-
+				for (int c = 0; c < brojIndeksa.length(); ++c) {
+					if (brojIndeksa.charAt(c) != '0') {
+						brojIndeksa = brojIndeksa.substring(c);
+						break;
+					}
+				}
+				
+				
+				int brojBodova = 0;
+				String komentar = "";
+				if ("Bodovi".equals(titleRow.getCell(4).getStringCellValue().trim())
+						&& "Komentar".equals(titleRow.getCell(5).getStringCellValue().trim())) {
+					try {
+						brojBodova = Integer.parseInt(row.getCell(4).getStringCellValue().trim());
+					} catch (NumberFormatException ex) {}
+					komentar = row.getCell(5).getStringCellValue().trim();
+				}
+				boolean verified = testDAO.verifyStudent(brojIndeksa, test.getTestId());
+				
+				if (verified) {
+					StudentNaPredmetuDTO tmp = studentDAO.getStudentBy(brojIndeksa);
+					data.add(new StudentNaTestuDTO(tmp.getStudentId(), brojIndeksa, 
+							tmp.getIme(), tmp.getPrezime(), brojBodova, komentar));
+				}
+				
 			}
 
 			workbook.close();
@@ -172,21 +204,44 @@ public class TestController {
 			int rowIndex = 0;
 			for (int i = 0; i < sheet.getPhysicalNumberOfRows(); ++i) {
 				Row row = sheet.getRow(i);
-				Cell cell = row.getCell(1);
-				if ("Prezime".equalsIgnoreCase(cell.getStringCellValue().trim())) {
+				if ("Br. ind.".equalsIgnoreCase(row.getCell(0).getStringCellValue().trim())
+						|| "Prezime".equalsIgnoreCase(row.getCell(1).getStringCellValue().trim())
+						|| "Ime".equalsIgnoreCase(row.getCell(3).getStringCellValue().trim())) {
 					rowIndex = i + 1;
 					break;
 				}
 			}
+			
+			Row titleRow = sheet.getRow(rowIndex - 1);
 
 			for (int i = rowIndex; i < sheet.getPhysicalNumberOfRows(); ++i) {
 				Row row = sheet.getRow(i);
-				Cell cell = row.getCell(0);
-				String brojIndeksa = cell.getStringCellValue().trim();
-				System.out.println(brojIndeksa);
-				//				TODO - potreban StudentDAO za dobijanje informacija o ispitu
-				//				StudentNaTestuDTO tmp = new StudentNaTestuDTO(studentId, brojIndeksa, ime, prezime, 0, "");
-				//				data.add(tmp);
+				String brojIndeksa = row.getCell(0).getStringCellValue().trim();
+
+				for (int c = 0; c < brojIndeksa.length(); ++c) {
+					if (brojIndeksa.charAt(c) != '0') {
+						brojIndeksa = brojIndeksa.substring(c);
+						break;
+					}
+				}
+				
+				
+				int brojBodova = 0;
+				String komentar = "";
+				if ("Bodovi".equals(titleRow.getCell(4).getStringCellValue().trim())
+						&& "Komentar".equals(titleRow.getCell(5).getStringCellValue().trim())) {
+					try {
+						brojBodova = Integer.parseInt(row.getCell(4).getStringCellValue().trim());
+					} catch (NumberFormatException ex) {}
+					komentar = row.getCell(5).getStringCellValue().trim();
+				}
+				boolean verified = testDAO.verifyStudent(brojIndeksa, test.getTestId());
+				if (verified) {
+					StudentNaPredmetuDTO tmp = studentDAO.getStudentBy(brojIndeksa);
+					data.add(new StudentNaTestuDTO(tmp.getStudentId(), brojIndeksa, 
+							tmp.getIme(), tmp.getPrezime(), brojBodova, komentar));
+				}
+				
 
 
 			}
@@ -195,8 +250,7 @@ public class TestController {
 			chosenFileInputStream.close();
 		} else
 			return null;
-
-		return data;
+		return new ArrayList<>(data);
 	}
 
 	public void executeCommand(Command command) {

@@ -312,4 +312,28 @@ public class MySQLTestDAO implements TestDAO {
 		return retVals;
 	}
 
+	@Override
+	public boolean verifyStudent(String brojIndeksa, int idTesta) {
+		boolean retVal = false;
+		String call = "{CALL verify_student(?, ?, ?)}";
+		
+		Connection conn = null;
+		CallableStatement cs = null;
+		try {
+			conn = DBUtility.open();
+			cs = conn.prepareCall(call);
+			cs.setString(1, brojIndeksa);
+			cs.setInt(2, idTesta);
+			cs.registerOutParameter(3, Types.BOOLEAN);
+			if (cs.executeUpdate() > 0)
+				retVal = cs.getBoolean(3);
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(cs, conn);
+		}
+		return retVal;
+	}
+
 }

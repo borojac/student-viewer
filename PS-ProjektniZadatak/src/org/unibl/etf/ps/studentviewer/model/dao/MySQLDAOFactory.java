@@ -17,4 +17,9 @@ public class MySQLDAOFactory implements DAOFactory {
 		return new MySQLNalogDAO();
 	}
 
+	@Override
+	public StudentDAO getStudentDAO() {
+		return new MySQLStudentDAO();
+	}
+
 }
