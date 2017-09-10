@@ -21,9 +21,9 @@ public class ChooseAddTypeExec extends Exec {
 			final String message = "Morate izabrati jednu opciju!";
 			JOptionPane.showMessageDialog(null, message);
 			MainFormController.resetChooseAddTypeFormOpened();
-//			mainFormController.createChooseAddTypeForm();
+			mainFormController.createChooseAddTypeForm();
 		}else if(jedan) {
-//			mainFormController.createAddForm();
+			mainFormController.createAddForm();
 		}else {
 			try {
 				ImporterExcel importerExcel = new ImporterExcel();

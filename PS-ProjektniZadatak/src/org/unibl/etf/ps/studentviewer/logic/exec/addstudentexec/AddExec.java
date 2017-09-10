@@ -33,16 +33,16 @@ public class AddExec extends Exec {
 		else if(valid == 1) {
 			final String message = "Pogresan unos za ime studenta!";
 			JOptionPane.showMessageDialog(null, message);
-//			this.mainFormController.createAddForm();
+			this.mainFormController.createAddForm();
 		}else if(valid == 2) {
 			final String message = "Pogresan unos za prezime studenta!";
 			JOptionPane.showMessageDialog(null, message);
-//			this.mainFormController.createAddForm();
+			this.mainFormController.createAddForm();
 		}else if(valid == 3) {
 			final String message = "Pogresan unos za broj indeksa! "
 					+ "Morate unijeti tacno jedan karakter '/'";
 			JOptionPane.showMessageDialog(null, message);
-//			this.mainFormController.createAddForm();
+			this.mainFormController.createAddForm();
 		}
 	}
 
