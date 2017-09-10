@@ -517,10 +517,7 @@ public class MainForm extends JFrame {
 		return mainTable;
 	}
 	
-<<<<<<< HEAD
-=======
 	public MainFormController getMainFormController() {
 		return mainFormController;
 	}
->>>>>>> branch 'master' of https://github.com/borojac/student-viewer
 }
