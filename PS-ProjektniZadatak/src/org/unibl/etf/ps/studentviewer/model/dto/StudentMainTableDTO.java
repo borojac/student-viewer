@@ -82,6 +82,31 @@ public class StudentMainTableDTO {
 		return null;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((brojIndeksa == null) ? 0 : brojIndeksa.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		StudentMainTableDTO other = (StudentMainTableDTO) obj;
+		if (brojIndeksa == null) {
+			if (other.brojIndeksa != null)
+				return false;
+		} else if (!brojIndeksa.equals(other.brojIndeksa))
+			return false;
+		return true;
+	}
+
 	public String getElektrijada() {
 		return elektrijada;
 	}

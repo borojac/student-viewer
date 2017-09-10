@@ -26,7 +26,7 @@ public class StudentsForMainTable {
 				String ime = line.split(" ")[0];
 				String prezime = line.split(" ")[1];
 				
-				StudentMainTableDTO student = new StudentMainTableDTO(i + "\\14", ime, prezime);
+				StudentMainTableDTO student = new StudentMainTableDTO(i + "/14", ime, prezime);
 				HashMap<String, String> testovi = new HashMap<String, String>();
 				testovi.put("22.11.2017.", new Integer(100 - i).toString());
 				testovi.put("02.08.2016.", new Integer(i).toString());

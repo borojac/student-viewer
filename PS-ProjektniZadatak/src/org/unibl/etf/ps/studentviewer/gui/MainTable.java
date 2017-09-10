@@ -16,7 +16,6 @@ public class MainTable extends JTable {
 	private String[] columnIdentifiers = { "Indeks", "Ime", "Prezime", "Elektrijada", "Komentar" };
 	private HashMap<String, String> map = new HashMap<String, String>();
 
-	
 	public void setStudents(ArrayList<StudentMainTableDTO> students) {
 		this.students = students;
 		MainTableModel model = (MainTableModel) getModel();
@@ -59,7 +58,7 @@ public class MainTable extends JTable {
 		model.fireTableStructureChanged();
 		setSizeOfColumns();
 	}
-	
+
 	private void setSizeOfColumns() {
 		int columnCount = columnModel.getColumnCount();
 		Enumeration<TableColumn> tc = columnModel.getColumns();
@@ -72,34 +71,33 @@ public class MainTable extends JTable {
 		for (; tc.hasMoreElements();)
 			tc.nextElement().setPreferredWidth(537 / divider);
 	}
-	
-	
+
 	public ArrayList<StudentMainTableDTO> getStudents() {
 		return students;
 	}
 
 	private String[][] getStudentsForModel() {
-		int columnCount = (getColumnCount() != 0) ? getColumnCount() : 3; 
+		int columnCount = (getColumnCount() != 0) ? getColumnCount() : 3;
 		String[][] forRet = new String[students.size()][columnCount];
 		int i = 0;
-		
+
 		for (StudentMainTableDTO student : students) {
 			int j = 0;
 			if (ShowViewData.getValue(ShowViewData.D_BROJINDEKSA))
 				forRet[i][j++] = student.getBrojIndeksa();
-			
+
 			if (ShowViewData.getValue(ShowViewData.D_IME))
 				forRet[i][j++] = student.getIme();
-			
+
 			if (ShowViewData.getValue(ShowViewData.D_PREZIME))
 				forRet[i][j++] = student.getPrezime();
-			
+
 			if (ShowViewData.getValue(ShowViewData.D_ELEKTRIJADA))
 				forRet[i][j++] = student.getElektrijada();
-			
+
 			if (ShowViewData.getValue(ShowViewData.D_KOMENTAR))
 				forRet[i][j++] = student.getElektrijada();
-			
+
 			i++;
 		}
 		return forRet;
@@ -120,10 +118,14 @@ public class MainTable extends JTable {
 	private void initView() {
 		// Dovuci podatke i prikazati
 	}
-	
-	public void addStudent(StudentMainTableDTO student) {
-		students.add(student);
-		setStudents(students);
+
+	public boolean addStudent(StudentMainTableDTO student) {
+		if (!students.contains(student)) {
+			students.add(student);
+			setStudents(students);
+			return true;
+		}
+		return false;
 	}
-	
+
 }
