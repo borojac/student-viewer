@@ -105,6 +105,21 @@ public class TestController {
 			undoStack.push(command);
 		}
 	}
+	
+	public void windowClosingAction() {
+		if (!undoStack.isEmpty()) {
+			String[] options = { "	Da	", "	Ne	" };
+			int result = JOptionPane.showOptionDialog(testForm,
+					"Imate nesačuvanih izmjena. Da li ste sigurni da želite zatvoriti prozor? Izmjene neće biti sačuvane!",
+					"Potvrda zatvaranja", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null,
+					options, options[1]);
+			if (result == JOptionPane.YES_OPTION) {
+				testForm.dispose();
+			}
+		} else
+			testForm.dispose();
+	}
 
 	public List<StudentNaTestuDTO> importFromExcel() throws FileNotFoundException, IOException {
 		JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
@@ -431,7 +446,7 @@ public class TestController {
 				
 				@Override
 				public void run() {
-					JOptionPane.showMessageDialog(testForm, "Dodavanje nije uspjelo. Poku�ajte ponovo.", "Gre�ka", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(testForm, "Dodavanje nije uspjelo. Pokušajte ponovo.", "Greška", JOptionPane.ERROR_MESSAGE);
 				}
 			});
 		else 
@@ -455,7 +470,7 @@ public class TestController {
 				
 				@Override
 				public void run() {
-					JOptionPane.showMessageDialog(testForm, "A�uriranje nije uspjelo. Poku�ajte ponovo.", "Gre�ka", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(testForm, "Ažuriranje nije uspjelo. Pokušajte ponovo.", "Greška", JOptionPane.ERROR_MESSAGE);
 				}
 			});
 		else

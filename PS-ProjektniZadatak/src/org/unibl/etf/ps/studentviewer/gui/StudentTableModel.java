@@ -110,7 +110,7 @@ public class StudentTableModel extends AbstractTableModel {
 				testController.executeCommand(
 						new IzmjenaKomentaraTestCommand(student, komentar));
 		}
-		fireTableDataChanged();
+//		fireTableDataChanged();
 	}
 	
 	

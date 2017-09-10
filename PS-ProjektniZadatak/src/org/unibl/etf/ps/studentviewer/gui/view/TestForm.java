@@ -4,6 +4,8 @@ package org.unibl.etf.ps.studentviewer.gui.view;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
@@ -60,6 +62,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JComboBox;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class TestForm extends JFrame {
 
@@ -91,6 +95,18 @@ public class TestForm extends JFrame {
 
 
 	public TestForm(TestDTO testParam, MainForm mainForm) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent event) {
+				EventQueue.invokeLater(new Runnable() {
+
+					@Override
+					public void run() {
+						testController.windowClosingAction();
+					}
+				});
+			}
+		});
 		setResizable(false);
 		addKeyListener(new KeyAdapter() {
 			@Override
@@ -98,7 +114,7 @@ public class TestForm extends JFrame {
 				testController.undoRedoAction((TestForm) testForm, e);
 			}
 		});
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(200, 10, 540, 686);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
@@ -160,7 +176,22 @@ public class TestForm extends JFrame {
 		nazivTextField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				testController.undoRedoAction((TestForm) testForm, e);
+				if (e.isControlDown() && (e.getKeyCode() == KeyEvent.VK_Z || e.getKeyCode() == KeyEvent.VK_Y))
+					testController.undoRedoAction((TestForm) testForm, e);
+				
+			}
+			@Override
+			public void keyTyped(KeyEvent e) {
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						if (!nazivTextField.getText().equals(test.getNaziv())) {
+							IzmjenaNazivaTestaCommand command = new IzmjenaNazivaTestaCommand(test, nazivTextField);
+							testController.executeCommand(command);
+						}
+					}
+				}).start();
 			}
 		});
 		nazivTextField.addFocusListener(new FocusAdapter() {
@@ -193,7 +224,22 @@ public class TestForm extends JFrame {
 		napomenaTextArea.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				testController.undoRedoAction((TestForm) testForm, e);
+				if (e.isControlDown() && (e.getKeyCode() == KeyEvent.VK_Z || e.getKeyCode() == KeyEvent.VK_Y))
+					testController.undoRedoAction((TestForm) testForm, e);
+			}
+			@Override
+			public void keyTyped(KeyEvent e) {
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						if (!napomenaTextArea.getText().equals(test.getNapomena())) {
+							Command command = new DodajNapomenuTestCommand(test, napomenaTextArea);
+							testController.executeCommand(command);
+						}
+					}
+				}).start();
+				
 			}
 		});
 		napomenaScrollPane.setViewportView(napomenaTextArea);
@@ -466,6 +512,12 @@ public class TestForm extends JFrame {
 		contentPane.add(lblStatistika);
 
 		statistikaTextArea = new JTextArea();
+		statistikaTextArea.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				testController.undoRedoAction(testForm, e);
+			}
+		});
 		statistikaTextArea.setEditable(false);
 		statistikaTextArea.setBounds(144, 231, 280, 147);
 		statistikaTextArea.setText(testController.getTestStatistics());
@@ -479,6 +531,13 @@ public class TestForm extends JFrame {
 		contentPane.add(lblProcenat);
 
 		procenatComboBox = new JComboBox();
+		procenatComboBox.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent event) {
+				if (event.isControlDown() && (event.getKeyCode() == KeyEvent.VK_Z || event.getKeyCode() == KeyEvent.VK_Y))
+					testController.undoRedoAction(testForm, event);
+			}
+		});
 		initProcenatComboBox();
 		procenatComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -496,15 +555,6 @@ public class TestForm extends JFrame {
 
 		if (update)
 			setFields();
-
-		KeyboardFocusManager.getCurrentKeyboardFocusManager()
-		.addKeyEventDispatcher(new KeyEventDispatcher() {
-			@Override
-			public boolean dispatchKeyEvent(KeyEvent e) {
-				testController.undoRedoAction(testForm, e);
-				return false;
-			}
-		});
 	}
 
 
@@ -525,7 +575,7 @@ public class TestForm extends JFrame {
 			}
 		});
 	}
-	
+
 	public void resetStudentiTable() {
 		EventQueue.invokeLater(new Runnable() {
 
@@ -535,13 +585,12 @@ public class TestForm extends JFrame {
 			}
 		});
 	}
-	
+
 	public void refreshStudentiTable() {
 		testController.initiateStudentSearch((StudentTableModel) studentiTable.getModel(),
 				searchTextField.getText());
-		List<StudentNaTestuDTO> data = ((StudentTableModel) studentiTable.getModel()).getData();
-		StudentTableModel newModel = new StudentTableModel(data);
-		studentiTable.setModel(newModel);
+//		List<StudentNaTestuDTO> data = ((StudentTableModel) studentiTable.getModel()).getData();
+//		((StudentTableModel) studentiTable.getModel()).setData(new ArrayList<>(data));
 	}
 
 	private void setFields() {
