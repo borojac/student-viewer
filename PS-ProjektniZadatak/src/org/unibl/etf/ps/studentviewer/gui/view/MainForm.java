@@ -38,6 +38,7 @@ import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
 import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
 import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
+import org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec.DeleteExec;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
@@ -392,7 +393,7 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				int[] selectedRows = mainTable.getSelectedRows();
-				mainFormController.deleteStudents(selectedRows);
+				new DeleteExec(mainFormController, selectedRows);
 			}
 		});
 		buttonPanel.add(deleteBtn);

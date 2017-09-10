@@ -24,6 +24,7 @@ public class AddExec extends Exec {
 		if(valid == 0) {
 			StudentMainTableDTO student = new StudentMainTableDTO(params.get(2), params.get(0), params.get(1));
 			//TODO poziv metode koja cuva novog studenta u bazi
+			mainFormController.getMainTable().addStudent(student);
 			//TODO poziv metode koja azurira tabelu
 			final String message = "Uspjesno cuvanje!";
 			JOptionPane.showMessageDialog(null, message);
