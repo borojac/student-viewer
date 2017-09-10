@@ -21,8 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
-import org.unibl.etf.ps.studentviewer.gui.controller.AccountFormController;
-import org.unibl.etf.ps.studentviewer.gui.controller.MainFormController;
+import org.unibl.etf.ps.studentviewer.logic.controller.AccountFormController;
+import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 
 public class AccountForm extends JFrame {
 

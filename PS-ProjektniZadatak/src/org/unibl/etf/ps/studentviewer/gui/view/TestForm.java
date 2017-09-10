@@ -11,7 +11,6 @@ import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
-import org.unibl.etf.ps.studentviewer.gui.controller.TestController;
 import org.unibl.etf.ps.studentviewer.logic.command.Command;
 import org.unibl.etf.ps.studentviewer.logic.command.DodajNapomenuTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.DodajStudenteTestCommand;
@@ -19,6 +18,7 @@ import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaDatumaTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaNazivaTestaCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaProcentaTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.UkloniStudenteTestCommand;
+import org.unibl.etf.ps.studentviewer.logic.controller.TestController;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 

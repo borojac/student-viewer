@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
-import org.unibl.etf.ps.studentviewer.gui.controller.AccountFormController;
+import org.unibl.etf.ps.studentviewer.logic.controller.AccountFormController;
 
 public class DodavanjePredmetaForm extends JFrame {
 

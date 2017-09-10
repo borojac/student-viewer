@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.gui.controller;
+package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -18,8 +18,8 @@ import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.gui.ShowViewData;
-import org.unibl.etf.ps.studentviewer.gui.controller.MainFormController;
-import org.unibl.etf.ps.studentviewer.gui.controller.ShowFormController;
+import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
+import org.unibl.etf.ps.studentviewer.logic.controller.ShowFormController;
 
 import java.awt.Font;
 import javax.swing.JButton;

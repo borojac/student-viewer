@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
-import org.unibl.etf.ps.studentviewer.gui.controller.MainFormController;
+import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec.AddExec;
 //>>>>>>> branch 'master' of https://github.com/borojac/student-viewer
 
