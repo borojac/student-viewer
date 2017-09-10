@@ -8,7 +8,6 @@ import java.util.Vector;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
-import org.apache.poi.ss.formula.functions.Column;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class MainTable extends JTable {
@@ -70,7 +69,6 @@ public class MainTable extends JTable {
 		else
 			divider = 4;
 
-
 		for (; tc.hasMoreElements();)
 			tc.nextElement().setPreferredWidth(537 / divider);
 	}
@@ -122,4 +120,10 @@ public class MainTable extends JTable {
 	private void initView() {
 		// Dovuci podatke i prikazati
 	}
+	
+	public void addStudent(StudentMainTableDTO student) {
+		students.add(student);
+		setStudents(students);
+	}
+	
 }
