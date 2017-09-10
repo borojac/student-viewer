@@ -22,7 +22,7 @@ public class UndoRedoData {
 		ArrayList<String> state = new ArrayList<String>();
 		
 		for (StudentMainTableDTO student : students) {
-			state.add(student.getJmbg());
+			state.add(student.getBrojIndeksa());
 		}
 	
 		stateList.add(state);
@@ -42,7 +42,7 @@ public class UndoRedoData {
 		ArrayList<String> state = stateList.get(position);
 		
 		for (String s : state) { // instead of i -> jmbg
-			students.add(StudentsForMainTable.getByJmbg(s));
+			students.add(StudentsForMainTable.getByBrojIndeksa(s));
 		}
 		
 		return students;
@@ -59,7 +59,7 @@ public class UndoRedoData {
 		ArrayList<String> state = stateList.get(position);
 		
 		for (String s : state) { // instead of i -> jmbg
-			students.add(StudentsForMainTable.getByJmbg(s));
+			students.add(StudentsForMainTable.getByBrojIndeksa(s));
 		}
 		
 		return students;

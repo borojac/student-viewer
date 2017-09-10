@@ -8,8 +8,6 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class SortUtil {
 	
-	static HashMap<String, String> map = new HashMap<String, String>();
-	
 
 	public static Comparator<StudentMainTableDTO> getComparator(ArrayList<StudentMainTableDTO> students, ArrayList<String> params) {
 		Comparator<StudentMainTableDTO> comparator = new Comparator<StudentMainTableDTO>() {

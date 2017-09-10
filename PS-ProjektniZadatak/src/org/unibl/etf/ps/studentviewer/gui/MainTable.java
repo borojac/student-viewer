@@ -1,17 +1,20 @@
 package org.unibl.etf.ps.studentviewer.gui;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JTable;
+import javax.swing.table.TableColumn;
 
+import org.apache.poi.ss.formula.functions.Column;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class MainTable extends JTable {
 
 	private ArrayList<StudentMainTableDTO> students = null;
-	private String[] columnIdentifiers = { "Indeks", "Ime", "Prezime", "Elektrijada", "Komentar"};
+	private String[] columnIdentifiers = { "Indeks", "Ime", "Prezime", "Elektrijada", "Komentar" };
 	private HashMap<String, String> map = new HashMap<String, String>();
 
 	
@@ -20,26 +23,28 @@ public class MainTable extends JTable {
 		MainTableModel model = (MainTableModel) getModel();
 		model.setData(getStudentsForModel());
 		model.setColumnIdentifiers(columnIdentifiers);
+
+		setSizeOfColumns();
 		repaint();
 	}
 
 	public void changeView() {
-		
+
 		MainTableModel model = (MainTableModel) getModel();
 		ArrayList<String> columnNames = new ArrayList<String>();
-		for (int i = 0; i < getColumnCount(); i ++)
+		for (int i = 0; i < getColumnCount(); i++)
 			columnNames.add(getColumnName(i));
 		int ii = 0;
 		for (String s : columnIdentifiers) {
-			
+
 			if (columnNames.contains(s))
 				ii++;
-			
+
 			if (columnNames.contains(s) && !ShowViewData.getValue(map.get(s))) {
 				model.removeColumn(columnNames.indexOf(s));
 				columnNames.remove(s);
 				model.setColumnIdentifiers(columnNames.toArray());
-			}else if (!columnNames.contains(s) && ShowViewData.getValue(map.get(s))) {
+			} else if (!columnNames.contains(s) && ShowViewData.getValue(map.get(s))) {
 				Vector<String> values = new Vector<String>();
 				for (StudentMainTableDTO student : students) {
 					String property = student.getProperty(map.get(s));
@@ -51,24 +56,52 @@ public class MainTable extends JTable {
 				ii++;
 			}
 		}
-		
+
 		model.fireTableStructureChanged();
+		setSizeOfColumns();
 	}
-
 	
+	private void setSizeOfColumns() {
+		int columnCount = columnModel.getColumnCount();
+		Enumeration<TableColumn> tc = columnModel.getColumns();
+		int divider = 0;
+		if (columnCount < 4)
+			divider = columnCount;
+		else
+			divider = 4;
 
+
+		for (; tc.hasMoreElements();)
+			tc.nextElement().setPreferredWidth(537 / divider);
+	}
+	
+	
 	public ArrayList<StudentMainTableDTO> getStudents() {
 		return students;
 	}
 
 	private String[][] getStudentsForModel() {
-		String[][] forRet = new String[students.size()][3];
+		int columnCount = (getColumnCount() != 0) ? getColumnCount() : 3; 
+		String[][] forRet = new String[students.size()][columnCount];
 		int i = 0;
+		
 		for (StudentMainTableDTO student : students) {
-
-			forRet[i][0] = student.getBrojIndeksa();
-			forRet[i][1] = student.getIme();
-			forRet[i][2] = student.getPrezime();
+			int j = 0;
+			if (ShowViewData.getValue(ShowViewData.D_BROJINDEKSA))
+				forRet[i][j++] = student.getBrojIndeksa();
+			
+			if (ShowViewData.getValue(ShowViewData.D_IME))
+				forRet[i][j++] = student.getIme();
+			
+			if (ShowViewData.getValue(ShowViewData.D_PREZIME))
+				forRet[i][j++] = student.getPrezime();
+			
+			if (ShowViewData.getValue(ShowViewData.D_ELEKTRIJADA))
+				forRet[i][j++] = student.getElektrijada();
+			
+			if (ShowViewData.getValue(ShowViewData.D_KOMENTAR))
+				forRet[i][j++] = student.getElektrijada();
+			
 			i++;
 		}
 		return forRet;

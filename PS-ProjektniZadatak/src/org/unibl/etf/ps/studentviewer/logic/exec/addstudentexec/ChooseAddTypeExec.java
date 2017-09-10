@@ -31,7 +31,7 @@ public class ChooseAddTypeExec extends Exec {
 				
 				ArrayList<StudentMainTableDTO> listaZaTabelu = new ArrayList<>();
 				for(String[] data : studenti) {
-					StudentMainTableDTO newStudent = new StudentMainTableDTO(data[0], data[1], data[2], null);
+					StudentMainTableDTO newStudent = new StudentMainTableDTO(data[0], data[1], data[2]);
 					listaZaTabelu.add(newStudent);
 				}
 				//TODO poziv metode koja cuva listu u bazi

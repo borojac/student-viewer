@@ -127,11 +127,7 @@ public class MainForm extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		scrollPane = new JScrollPane();
-		scrollPane.setBackground(Color.WHITE);
-		scrollPane.setBorder(UIManager.getBorder("Button.border"));
-		scrollPane.setBounds(10, 219, 558, 382);
-		contentPane.add(scrollPane);
+		
 
 		buttonPanel = new JPanel();
 		buttonPanel.setBackground(new Color(0, 0, 139));
@@ -261,6 +257,11 @@ public class MainForm extends JFrame {
 		initButtons();
 		initButtonsListeners();
 		initTable();
+		scrollPane = new JScrollPane(mainTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setBackground(Color.WHITE);
+		scrollPane.setBorder(UIManager.getBorder("Button.border"));
+		scrollPane.setBounds(10, 219, 556, 382);
+		contentPane.add(scrollPane);
 		setButtonsSize();
 	}
 
@@ -334,10 +335,9 @@ public class MainForm extends JFrame {
 		mainTable.setBackground(new Color(173, 216, 230));
 		mainTable.setModel(new MainTableModel());
 		mainTable.setStudents(StudentsForMainTable.getAllStudents());
-
-		scrollPane.setViewportView(mainTable);
+		mainTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		
 	}
-
 	private void setButtonsSize() {
 		for (JButton btn : buttons) {
 			btn.setPreferredSize(new Dimension(135, 35));
@@ -520,5 +520,9 @@ public class MainForm extends JFrame {
 
 	public MainFormController getMainFormController() {
 		return mainFormController;
+	}
+	
+	public double getTableWidth() {
+		return scrollPane.getSize().getWidth();
 	}
 }
