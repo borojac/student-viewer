@@ -10,22 +10,28 @@ public class StudentMainTableDTO {
 	private String brojIndeksa;
 	private String ime;
 	private String prezime;
-	private String jmbg;
-	private String komentar = ""; // Mozda lista komentara
+	private String komentar = "none"; // Mozda lista komentara
 	private String elektrijada = "NE";
-	private HashMap<Date, String> ispiti  = new HashMap<Date, String>();
-	private HashMap<Date, String> kolokvijumi = new HashMap<Date, String>();
-	private HashMap<Date, String> usmeniIspiti = new HashMap<Date, String>();
+	private HashMap<String, String> testovi = new HashMap<String, String>();
 	
 	
-	public String getJmbg() {
-		return jmbg;
+	
+	public String getKomentar() {
+		return komentar;
 	}
 
-	public void setJmbg(String jmbg) {
-		this.jmbg = jmbg;
+	public void setKomentar(String komentar) {
+		this.komentar = komentar;
 	}
 
+	public HashMap<String, String> getTestovi(){
+		return testovi;
+	}
+	
+	public void setTestovi(HashMap<String, String> testovi) {
+		this.testovi = testovi;
+	}
+	
 	public String getBrojIndeksa() {
 		return brojIndeksa;
 	}
@@ -50,12 +56,11 @@ public class StudentMainTableDTO {
 		this.prezime = prezime;
 	}
 
-	public StudentMainTableDTO(String brojIndeksa, String ime, String prezime, String jmbg) {
+	public StudentMainTableDTO(String brojIndeksa, String ime, String prezime) {
 		super();
 		this.brojIndeksa = brojIndeksa;
 		this.ime = ime;
 		this.prezime = prezime;
-		this.jmbg = jmbg;
 	}
 	
 	public String getProperty(String type) {
@@ -75,6 +80,10 @@ public class StudentMainTableDTO {
 			return komentar;
 		
 		return null;
+	}
+
+	public String getElektrijada() {
+		return elektrijada;
 	}
 	
 	

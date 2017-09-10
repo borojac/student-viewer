@@ -22,7 +22,7 @@ public class AddExec extends Exec {
 		}
 		int valid = checkParams();
 		if(valid == 0) {
-			StudentMainTableDTO student = new StudentMainTableDTO(params.get(2), params.get(0), params.get(1), null);
+			StudentMainTableDTO student = new StudentMainTableDTO(params.get(2), params.get(0), params.get(1));
 			//TODO poziv metode koja cuva novog studenta u bazi
 			//TODO poziv metode koja azurira tabelu
 			final String message = "Uspjesno cuvanje!";
