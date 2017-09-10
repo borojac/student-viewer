@@ -516,8 +516,16 @@ public class MainForm extends JFrame {
 	public MainTable getMainTable() {
 		return mainTable;
 	}
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> branch 'master' of https://github.com/borojac/student-viewer
 	public MainFormController getMainFormController() {
 		return mainFormController;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/borojac/student-viewer
 }
