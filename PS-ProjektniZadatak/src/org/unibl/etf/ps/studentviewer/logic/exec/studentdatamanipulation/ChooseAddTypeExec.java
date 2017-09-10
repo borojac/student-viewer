@@ -1,7 +1,7 @@
 /**
  * @author dejan
  */
-package org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec;
+package org.unibl.etf.ps.studentviewer.logic.exec.studentdatamanipulation;
 
 import java.io.IOException;
 import java.util.ArrayList;

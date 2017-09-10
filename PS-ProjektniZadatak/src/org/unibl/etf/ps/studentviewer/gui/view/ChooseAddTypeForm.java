@@ -1,7 +1,7 @@
 /**
  * @author dejan
  */
-package org.unibl.etf.ps.studentviewer.gui.addstudentview;
+package org.unibl.etf.ps.studentviewer.gui.view;
 
 
 import java.awt.Color;
@@ -31,7 +31,7 @@ import javax.swing.event.ChangeListener;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
-import org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec.ChooseAddTypeExec;
+import org.unibl.etf.ps.studentviewer.logic.exec.studentdatamanipulation.ChooseAddTypeExec;
 
 
 public class ChooseAddTypeForm extends JFrame {

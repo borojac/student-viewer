@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec;
+package org.unibl.etf.ps.studentviewer.logic.exec.studentdatamanipulation;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.exec.Exec;

@@ -1,7 +1,7 @@
 /**
  * @author dejan
  */
-package org.unibl.etf.ps.studentviewer.gui.addstudentview;
+package org.unibl.etf.ps.studentviewer.gui.view;
 
 
 import java.awt.Color;
@@ -29,7 +29,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
-import org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec.ChangeExec;
+import org.unibl.etf.ps.studentviewer.logic.exec.studentdatamanipulation.ChangeExec;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class ChangeForm extends JFrame {
