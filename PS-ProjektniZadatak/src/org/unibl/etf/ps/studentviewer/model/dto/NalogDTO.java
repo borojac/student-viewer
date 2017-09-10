@@ -1,7 +1,6 @@
 package org.unibl.etf.ps.studentviewer.model.dto;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class NalogDTO {
 	
@@ -10,7 +9,7 @@ public class NalogDTO {
 	private String prezime;
 	private String korisnickoIme;
 	private String lozinka;
-	private Date datumRodjenja;
+	private char tipNaloga;
 	private ArrayList<PredmetDTO> predmeti;
 	
 	public NalogDTO() {
@@ -19,17 +18,17 @@ public class NalogDTO {
 		prezime = "";
 		korisnickoIme = "";
 		lozinka = "";
-		datumRodjenja = new Date();
+		tipNaloga = 'k';
 		predmeti = new ArrayList<>();
 	}
 	
-	public NalogDTO(int nalogId, String ime, String prezime, String korisnickoIme, String lozinka, Date datumRodjenja) {
+	public NalogDTO(int nalogId, String ime, String prezime, String korisnickoIme, String lozinka, char tipNaloga) {
 		this.nalogId = nalogId;
 		this.ime = ime;
 		this.prezime = prezime;
 		this.korisnickoIme = korisnickoIme;
 		this.lozinka = lozinka;
-		this.datumRodjenja = datumRodjenja;
+		this.tipNaloga = tipNaloga;
 		predmeti = new ArrayList<>();
 	}
 
@@ -73,12 +72,12 @@ public class NalogDTO {
 		this.lozinka = lozinka;
 	}
 
-	public Date getDatumRodjenja() {
-		return datumRodjenja;
+	public char getTipNaloga() {
+		return tipNaloga;
 	}
 
-	public void setDatumRodjenja(Date datumRodjenja) {
-		this.datumRodjenja = datumRodjenja;
+	public void setTipNaloga(char tipNaloga) {
+		this.tipNaloga = tipNaloga;
 	}
 
 	public ArrayList<PredmetDTO> getPredmeti() {
