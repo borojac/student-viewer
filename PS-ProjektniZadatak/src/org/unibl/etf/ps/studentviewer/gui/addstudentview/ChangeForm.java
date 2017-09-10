@@ -27,9 +27,10 @@ import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
-import org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec.AddExec;
+import org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec.ChangeExec;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
-public class AddForm extends JFrame {
+public class ChangeForm extends JFrame {
 
 	private JPanel contentPane;
 	private MainFormController mainFormController = null;
@@ -46,14 +47,13 @@ public class AddForm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-public AddForm(MainFormController mainFormController) {
+public ChangeForm(MainFormController mainFormController,StudentMainTableDTO student, int numInList) {
 		setResizable(false);
 		
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
-				   MainFormController.resetAddFormOpened();
-				   MainFormController.resetChooseAddTypeFormOpened();
-			   }
+				   MainFormController.resetChangeFormOpened();
+				   }
 			  });
 		
 		this.mainFormController = mainFormController;
@@ -108,13 +108,13 @@ public AddForm(MainFormController mainFormController) {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				ArrayList<String> paramList = new ArrayList();
-				paramList.add(AddForm.this.textFieldIme.getText());
-				paramList.add(AddForm.this.textFieldPrezime.getText());
-				paramList.add(AddForm.this.textFieldBrIndeksa.getText());
+				paramList.add(ChangeForm.this.textFieldIme.getText());
+				paramList.add(ChangeForm.this.textFieldPrezime.getText());
+				paramList.add(ChangeForm.this.textFieldBrIndeksa.getText());
 				
-				MainFormController.resetAddFormOpened();
-				new AddExec(AddForm.this.mainFormController, paramList);
-				AddForm.this.dispose();
+				MainFormController.resetChangeFormOpened();
+				new ChangeExec(ChangeForm.this.mainFormController, paramList, student, numInList);
+				ChangeForm.this.dispose();
 			}
 		});
 		addButton.setBounds(77, 234, 89, 29);
@@ -125,14 +125,14 @@ public AddForm(MainFormController mainFormController) {
 		panel2.setBounds(100, 131, 137, 92);
 		contentPane.add(panel2);
 		
-		textFieldIme = new JTextField();
+		textFieldIme = new JTextField(student.getIme());
 		panel2.add(textFieldIme);
 
 		
-		textFieldPrezime = new JTextField();
+		textFieldPrezime = new JTextField(student.getPrezime());
 		panel2.add(textFieldPrezime);
 		
-		textFieldBrIndeksa = new JTextField();
+		textFieldBrIndeksa = new JTextField(student.getBrojIndeksa());
 		panel2.add(textFieldBrIndeksa);
 
 		

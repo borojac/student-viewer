@@ -1,3 +1,6 @@
+/**
+ * @author dejan
+ */
 package org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec;
 
 import java.io.BufferedInputStream;
@@ -22,7 +25,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class ImporterExcel {
 	File chosenFile;
 	public ImporterExcel() {
-		// TODO Auto-generated constructor stub
 		JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
 		fileChooser.setFileSelectionMode(JFileChooser.OPEN_DIALOG);
 		fileChooser.showOpenDialog(null);

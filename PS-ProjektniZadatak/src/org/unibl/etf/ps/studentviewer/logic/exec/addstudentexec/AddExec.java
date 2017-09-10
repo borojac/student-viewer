@@ -5,11 +5,11 @@ package org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec;
 
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.exec.Exec;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 
 public class AddExec extends Exec {
@@ -22,8 +22,9 @@ public class AddExec extends Exec {
 		}
 		int valid = checkParams();
 		if(valid == 0) {
-			//TODO
-			//sacuvati params u bazu
+			StudentMainTableDTO student = new StudentMainTableDTO(params.get(2), params.get(0), params.get(1), null);
+			//TODO poziv metode koja cuva novog studenta u bazi
+			//TODO poziv metode koja azurira tabelu
 			final String message = "Uspjesno cuvanje!";
 			JOptionPane.showMessageDialog(null, message);
 			MainFormController.resetAddFormOpened();
@@ -32,16 +33,16 @@ public class AddExec extends Exec {
 		else if(valid == 1) {
 			final String message = "Pogresan unos za ime studenta!";
 			JOptionPane.showMessageDialog(null, message);
-			while(!this.mainFormControler.createAddForm());
+			this.mainFormControler.createAddForm();
 		}else if(valid == 2) {
 			final String message = "Pogresan unos za prezime studenta!";
 			JOptionPane.showMessageDialog(null, message);
-			while(!this.mainFormControler.createAddForm());
+			this.mainFormControler.createAddForm();
 		}else if(valid == 3) {
 			final String message = "Pogresan unos za broj indeksa! "
 					+ "Morate unijeti tacno jedan karakter '/'";
 			JOptionPane.showMessageDialog(null, message);
-			while(!this.mainFormControler.createAddForm());
+			this.mainFormControler.createAddForm();
 		}
 	}
 

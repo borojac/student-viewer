@@ -28,8 +28,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.imgscalr.Scalr;
-import org.unibl.etf.ps.studentviewer.gui.addstudentcontroller.ChooseAddTypeController;
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
+import org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec.ChooseAddTypeExec;
 
 public class ChooseAddTypeForm extends JFrame {
 
@@ -59,7 +59,7 @@ public class ChooseAddTypeForm extends JFrame {
 	public ChooseAddTypeForm(MainFormController mainFormController) {
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
-				   mainFormController.resetChooseAddTypeFormOpened();
+				   MainFormController.resetChooseAddTypeFormOpened();
 			   }
 			  });
 		
@@ -103,7 +103,7 @@ public class ChooseAddTypeForm extends JFrame {
 				boolean jedan = chckbxNewCheckBoxJedan.isSelected();
 				boolean vise = chckbxNewCheckBoxVise.isSelected();
 				ChooseAddTypeForm.this.dispose();
-				new ChooseAddTypeController(mainFormController, jedan, vise);
+				new ChooseAddTypeExec(mainFormController, jedan, vise);
 				
 			}
 		});
