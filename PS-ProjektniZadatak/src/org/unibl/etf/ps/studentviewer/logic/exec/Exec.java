@@ -7,7 +7,7 @@ import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class Exec extends Thread {
-	protected MainFormController mainFormControler;
+	protected MainFormController mainFormController;
 	
 
 	ArrayList<StudentMainTableDTO> students = null; 

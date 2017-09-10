@@ -15,8 +15,8 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 public class AddExec extends Exec {
 	ArrayList<String> params = new ArrayList<String>();
 
-	public AddExec(MainFormController mainFormControler, ArrayList<String> params) {
-		this.mainFormControler = mainFormControler;
+	public AddExec(MainFormController mainFormController, ArrayList<String> params) {
+		this.mainFormController = mainFormController;
 		for (String ob : params) {
 			this.params.add(ob.trim());
 		}
@@ -33,16 +33,16 @@ public class AddExec extends Exec {
 		else if(valid == 1) {
 			final String message = "Pogresan unos za ime studenta!";
 			JOptionPane.showMessageDialog(null, message);
-//			this.mainFormControler.createAddForm();
+//			this.mainFormController.createAddForm();
 		}else if(valid == 2) {
 			final String message = "Pogresan unos za prezime studenta!";
 			JOptionPane.showMessageDialog(null, message);
-//			this.mainFormControler.createAddForm();
+//			this.mainFormController.createAddForm();
 		}else if(valid == 3) {
 			final String message = "Pogresan unos za broj indeksa! "
 					+ "Morate unijeti tacno jedan karakter '/'";
 			JOptionPane.showMessageDialog(null, message);
-//			this.mainFormControler.createAddForm();
+//			this.mainFormController.createAddForm();
 		}
 	}
 

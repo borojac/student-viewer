@@ -13,17 +13,17 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 public class SearchExec extends Exec {
 	ArrayList<String> params = new ArrayList<String>();
 
-	public SearchExec(MainFormController mainFormControler, ArrayList<Object> params) {
-		this.mainFormControler = mainFormControler;
+	public SearchExec(MainFormController mainFormController, ArrayList<Object> params) {
+		this.mainFormController = mainFormController;
 		for (Object o : params)
 			this.params.add((String) o);
-		mainFormControler.getScheduler().add(this);
+		mainFormController.getScheduler().add(this);
 	}
 
 	public void execute() { // move to SearchUtil
-		MainTableModel model = (MainTableModel) mainFormControler.getMainTable().getModel();
-		MainTable table = mainFormControler.getMainTable();
-		ArrayList<StudentMainTableDTO> students = mainFormControler.getMainTable().getStudents();
+		MainTableModel model = (MainTableModel) mainFormController.getMainTable().getModel();
+		MainTable table = mainFormController.getMainTable();
+		ArrayList<StudentMainTableDTO> students = mainFormController.getMainTable().getStudents();
 		ArrayList<StudentMainTableDTO> searchedStudents = new ArrayList<StudentMainTableDTO>();
 
 		for (StudentMainTableDTO s : students) {

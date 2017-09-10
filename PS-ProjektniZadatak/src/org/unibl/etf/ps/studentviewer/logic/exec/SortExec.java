@@ -14,20 +14,20 @@ public class SortExec extends Exec {
 	ArrayList<String> params = new ArrayList<String>();
 	
 	
-	public SortExec(MainFormController mainFormControler, ArrayList<Object> params) {
-		this.mainFormControler = mainFormControler;
+	public SortExec(MainFormController mainFormController, ArrayList<Object> params) {
+		this.mainFormController = mainFormController;
 		for(Object o : params) {
 			this.params.add((String)o);
 		}
-		students = mainFormControler.getMainTable().getStudents();
-		mainFormControler.getScheduler().add(this);
+		students = mainFormController.getMainTable().getStudents();
+		mainFormController.getScheduler().add(this);
 	}
 	
 	public void execute() {
 		Comparator<StudentMainTableDTO> comparator = SortUtil.getComparator(students, params);
 		students.sort(comparator);
-		mainFormControler.getMainTable().setStudents(students);
-		mainFormControler.getMainTable().changeView();
+		mainFormController.getMainTable().setStudents(students);
+		mainFormController.getMainTable().changeView();
 		super.execute();
 	}
 }

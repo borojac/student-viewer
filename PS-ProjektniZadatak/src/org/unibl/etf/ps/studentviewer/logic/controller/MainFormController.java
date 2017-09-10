@@ -253,4 +253,7 @@ public class MainFormController {
 //	public PredmetDTO getPredmet() {
 //		return predmet;
 //	}
+	public void resetFilterFormOpened() {
+		filterFormOpened = false;
+	}
 }
