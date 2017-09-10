@@ -49,26 +49,163 @@ public class MySQLNalogDAO implements NalogDAO {
 
 	@Override
 	public boolean addNalog(NalogDTO nalog) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean retVal = false;
+		
+		String query = "INSERT INTO nalog VALUE (null, ?, ?, ?, ?, ?, ?)";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			conn.setAutoCommit(false);
+			ps = conn.prepareStatement(query);
+			
+			ps.setString(1, nalog.getIme());
+			ps.setString(2, nalog.getPrezime());
+			ps.setString(3, nalog.getKorisnickoIme());
+			ps.setString(4, nalog.getLozinka());
+			ps.setString(5, String.valueOf(nalog.getTipNaloga()));
+			ps.setObject(6, null, java.sql.Types.BLOB);
+			
+			retVal = ps.executeUpdate() == 1;
+			
+			if(retVal) {
+				conn.commit();
+			} else {
+				throw new SQLException("Rollback needed!");
+			}
+			
+		} catch(SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException ex) {}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {}
+			DBUtility.close(conn, ps);
+		}
+		
+		return retVal;
 	}
 
 	@Override
 	public boolean updateNalog(NalogDTO nalog) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean retVal = false;
+		
+		String query = "UPDATE nalog SET Ime = ?, Prezime = ?, KorisnickoIme = ?, Lozinka = ?, TipNaloga = ?, StanjeGT = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			conn.setAutoCommit(false);
+			ps = conn.prepareStatement(query);
+			
+			ps.setString(1, nalog.getIme());
+			ps.setString(2, nalog.getPrezime());
+			ps.setString(3, nalog.getKorisnickoIme());
+			ps.setString(4, nalog.getLozinka());
+			ps.setString(5, String.valueOf(nalog.getTipNaloga()));
+			ps.setObject(6, null, java.sql.Types.BLOB);
+			
+			retVal = ps.executeUpdate() == 1;
+			
+			if(retVal) {
+				conn.commit();
+			} else {
+				throw new SQLException("Rollback needed!");
+			}
+			
+		} catch(SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException ex) {}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {}
+			DBUtility.close(conn, ps);
+		}
+		
+		return retVal;
 	}
 
 	@Override
 	public boolean addPredmet(PredmetDTO predmet, NalogDTO nalog) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean retVal = false;
+		
+		String query = "INSERT INTO predaje VALUE (?, ?, ?)";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			conn.setAutoCommit(false);
+			ps = conn.prepareStatement(query);
+			
+			ps.setInt(1, nalog.getNalogId());
+			ps.setInt(2, predmet.getPredmetId());
+			ps.setDate(3, new java.sql.Date(System.currentTimeMillis()));
+			
+			retVal = ps.executeUpdate() == 1;
+			
+			if (retVal) {
+				conn.commit();
+			}
+			else {
+				throw new SQLException("Rollback needed!");
+			}
+			
+		} catch(SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException ex) {}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {}
+			DBUtility.close(conn, ps);
+		}
+		
+		return retVal;
 	}
 
 	@Override
 	public boolean removePredmet(PredmetDTO predmet, NalogDTO nalog) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean retVal = false;
+		
+		String query = "DELETE FROM predaje WHERE PredmetId = ? and NalogId =";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			
+			ps.setInt(1, predmet.getPredmetId());
+			ps.setInt(2, nalog.getNalogId());
+			
+			retVal = ps.executeUpdate() == 1;
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, ps);
+		}
+		
+		return retVal;
 	}
 
 	@Override
