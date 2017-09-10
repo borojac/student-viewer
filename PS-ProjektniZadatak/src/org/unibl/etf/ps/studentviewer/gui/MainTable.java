@@ -8,6 +8,7 @@ import java.util.Vector;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
+import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class MainTable extends JTable {
@@ -120,12 +121,21 @@ public class MainTable extends JTable {
 	}
 
 	public boolean addStudent(StudentMainTableDTO student) {
-		if (!students.contains(student)) {
-			students.add(student);
-			setStudents(students);
+		if (!StudentsForMainTable.getAllStudents().contains(student)) {
+			StudentsForMainTable.getAllStudents().add(student);
 			return true;
 		}
 		return false;
+	}
+	
+	public void deleteStudents(int[] selectedRows) {
+		ArrayList<StudentMainTableDTO> helpList = new ArrayList<StudentMainTableDTO>();
+		for (int i : selectedRows) {
+			StudentsForMainTable.getAllStudents().remove(students.get(i));
+			helpList.add(students.get(i));
+		}
+		for (StudentMainTableDTO s : helpList)
+			students.remove(s);
 	}
 
 }
