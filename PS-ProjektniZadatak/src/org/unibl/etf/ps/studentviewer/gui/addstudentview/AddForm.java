@@ -7,6 +7,8 @@ package org.unibl.etf.ps.studentviewer.gui.addstudentview;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -17,18 +19,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec.AddExec;
-//>>>>>>> branch 'master' of https://github.com/borojac/student-viewer
 
 public class AddForm extends JFrame {
 
@@ -39,14 +43,8 @@ public class AddForm extends JFrame {
 	private JTextField textFieldIme;
 	private JTextField textFieldPrezime;
 	private JTextField textFieldBrIndeksa;
+	private JButton addButton;
 
-	/**
-	 * Launch the application.
-	 */
-
-	/**
-	 * Create the frame.
-	 */
 public AddForm(MainFormController mainFormController) {
 		setResizable(false);
 		
@@ -104,10 +102,12 @@ public AddForm(MainFormController mainFormController) {
 		label_2.setBounds(200, 0, 66, 120);
 		contentPane.add(label_2);
 		
-		JButton addButton = new JButton("Sacuvaj");
-		addButton.addMouseListener(new MouseAdapter() {
+		
+		addButton = new JButton("Sacuvaj");
+		addButton.addActionListener(new ActionListener() {
+			
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				ArrayList<String> paramList = new ArrayList();
 				paramList.add(AddForm.this.textFieldIme.getText());
 				paramList.add(AddForm.this.textFieldPrezime.getText());
@@ -151,9 +151,25 @@ public AddForm(MainFormController mainFormController) {
 	}
 	
 	private void initTextFields() {
+		JTextField tmp = null;
 		for(Component box : panel2.getComponents()) {
 			JTextField field = (JTextField) box;
 			field.setColumns(12);
+			if(tmp != null) {
+				tmp.addActionListener(new ActionListener() {
+					   @Override
+					    public void actionPerformed(ActionEvent e) {
+					      field.requestFocusInWindow(); 
+					    }
+					}); 		
+			}
+			tmp = field;
 		}
+		tmp.addActionListener(new ActionListener() {
+			   @Override
+			    public void actionPerformed(ActionEvent e) {
+			      addButton.requestFocusInWindow(); 
+			    }
+			});
 	}
 }

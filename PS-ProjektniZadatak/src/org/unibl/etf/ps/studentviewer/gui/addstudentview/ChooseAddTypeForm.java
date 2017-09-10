@@ -7,6 +7,8 @@ package org.unibl.etf.ps.studentviewer.gui.addstudentview;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -35,28 +37,9 @@ import org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec.ChooseAddTypeExe
 public class ChooseAddTypeForm extends JFrame {
 
 	private JPanel contentPane;
-	private MainFormController mainFormController = null;
 	JCheckBox chckbxNewCheckBoxJedan = new JCheckBox("");
 	JCheckBox chckbxNewCheckBoxVise = new JCheckBox("");
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					//ChooseAddTypeForm frame = new ChooseAddTypeForm();
-					//frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	/**
-	 * Create the frame.
-	 */
 	public ChooseAddTypeForm(MainFormController mainFormController) {
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
@@ -64,7 +47,6 @@ public class ChooseAddTypeForm extends JFrame {
 			   }
 			  });
 		
-		this.mainFormController = mainFormController;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 304, 288);
 		contentPane =new JPanel();
@@ -98,9 +80,10 @@ public class ChooseAddTypeForm extends JFrame {
 		contentPane.add(label_2);
 		
 		JButton chooseButton = new JButton("Nastavi");
-		chooseButton.addMouseListener(new MouseAdapter() {
+		chooseButton.addActionListener(new ActionListener() {
+			
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				boolean jedan = chckbxNewCheckBoxJedan.isSelected();
 				boolean vise = chckbxNewCheckBoxVise.isSelected();
 				ChooseAddTypeForm.this.dispose();
@@ -150,7 +133,6 @@ public class ChooseAddTypeForm extends JFrame {
 				chckbxNewCheckBoxJedan.setSelected(false);
 			}
 		});
-		
 		
 		chckbxNewCheckBoxVise.setBackground(new Color(0,0,139));
 		panel2.add(chckbxNewCheckBoxVise);

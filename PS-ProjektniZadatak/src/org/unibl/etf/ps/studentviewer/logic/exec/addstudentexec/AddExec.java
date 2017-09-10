@@ -40,7 +40,7 @@ public class AddExec extends Exec {
 			this.mainFormController.createAddForm();
 		}else if(valid == 3) {
 			final String message = "Pogresan unos za broj indeksa! "
-					+ "Morate unijeti tacno jedan karakter '/'";
+					+ "Ocekivani format je: broj/godina";
 			JOptionPane.showMessageDialog(null, message);
 			this.mainFormController.createAddForm();
 		}
