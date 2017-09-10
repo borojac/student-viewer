@@ -58,10 +58,10 @@ import java.awt.event.KeyEvent;
 public class MainForm extends JFrame {
 
 	private MainForm mainForm;
-	
+
 	private JPanel contentPane;
 	private MainFormController mainFormController = new MainFormController(this);
-	
+
 	// ------- Components!!! ------- //
 	ArrayList<JButton> buttons = new ArrayList<JButton>();
 
@@ -77,7 +77,7 @@ public class MainForm extends JFrame {
 	private JButton restoreButton = null;
 	private JButton undoButton = null;
 	private JButton redoButton = null;
-	
+
 	private JPanel panel = null;
 	private JPanel panel_1 = null;
 	private JPanel buttonPanel;
@@ -150,7 +150,7 @@ public class MainForm extends JFrame {
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 12));
 
 		mainForm = this;
-		
+
 		BufferedImage img = ImageIO.read(new File("img\\BellTower-RGB(JPG).jpg"));
 		BufferedImage correctionImage = ImageIO.read(new File("img\\whiteCorrection.png"));
 
@@ -174,7 +174,7 @@ public class MainForm extends JFrame {
 			public void keyReleased(KeyEvent event) {
 				if (event.getKeyCode() == KeyEvent.VK_DELETE)
 					new Thread(new Runnable() {
-						
+
 						@Override
 						public void run() {
 
@@ -187,15 +187,15 @@ public class MainForm extends JFrame {
 		testoviTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		testoviTable.setForeground(new Color(0, 0, 139));
 		testoviTable.setBackground(new Color(173, 216, 230));
-		
+
 		new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				mainFormController.initTestoviTable(testoviTable);
 			}
 		}).start();
-		
+
 		testoviTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -214,7 +214,7 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseEntered(MouseEvent event) {
 				new Thread(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						mainFormController.initMouseHoverAction(event, testoviTable);
@@ -283,14 +283,14 @@ public class MainForm extends JFrame {
 	}
 
 	private void initButtonsListeners() {
-		
+
 		filterBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				mainFormController.createFilterForm();
 			}
 		});
-		
+
 		sortBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -304,37 +304,37 @@ public class MainForm extends JFrame {
 				mainFormController.search(MainForm.this);
 			}
 		});
-		
+
 		restoreButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				mainFormController.restoreTable();
 			}
 		});
-		
+
 		showViewBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				mainFormController.createShowForm();
 			}
 		});
-		
+
 		undoButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				ArrayList<StudentMainTableDTO> students = UndoRedoData.undo();
 				if (students != null)
-				mainTable.setStudents(students);
+					mainTable.setStudents(students);
 			}
 		});
-		
+
 		accountBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				mainFormController.createAccountForm();
 			}
 		});
-		
+
 	}
 
 	private void initTable() {
@@ -344,7 +344,7 @@ public class MainForm extends JFrame {
 		mainTable.setBackground(new Color(173, 216, 230));
 		mainTable.setModel(new MainTableModel());
 		mainTable.setStudents(StudentsForMainTable.getAllStudents());
-		
+
 		scrollPane.setViewportView(mainTable);
 	}
 
@@ -374,7 +374,7 @@ public class MainForm extends JFrame {
 
 		/* Buttons by Boroja */
 		showViewBtn = new JButton("Prikaz");
-		
+
 		buttonPanel.add(showViewBtn);
 		buttons.add(showViewBtn);
 
@@ -425,13 +425,13 @@ public class MainForm extends JFrame {
 			ex.printStackTrace();
 		}
 		contentPane.add(restoreButton);
-		
+
 		undoButton = new JButton("<");
 		undoButton.setFont(new Font("Tahoma", Font.BOLD, 12));
 		undoButton.setToolTipText("Undo");
 		undoButton.setBounds(474, 171, 42, 26);
 		contentPane.add(undoButton);
-		
+
 		redoButton = new JButton(">");
 		redoButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -445,9 +445,9 @@ public class MainForm extends JFrame {
 		redoButton.setToolTipText("Redo");
 		redoButton.setBounds(526, 171, 42, 26);
 		contentPane.add(redoButton);
-		
-		
-		
+
+
+
 		/* Buttons by Stokuca */
 		btnDodaj = new JButton("");
 		btnDodaj.setIcon(new ImageIcon("img/Add_14.png"));
@@ -477,29 +477,30 @@ public class MainForm extends JFrame {
 		btnBrisi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				new Thread(new Runnable() {
-					
+
 					@Override
 					public void run() {
-						mainFormController.deleteTestAction(testoviTable);						
+						mainFormController.deleteTestAction(testoviTable);					
 					}
 				}).start();
+
 			}
 		});
 		btnBrisi.setBackground(new Color(0, 0, 139));
 		btnBrisi.setBounds(208, 166, 89, 23);
 		btnBrisi.setEnabled(false);
 		testoviPanel.add(btnBrisi);
-		
+
 	}
-	
+
 	public void refreshTestoviTable() {
 		TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
 		DAOFactory factory = new MySQLDAOFactory();
 		TestDAO testDAO = factory.getTestDAO();
-		
+
 		List<TestDTO> data = testDAO.getAllTests();
 		EventQueue.invokeLater(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				model.setData(data);
@@ -511,7 +512,7 @@ public class MainForm extends JFrame {
 	public MainTable getMainTable() {
 		return mainTable;
 	}
-	
+
 	public MainFormController getMainFormController() {
 		return mainFormController;
 	}

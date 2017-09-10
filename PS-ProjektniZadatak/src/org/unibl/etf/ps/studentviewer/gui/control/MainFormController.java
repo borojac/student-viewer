@@ -39,7 +39,7 @@ public class MainFormController {
 	private static boolean addFormOpened = false;
 	private static boolean chooseAddTypeFormOpened = false;
 
-	
+
 	public static void resetAddFormOpened() {
 		addFormOpened = false;
 	}
@@ -48,16 +48,16 @@ public class MainFormController {
 	}
 
 	/*Stankovic end*/
-	
-	
+
+
 	public static void resetSortFormOpened(){
 		sortFormOpened = false;
 	}
-	
+
 	public static void resetAccountFormOpened() {
 		accountFormOpened = false;
 	}
-	
+
 	public ExecScheduler getScheduler() {
 		return scheduler;
 	}
@@ -69,9 +69,9 @@ public class MainFormController {
 	public MainTable getMainTable() {
 		return mainForm.getMainTable();
 	}
-	
-	
-	
+
+
+
 	public MainFormController() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -91,23 +91,23 @@ public class MainFormController {
 		sortForm.setVisible(true);
 		return true;
 	}
-	
+
 	public synchronized boolean createAccountForm() {
 		if(accountFormOpened)
 			return false;
-		
+
 		accountFormOpened = true;
 		AccountForm accountForm = new AccountForm(this);
 		accountForm.setVisible(true);
-		
+
 		return true;
 	}
-	
+
 	public void restoreTable() {
 		getMainTable().setStudents(StudentsForMainTable.getAllStudents());
 		UndoRedoData.addState(StudentsForMainTable.getAllStudents());
 	}
-	
+
 	public void search(MainForm mainForm) {
 		String params = mainForm.getSearchParams();
 		mainForm.setSearchParams("");
@@ -127,16 +127,16 @@ public class MainFormController {
 	public void createFilterForm() {
 		if (filterFormOpened)
 			return;
-		
+
 		filterFormOpened = true;
-		
+
 		FilterForm f = new FilterForm(this);
 		f.setVisible(true);
 	}
-	
+
 	public void addTestAction() {
 		EventQueue.invokeLater(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				TestForm tf = new TestForm(null, mainForm);
@@ -144,11 +144,11 @@ public class MainFormController {
 			}
 		});
 	}
-	
+
 	public void editTestAction(JTable testoviTable) {
 		final TestDTO selected = ((TestoviTableModel) testoviTable.getModel()).getData().get(testoviTable.getSelectedRow());
 		EventQueue.invokeLater(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				TestForm tf = new TestForm(selected, mainForm);
@@ -156,7 +156,7 @@ public class MainFormController {
 			}
 		});
 	}
-	
+
 	public void initTestoviTable(JTable testoviTable) {
 
 		DAOFactory testFactory = new MySQLDAOFactory();
@@ -167,23 +167,29 @@ public class MainFormController {
 		testoviTable.setModel(model);
 
 	}
-	
-	public void deleteTestAction(JTable testoviTable) {
 
-		DAOFactory factory = new MySQLDAOFactory();
-		TestDAO testDAO = factory.getTestDAO();
-		TestDTO test = ((TestoviTableModel) testoviTable.getModel()).getRowAt(testoviTable.getSelectedRow());
-		if (!testDAO.deleteTest(test))
-			JOptionPane.showMessageDialog(null, "Test ne može biti obrisan. Lista studenata na testu mora biti prazna da bi se test mogao brisati.", "Greška", JOptionPane.INFORMATION_MESSAGE);
-		else {
-			TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
-			List<TestDTO> data = model.getData();
-			data.remove(testoviTable.getSelectedRow());
-			model.fireTableDataChanged();
+	public void deleteTestAction(JTable testoviTable) {
+		String[] options = { "	Da	", "	Ne	" };
+		int result = JOptionPane.showOptionDialog(mainForm,
+				"Da li ste sigurni da želite izbrisati ovaj test?",
+				"Potvrda brisanja", JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+		if (result == JOptionPane.YES_OPTION) {	
+			DAOFactory factory = new MySQLDAOFactory();
+			TestDAO testDAO = factory.getTestDAO();
+			TestDTO test = ((TestoviTableModel) testoviTable.getModel()).getRowAt(testoviTable.getSelectedRow());
+			if (!testDAO.deleteTest(test))
+				JOptionPane.showMessageDialog(null, "Test ne može biti obrisan. Lista studenata na testu mora biti prazna da bi se test mogao brisati.", "Greška", JOptionPane.INFORMATION_MESSAGE);
+			else {
+				TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
+				List<TestDTO> data = model.getData();
+				data.remove(testoviTable.getSelectedRow());
+				model.fireTableDataChanged();
+			}
 		}
-			
+
 	}
-	
+
 	public void initMouseHoverAction(MouseEvent event, JTable testoviTable) {
 		if (testoviTable.contains(event.getPoint())) {
 			int row = testoviTable.rowAtPoint(event.getPoint());
@@ -194,7 +200,7 @@ public class MainFormController {
 	/*
 	 * TODO - ko vec radi sa predmetima, za testove mi treba predmet u kontroleru
 	 */
-//	public PredmetDTO getPredmet() {
-//		return predmet;
-//	}
+	//	public PredmetDTO getPredmet() {
+	//		return predmet;
+	//	}
 }
