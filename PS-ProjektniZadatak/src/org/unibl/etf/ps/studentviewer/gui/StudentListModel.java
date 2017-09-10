@@ -14,6 +14,7 @@ public class StudentListModel extends AbstractListModel<StudentNaTestuDTO> {
 	
 	public void setData(List<StudentNaTestuDTO> data) {
 		this.data = data;
+		fireContentsChanged(this, 0, data.size() - 1);
 	}
 	
 	public List<StudentNaTestuDTO> getData() {

@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.unibl.etf.ps.studentviewer.gui.controler.TestController;
+import org.unibl.etf.ps.studentviewer.gui.control.TestController;
 import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaBrojaBodovaTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaKomentaraTestCommand;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
@@ -39,6 +39,7 @@ public class StudentTableModel extends AbstractTableModel {
 	
 	public void setData(List<StudentNaTestuDTO> data) {
 		this.data = data;
+		fireTableDataChanged();
 	}
 	
 	public List<StudentNaTestuDTO> getData() {
@@ -46,7 +47,7 @@ public class StudentTableModel extends AbstractTableModel {
 	}
 
 	public StudentNaTestuDTO getRowAt(int index) {
-		if (index > 0 && index < data.size())
+		if (index >= 0 && index < data.size())
 			return data.get(index);
 		return null;
 	}
@@ -99,15 +100,17 @@ public class StudentTableModel extends AbstractTableModel {
 		if (columnIndex == 3 && aValue instanceof String) {
 			try {
 				int brBodova = Integer.parseInt((String) aValue);
-				testController.executeCommand(
-						new IzmjenaBrojaBodovaTestCommand(student, brBodova));
+				if (brBodova != (int) getValueAt(rowIndex, columnIndex))
+					testController.executeCommand(
+							new IzmjenaBrojaBodovaTestCommand(student, brBodova));
 			} catch (NumberFormatException ex) {}
 		} else if (columnIndex == 4 && aValue instanceof String) {
 			String komentar = (String) aValue;
-			testController.executeCommand(
-					new IzmjenaKomentaraTestCommand(student, komentar));
+			if (!komentar.equals((String) getValueAt(rowIndex, columnIndex)))
+				testController.executeCommand(
+						new IzmjenaKomentaraTestCommand(student, komentar));
 		}
-		
+//		fireTableDataChanged();
 	}
 	
 	

@@ -2,6 +2,7 @@ package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 
@@ -14,8 +15,8 @@ import javax.swing.border.EmptyBorder;
 
 import org.unibl.etf.ps.studentviewer.gui.StudentListModel;
 import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
-import org.unibl.etf.ps.studentviewer.gui.controler.TestController;
-import org.unibl.etf.ps.studentviewer.gui.controler.TestDodajStudenteController;
+import org.unibl.etf.ps.studentviewer.gui.control.TestController;
+import org.unibl.etf.ps.studentviewer.gui.control.TestDodajStudenteController;
 import org.unibl.etf.ps.studentviewer.logic.command.Command;
 import org.unibl.etf.ps.studentviewer.logic.command.DodajStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
@@ -56,7 +57,7 @@ public class TestDodajStudenteForm extends JDialog {
 	
 	private TestForm testForm;
 	private TestController testController;
-	private TestDodajStudenteController dodajStudenteController;
+	private TestDodajStudenteController testDodajStudenteController;
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPane_1;
 	
@@ -72,7 +73,7 @@ public class TestDodajStudenteForm extends JDialog {
 		thisDialog = this;
 		this.testForm = testForm;
 		this.testController = testController;
-		this.dodajStudenteController = new TestDodajStudenteController();
+		this.testDodajStudenteController = new TestDodajStudenteController(this);
 		this.tableModel = (StudentTableModel) testForm.getStudentiTable().getModel();
 		
 		DAOFactory factory = new MySQLDAOFactory();
@@ -96,7 +97,7 @@ public class TestDodajStudenteForm extends JDialog {
 			@Override
 			public void mouseClicked(MouseEvent me) {
 				if (me.getClickCount() == 2) {
-					dodajStudenteController.addStudents(allStudentsList, toAddStudentsList);
+					testDodajStudenteController.addStudents(allStudentsList, toAddStudentsList);
 				}
 			}
 		});
@@ -115,7 +116,7 @@ public class TestDodajStudenteForm extends JDialog {
 			@Override
 			public void mouseClicked(MouseEvent me) {
 				if (me.getClickCount() == 2) {
-					dodajStudenteController.removeStudents(allStudentsList, toAddStudentsList);
+					testDodajStudenteController.removeStudents(allStudentsList, toAddStudentsList);
 				}
 			}
 		});
@@ -125,7 +126,7 @@ public class TestDodajStudenteForm extends JDialog {
 		btnAdd.setBackground(new Color(0, 0, 139));
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				dodajStudenteController.addStudents(allStudentsList, toAddStudentsList);
+				testDodajStudenteController.addStudents(allStudentsList, toAddStudentsList);
 			}
 		});
 		btnAdd.setBounds(320, 24, 50, 40);
@@ -135,7 +136,7 @@ public class TestDodajStudenteForm extends JDialog {
 		btnAddAll.setBackground(new Color(0, 0, 139));
 		btnAddAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				dodajStudenteController.addAll(allStudentsList, toAddStudentsList);
+				testDodajStudenteController.addAll(allStudentsList, toAddStudentsList);
 			}
 		});
 		btnAddAll.setBounds(320, 75, 50, 40);
@@ -145,7 +146,7 @@ public class TestDodajStudenteForm extends JDialog {
 		btnRemove.setBackground(new Color(0, 0, 139));
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				dodajStudenteController.removeStudents(allStudentsList, toAddStudentsList);
+				testDodajStudenteController.removeStudents(allStudentsList, toAddStudentsList);
 			}
 		});
 		btnRemove.setBounds(320, 156, 50, 40);
@@ -155,7 +156,7 @@ public class TestDodajStudenteForm extends JDialog {
 		btnRemoveAll.setBackground(new Color(0, 0, 139));
 		btnRemoveAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				dodajStudenteController.removeAll(allStudentsList, toAddStudentsList);
+				testDodajStudenteController.removeAll(allStudentsList, toAddStudentsList);
 			}
 		});
 		btnRemoveAll.setBounds(320, 207, 50, 40);
@@ -171,18 +172,7 @@ public class TestDodajStudenteForm extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
-						Set<StudentNaTestuDTO> studentsSet = new HashSet<>(tableModel.getData());
-						studentsSet.addAll(((StudentListModel) toAddStudentsList.getModel()).getData());
-						
-						Command dodajStudente = new DodajStudenteTestCommand(
-								testForm.getModel(),
-								(StudentTableModel) testForm.getStudentiTable().getModel(), 
-								new ArrayList<>(studentsSet));
-						
-						testController.executeCommand(dodajStudente);
-						testForm.refreshStatistics();
-						testForm.refreshStudentiTable();
-						thisDialog.dispose();
+						testDodajStudenteController.okButtonAction(testForm, testController, tableModel, toAddStudentsList);
 						
 					}
 				});

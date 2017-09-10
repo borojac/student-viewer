@@ -1,5 +1,6 @@
 package org.unibl.etf.ps.studentviewer.logic.command;
 
+import java.awt.EventQueue;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,7 +35,13 @@ public class IzmjenaDatumaTestCommand extends TestCommand {
 		this.test.setDatum(prethodniDatum);
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(prethodniDatum);
-		dateChooser.setSelectedDate(cal);
+		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				dateChooser.setSelectedDate(cal);
+			}
+		});
 
 	}
 
@@ -44,8 +51,13 @@ public class IzmjenaDatumaTestCommand extends TestCommand {
 		this.test.setDatum(sljedeciDatum);
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(sljedeciDatum);
-		dateChooser.setSelectedDate(cal);
-		
+		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				dateChooser.setSelectedDate(cal);
+			}
+		});
 	}
 
 }

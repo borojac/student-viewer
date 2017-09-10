@@ -28,8 +28,13 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.imgscalr.Scalr;
+<<<<<<< HEAD
 import org.unibl.etf.ps.studentviewer.gui.controler.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.exec.addstudentexec.ChooseAddTypeExec;
+=======
+import org.unibl.etf.ps.studentviewer.gui.addstudentcontroller.ChooseAddTypeController;
+import org.unibl.etf.ps.studentviewer.gui.control.MainFormController;
+>>>>>>> branch 'master' of https://github.com/borojac/student-viewer
 
 public class ChooseAddTypeForm extends JFrame {
 

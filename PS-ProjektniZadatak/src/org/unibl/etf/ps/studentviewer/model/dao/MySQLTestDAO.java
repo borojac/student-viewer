@@ -1,6 +1,7 @@
 package org.unibl.etf.ps.studentviewer.model.dao;
 
 import java.sql.Statement;
+import java.sql.Types;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,10 +10,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.unibl.etf.ps.studentviewer.logic.utility.dbutility.ConnectionPool;
 import org.unibl.etf.ps.studentviewer.logic.utility.dbutility.DBUtility;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
+
+import java.sql.CallableStatement;
 /**
  * Nezavrseno, netestirano
  * @author Nemanja Stokuca
@@ -76,18 +78,22 @@ public class MySQLTestDAO implements TestDAO {
 
 		String updateTestQuery = "UPDATE test SET Naziv=?, Datum=?, Napomena=?, Procenat=?, PredmetId=? WHERE TestId=?";
 		String addStudentsQuery = "INSERT INTO izlazi_na VALUES(?, ?, ?, ?)";
-		String deleteStudentsQuery = "DELETE FROM izlazi_na WHERE TestId=?";
+		String deleteStudentsQuery = "{call update_test_remove_students(?, ?)}";
 
 		Connection conn = null;
 		PreparedStatement ps = null;
+		CallableStatement cs = null;
 
 		try {
 
 			conn = DBUtility.open();
 			conn.setAutoCommit(false);
-			ps = conn.prepareStatement(deleteStudentsQuery);
-			ps.setInt(1, test.getTestId());
-			retVal = ps.executeUpdate() > 0;
+			cs = conn.prepareCall(deleteStudentsQuery);
+			cs.setInt(1, test.getTestId());
+			cs.registerOutParameter(2, Types.BOOLEAN);
+			cs.executeUpdate();
+			retVal = cs.getBoolean(2);
+			
 			ps = conn.prepareStatement(updateTestQuery);
 			ps.setString(1, test.getNaziv());
 			ps.setDate(2, new java.sql.Date(test.getDatum().getTime()));
@@ -96,25 +102,32 @@ public class MySQLTestDAO implements TestDAO {
 			ps.setInt(5, test.getPredmetId());
 			ps.setInt(6, test.getTestId());
 			retVal &= ps.executeUpdate() == 1;
+			
 			ps = conn.prepareStatement(addStudentsQuery);
-			for (StudentNaTestuDTO student : test.getStudenti()) {
-				ps.setInt(1, test.getTestId());
-				ps.setInt(2, student.getStudentId());
-				ps.setInt(3, student.getBrojBodova());
-				ps.setString(4, student.getKomentar());
-				retVal &= ps.executeUpdate() == 1;
+			if (test.getStudenti().size() > 0) {
+				for (StudentNaTestuDTO student : test.getStudenti()) {
+					ps.setInt(1, test.getTestId());
+					ps.setInt(2, student.getStudentId());
+					ps.setInt(3, student.getBrojBodova());
+					ps.setString(4, student.getKomentar());
+					retVal &= ps.executeUpdate() == 1;
+				}
 			}
 			
 			if (retVal) 
 				conn.commit();
 			else
-				conn.rollback();
+				throw new SQLException("Rollback needed!");
 			
-			conn.setAutoCommit(true);
 		} catch (SQLException e) {
-			// TODO: handle exception
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {}
 			e.printStackTrace();
 		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {}
 			DBUtility.close(conn, ps);
 		}
 
@@ -133,6 +146,7 @@ public class MySQLTestDAO implements TestDAO {
 
 		try {
 			conn = DBUtility.open();
+			conn.setAutoCommit(false);
 			ps = conn.prepareStatement(addTestQuery);
 
 			ps.setInt(1, test.getPredmetId());
@@ -144,21 +158,28 @@ public class MySQLTestDAO implements TestDAO {
 			retVal = ps.executeUpdate() == 1;
 
 			for (StudentNaTestuDTO student : test.getStudenti()) {
-				try (PreparedStatement ps2 = conn.prepareStatement(updateStudentsQuery)) {
-					ps2.setInt(1, test.getTestId());
-					ps2.setInt(2, student.getStudentId());
-					ps2.setInt(3, student.getBrojBodova());
-					ps2.setString(4, student.getKomentar());
-					retVal &= ps2.executeUpdate() == 1;
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+				ps = conn.prepareStatement(updateStudentsQuery);
+				ps.setInt(1, test.getTestId());
+				ps.setInt(2, student.getStudentId());
+				ps.setInt(3, student.getBrojBodova());
+				ps.setString(4, student.getKomentar());
+				retVal &= ps.executeUpdate() == 1;
+				
 			}
+			if (retVal)
+				conn.commit();
+			else
+				throw new SQLException("Rollback needed!");
 
 		} catch (SQLException ex) {
-			// TODO Auto-generated catch block
+			try {
+				conn.rollback();
+			} catch (SQLException e) {}
 			ex.printStackTrace();
 		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {}
 			DBUtility.close(conn, ps);
 		}
 		return retVal;
@@ -289,6 +310,30 @@ public class MySQLTestDAO implements TestDAO {
 		}
 		
 		return retVals;
+	}
+
+	@Override
+	public boolean verifyStudent(String brojIndeksa, int idTesta) {
+		boolean retVal = false;
+		String call = "{CALL verify_student(?, ?, ?)}";
+		
+		Connection conn = null;
+		CallableStatement cs = null;
+		try {
+			conn = DBUtility.open();
+			cs = conn.prepareCall(call);
+			cs.setString(1, brojIndeksa);
+			cs.setInt(2, idTesta);
+			cs.registerOutParameter(3, Types.BOOLEAN);
+			if (cs.executeUpdate() > 0)
+				retVal = cs.getBoolean(3);
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(cs, conn);
+		}
+		return retVal;
 	}
 
 }

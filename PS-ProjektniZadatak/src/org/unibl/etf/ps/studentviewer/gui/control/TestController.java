@@ -1,5 +1,6 @@
-package org.unibl.etf.ps.studentviewer.gui.controler;
+package org.unibl.etf.ps.studentviewer.gui.control;
 
+import java.awt.EventQueue;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
@@ -14,7 +15,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +25,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
@@ -44,7 +49,9 @@ import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaBrojaBodovaTestComman
 import org.unibl.etf.ps.studentviewer.logic.command.UkloniStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.StudentDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
@@ -80,11 +87,11 @@ public class TestController {
 		if (ke.getKeyCode() == KeyEvent.VK_Z && ke.isControlDown()) {
 			undo();
 			testForm.refreshStatistics();
-			testForm.refreshStudentiTable();
+			testForm.resetStudentiTable();
 		} else if (ke.getKeyCode() == KeyEvent.VK_Y && ke.isControlDown()) {
 			redo();
 			testForm.refreshStatistics();
-			testForm.refreshStudentiTable();
+			testForm.resetStudentiTable();
 		}
 	}
 
@@ -102,13 +109,39 @@ public class TestController {
 			undoStack.push(command);
 		}
 	}
+	
+	public void windowClosingAction() {
+		if (!undoStack.isEmpty()) {
+			String[] options = { "	Da	", "	Ne	" };
+			int result = JOptionPane.showOptionDialog(testForm,
+					"Imate nesaƒçuvanih izmjena. Da li ste sigurni da ≈æelite zatvoriti prozor? Izmjene neƒáe biti saƒçuvane!",
+					"Potvrda zatvaranja", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null,
+					options, options[1]);
+			if (result == JOptionPane.YES_OPTION) {
+				testForm.dispose();
+			}
+		} else
+			testForm.dispose();
+	}
 
 	public List<StudentNaTestuDTO> importFromExcel() throws FileNotFoundException, IOException {
 		JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
 		fileChooser.setFileSelectionMode(JFileChooser.OPEN_DIALOG);
+		fileChooser.setMultiSelectionEnabled(false);
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		FileFilter excelFileFilter = new FileNameExtensionFilter("Microsoft Excel spreadsheet", "xls", "xlsx");
+		fileChooser.addChoosableFileFilter(excelFileFilter);
+		fileChooser.setFileFilter(excelFileFilter);
 		fileChooser.showOpenDialog(null);
+		
 		File chosenFile = fileChooser.getSelectedFile();
-		List<StudentNaTestuDTO> data = new ArrayList<>();
+		
+		Set<StudentNaTestuDTO> data = new HashSet<>(test.getStudenti());
+		DAOFactory factory = new MySQLDAOFactory();
+		StudentDAO studentDAO = factory.getStudentDAO();
+		TestDAO testDAO = factory.getTestDAO();
+		
 
 		if (chosenFile != null && chosenFile.exists() && chosenFile.getAbsolutePath().endsWith(".xls")) {
 			POIFSFileSystem fileSystem = new POIFSFileSystem(new FileInputStream(chosenFile));
@@ -117,23 +150,46 @@ public class TestController {
 			int rowIndex = 0;
 			for (int i = 0; i < sheet.getPhysicalNumberOfRows(); ++i) {
 				HSSFRow row = sheet.getRow(i);
-				HSSFCell cell = row.getCell(1);
-				if ("Prezime".equalsIgnoreCase(cell.getStringCellValue().trim())) {
+				if ("Br. ind.".equalsIgnoreCase(row.getCell(0).getStringCellValue().trim())
+						|| "Prezime".equalsIgnoreCase(row.getCell(1).getStringCellValue().trim())
+						|| "Ime".equalsIgnoreCase(row.getCell(3).getStringCellValue().trim())) {
 					rowIndex = i + 1;
 					break;
 				}
 			}
-
+			
+			HSSFRow titleRow = sheet.getRow(rowIndex - 1);
+			
+			
 			for (int i = rowIndex; i < sheet.getPhysicalNumberOfRows(); ++i) {
 				HSSFRow row = sheet.getRow(i);
-				HSSFCell cell = row.getCell(0);
-				String brojIndeksa = cell.getStringCellValue().trim();
+				String brojIndeksa = row.getCell(0).getStringCellValue().trim();
 
-				//				TODO - potreban StudentDAO za dobijanje informacija o ispitu
-				//				StudentNaTestuDTO tmp = new StudentNaTestuDTO(studentId, brojIndeksa, ime, prezime, 0, "");
-				//				data.add(tmp);
-
-
+				for (int c = 0; c < brojIndeksa.length(); ++c) {
+					if (brojIndeksa.charAt(c) != '0') {
+						brojIndeksa = brojIndeksa.substring(c);
+						break;
+					}
+				}
+				
+				
+				int brojBodova = 0;
+				String komentar = "";
+				if ("Bodovi".equals(titleRow.getCell(4).getStringCellValue().trim())
+						&& "Komentar".equals(titleRow.getCell(5).getStringCellValue().trim())) {
+					try {
+						brojBodova = Integer.parseInt(row.getCell(4).getStringCellValue().trim());
+					} catch (NumberFormatException ex) {}
+					komentar = row.getCell(5).getStringCellValue().trim();
+				}
+				boolean verified = testDAO.verifyStudent(brojIndeksa, test.getTestId());
+				
+				if (verified) {
+					StudentNaPredmetuDTO tmp = studentDAO.getStudentBy(brojIndeksa);
+					data.add(new StudentNaTestuDTO(tmp.getStudentId(), brojIndeksa, 
+							tmp.getIme(), tmp.getPrezime(), brojBodova, komentar));
+				}
+				
 			}
 
 			workbook.close();
@@ -148,21 +204,44 @@ public class TestController {
 			int rowIndex = 0;
 			for (int i = 0; i < sheet.getPhysicalNumberOfRows(); ++i) {
 				Row row = sheet.getRow(i);
-				Cell cell = row.getCell(1);
-				if ("Prezime".equalsIgnoreCase(cell.getStringCellValue().trim())) {
+				if ("Br. ind.".equalsIgnoreCase(row.getCell(0).getStringCellValue().trim())
+						|| "Prezime".equalsIgnoreCase(row.getCell(1).getStringCellValue().trim())
+						|| "Ime".equalsIgnoreCase(row.getCell(3).getStringCellValue().trim())) {
 					rowIndex = i + 1;
 					break;
 				}
 			}
+			
+			Row titleRow = sheet.getRow(rowIndex - 1);
 
 			for (int i = rowIndex; i < sheet.getPhysicalNumberOfRows(); ++i) {
 				Row row = sheet.getRow(i);
-				Cell cell = row.getCell(0);
-				String brojIndeksa = cell.getStringCellValue().trim();
-				System.out.println(brojIndeksa);
-				//				TODO - potreban StudentDAO za dobijanje informacija o ispitu
-				//				StudentNaTestuDTO tmp = new StudentNaTestuDTO(studentId, brojIndeksa, ime, prezime, 0, "");
-				//				data.add(tmp);
+				String brojIndeksa = row.getCell(0).getStringCellValue().trim();
+
+				for (int c = 0; c < brojIndeksa.length(); ++c) {
+					if (brojIndeksa.charAt(c) != '0') {
+						brojIndeksa = brojIndeksa.substring(c);
+						break;
+					}
+				}
+				
+				
+				int brojBodova = 0;
+				String komentar = "";
+				if ("Bodovi".equals(titleRow.getCell(4).getStringCellValue().trim())
+						&& "Komentar".equals(titleRow.getCell(5).getStringCellValue().trim())) {
+					try {
+						brojBodova = Integer.parseInt(row.getCell(4).getStringCellValue().trim());
+					} catch (NumberFormatException ex) {}
+					komentar = row.getCell(5).getStringCellValue().trim();
+				}
+				boolean verified = testDAO.verifyStudent(brojIndeksa, test.getTestId());
+				if (verified) {
+					StudentNaPredmetuDTO tmp = studentDAO.getStudentBy(brojIndeksa);
+					data.add(new StudentNaTestuDTO(tmp.getStudentId(), brojIndeksa, 
+							tmp.getIme(), tmp.getPrezime(), brojBodova, komentar));
+				}
+				
 
 
 			}
@@ -171,8 +250,7 @@ public class TestController {
 			chosenFileInputStream.close();
 		} else
 			return null;
-
-		return data;
+		return new ArrayList<>(data);
 	}
 
 	public void executeCommand(Command command) {
@@ -304,10 +382,12 @@ public class TestController {
 	}
 
 	public String getTestStatistics() {
-		//		TODO - dodati ukupan broj studenata na predmetu - potreban StudentDTO
+		//		TODO - dodati ukupan broj studenata na predmetu - potreban PredmetDTO
 		StringBuilder statisticsBuilder = new StringBuilder();
 
 		int izaslo = test.getStudenti().size();
+//		int ukupno = predmetDAO.getAllStudents().size();
+		int ukupno = 100;
 		int polozilo = 0, deset = 0, devet = 0, osam = 0, sedam = 0, sest = 0;
 
 		for (StudentNaTestuDTO student : test.getStudenti()) {
@@ -326,7 +406,9 @@ public class TestController {
 				++sest;
 		}
 
-		statisticsBuilder.append("Izaslo: " + izaslo).append('\n');
+		statisticsBuilder.append("Izaslo: " + izaslo + "/" + ukupno + " " + 
+		String.format("(%.2f %%)", (double)izaslo / (double) polozilo * 100.0)).append('\n');
+		
 		statisticsBuilder.append(">50%: " + polozilo
 				+ String.format("(%.2f %%)", (double)polozilo / (double) izaslo * 100.0)).append('\n');
 		statisticsBuilder.append("<50%: " + (izaslo - polozilo)
@@ -340,12 +422,11 @@ public class TestController {
 
 		return statisticsBuilder.toString();
 	}
-	public void initiateStudentSearch(TestDTO test, StudentTableModel model, String searchText) {
+	public void initiateStudentSearch(StudentTableModel model, String searchText) {
 		if (test == null || model == null || searchText == null)
 			return;
 		if ("".equals(searchText)) {
 			model.setData(test.getStudenti());
-			model.fireTableDataChanged();
 			return;
 		}
 		List<StudentNaTestuDTO> searchedList = null;
@@ -366,21 +447,19 @@ public class TestController {
 				numberMatcher = numberMatcher.reset();
 				numberMatcher.find();
 				int brojBodova = Integer.parseInt(numberMatcher.group());
-				searchedList = this.filter(test, brojBodova, diskriminator);
+				searchedList = this.filter(brojBodova, diskriminator);
 			} else {
-				searchedList = this.pretraga(test, searchText);
+				searchedList = this.pretraga(searchText);
 			}
 		} else {
-			searchedList = this.pretraga(test, searchText);
+			searchedList = this.pretraga(searchText);
 
 		}
-
 		model.setData(searchedList);
-		model.fireTableDataChanged();
 
 	}
 
-	public List<StudentNaTestuDTO> filter(TestDTO test, int brojBodova, String diskriminator) {
+	private List<StudentNaTestuDTO> filter(int brojBodova, String diskriminator) {
 		List<StudentNaTestuDTO> retList = new ArrayList<>();
 		for (StudentNaTestuDTO student : test.getStudenti()) {
 			if ("<".equals(diskriminator) && student.getBrojBodova() < brojBodova)
@@ -401,7 +480,7 @@ public class TestController {
 		return retList;
 	}
 
-	public List<StudentNaTestuDTO> pretraga(TestDTO test, String query) {
+	private List<StudentNaTestuDTO> pretraga(String query) {
 		List<StudentNaTestuDTO> retList = new ArrayList<>();
 		for (StudentNaTestuDTO student : test.getStudenti()) {
 			String ime = student.getIme().toLowerCase();
@@ -416,11 +495,23 @@ public class TestController {
 	public void addTestAction() {
 		DAOFactory factory = new MySQLDAOFactory();
 		TestDAO testDAO = factory.getTestDAO();
-		if (!testDAO.addTest(test)) {
-			JOptionPane.showMessageDialog(testForm, "Dodavanje nije uspjelo. Pokuöajte ponovo.", "Greöka", JOptionPane.ERROR_MESSAGE);
-		} else {
-			testForm.dispose();
-		}
+		if (!testDAO.addTest(test))
+			EventQueue.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					JOptionPane.showMessageDialog(testForm, "Dodavanje nije uspjelo. Poku≈°ajte ponovo.", "Gre≈°ka", JOptionPane.ERROR_MESSAGE);
+				}
+			});
+		else 
+			EventQueue.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					testForm.dispose();
+				}
+			});
+		
 
 	}
 
@@ -429,22 +520,45 @@ public class TestController {
 		TestDAO testDAO = factory.getTestDAO();
 		
 		if (!testDAO.updateTest(test))
-			JOptionPane.showMessageDialog(testForm, "Aûuriranje nije uspjelo. Pokuöajte ponovo.", "Greöka", JOptionPane.ERROR_MESSAGE);
+			EventQueue.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					JOptionPane.showMessageDialog(testForm, "A≈æuriranje nije uspjelo. Poku≈°ajte ponovo.", "Gre≈°ka", JOptionPane.ERROR_MESSAGE);
+				}
+			});
 		else
-			testForm.dispose();
-	
+			EventQueue.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					testForm.dispose();
+				}
+			});
 	}
 	
 	public void addStudents() {
-		testForm.resetSearch();
-		TestDodajStudenteForm dodajStudenteDialog = new TestDodajStudenteForm(testForm, this);
-		dodajStudenteDialog.setVisible(true);
+		final TestController testController = this;
+		EventQueue.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				TestDodajStudenteForm dodajStudenteDialog = new TestDodajStudenteForm(testForm, testController);
+				dodajStudenteDialog.setVisible(true);
+			}
+		});
 	}
 	public void removeStudents(StudentTableModel model, List<StudentNaTestuDTO> forRemoving) {
-		List<StudentNaTestuDTO> studentList = new ArrayList<>(model.getData());
-		studentList.removeAll(forRemoving);
-		this.executeCommand(new UkloniStudenteTestCommand(test, model, studentList));
-		testForm.refreshStatistics();
+		this.executeCommand(new UkloniStudenteTestCommand(test, model, forRemoving));
+
+		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				testForm.refreshStatistics();
+				testForm.refreshStudentiTable();
+			}
+		});
 	}
 	
 

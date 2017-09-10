@@ -4,31 +4,40 @@ package org.unibl.etf.ps.studentviewer.gui.view;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
-import org.unibl.etf.ps.studentviewer.gui.controler.TestController;
+import org.unibl.etf.ps.studentviewer.gui.control.TestController;
 import org.unibl.etf.ps.studentviewer.logic.command.Command;
 import org.unibl.etf.ps.studentviewer.logic.command.DodajNapomenuTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.DodajStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaDatumaTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaNazivaTestaCommand;
+import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaProcentaTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.UkloniStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
 import com.itextpdf.text.DocumentException;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import datechooser.events.CommitEvent;
@@ -41,6 +50,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -52,6 +62,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JComboBox;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class TestForm extends JFrame {
 
@@ -72,7 +84,6 @@ public class TestForm extends JFrame {
 	private TestController testController;
 	private DateChooserCombo dateChooserCombo;
 	private boolean update = false;
-	private boolean needsRefresh = false;
 
 	private TestForm testForm;
 	private MainForm parentForm;
@@ -82,7 +93,20 @@ public class TestForm extends JFrame {
 	private JTextArea statistikaTextArea;
 	private JComboBox procenatComboBox;
 
+
 	public TestForm(TestDTO testParam, MainForm mainForm) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent event) {
+				EventQueue.invokeLater(new Runnable() {
+
+					@Override
+					public void run() {
+						testController.windowClosingAction();
+					}
+				});
+			}
+		});
 		setResizable(false);
 		addKeyListener(new KeyAdapter() {
 			@Override
@@ -90,7 +114,7 @@ public class TestForm extends JFrame {
 				testController.undoRedoAction((TestForm) testForm, e);
 			}
 		});
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(200, 10, 540, 686);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
@@ -119,10 +143,12 @@ public class TestForm extends JFrame {
 		parentForm = mainForm;
 
 		try {
-			logger.addAppender(new FileAppender(new SimpleLayout(), TestForm.class.getSimpleName() + ".log"));
+			File logFolder = new File("./log");
+			if (!logFolder.exists())
+				logFolder.mkdirs();
+			logger.addAppender(new FileAppender(new SimpleLayout(), "./log/" + TestForm.class.getSimpleName() + ".log"));
 		} catch (IOException e1) {
-			this.dispose();
-			throw new RuntimeException(e1);
+			e1.printStackTrace();
 		}
 
 		JLabel lblNaziv = new JLabel("Naziv:");
@@ -150,14 +176,31 @@ public class TestForm extends JFrame {
 		nazivTextField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				testController.undoRedoAction((TestForm) testForm, e);
+				if (e.isControlDown() && (e.getKeyCode() == KeyEvent.VK_Z || e.getKeyCode() == KeyEvent.VK_Y))
+					testController.undoRedoAction((TestForm) testForm, e);
+				
+			}
+			@Override
+			public void keyTyped(KeyEvent e) {
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						if (!nazivTextField.getText().equals(test.getNaziv())) {
+							IzmjenaNazivaTestaCommand command = new IzmjenaNazivaTestaCommand(test, nazivTextField);
+							testController.executeCommand(command);
+						}
+					}
+				}).start();
 			}
 		});
 		nazivTextField.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				IzmjenaNazivaTestaCommand command = new IzmjenaNazivaTestaCommand(test, nazivTextField);
-				testController.executeCommand(command);
+				if (!nazivTextField.getText().equals(test.getNaziv())) {
+					IzmjenaNazivaTestaCommand command = new IzmjenaNazivaTestaCommand(test, nazivTextField);
+					testController.executeCommand(command);
+				}
 			}
 		});
 		nazivTextField.setBounds(144, 12, 280, 20);
@@ -172,14 +215,31 @@ public class TestForm extends JFrame {
 		napomenaTextArea.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				Command command = new DodajNapomenuTestCommand(test, napomenaTextArea);
-				testController.executeCommand(command);
+				if (!napomenaTextArea.getText().equals(test.getNapomena())) {
+					Command command = new DodajNapomenuTestCommand(test, napomenaTextArea);
+					testController.executeCommand(command);
+				}
 			}
 		});
 		napomenaTextArea.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				testController.undoRedoAction((TestForm) testForm, e);
+				if (e.isControlDown() && (e.getKeyCode() == KeyEvent.VK_Z || e.getKeyCode() == KeyEvent.VK_Y))
+					testController.undoRedoAction((TestForm) testForm, e);
+			}
+			@Override
+			public void keyTyped(KeyEvent e) {
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						if (!napomenaTextArea.getText().equals(test.getNapomena())) {
+							Command command = new DodajNapomenuTestCommand(test, napomenaTextArea);
+							testController.executeCommand(command);
+						}
+					}
+				}).start();
+				
 			}
 		});
 		napomenaScrollPane.setViewportView(napomenaTextArea);
@@ -230,14 +290,15 @@ public class TestForm extends JFrame {
 
 		studentiScrollPane.setViewportView(studentiTable);
 
-		btnSacuvaj = new JButton("Sa\u010Duvaj");
+		btnSacuvaj = new JButton("");
+		btnSacuvaj.setIcon(new ImageIcon("img/Save_14.png"));
 		btnSacuvaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (update)
 					testController.updateTestAction();
 				else
 					testController.addTestAction();
-				parentForm.refreshStudentiTable();
+				parentForm.refreshTestoviTable();
 			}
 		});
 		btnSacuvaj.setBackground(new Color(0, 0, 139));
@@ -250,10 +311,8 @@ public class TestForm extends JFrame {
 		searchTextField.setFont(new Font("Century Gothic", Font.BOLD, 11));
 		searchTextField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				needsRefresh = true;
 				final String searchText = searchTextField.getText();
 				testController.initiateStudentSearch(
-						test,
 						(StudentTableModel)studentiTable.getModel(),
 						searchText);
 			}
@@ -270,14 +329,13 @@ public class TestForm extends JFrame {
 			}
 		});
 
-		btnPretrazi = new JButton("Pretra\u017Ei");
+		btnPretrazi = new JButton("");
+		btnPretrazi.setIcon(new ImageIcon("img/Lookup_14.png"));
 		btnPretrazi.setBackground(new Color(0, 0, 139));
 		btnPretrazi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				needsRefresh = true;
 				final String searchText = searchTextField.getText();
 				testController.initiateStudentSearch(
-						test,
 						(StudentTableModel)studentiTable.getModel(),
 						searchText);
 			}
@@ -285,22 +343,28 @@ public class TestForm extends JFrame {
 		btnPretrazi.setBounds(434, 389, 90, 22);
 		contentPane.add(btnPretrazi);
 
-		btnPrint = new JButton("Print");
+		btnPrint = new JButton("");
+		btnPrint.setIcon(new ImageIcon("img/Print_14.png"));
 		btnPrint.setBackground(new Color(0, 0, 139));
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
 				try {
 					testController.print(test);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (DocumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (PrinterException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (Exception e) {
+					EventQueue.invokeLater(new Runnable() {
+
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(testForm,
+									"Štampanje nije uspjelo. Pogledajte log za detalje:\n" + new File("log" + "/" + TestForm.class.getSimpleName() + ".log").getAbsolutePath(), 
+									"Greška", 
+									JOptionPane.ERROR_MESSAGE);
+						}
+					});
+
+					logger.error("Štampanje nije uspjelo", e);
+
 				}
 
 			}
@@ -308,22 +372,34 @@ public class TestForm extends JFrame {
 		btnPrint.setBounds(10, 627, 70, 23);
 		contentPane.add(btnPrint);
 
-		btnEksport = new JButton("Eksport");
+		btnEksport = new JButton("");
+		btnEksport.setIcon(new ImageIcon("img/PDF_14.png"));
 		btnEksport.setBackground(new Color(0, 0, 139));
 		btnEksport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					testController.export(test);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					EventQueue.invokeLater(new Runnable() {
+
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(testForm,
+									"Eksportovanje nije uspjelo. Pogledajte log za detalje:\n" + new File("log" + "/" + TestForm.class.getSimpleName() + ".log").getAbsolutePath(), 
+									"Greška", 
+									JOptionPane.ERROR_MESSAGE);
+						}
+					});
+
+					logger.error("Eksportovanje nije uspjelo", e);
 				}
 			}
 		});
 		btnEksport.setBounds(90, 627, 70, 23);
 		contentPane.add(btnEksport);
 
-		btnDodaj = new JButton("Dodaj");
+		btnDodaj = new JButton("");
+		btnDodaj.setIcon(new ImageIcon("img/Add_14.png"));
 		btnDodaj.setBackground(new Color(0, 0, 139));
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -333,12 +409,13 @@ public class TestForm extends JFrame {
 		btnDodaj.setBounds(170, 627, 70, 23);
 		contentPane.add(btnDodaj);
 
-		btnUkloni = new JButton("Ukloni");
+		btnUkloni = new JButton("");
+		btnUkloni.setIcon(new ImageIcon("img/Delete_14.png"));
 		btnUkloni.setBackground(new Color(0, 0, 139));
 		btnUkloni.setEnabled(false);
 		btnUkloni.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (!needsRefresh && studentiTable.getSelectedRows().length > 0) {
+				if (studentiTable.getSelectedRows().length > 0) {
 					List<StudentNaTestuDTO> forRemoving = new ArrayList<>();
 					StudentTableModel model = (StudentTableModel) studentiTable.getModel();
 					for (int index : studentiTable.getSelectedRows()) {
@@ -361,8 +438,10 @@ public class TestForm extends JFrame {
 
 			@Override
 			public void onCommit(CommitEvent arg0) {
-				Command command = new IzmjenaDatumaTestCommand(test, dateChooserCombo);
-				testController.executeCommand(command);
+				if (dateChooserCombo.getSelectedDate().getTime().getTime() != test.getDatum().getTime()) {
+					Command command = new IzmjenaDatumaTestCommand(test, dateChooserCombo);
+					testController.executeCommand(command);
+				}
 
 			}
 		});
@@ -378,13 +457,13 @@ public class TestForm extends JFrame {
 
 		contentPane.add(dateChooserCombo);
 
-		btnImport = new JButton("Import");
+		btnImport = new JButton("");
+		btnImport.setIcon(new ImageIcon("img/Import_14.png"));
 		btnImport.setBackground(new Color(0, 0, 139));
 		btnImport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					List<StudentNaTestuDTO> data = testController.importFromExcel();
-
 					if (data != null) {
 						testController.executeCommand(
 								new DodajStudenteTestCommand(
@@ -392,15 +471,34 @@ public class TestForm extends JFrame {
 										(StudentTableModel) studentiTable.getModel(), 
 										data));
 						refreshStatistics();
+						refreshStudentiTable();
 						searchTextField.setText("");
 					}
 
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					EventQueue.invokeLater(new Runnable() {
+
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(testForm,
+									"Fajl ne postoji na disku.",
+									"Greška", 
+									JOptionPane.ERROR_MESSAGE);
+						}
+					});
+					logger.error("Greška kod importa testa iz excela.", e);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					EventQueue.invokeLater(new Runnable() {
+
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(testForm,
+									"Import iz datog fajla nije uspio. Pokušajte ponovo. Pogledajte log za detalje:\n" + new File("./log/" + TestForm.class.getSimpleName() + ".log").getAbsolutePath(),
+									"Greška", 
+									JOptionPane.ERROR_MESSAGE);
+						}
+					});
+					logger.error("Greška kod importa testa iz excela.", e);
 				}
 			}
 		});
@@ -414,6 +512,12 @@ public class TestForm extends JFrame {
 		contentPane.add(lblStatistika);
 
 		statistikaTextArea = new JTextArea();
+		statistikaTextArea.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				testController.undoRedoAction(testForm, e);
+			}
+		});
 		statistikaTextArea.setEditable(false);
 		statistikaTextArea.setBounds(144, 231, 280, 147);
 		statistikaTextArea.setText(testController.getTestStatistics());
@@ -427,17 +531,27 @@ public class TestForm extends JFrame {
 		contentPane.add(lblProcenat);
 
 		procenatComboBox = new JComboBox();
+		procenatComboBox.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent event) {
+				if (event.isControlDown() && (event.getKeyCode() == KeyEvent.VK_Z || event.getKeyCode() == KeyEvent.VK_Y))
+					testController.undoRedoAction(testForm, event);
+			}
+		});
+		initProcenatComboBox();
+		procenatComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				if (Integer.parseInt((String) procenatComboBox.getSelectedItem())
+						!= test.getProcenat()) {
+
+					IzmjenaProcentaTestCommand command = 
+							new IzmjenaProcentaTestCommand(test, procenatComboBox);
+					testController.executeCommand(command);
+				}
+			}
+		});
 		procenatComboBox.setBounds(434, 55, 90, 20);
 		contentPane.add(procenatComboBox);
-
-		int tmpProcenat = 0;
-		while (tmpProcenat <= 100) {
-			procenatComboBox.addItem("" + tmpProcenat);
-			tmpProcenat += 5;
-		}
-
-		procenatComboBox.setSelectedItem("" + 50);
-
 
 		if (update)
 			setFields();
@@ -453,35 +567,67 @@ public class TestForm extends JFrame {
 	}
 
 	public void refreshStatistics() {
-		statistikaTextArea.setText(testController.getTestStatistics());
+		EventQueue.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				statistikaTextArea.setText(testController.getTestStatistics());
+			}
+		});
 	}
+
+	public void resetStudentiTable() {
+		EventQueue.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				((StudentTableModel) studentiTable.getModel()).setData(test.getStudenti());
+			}
+		});
+	}
+
 	public void refreshStudentiTable() {
-		((StudentTableModel) studentiTable.getModel()).fireTableDataChanged();
+		testController.initiateStudentSearch((StudentTableModel) studentiTable.getModel(),
+				searchTextField.getText());
+		List<StudentNaTestuDTO> data = ((StudentTableModel) studentiTable.getModel()).getData();
+		((StudentTableModel) studentiTable.getModel()).setData(new ArrayList<>(data));
 	}
 
 	private void setFields() {
-		procenatComboBox.setSelectedItem("" + test.getProcenat());
-		procenatComboBox.setEnabled(false);
-		nazivTextField.setText(test.getNaziv());
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(test.getDatum());
-		dateChooserCombo.setSelectedDate(cal);
-		napomenaTextArea.setText(test.getNapomena());
-		StudentTableModel model = (StudentTableModel) studentiTable.getModel();
-		if (model == null) 
-			model = new StudentTableModel(test.getStudenti());
-		else
-			model.setData(test.getStudenti());
+		EventQueue.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				procenatComboBox.setSelectedItem("" + test.getProcenat());
+				nazivTextField.setText(test.getNaziv());
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(test.getDatum());
+				dateChooserCombo.setSelectedDate(cal);
+				napomenaTextArea.setText(test.getNapomena());
+				StudentTableModel model = (StudentTableModel) studentiTable.getModel();
+				if (model == null) 
+					model = new StudentTableModel(test.getStudenti());
+				else
+					model.setData(test.getStudenti());
+			}
+		});
+
 
 	}
 
 	public void resetSearch() {
-		if (needsRefresh) {
-			StudentTableModel model = (StudentTableModel) studentiTable.getModel();
-			model.setData(test.getStudenti());
-			model.fireTableDataChanged();
-			searchTextField.setText("");
-			needsRefresh = false;
+		StudentTableModel model = (StudentTableModel) studentiTable.getModel();
+		model.setData(test.getStudenti());
+		searchTextField.setText("");
+	}
+
+	private void initProcenatComboBox() {
+		int tmpProcenat = 0;
+		while (tmpProcenat <= 100) {
+			procenatComboBox.addItem("" + tmpProcenat);
+			tmpProcenat += 5;
 		}
+
+		procenatComboBox.setSelectedItem("" + 50);
 	}
 }

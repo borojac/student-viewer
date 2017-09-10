@@ -8,7 +8,6 @@ public class IzmjenaKomentaraTestCommand implements Command {
 	private String prethodniKomentar, sljedeciKomentar;
 	
 	private StudentNaTestuDTO student;
-	private int index;
 	
 	public IzmjenaKomentaraTestCommand(StudentNaTestuDTO student, String sljedeciKomentar) {
 		this.student = student;
