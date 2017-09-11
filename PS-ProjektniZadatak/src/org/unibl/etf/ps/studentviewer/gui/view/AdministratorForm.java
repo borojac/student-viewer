@@ -1,7 +1,6 @@
 package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
@@ -9,24 +8,20 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import org.imgscalr.Scalr;
+import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
@@ -44,35 +39,18 @@ public class AdministratorForm extends JFrame {
 	private JButton odbijBtn;
 	private JScrollPane	scrollPane;
 	private ArrayList<ZahtjevDTO> list;
-	int id1,id2;
 	
 	private NalogDTO nalogDTO;
+	private AdministratorFormController administratorFormController;
 	
-	MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
-	NalogDAO nalogDAO = nalogFactory.getNalogDAO();
-	
-	PredmetDAO predmetDAO = nalogFactory.getPredmetDAO();
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AdministratorForm frame = new AdministratorForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private DefaultTableModel dtm;
 
 	/**
 	 * Create the frame.
 	 */
 	public AdministratorForm() {
+		administratorFormController = new AdministratorFormController(this);
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 10, 650, 550);
 		setTitle("Zahtjevi");
@@ -121,45 +99,63 @@ public class AdministratorForm extends JFrame {
 		contentPane.add(componentsPane);
 		
 		initComponents();
+		initButtonsListeners();
 	}
 
-	private void initComponents()
-	{
+	private void initComponents() {
 		
-		MySQLDAOFactory zahtjevFactory = new MySQLDAOFactory();
-		ZahtjevDAO zahtjevDAO = zahtjevFactory.getZahtjevDAO();
+		MySQLDAOFactory factory = new MySQLDAOFactory();
+		NalogDAO nalogDAO = factory.getNalogDAO();
+		PredmetDAO predmetDAO = factory.getPredmetDAO();
+		ZahtjevDAO zahtjevDAO = factory.getZahtjevDAO();
 		list = zahtjevDAO.getAllZahtjev();
 		
 		adminZahtjeviJt = new JTable();
-		  scrollPane = new JScrollPane(adminZahtjeviJt);
-		  scrollPane.setBounds(70, 150, 500, 250);
-		  contentPane.add(scrollPane);
+		scrollPane = new JScrollPane(adminZahtjeviJt);
+		scrollPane.setBounds(70, 150, 500, 250);
+		contentPane.add(scrollPane);
 		  
-		  odobriBtn = new JButton("Odobri");
-		  odobriBtn.setBounds(140, 40, 120, 40);
-		  componentsPane.add(odobriBtn);
+		odobriBtn = new JButton("Odobri");
+		odobriBtn.setBounds(140, 40, 120, 40);
+		componentsPane.add(odobriBtn);
 		  
-		  odbijBtn = new JButton("Odbij");
-		  odbijBtn.setBounds(380, 40, 120, 40);
-		  componentsPane.add(odbijBtn);
-		  
-		  
-		  DefaultTableModel dtm = new DefaultTableModel();
-		  dtm.addColumn("Ime");
-		  dtm.addColumn("Prezime");
-		  dtm.addColumn("Naziv predmeta");
-		  dtm.addColumn("Datum zahtjeva");
-		  for(int i = 0; i < list.size(); i++) {
-			id1 = (list.get(i)).getNalogId();
+		odbijBtn = new JButton("Odbij");
+		odbijBtn.setBounds(380, 40, 120, 40);
+		componentsPane.add(odbijBtn);
+		    
+		dtm = new DefaultTableModel();
+		dtm.addColumn("Ime");
+		dtm.addColumn("Prezime");
+		dtm.addColumn("Naziv predmeta");
+		dtm.addColumn("Datum zahtjeva");
+		for(int i = 0; i < list.size(); i++) {
+			int id1 = (list.get(i)).getNalogId();
 			NalogDTO nalogDTO = nalogDAO.getNalog(id1);
-			id2 = (list.get(i)).getPredmetId();
+			int id2 = (list.get(i)).getPredmetId();
 			PredmetDTO predmetDTO = predmetDAO.getPredmet(id2);
-		  Object[] rowData = { nalogDTO.getIme(), nalogDTO.getPrezime(), predmetDTO.getNazivPredmeta(), list.get(i).getDatumZahtjeva() };
-		   dtm.addRow(rowData);
-		  }
-		  adminZahtjeviJt.setModel(dtm);
+			Object[] rowData = { nalogDTO.getIme(), nalogDTO.getPrezime(), predmetDTO.getNazivPredmeta(), list.get(i).getDatumZahtjeva() };
+			dtm.addRow(rowData);
+		}
+		adminZahtjeviJt.setModel(dtm);
 		  
-		  
+	}
+	
+	private void initButtonsListeners() {
+		
+		odobriBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				administratorFormController.odobri();
+			}
+		});
+		
+		odbijBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				administratorFormController.odbij();
+			}
+		});
+		
 	}
 
 	public NalogDTO getNalogDTO() {
@@ -168,6 +164,18 @@ public class AdministratorForm extends JFrame {
 
 	public void setNalogDTO(NalogDTO nalogDTO) {
 		this.nalogDTO = nalogDTO;
+	}
+	
+	public ZahtjevDTO getSelectedZahtjev() {
+		ZahtjevDTO zahtjevDTO = list.get(adminZahtjeviJt.getSelectedRow());
+		zahtjevDTO.setAdminId(nalogDTO.getNalogId());
+		return zahtjevDTO;
+	}
+	
+	public void removeSelectedRow() {
+		list.remove(adminZahtjeviJt.getSelectedRow());
+		dtm.removeRow(adminZahtjeviJt.getSelectedRow());
+		adminZahtjeviJt.setModel(dtm);
 	}
 	
 }
