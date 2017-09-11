@@ -1,14 +1,11 @@
 package org.unibl.etf.ps.studentviewer.gui.view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridLayout;
 import java.awt.SystemColor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +21,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
+import org.unibl.etf.ps.studentviewer.logic.controller.LoginFormController;
 
 public class LoginForm extends JFrame {
 
@@ -36,6 +34,8 @@ public class LoginForm extends JFrame {
 	private JTextField lozinkaTf;
 	private JButton prijavaBtn;
 	private JButton kreirajNalogBtn;
+	
+	private LoginFormController loginFormController;
 
 	/**
 	 * Launch the application.
@@ -57,6 +57,8 @@ public class LoginForm extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginForm() {
+		loginFormController = new LoginFormController(this);
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 10, 650, 550);
 		setTitle("Prijava");
@@ -105,6 +107,7 @@ public class LoginForm extends JFrame {
 		contentPane.add(componentsPane);
 		
 		initComponents();
+		initButtonsListeners();
 	}
 	
 	private void initComponents() {
@@ -143,6 +146,17 @@ public class LoginForm extends JFrame {
 		kreirajNalogBtn = new JButton("Kreiraj nalog");
 		kreirajNalogBtn.setBounds(50, 345, 150, 35);
 		componentsPane.add(kreirajNalogBtn);
+	}
+	
+	private void initButtonsListeners() {
+		
+		kreirajNalogBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				loginFormController.createKreirajNalogForm();
+			}
+		});
+		
 	}
 
 }
