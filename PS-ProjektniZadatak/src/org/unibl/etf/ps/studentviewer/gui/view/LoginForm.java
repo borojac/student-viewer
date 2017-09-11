@@ -16,8 +16,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
@@ -31,7 +33,7 @@ public class LoginForm extends JFrame {
 	private JLabel korImeLbl;
 	private JTextField korImeTf;
 	private JLabel lozinkaLbl;
-	private JTextField lozinkaTf;
+	private JPasswordField lozinkaTf;
 	private JButton prijavaBtn;
 	private JButton kreirajNalogBtn;
 	
@@ -41,6 +43,11 @@ public class LoginForm extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		System.setProperty("javax.net.ssl.trustStore", "StudentViewer.jks");
+		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (Exception ex) {}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -128,7 +135,8 @@ public class LoginForm extends JFrame {
 		lozinkaLbl.setForeground(Color.WHITE);
 		componentsPane.add(lozinkaLbl);
 		
-		lozinkaTf = new JTextField();
+		lozinkaTf = new JPasswordField();
+		lozinkaTf.setEchoChar('*');
 		lozinkaTf.setBounds(0, 115, 250, 35);
 		lozinkaTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
 		componentsPane.add(lozinkaTf);
@@ -157,6 +165,25 @@ public class LoginForm extends JFrame {
 			}
 		});
 		
+		prijavaBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					loginFormController.prijava();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+	}
+	
+	public String getKorisnickoIme() {
+		return korImeTf.getText();
+	}
+	
+	public String getLozinka() {
+		return String.valueOf(lozinkaTf.getPassword());
 	}
 
 }
