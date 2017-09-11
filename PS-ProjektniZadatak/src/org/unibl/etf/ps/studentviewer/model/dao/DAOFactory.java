@@ -9,5 +9,6 @@ public interface DAOFactory {
 	public NalogDAO getNalogDAO();
 	public StudentDAO getStudentDAO();
 	public DodatnaNastavaDAO getDodatnaNastavaDAO();
+	public ZahtjevDAO getZahtjevDAO();
 	
 }

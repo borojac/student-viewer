@@ -26,5 +26,10 @@ public class MySQLDAOFactory implements DAOFactory {
 	public DodatnaNastavaDAO getDodatnaNastavaDAO() {
 		return new MySQLDodatnaNastavaDAO();
 	}
+	
+	@Override
+	public ZahtjevDAO getZahtjevDAO() {
+		return new MySQLZahtjevDAO();
+	}
 
 }
