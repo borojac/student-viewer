@@ -27,8 +27,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.imgscalr.Scalr;
+import org.unibl.etf.ps.studentviewer.logic.controller.ChooseAddTypeController;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
-import org.unibl.etf.ps.studentviewer.logic.controller.studentdatamanipulation.ChooseAddTypeController;
 
 
 public class ChooseAddTypeForm extends JFrame {

@@ -21,7 +21,6 @@ import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ShowForm;
 import org.unibl.etf.ps.studentviewer.gui.view.SortForm;
 import org.unibl.etf.ps.studentviewer.gui.view.TestForm;
-import org.unibl.etf.ps.studentviewer.logic.controller.studentdatamanipulation.DeleteStudentsController;
 import org.unibl.etf.ps.studentviewer.logic.exec.ExecScheduler;
 import org.unibl.etf.ps.studentviewer.logic.exec.SearchExec;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;

@@ -1,8 +1,6 @@
-package org.unibl.etf.ps.studentviewer.logic.controller.studentdatamanipulation;
+package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import javax.swing.JOptionPane;
-
-import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 
 public class DeleteStudentsController {
 	MainFormController mainFormController = null;

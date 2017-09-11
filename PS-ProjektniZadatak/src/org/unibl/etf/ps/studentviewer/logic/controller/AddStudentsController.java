@@ -1,11 +1,10 @@
-package org.unibl.etf.ps.studentviewer.logic.controller.studentdatamanipulation;
+package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.view.AddForm;
-import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class AddStudentsController {
