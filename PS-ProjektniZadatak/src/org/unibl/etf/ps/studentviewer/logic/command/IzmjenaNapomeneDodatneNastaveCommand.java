@@ -6,8 +6,8 @@ public class IzmjenaNapomeneDodatneNastaveCommand extends IzmjenaDodatneNastaveC
 	private DodatnaNastavaDTO dodatnaNastava;
 	private String novaNapomena;
 	private String staraNapomena;
-	
-	public IzmjenaNapomeneDodatneNastaveCommand(DodatnaNastavaDTO dodatnaNastava, String novaNapomena) {		
+
+	public IzmjenaNapomeneDodatneNastaveCommand(DodatnaNastavaDTO dodatnaNastava, String novaNapomena) {
 		this.dodatnaNastava = dodatnaNastava;
 		staraNapomena = dodatnaNastava.getNapomena();
 		this.novaNapomena = novaNapomena;
@@ -23,9 +23,9 @@ public class IzmjenaNapomeneDodatneNastaveCommand extends IzmjenaDodatneNastaveC
 	public void unExecute() {
 		dodatnaNastava.setNapomena(staraNapomena);
 	}
-	
+
 	@Override
-	public void reExecute(){
+	public void reExecute() {
 		this.execute();
 	}
 }

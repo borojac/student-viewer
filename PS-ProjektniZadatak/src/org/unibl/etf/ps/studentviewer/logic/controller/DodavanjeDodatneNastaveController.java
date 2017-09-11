@@ -11,14 +11,14 @@ import javax.swing.JTextField;
 import org.unibl.etf.ps.studentviewer.gui.DodatnaNastavaDataTableModel;
 import org.unibl.etf.ps.studentviewer.gui.view.DodavanjeDodatneNastaveForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ElektrijadaForm;
-import org.unibl.etf.ps.studentviewer.gui.view.IzborDatumaForm;
+import org.unibl.etf.ps.studentviewer.gui.view.IzborDatumaZaDodatnuNastavuForm;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
-
 
 public class DodavanjeDodatneNastaveController {
 	public DodavanjeDodatneNastaveController() {
 		// TODO Auto-generated constructor stub
 	}
+
 	public void zatvoriProzor(ElektrijadaForm forma, WindowEvent e) {
 		forma.setEnabled(true);
 		e.getWindow().dispose();
@@ -53,7 +53,8 @@ public class DodavanjeDodatneNastaveController {
 			@Override
 			public void run() {
 				nastavaForm.setEnabled(false);
-				IzborDatumaForm izborDatumaForm = new IzborDatumaForm(textFieldDatum, nastavaForm);
+				IzborDatumaZaDodatnuNastavuForm izborDatumaForm = new IzborDatumaZaDodatnuNastavuForm(textFieldDatum,
+						nastavaForm);
 			}
 		});
 	}

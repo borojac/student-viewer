@@ -5,19 +5,17 @@ import java.util.ArrayList;
 import org.unibl.etf.ps.studentviewer.logic.controller.ElektrijadaController;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
 
-
-
 public class DodavanjeStudentaZaElektrijaduCommand implements Command {
 
-private ArrayList<StudentZaElektrijaduDTO> st;
-	
-	public DodavanjeStudentaZaElektrijaduCommand(ArrayList<StudentZaElektrijaduDTO> st){
+	private ArrayList<StudentZaElektrijaduDTO> st;
+
+	public DodavanjeStudentaZaElektrijaduCommand(ArrayList<StudentZaElektrijaduDTO> st) {
 		this.st = st;
 	}
-	
+
 	@Override
 	public void execute() {
-		for (StudentZaElektrijaduDTO s : st){
+		for (StudentZaElektrijaduDTO s : st) {
 			ElektrijadaController.listaStudenata.add(s);
 		}
 
@@ -25,7 +23,7 @@ private ArrayList<StudentZaElektrijaduDTO> st;
 
 	@Override
 	public void unExecute() {
-		for (StudentZaElektrijaduDTO s : st){
+		for (StudentZaElektrijaduDTO s : st) {
 			ElektrijadaController.listaStudenata.remove(s);
 		}
 

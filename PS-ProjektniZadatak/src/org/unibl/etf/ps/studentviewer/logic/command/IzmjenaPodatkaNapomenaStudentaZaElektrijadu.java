@@ -6,8 +6,8 @@ public class IzmjenaPodatkaNapomenaStudentaZaElektrijadu extends IzmjenaStudenta
 	private StudentZaElektrijaduDTO student;
 	private String novaNapomena;
 	private String staraNapomena;
-	
-	public IzmjenaPodatkaNapomenaStudentaZaElektrijadu(StudentZaElektrijaduDTO student, String novaNapomena) {		
+
+	public IzmjenaPodatkaNapomenaStudentaZaElektrijadu(StudentZaElektrijaduDTO student, String novaNapomena) {
 		this.student = student;
 		staraNapomena = student.getNapomena();
 		this.novaNapomena = novaNapomena;
@@ -23,9 +23,9 @@ public class IzmjenaPodatkaNapomenaStudentaZaElektrijadu extends IzmjenaStudenta
 	public void unExecute() {
 		student.setNapomena(staraNapomena);
 	}
-	
+
 	@Override
-	public void reExecute(){
+	public void reExecute() {
 		this.execute();
 	}
 }

@@ -15,8 +15,8 @@ import javax.swing.table.AbstractTableModel;
 import org.unibl.etf.ps.studentviewer.gui.DodatnaNastavaDataTableModel;
 import org.unibl.etf.ps.studentviewer.gui.StudentiZaElektrijaduTableModel;
 import org.unibl.etf.ps.studentviewer.gui.view.DodavanjeDodatneNastaveForm;
-import org.unibl.etf.ps.studentviewer.gui.view.DodavanjeStudentaForm;
-import org.unibl.etf.ps.studentviewer.gui.view.EditorForm;
+import org.unibl.etf.ps.studentviewer.gui.view.DodavanjeStudentaZaElektrijaduForm;
+import org.unibl.etf.ps.studentviewer.gui.view.EditorZaElektrijaduForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ElektrijadaForm;
 import org.unibl.etf.ps.studentviewer.logic.command.BrisanjeDodatneNastaveCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.BrisanjeStudentaZaElektrijaduCommand;
@@ -122,7 +122,7 @@ public class ElektrijadaController {
 			@Override
 			public void run() {
 				forma.setEnabled(false);
-				EditorForm frame = new EditorForm(target, forma, dataModel, controller, sadrzajEditora, b);
+				EditorZaElektrijaduForm frame = new EditorZaElektrijaduForm(target, forma, dataModel, controller, sadrzajEditora, b);
 				frame.setVisible(true);
 			}
 		});
@@ -268,7 +268,7 @@ public class ElektrijadaController {
 			public void run() {
 
 				forma.setEnabled(false);
-				DodavanjeStudentaForm frame = new DodavanjeStudentaForm(forma, tableStudenti, kontroler,
+				DodavanjeStudentaZaElektrijaduForm frame = new DodavanjeStudentaZaElektrijaduForm(forma, tableStudenti, kontroler,
 						studentiZaElektrijaduDataModel);
 				frame.setVisible(true);
 				studentiZaElektrijaduDataModel.fireTableDataChanged();

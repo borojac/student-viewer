@@ -6,8 +6,8 @@ public class IzmjenaDatumaDodatneNastaveCommand extends IzmjenaDodatneNastaveCom
 	private DodatnaNastavaDTO dodatnaNastava;
 	private String noviDatum;
 	private String stariDatum;
-	
-	public IzmjenaDatumaDodatneNastaveCommand(DodatnaNastavaDTO dodatnaNastava, String noviDatum) {		
+
+	public IzmjenaDatumaDodatneNastaveCommand(DodatnaNastavaDTO dodatnaNastava, String noviDatum) {
 		this.dodatnaNastava = dodatnaNastava;
 		stariDatum = dodatnaNastava.getDatum();
 		this.noviDatum = noviDatum;
@@ -23,7 +23,7 @@ public class IzmjenaDatumaDodatneNastaveCommand extends IzmjenaDodatneNastaveCom
 	public void unExecute() {
 		dodatnaNastava.setDatum(stariDatum);
 	}
-	
+
 	@Override
 	public void reExecute() {
 		this.execute();
