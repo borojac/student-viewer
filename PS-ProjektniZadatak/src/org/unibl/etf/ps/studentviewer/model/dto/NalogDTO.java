@@ -31,6 +31,16 @@ public class NalogDTO {
 		this.tipNaloga = tipNaloga;
 		predmeti = new ArrayList<>();
 	}
+	
+	public NalogDTO(String ime, String prezime, String korisnickoIme, String lozinka, char tipNaloga) {
+		nalogId = 0;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.korisnickoIme = korisnickoIme;
+		this.lozinka = lozinka;
+		this.tipNaloga = tipNaloga;
+		predmeti = new ArrayList<>();
+	}
 
 	public int getNalogId() {
 		return nalogId;
