@@ -1,6 +1,7 @@
 package org.unibl.etf.ps.studentviewer.gui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Vector;
@@ -8,15 +9,32 @@ import java.util.Vector;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STUnsignedDecimalNumber;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class MainTable extends JTable {
 
 	private ArrayList<StudentMainTableDTO> students = null;
-	private String[] columnIdentifiers = { "Indeks", "Ime", "Prezime", "Elektrijada", "Komentar" };
+	private static String[] columnIdentifiers = null ;//= { "Indeks", "Ime", "Prezime", "Elektrijada", "Komentar" };
 	private HashMap<String, String> map = new HashMap<String, String>();
 
+	static {
+		ArrayList<String> identifiers = new ArrayList<String>();
+
+		identifiers.add("Indeks");
+		identifiers.add("Ime");
+		identifiers.add("Prezime");
+		identifiers.add("Elektrijada");
+		identifiers.add("Komentar");
+		identifiers.addAll(Arrays.asList(StudentsForMainTable.getAllIspiti()));
+		
+		columnIdentifiers = new String[identifiers.size()];
+		for (int i = 0; i < columnIdentifiers.length; i ++)
+			columnIdentifiers[i] = new String(identifiers.get(i));
+
+	}
+	
 	public void setStudents(ArrayList<StudentMainTableDTO> students) {
 		this.students = students;
 		MainTableModel model = (MainTableModel) getModel();
@@ -111,6 +129,8 @@ public class MainTable extends JTable {
 		map.put("Prezime", ShowViewData.D_PREZIME);
 		map.put("Elektrijada", ShowViewData.D_ELEKTRIJADA);
 		map.put("Komentar", ShowViewData.D_KOMENTAR);
+		for (int i = 5; i < columnIdentifiers.length; i ++)
+			map.put(columnIdentifiers[i], columnIdentifiers[i]);
 		initView();
 	}
 
@@ -136,6 +156,7 @@ public class MainTable extends JTable {
 		}
 		for (StudentMainTableDTO s : helpList)
 			students.remove(s);
+		setStudents(students);
 	}
 	
 	public StudentMainTableDTO getStudent(int row) {

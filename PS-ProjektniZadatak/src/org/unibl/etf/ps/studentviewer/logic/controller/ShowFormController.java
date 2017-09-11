@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.unibl.etf.ps.studentviewer.gui.ShowViewData;
+import org.unibl.etf.ps.studentviewer.gui.view.ShowChooseForm;
+import org.unibl.etf.ps.studentviewer.gui.view.ShowForm;
 
 public class ShowFormController {
-	MainFormController mainFormControler;
+	MainFormController mainFormController;
 	
-	public ShowFormController(MainFormController mainFormControler) {
-		this.mainFormControler = mainFormControler;
+	public ShowFormController(MainFormController mainFormController) {
+		this.mainFormController = mainFormController;
 	}
 
 	public void updateShowView(ArrayList<Boolean> showViewList) {
@@ -19,8 +21,14 @@ public class ShowFormController {
 		updatedHashMap.put(ShowViewData.D_PREZIME, showViewList.get(2));
 		updatedHashMap.put(ShowViewData.D_ELEKTRIJADA, showViewList.get(3));
 		updatedHashMap.put(ShowViewData.D_KOMENTAR, showViewList.get(4));
+		updatedHashMap.put(ShowViewData.D_TEST, showViewList.get(5));
 		
 		ShowViewData.setNewHashMap(updatedHashMap);
-		mainFormControler.getMainTable().changeView();
+		mainFormController.getMainTable().changeView();
 	}
+	
+	public void createShowChooseForm(ShowForm sf) {
+		new  ShowChooseForm(sf, mainFormController).setVisible(true);
+	}
+	
 }

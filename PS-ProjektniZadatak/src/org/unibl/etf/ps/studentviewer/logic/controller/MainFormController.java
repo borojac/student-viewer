@@ -28,6 +28,7 @@ import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
 public class MainFormController {
@@ -116,8 +117,11 @@ public class MainFormController {
 	}
 	
 	public void restoreTable() {
-		getMainTable().setStudents(StudentsForMainTable.getAllStudents());
-		UndoRedoData.addState(StudentsForMainTable.getAllStudents());
+		ArrayList<StudentMainTableDTO> tempList = new ArrayList<>();
+		for (StudentMainTableDTO s : StudentsForMainTable.getAllStudents())
+			tempList.add(s);
+		getMainTable().setStudents(tempList);
+		UndoRedoData.addState(tempList);
 	}
 	
 	public void search(MainForm mainForm) {

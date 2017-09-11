@@ -79,6 +79,9 @@ public class StudentMainTableDTO {
 		if (ShowViewData.D_KOMENTAR.equals(type) || Sort.KOMENTAR.equals(type))
 			return komentar;
 		
+		if (type.contains("."))
+			return (testovi.get(type) != null) ? testovi.get(type) : "none";
+		
 		return null;
 	}
 

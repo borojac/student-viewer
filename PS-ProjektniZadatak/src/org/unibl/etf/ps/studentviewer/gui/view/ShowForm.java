@@ -46,7 +46,7 @@ public class ShowForm extends JFrame {
 		setTitle("Prikaz");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 267, 367);
+		setBounds(100, 100, 267, 387);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 205));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -80,7 +80,7 @@ public class ShowForm extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(0, 0, 205));
-		panel.setBounds(45, 131, 170, 143);
+		panel.setBounds(45, 131, 170, 181);
 		contentPane.add(panel);
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
@@ -116,6 +116,7 @@ public class ShowForm extends JFrame {
 		elektrijadaCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
 		elektrijadaCheckBox.setBackground(new Color(0, 0, 205));
 		panel.add(elektrijadaCheckBox);
+		boxes.add(elektrijadaCheckBox);
 		if (ShowViewData.getValue(ShowViewData.D_ELEKTRIJADA))
 			elektrijadaCheckBox.setSelected(true);
 		
@@ -124,8 +125,27 @@ public class ShowForm extends JFrame {
 		komentarCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
 		komentarCheckBox.setBackground(new Color(0, 0, 205));
 		panel.add(komentarCheckBox);
+		boxes.add(komentarCheckBox);
 		if (ShowViewData.getValue(ShowViewData.D_KOMENTAR))
 			komentarCheckBox.setSelected(true);
+		
+		JCheckBox testCheckBox = new JCheckBox("Test");
+		testCheckBox.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				new ShowFormController(mainFormControler).createShowChooseForm(ShowForm.this);
+				ShowForm.this.setVisible(false);
+			}
+		});
+		testCheckBox.setForeground(new Color(255, 255, 255));
+		testCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		testCheckBox.setBackground(new Color(0, 0, 205));
+		panel.add(testCheckBox);
+		boxes.add(testCheckBox);
+		if (ShowViewData.getValue(ShowViewData.D_TEST))
+			testCheckBox.setSelected(true);
+		
+		
 		
 		
 		JButton btnSacuvaj = new JButton("Sacuvaj");
@@ -138,12 +158,13 @@ public class ShowForm extends JFrame {
 				list.add(prezimeCheckBox.isSelected());
 				list.add(elektrijadaCheckBox.isSelected());
 				list.add(komentarCheckBox.isSelected());
+				list.add(testCheckBox.isSelected());
 				new ShowFormController(mainFormControler).updateShowView(list);
 				setVisible(false);
 			}
 		});
 		btnSacuvaj.setMaximumSize(new Dimension(100, 28));
-		btnSacuvaj.setBounds(87, 285, 90, 25);
+		btnSacuvaj.setBounds(85, 323, 90, 25);
 		btnSacuvaj.setPreferredSize(new Dimension(90,25));
 		contentPane.add(btnSacuvaj);
 		

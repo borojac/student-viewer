@@ -343,7 +343,10 @@ public class MainForm extends JFrame {
 		mainTable.setForeground(new Color(0, 0, 139));
 		mainTable.setBackground(new Color(173, 216, 230));
 		mainTable.setModel(new MainTableModel());
-		mainTable.setStudents(StudentsForMainTable.getAllStudents());
+		ArrayList<StudentMainTableDTO> tempList = new ArrayList<>();
+		for (StudentMainTableDTO s : StudentsForMainTable.getAllStudents())
+			tempList.add(s);
+		mainTable.setStudents(tempList);
 		mainTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 	}

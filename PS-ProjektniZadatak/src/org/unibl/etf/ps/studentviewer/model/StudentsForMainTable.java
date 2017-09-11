@@ -12,7 +12,7 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class StudentsForMainTable {
 	private static ArrayList<StudentMainTableDTO> allStudents = null;
-	public static String[] ispiti = {"22.11.2017.", "02.08.2016."};
+	private static String[] ispiti = {"22.11.2017.", "02.08.2016."};
 	
 	/* ADDING INITIAL SHOW IN MAIN TABLE */
 	static {
@@ -58,6 +58,10 @@ public class StudentsForMainTable {
 		return null;
 	}
 
+	public static String[] getAllIspiti() {
+		return ispiti;
+	}
+	
 	public static ArrayList<StudentMainTableDTO> getAllStudents() {
 		return allStudents;
 	}
