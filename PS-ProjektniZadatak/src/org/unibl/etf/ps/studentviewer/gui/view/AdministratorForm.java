@@ -34,6 +34,7 @@ import org.unibl.etf.ps.studentviewer.model.dao.ZahtjevDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ZahtjevDTO;
+
 public class AdministratorForm extends JFrame {
 
 	private JPanel contentPane;
@@ -44,6 +45,8 @@ public class AdministratorForm extends JFrame {
 	private JScrollPane	scrollPane;
 	private ArrayList<ZahtjevDTO> list;
 	int id1,id2;
+	
+	private NalogDTO nalogDTO;
 	
 	MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
 	NalogDAO nalogDAO = nalogFactory.getNalogDAO();
@@ -158,4 +161,13 @@ public class AdministratorForm extends JFrame {
 		  
 		  
 	}
+
+	public NalogDTO getNalogDTO() {
+		return nalogDTO;
+	}
+
+	public void setNalogDTO(NalogDTO nalogDTO) {
+		this.nalogDTO = nalogDTO;
+	}
+	
 }
