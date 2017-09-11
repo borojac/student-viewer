@@ -148,3 +148,4 @@ public class IzborDatumaForm extends JXDatePicker {
         this.timeFormat = timeFormat;
         updateTextFieldFormat();
     }
+}
