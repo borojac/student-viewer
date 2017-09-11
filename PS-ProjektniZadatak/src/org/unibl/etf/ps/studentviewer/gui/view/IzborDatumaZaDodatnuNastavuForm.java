@@ -37,13 +37,14 @@ public class IzborDatumaZaDodatnuNastavuForm extends JXDatePicker {
 	private JTextField textFieldDatum;
 	private DodavanjeDodatneNastaveForm nastavaForm;
 	private IzborDatumaZaDodatnuNastavuController dateController;
+	private IzborDatumaZaDodatnuNastavuForm izborDatumaForma;
 
 	public IzborDatumaZaDodatnuNastavuForm(JTextField textFieldDatum, DodavanjeDodatneNastaveForm nastavaForm) {
 		super();
-		IzborDatumaZaDodatnuNastavuForm izborDatumaForma = this;
+		izborDatumaForma = this;
 		this.textFieldDatum = textFieldDatum;
 		this.nastavaForm = nastavaForm;
-		dateController = new IzborDatumaZaDodatnuNastavuController();
+		dateController = new IzborDatumaZaDodatnuNastavuController(izborDatumaForma);
 		getMonthView().setSelectionModel(new SingleDaySelectionModel());
 		Date date = new Date();
 		JFrame frame = new JFrame();
@@ -51,7 +52,7 @@ public class IzborDatumaZaDodatnuNastavuForm extends JXDatePicker {
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				dateController.zatvoriProzor(textFieldDatum, nastavaForm, frame, izborDatumaForma);
+				dateController.zatvoriProzor(textFieldDatum, nastavaForm, frame);
 
 			}
 		});

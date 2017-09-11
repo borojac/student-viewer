@@ -12,6 +12,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.print.PrinterException;
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -20,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -29,6 +34,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableCellRenderer;
 
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.Logger;
+import org.apache.log4j.SimpleLayout;
 import org.unibl.etf.ps.studentviewer.gui.DodatnaNastavaDataTableModel;
 import org.unibl.etf.ps.studentviewer.gui.StudentiZaElektrijaduTableModel;
 import org.unibl.etf.ps.studentviewer.logic.controller.ElektrijadaController;
@@ -36,6 +44,8 @@ import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
+
+import com.itextpdf.text.DocumentException;
 
 public class ElektrijadaForm extends JFrame {
 
@@ -53,10 +63,10 @@ public class ElektrijadaForm extends JFrame {
 	private  ElektrijadaForm forma;
 	private ElektrijadaDTO elektrijadaDTO;
 	private NalogDTO nalogDTO;
-	private static DodatnaNastavaDataTableModel dodatnaNastavaDataModel;
-	private static StudentiZaElektrijaduTableModel studentiZaElektrijaduDataModel;
-	private static ElektrijadaController elektrijadaController;
-
+	private  DodatnaNastavaDataTableModel dodatnaNastavaDataModel;
+	private  StudentiZaElektrijaduTableModel studentiZaElektrijaduDataModel;
+	private  ElektrijadaController elektrijadaController;
+	private Logger logger = Logger.getLogger(ElektrijadaForm.class);
 	/**
 	 * Launch the application.
 	 */
@@ -64,7 +74,7 @@ public class ElektrijadaForm extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ElektrijadaForm frame = new ElektrijadaForm(new ElektrijadaDTO());
+					ElektrijadaForm frame = new ElektrijadaForm(new ElektrijadaDTO(1,new Date(),"Banja Luka"),new NalogDTO());
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -76,9 +86,10 @@ public class ElektrijadaForm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ElektrijadaForm(ElektrijadaDTO elektrijadaDTO) throws Exception {
+	public ElektrijadaForm(ElektrijadaDTO elektrijadaDTO, NalogDTO nalogDTO) throws Exception {
 		forma = this;
 		this.elektrijadaDTO = elektrijadaDTO;
+		this.nalogDTO = nalogDTO;
 		setTitle("Disciplina Naziv");
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
@@ -93,6 +104,14 @@ public class ElektrijadaForm extends JFrame {
 				});
 			}
 		});
+		try {
+			File logFolder = new File("./log");
+			if (!logFolder.exists())
+				logFolder.mkdirs();
+			logger.addAppender(new FileAppender(new SimpleLayout(), "./log/" + ElektrijadaForm.class.getSimpleName() + ".log"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		setBounds(100, 100, 810, 553);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -121,10 +140,11 @@ public class ElektrijadaForm extends JFrame {
 
 		String date = "23/10/2012 08:15 AM";
 
-		Date datum = new SimpleDateFormat("dd/MM/yyyy hh:mm a").parse(date);
-		String newstring = new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(datum);
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+		Date startDate = df.parse(date);
+		
 		ElektrijadaController.listaDodatnihNastava
-				.add(new DodatnaNastavaDTO(1,1,"Konstruktor kopije", newstring, "Napomena"));
+				.add(new DodatnaNastavaDTO(1,startDate,"Prva","Napomena",1,1));
 
 		ElektrijadaController.listaStudenata.add(new StudentZaElektrijaduDTO(2,"1111/11", "Marko", "Marković",
 				"Prvo mjesto na Elektrijadi u Beogradu 2012. godine."));
@@ -153,7 +173,7 @@ public class ElektrijadaForm extends JFrame {
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
 				if (c instanceof JComponent) {
-					if (column == 2) {
+					if (column == 2 ) {
 						JComponent jc = (JComponent) c;
 						jc.setToolTipText(getValueAt(row, column).toString());
 					}
@@ -242,13 +262,35 @@ public class ElektrijadaForm extends JFrame {
 		JButton btnExportPdff = new JButton("Export pdf");
 		btnExportPdff.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+					elektrijadaController.exportPdf(logger);			
 			}
 		});
 		btnExportPdff.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnExportPdff.setToolTipText("Export pdf");
 
 		JButton btnExporttampa = new JButton("Export \u0161tampa\u010D");
+		btnExporttampa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					elektrijadaController.exportStampac();
+				} catch (Exception e1) {
+					EventQueue.invokeLater(new Runnable() {
+
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(forma,
+									"Štampanje nije uspjelo. Pogledajte log za detalje:\n" + new File("log" + "/" + ElektrijadaForm.class.getSimpleName() + ".log").getAbsolutePath(), 
+									"Greška", 
+									JOptionPane.ERROR_MESSAGE);
+						}
+					});
+
+					logger.error("Štampanje nije uspjelo", e1);
+
+				}
+				
+			}
+		});
 		btnExporttampa.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnExporttampa.setToolTipText("Export \u0161tampa\u010D");
 

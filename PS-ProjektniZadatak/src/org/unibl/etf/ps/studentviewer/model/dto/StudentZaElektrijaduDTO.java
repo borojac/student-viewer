@@ -5,19 +5,19 @@ public class StudentZaElektrijaduDTO {
 	private String indeks;
 	private String ime;
 	private String prezime;
-	private String napomena;
+	private String komentar;
 
 	public StudentZaElektrijaduDTO() {
 		
 	}
 
-	public StudentZaElektrijaduDTO(int id,String indeks, String ime, String prezime, String napomena) {
+	public StudentZaElektrijaduDTO(int id,String indeks, String ime, String prezime, String komentar) {
 		super();
 		this.id = id;
 		this.indeks = indeks;
 		this.ime = ime;
 		this.prezime = prezime;
-		this.napomena = napomena;
+		this.komentar = komentar;
 	}
 
 	public String getIndeks() {
@@ -45,11 +45,11 @@ public class StudentZaElektrijaduDTO {
 	}
 
 	public String getNapomena() {
-		return napomena;
+		return komentar;
 	}
 
-	public void setNapomena(String napomena) {
-		this.napomena = napomena;
+	public void setNapomena(String komentar) {
+		this.komentar = komentar;
 	}
 	
 	

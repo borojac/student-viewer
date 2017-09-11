@@ -35,12 +35,11 @@ public class EditorZaElektrijaduForm extends JFrame {
 	private ElektrijadaController elektrijadaController;
 	private EditorZaElektrijaduController editorController;
 	private JTable targer;
-	private ElektrijadaForm forma;
 	private AbstractTableModel dataModel;
 	private String sadrzajEditora;
 	private boolean izbor;
-	private JFrame unosTeksta;
-
+	private EditorZaElektrijaduForm editorForma;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -57,16 +56,16 @@ public class EditorZaElektrijaduForm extends JFrame {
 	 * @param izmjena
 	 */
 	// true studenti false nastava
-	public EditorZaElektrijaduForm(JTable target, ElektrijadaForm forma, AbstractTableModel dataModel,
+	public EditorZaElektrijaduForm(JTable target, AbstractTableModel dataModel,
 			ElektrijadaController elektrijadaController, String sadrzajEditora, boolean izbor) {
 		setTitle("Izmjena");
 		this.elektrijadaController = elektrijadaController;
 		this.dataModel = dataModel;
-		this.forma = forma;
 		this.sadrzajEditora = sadrzajEditora;
 		this.izbor = izbor;
-		editorController = new EditorZaElektrijaduController();
-		unosTeksta = this;
+		editorForma = this;
+		editorController = new EditorZaElektrijaduController(editorForma);
+		
 
 		setResizable(false);
 		setBounds(100, 100, 332, 140);
@@ -83,7 +82,7 @@ public class EditorZaElektrijaduForm extends JFrame {
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				editorController.zatvoriProzor(e, forma);
+				editorController.zatvoriProzor(e, elektrijadaController.getForma());
 			}
 		});
 		JButton btnIzmjena = new JButton("Izmjena");
@@ -91,8 +90,7 @@ public class EditorZaElektrijaduForm extends JFrame {
 		btnIzmjena.setToolTipText("Izmjena");
 		btnIzmjena.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				editorController.izvrsiIzmjene(izbor, elektrijadaController, target, textArea, unosTeksta, dataModel,
-						forma);
+				editorController.izvrsiIzmjene(izbor, elektrijadaController, target, textArea, dataModel);
 			}
 		});
 

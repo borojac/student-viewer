@@ -1,10 +1,13 @@
 package org.unibl.etf.ps.studentviewer.model.dto;
 
+import java.util.Date;
+
 public class DodatnaNastavaDTO {
-	private int elektrijadaID;
-	private int nalogID;
+	private int nastavaId;
+	private int elektrijadaId;
+	private int nalogId;
 	private String naziv;
-	private String datum;
+	private Date datum;
 	private String napomena;
 
 	public DodatnaNastavaDTO() {
@@ -14,33 +17,70 @@ public class DodatnaNastavaDTO {
 	
 
 	public int getElektrijadaID() {
-		return elektrijadaID;
+		return elektrijadaId;
 	}
 
 
 
 	public void setElektrijadaID(int elektrijadaID) {
-		this.elektrijadaID = elektrijadaID;
+		this.elektrijadaId = elektrijadaID;
 	}
 
 
 
 	public int getNalogID() {
-		return nalogID;
+		return nalogId;
 	}
 
 
 
 	public void setNalogID(int nalogID) {
-		this.nalogID = nalogID;
+		this.nalogId = nalogID;
 	}
 
 
 
-	public DodatnaNastavaDTO(int elektrijadaID, int nalogID, String naziv, String datum, String napomena) {
+	public int getNastavaId() {
+		return nastavaId;
+	}
+
+
+
+	public void setNastavaId(int nastavaId) {
+		this.nastavaId = nastavaId;
+	}
+
+
+
+	public int getElektrijadaId() {
+		return elektrijadaId;
+	}
+
+
+
+	public void setElektrijadaId(int elektrijadaId) {
+		this.elektrijadaId = elektrijadaId;
+	}
+
+
+
+	public int getNalogId() {
+		return nalogId;
+	}
+
+
+
+	public void setNalogId(int nalogId) {
+		this.nalogId = nalogId;
+	}
+
+
+
+	public DodatnaNastavaDTO(int nastavaId,Date datum, String naziv, String napomena, int elektrijadaId, int nalogId) {
 		super();
-		this.elektrijadaID = elektrijadaID;
-		this.nalogID = nalogID;
+		this.nastavaId = nastavaId;
+		this.elektrijadaId = elektrijadaId;
+		this.nalogId = nalogId;
 		this.naziv = naziv;
 		this.datum = datum;
 		this.napomena = napomena;
@@ -56,11 +96,11 @@ public class DodatnaNastavaDTO {
 		this.naziv = naziv;
 	}
 
-	public String getDatum() {
+	public Date getDatum() {
 		return datum;
 	}
 
-	public void setDatum(String datum) {
+	public void setDatum(Date datum) {
 		this.datum = datum;
 	}
 
@@ -78,9 +118,7 @@ public class DodatnaNastavaDTO {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((datum == null) ? 0 : datum.hashCode());
-		result = prime * result + elektrijadaID;
-		result = prime * result + ((naziv == null) ? 0 : naziv.hashCode());
+		result = prime * result + nastavaId;
 		return result;
 	}
 
@@ -95,20 +133,14 @@ public class DodatnaNastavaDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		DodatnaNastavaDTO other = (DodatnaNastavaDTO) obj;
-		if (datum == null) {
-			if (other.datum != null)
-				return false;
-		} else if (!datum.equals(other.datum))
-			return false;
-		if (elektrijadaID != other.elektrijadaID)
-			return false;
-		if (naziv == null) {
-			if (other.naziv != null)
-				return false;
-		} else if (!naziv.equals(other.naziv))
+		if (nastavaId != other.nastavaId)
 			return false;
 		return true;
 	}
+
+
+
+	
 
 	
 }

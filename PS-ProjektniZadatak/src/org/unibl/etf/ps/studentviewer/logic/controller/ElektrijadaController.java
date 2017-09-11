@@ -2,21 +2,34 @@ package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Stack;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.Logger;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
+import org.apache.pdfbox.printing.PDFPageable;
 import org.unibl.etf.ps.studentviewer.gui.DodatnaNastavaDataTableModel;
 import org.unibl.etf.ps.studentviewer.gui.StudentiZaElektrijaduTableModel;
 import org.unibl.etf.ps.studentviewer.gui.view.DodavanjeDodatneNastaveForm;
 import org.unibl.etf.ps.studentviewer.gui.view.DodavanjeStudentaZaElektrijaduForm;
 import org.unibl.etf.ps.studentviewer.gui.view.EditorZaElektrijaduForm;
+import org.unibl.etf.ps.studentviewer.gui.view.EksportStudentiZaElektrijaduForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ElektrijadaForm;
 import org.unibl.etf.ps.studentviewer.logic.command.BrisanjeDodatneNastaveCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.BrisanjeStudentaZaElektrijaduCommand;
@@ -30,7 +43,18 @@ import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaPodatkaNapomenaStuden
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
+
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.TabSettings;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfWriter;
 
 public class ElektrijadaController {
 	private ElektrijadaForm forma;
@@ -91,7 +115,7 @@ public class ElektrijadaController {
 		redoKomande.clear();
 	}
 
-	public void izmjenaDatumaDodatneNastave(DodatnaNastavaDTO dodatnaNastava, String datum) {
+	public void izmjenaDatumaDodatneNastave(DodatnaNastavaDTO dodatnaNastava, Date datum) {
 		Command komanda = new IzmjenaDatumaDodatneNastaveCommand(dodatnaNastava, datum);
 		undoKomande.add(komanda);
 		redoKomande.clear();
@@ -139,7 +163,7 @@ public class ElektrijadaController {
 			@Override
 			public void run() {
 				forma.setEnabled(false);
-				EditorZaElektrijaduForm frame = new EditorZaElektrijaduForm(target, forma, dataModel, controller,
+				EditorZaElektrijaduForm frame = new EditorZaElektrijaduForm(target, dataModel, controller,
 						sadrzajEditora, b);
 				frame.setVisible(true);
 			}
@@ -304,6 +328,66 @@ public class ElektrijadaController {
 
 	public void zatvoriProzor(ElektrijadaForm forma) {
 
+	}
+
+	public void exportPdf(Logger logger) {
+		ElektrijadaController kontroler = this;
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+
+				forma.setEnabled(false);
+				EksportStudentiZaElektrijaduForm eksportForma = new EksportStudentiZaElektrijaduForm(kontroler, logger);
+				eksportForma.setVisible(true);
+			}
+		});
+		
+	}
+
+	public void exportStampac() throws DocumentException, InvalidPasswordException, IOException, PrinterException {
+		Font font = FontFactory.getFont("fonts/tahoma.ttf", BaseFont.IDENTITY_H, 12);
+		Document doc = new Document();
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		PdfWriter writer = PdfWriter.getInstance(doc, os);
+		Paragraph title = new Paragraph();
+		title.setIndentationLeft(60f);
+		title.setFont(font);
+		title.add("Elektrijada - "+this.getElektrijada().getLokacija());
+		title.add("\n\n");
+		title.add("Datum: " + new SimpleDateFormat("dd.MM.yyyy").format(this.getElektrijada().getDatum()));
+		title.add("\n\n");
+		
+		Paragraph spacing = new Paragraph("\n\n");
+		spacing.add("Studenti za Elektrijadu:");
+		spacing.add("\n\n");
+		
+		Paragraph body = new Paragraph();
+		body.setIndentationLeft(60f);
+		body.setFont(font);
+		body.setTabSettings(new TabSettings());
+		for (StudentZaElektrijaduDTO student : this.listaStudenata) {
+			final String studentString = student.getIndeks() + " " + student.getIme() + " " + student.getPrezime()+" "+student.getNapomena();
+			body.add(new Chunk(studentString));
+			body.add("\n");
+			body.add("\n");
+		}
+		doc.open();
+		doc.add(title);
+		doc.add(spacing);
+		doc.add(body);
+		doc.close();
+		writer.flush();
+		writer.close();
+
+		PDDocument printDoc = PDDocument.load(os.toByteArray());
+
+		PrinterJob job = PrinterJob.getPrinterJob();
+		job.setPageable(new PDFPageable(printDoc));
+		if (job.printDialog()) {
+			job.print();
+		}
+		printDoc.close();
+		
 	}
 
 }
