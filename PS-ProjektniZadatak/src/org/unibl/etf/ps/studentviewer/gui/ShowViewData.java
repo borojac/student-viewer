@@ -16,7 +16,6 @@ public class ShowViewData {
 	}
 	
 	public static void setExam(String exam) {
-		System.out.println(exam);
 		DD_TEST.remove(exam);
 		DD_TEST.put(exam, true);
 	}
