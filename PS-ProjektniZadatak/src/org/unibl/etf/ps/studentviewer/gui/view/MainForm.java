@@ -511,6 +511,7 @@ public class MainForm extends JFrame {
 		predmetiCB = new JComboBox<>();
 		predmetiCB.setBounds(745, 172, 430, 40);
 		contentPane.add(predmetiCB);
+		
 //		ArrayList<PredmetDTO> predmetiList = new ArrayList<>();
 //		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
 //		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
