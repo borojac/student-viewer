@@ -1,52 +1,60 @@
-/**
- *@author dejan
- */
-package org.unibl.etf.ps.studentviewer.logic.exec.studentdatamanipulation;
+package org.unibl.etf.ps.studentviewer.logic.controller.studentdatamanipulation;
 
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import org.unibl.etf.ps.studentviewer.gui.view.ChangeForm;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
-import org.unibl.etf.ps.studentviewer.logic.exec.Exec;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
-public class ChangeExec extends Exec {
-	ArrayList<String> params = new ArrayList<String>();
-	
-	public ChangeExec(MainFormController mainFormController, ArrayList<String> paramList, StudentMainTableDTO student, int numInList) {
-
+public class ChangeStudentsController {
+		ArrayList<String> params = new ArrayList<String>();
+		MainFormController mainFormController = null;
+		ChangeForm form = null;
+		int numInList;
+		StudentMainTableDTO student = null;
+		public ChangeStudentsController(MainFormController mainFormController, ArrayList<String> params,
+					StudentMainTableDTO student, int numInlist,	ChangeForm form ) {
 			this.mainFormController = mainFormController;
-			for (String ob : paramList) {
+			this.form = form;
+			this.numInList = numInlist;
+			this.student = student;
+			for (String ob : params) {
 				this.params.add(ob.trim());
 			}
+			changeStudent();
+	}
+		private void changeStudent() {
 			int valid = checkParams();
 			if(valid == 0) {
-				
+				//TODO poziv metode koja cuva novog studenta u bazi
+				//mainFormController.getMainTable().addStudent(student);
+				//TODO poziv metode koja azurira tabelu
 				student.setIme(params.get(0));
 				student.setPrezime(params.get(1));
-				student.setBrojIndeksa(params.get(2)); //setovanje izmjena podataka u studentu
-			//TODO	poziv metode koja ce to sacuvati u bazu
-			//TODO	poziv metode koja ce azurirati prikaz u tabeli
-				
-				final String message = "Uspjesno cuvanje!";
+				student.setBrojIndeksa(params.get(2));
+				final String message = "Uspjesno azuriranje!";
 				JOptionPane.showMessageDialog(null, message);
-				MainFormController.resetChangeFormOpened();
+				form.dispose();
+				mainFormController.resetChangeFormOpened();
 				}
 			else if(valid == 1) {
 				final String message = "Pogresan unos za ime studenta!";
 				JOptionPane.showMessageDialog(null, message);
-				MainFormController.resetChangeFormOpened();
-				this.mainFormController.createChangeForm(numInList);
+				form.setIme(student.getIme());
+				form.setVisible(true);
 			}else if(valid == 2) {
 				final String message = "Pogresan unos za prezime studenta!";
 				JOptionPane.showMessageDialog(null, message);
-				this.mainFormController.createChangeForm(numInList);
+				form.setPrezime(student.getPrezime());
+				form.setVisible(true);
 			}else if(valid == 3) {
 				final String message = "Pogresan unos za broj indeksa! "
 						+ "Ocekivani format je: broj/godina";
 				JOptionPane.showMessageDialog(null, message);
-				this.mainFormController.createChangeForm(numInList);
+				form.setBrojIndeksa(student.getBrojIndeksa());
+				form.setVisible(true);
 			}
 		}
 
@@ -88,8 +96,7 @@ public class ChangeExec extends Exec {
 						return 3; //pogresan unos indeksu
 					}
 			}
+			
 			return 0; //ispravan unos
 		}
-		
-	
 }

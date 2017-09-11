@@ -5,12 +5,9 @@ package org.unibl.etf.ps.studentviewer.gui.view;
 
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -31,7 +28,7 @@ import javax.swing.event.ChangeListener;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
-import org.unibl.etf.ps.studentviewer.logic.exec.studentdatamanipulation.ChooseAddTypeExec;
+import org.unibl.etf.ps.studentviewer.logic.controller.studentdatamanipulation.ChooseAddTypeController;
 
 
 public class ChooseAddTypeForm extends JFrame {
@@ -43,7 +40,7 @@ public class ChooseAddTypeForm extends JFrame {
 	public ChooseAddTypeForm(MainFormController mainFormController) {
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
-				   MainFormController.resetChooseAddTypeFormOpened();
+				   mainFormController.resetChooseAddTypeFormOpened();
 			   }
 			  });
 		
@@ -87,8 +84,7 @@ public class ChooseAddTypeForm extends JFrame {
 				boolean jedan = chckbxNewCheckBoxJedan.isSelected();
 				boolean vise = chckbxNewCheckBoxVise.isSelected();
 				ChooseAddTypeForm.this.dispose();
-				new ChooseAddTypeExec(mainFormController, jedan, vise);
-				
+				new ChooseAddTypeController(mainFormController, jedan, vise, ChooseAddTypeForm.this);	
 			}
 		});
 		chooseButton.setBounds(96, 217, 89, 29);

@@ -21,6 +21,7 @@ import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ShowForm;
 import org.unibl.etf.ps.studentviewer.gui.view.SortForm;
 import org.unibl.etf.ps.studentviewer.gui.view.TestForm;
+import org.unibl.etf.ps.studentviewer.logic.controller.studentdatamanipulation.DeleteStudentsController;
 import org.unibl.etf.ps.studentviewer.logic.exec.ExecScheduler;
 import org.unibl.etf.ps.studentviewer.logic.exec.SearchExec;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
@@ -37,20 +38,25 @@ public class MainFormController {
 	private static ExecScheduler scheduler = new ExecScheduler();
 	private ShowForm showForm = new ShowForm(this);
 	/* Stankovic */
-	private static boolean addFormOpened = false;
-	private static boolean chooseAddTypeFormOpened = false;
-	private static boolean changeFormOpened = false;
+	private boolean addFormOpened = false;
+	private boolean chooseAddTypeFormOpened = false;
+	private boolean changeFormOpened = false;
+	private boolean deleting = false;
 
-	public static void resetAddFormOpened() {
+	public void resetAddFormOpened() {
 		addFormOpened = false;
 	}
 
-	public static void resetChooseAddTypeFormOpened() {
+	public void resetChooseAddTypeFormOpened() {
 		chooseAddTypeFormOpened = false;
 	}
 
-	public static void resetChangeFormOpened() {
+	public void resetChangeFormOpened() {
 		changeFormOpened = false;
+	}
+	
+	public void resetDeleting() {
+		deleting = false;
 	}
 
 	/* Stankovic end */
@@ -229,23 +235,15 @@ public class MainFormController {
 				cf.setVisible(true);
 			}
 		}
-
-		public void deleteStudents(int[] selectedRows) {
-			if (selectedRows != null && selectedRows.length > 0) {
-				StringBuilder message = new StringBuilder();
-				message.append("Da li ste sigurni da zelite da obrisete ");
-				if (selectedRows.length == 1)
-					message.append("odabranog studenta?");
-				else
-					message.append("odabrane studente?");
-				if (JOptionPane.showConfirmDialog(null, message.toString()) == JOptionPane.YES_OPTION) {
-					for (int rb : selectedRows)
-						StudentsForMainTable.getAllStudents().remove(rb);
-					final String message2 = "Uspjesno brisanje!";
-					JOptionPane.showMessageDialog(null, message2);
-				}
-			}
+		
+		public void deleteStudentsControler(int[] selectedRows) {
+			if (deleting)
+				return;
+			deleting = true;
+			new DeleteStudentsController(this, selectedRows);
 		}
+		
+		
 		// Stankovic end//
 	/*
 	 * TODO - ko vec radi sa predmetima, za testove mi treba predmet u kontroleru

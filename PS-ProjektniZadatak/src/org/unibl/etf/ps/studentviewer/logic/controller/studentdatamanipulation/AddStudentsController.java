@@ -1,25 +1,27 @@
-/**
- * @author dejan
- */
-package org.unibl.etf.ps.studentviewer.logic.exec.studentdatamanipulation;
+package org.unibl.etf.ps.studentviewer.logic.controller.studentdatamanipulation;
 
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import org.unibl.etf.ps.studentviewer.gui.view.AddForm;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
-import org.unibl.etf.ps.studentviewer.logic.exec.Exec;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
-
-public class AddExec extends Exec {
+public class AddStudentsController {
 	ArrayList<String> params = new ArrayList<String>();
-
-	public AddExec(MainFormController mainFormController, ArrayList<String> params) {
+	MainFormController mainFormController = null;
+	AddForm form = null;
+	public AddStudentsController(MainFormController mainFormController, ArrayList<String> params, AddForm form ) {
 		this.mainFormController = mainFormController;
+		this.form = form;
 		for (String ob : params) {
 			this.params.add(ob.trim());
 		}
+		addOneStudent();
+	}
+	
+	private void addOneStudent() {
 		int valid = checkParams();
 		if(valid == 0) {
 			StudentMainTableDTO student = new StudentMainTableDTO(params.get(2), params.get(0), params.get(1));
@@ -28,22 +30,32 @@ public class AddExec extends Exec {
 			//TODO poziv metode koja azurira tabelu
 			final String message = "Uspjesno cuvanje!";
 			JOptionPane.showMessageDialog(null, message);
-			MainFormController.resetAddFormOpened();
-			MainFormController.resetChooseAddTypeFormOpened();
+			form.dispose();
+			mainFormController.resetAddFormOpened();
+			mainFormController.resetChooseAddTypeFormOpened();
 			}
 		else if(valid == 1) {
 			final String message = "Pogresan unos za ime studenta!";
 			JOptionPane.showMessageDialog(null, message);
-			this.mainFormController.createAddForm();
+			form.setIme("");
+			form.setFocusIme();
+			form.setVisible(true);
 		}else if(valid == 2) {
 			final String message = "Pogresan unos za prezime studenta!";
 			JOptionPane.showMessageDialog(null, message);
-			this.mainFormController.createAddForm();
+			form.setIme(params.get(0));
+			form.setPrezime("");
+			form.setFocusPrezime();
+			form.setVisible(true);
 		}else if(valid == 3) {
 			final String message = "Pogresan unos za broj indeksa! "
 					+ "Ocekivani format je: broj/godina";
 			JOptionPane.showMessageDialog(null, message);
-			this.mainFormController.createAddForm();
+			form.setIme(params.get(0));
+			form.setPrezime(params.get(1));
+			form.setBrojIndeksa("");
+			form.setFocusBrIndeksa();
+			form.setVisible(true);
 		}
 	}
 
@@ -85,6 +97,7 @@ public class AddExec extends Exec {
 					return 3; //pogresan unos indeksu
 				}
 		}
+		
 		return 0; //ispravan unos
 	}
 }

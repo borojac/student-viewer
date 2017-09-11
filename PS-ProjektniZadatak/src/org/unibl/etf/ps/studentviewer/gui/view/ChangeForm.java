@@ -9,8 +9,6 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -29,7 +27,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
-import org.unibl.etf.ps.studentviewer.logic.exec.studentdatamanipulation.ChangeExec;
+import org.unibl.etf.ps.studentviewer.logic.controller.studentdatamanipulation.ChangeStudentsController;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class ChangeForm extends JFrame {
@@ -43,6 +41,24 @@ public class ChangeForm extends JFrame {
 	private JTextField textFieldBrIndeksa;
 	private JButton addButton;
 
+	public void setIme(String ime) {
+		textFieldIme.setText(ime);
+	}
+	public String getIme() {
+		return textFieldIme.getText();
+	}
+	public void setPrezime(String prezime) {
+		textFieldPrezime.setText(prezime);
+	}
+	public String getPrezime() {
+		return textFieldPrezime.getText();
+	}
+	public void setBrojIndeksa(String brojIndeksa) {
+		textFieldBrIndeksa.setText(brojIndeksa);
+	}
+	public String getBrojIndeksa() {
+		return textFieldBrIndeksa.getText();
+	}
 
 public ChangeForm(MainFormController mainFormController,StudentMainTableDTO student, int numInList) {
 		setResizable(false);
@@ -110,9 +126,7 @@ public ChangeForm(MainFormController mainFormController,StudentMainTableDTO stud
 				paramList.add(ChangeForm.this.textFieldPrezime.getText());
 				paramList.add(ChangeForm.this.textFieldBrIndeksa.getText());
 				
-//				MainFormController.resetChangeFormOpened();
-				new ChangeExec(ChangeForm.this.mainFormController, paramList, student, numInList);
-				ChangeForm.this.dispose();
+				new ChangeStudentsController(ChangeForm.this.mainFormController, paramList, student, numInList, ChangeForm.this);
 			}
 		});
 		addButton.setBounds(77, 234, 89, 29);

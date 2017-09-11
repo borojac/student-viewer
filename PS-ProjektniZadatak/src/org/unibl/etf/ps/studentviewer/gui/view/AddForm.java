@@ -9,8 +9,6 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -19,20 +17,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
-import org.unibl.etf.ps.studentviewer.logic.exec.studentdatamanipulation.AddExec;
+import org.unibl.etf.ps.studentviewer.logic.controller.studentdatamanipulation.AddStudentsController;
 
 public class AddForm extends JFrame {
 
@@ -44,14 +39,43 @@ public class AddForm extends JFrame {
 	private JTextField textFieldPrezime;
 	private JTextField textFieldBrIndeksa;
 	private JButton addButton;
-
+	
+	public void setIme(String ime) {
+		textFieldIme.setText(ime);
+	}
+	public String getIme() {
+		return textFieldIme.getText();
+	}
+	public void setPrezime(String prezime) {
+		textFieldPrezime.setText(prezime);
+	}
+	public String getPrezime() {
+		return textFieldPrezime.getText();
+	}
+	public void setBrojIndeksa(String brojIndeksa) {
+		textFieldBrIndeksa.setText(brojIndeksa);
+	}
+	public String getBrojIndeksa() {
+		return textFieldBrIndeksa.getText();
+	}
+	
+	public void setFocusIme() {
+		textFieldIme.requestFocusInWindow();
+	}
+	public void setFocusPrezime() {
+		textFieldPrezime.requestFocusInWindow();
+	}
+	public void setFocusBrIndeksa() {
+		textFieldBrIndeksa.requestFocusInWindow();
+	}
+	
 public AddForm(MainFormController mainFormController) {
 		setResizable(false);
 		
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
-				   MainFormController.resetAddFormOpened();
-				   MainFormController.resetChooseAddTypeFormOpened();
+				   mainFormController.resetAddFormOpened();
+				   mainFormController.resetChooseAddTypeFormOpened();
 			   }
 			  });
 		
@@ -113,9 +137,7 @@ public AddForm(MainFormController mainFormController) {
 				paramList.add(AddForm.this.textFieldPrezime.getText());
 				paramList.add(AddForm.this.textFieldBrIndeksa.getText());
 				
-				MainFormController.resetAddFormOpened();
-				new AddExec(AddForm.this.mainFormController, paramList);
-				AddForm.this.dispose();
+				new AddStudentsController(AddForm.this.mainFormController, paramList, AddForm.this);
 			}
 		});
 		addButton.setBounds(77, 234, 89, 29);
