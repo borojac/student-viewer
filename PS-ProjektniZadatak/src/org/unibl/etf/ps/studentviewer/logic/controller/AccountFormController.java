@@ -1,6 +1,8 @@
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import org.unibl.etf.ps.studentviewer.gui.view.AccountForm;
+import org.unibl.etf.ps.studentviewer.gui.view.ChangeAccountNameForm;
+import org.unibl.etf.ps.studentviewer.gui.view.ChangePasswordForm;
 import org.unibl.etf.ps.studentviewer.gui.view.DodavanjePredmetaForm;
 
 public class AccountFormController {
@@ -8,6 +10,8 @@ public class AccountFormController {
 	private AccountForm accountForm;
 	private static boolean dodavanjePredmetaFormOpened = false;
 	private static boolean brisanjePredmetaFormOpened = false;
+	private static boolean changeAccountNameFormOpened = false;
+	private static boolean changePasswordFormOpened = false;
 	
 	public AccountFormController() {
 		super();
@@ -17,11 +21,21 @@ public class AccountFormController {
 		this.accountForm = accountForm;
 	}
 	
-	public synchronized boolean createPromjenaLozinkeForm() {
+	public synchronized boolean createChangePasswordForm() {
+		if(changePasswordFormOpened)
+			return false;
+		changePasswordFormOpened = true;
+		ChangePasswordForm changePasswordForm = new ChangePasswordForm();
+		changePasswordForm.setVisible(true);
 		return true;
 	}
 	
-	public synchronized boolean createPromjenaKorImenaForm() {
+	public synchronized boolean createChangeAccountNameForm() {
+		if(changeAccountNameFormOpened)
+			return false;
+		changeAccountNameFormOpened = true;
+		ChangeAccountNameForm changeAccountNameForm = new ChangeAccountNameForm();
+		changeAccountNameForm.setVisible(true);
 		return true;
 	}
 	
