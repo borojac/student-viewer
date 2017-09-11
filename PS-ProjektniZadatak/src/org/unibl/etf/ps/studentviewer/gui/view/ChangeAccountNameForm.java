@@ -3,6 +3,8 @@ package org.unibl.etf.ps.studentviewer.gui.view;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -19,7 +21,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.AccountFormController;
-//import org.unibl.etf.ps.studentviewer.logic.controller.ChangeAccountNameFormController;
+import org.unibl.etf.ps.studentviewer.logic.controller.ChangeAccountNameFormController;
+import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 
 public class ChangeAccountNameForm extends JFrame {
 
@@ -28,12 +31,15 @@ public class ChangeAccountNameForm extends JFrame {
 	private JLabel novoKorImeLbl, staroKorImeLbl;
 	private JTextField novoKorImeTf, staroKorImeTf;
 	private JButton potvrdiBtn;
-	//private ChangeACcountNameFormController changeAccountNameFormController;
+	private ChangeAccountNameFormController changeAccountNameFormController;
+	private NalogDTO nalogDTO;
 
 	/**
 	 * Create the frame.
 	 */
-	public ChangeAccountNameForm() {
+	public ChangeAccountNameForm(NalogDTO nalogDTO) {
+		this.nalogDTO = nalogDTO;
+		changeAccountNameFormController = new ChangeAccountNameFormController(this);
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -89,7 +95,7 @@ public class ChangeAccountNameForm extends JFrame {
 		contentPane.add(componentsPane);
 		
 		initComponents();
-		//initButtonsListeners();
+		initButtonsListeners();
 	}
 	private void initComponents() {
 		staroKorImeLbl = new JLabel("Staro korisnicko ime");
@@ -119,18 +125,31 @@ public class ChangeAccountNameForm extends JFrame {
 		componentsPane.add(potvrdiBtn);
 	}
 	
-/*private void initButtonsListeners() {
+	private void initButtonsListeners() {
+		
 		potvrdiBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				try {
-					changeAccountNameFormController.prijava();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				changeAccountNameFormController.promjena();
 			}
 		});
 		
-	}*/
+	}
+	
+	public NalogDTO getNalogDTO() {
+		return nalogDTO;
+	}
+	
+	public void setNalogDTO(NalogDTO nalogDTO) {
+		this.nalogDTO = nalogDTO;
+	}
+	
+	public String getStaroKorIme() {
+		return staroKorImeTf.getText();
+	}
+	
+	public String getNovoKorIme() {
+		return novoKorImeTf.getText();
+	}
 
 }

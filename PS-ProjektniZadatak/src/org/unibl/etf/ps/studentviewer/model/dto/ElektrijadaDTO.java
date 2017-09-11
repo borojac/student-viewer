@@ -1,16 +1,18 @@
 package org.unibl.etf.ps.studentviewer.model.dto;
 
+import java.util.Date;
+
 public class ElektrijadaDTO {
 
 	private int id;
-	private String datum;
+	private Date datum;
 	private String lokacija;
 	
 	public ElektrijadaDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ElektrijadaDTO(int id, String datum, String lokacija) {
+	public ElektrijadaDTO(int id, Date datum, String lokacija) {
 		super();
 		this.id = id;
 		this.datum = datum;
@@ -25,11 +27,11 @@ public class ElektrijadaDTO {
 		this.id = id;
 	}
 
-	public String getDatum() {
+	public Date getDatum() {
 		return datum;
 	}
 
-	public void setDatum(String datum) {
+	public void setDatum(Date datum) {
 		this.datum = datum;
 	}
 

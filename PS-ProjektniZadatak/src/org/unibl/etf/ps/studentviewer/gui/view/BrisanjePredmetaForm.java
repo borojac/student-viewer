@@ -1,13 +1,14 @@
-package org.unibl.etf.ps.studentviewer.logic.controller;
+package org.unibl.etf.ps.studentviewer.gui.view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -19,6 +20,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
+import org.unibl.etf.ps.studentviewer.logic.controller.AccountFormController;
+import org.unibl.etf.ps.studentviewer.logic.controller.BrisanjePredmetaFormController;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
+import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 
 public class BrisanjePredmetaForm extends JFrame {
 
@@ -26,11 +33,19 @@ public class BrisanjePredmetaForm extends JFrame {
 	
 	private JComboBox<String> predmetiCB;
 	private JButton ukloniBtn;
+	
+	private ArrayList<PredmetDTO> predmetiList;
+	
+	private NalogDTO nalogDTO;
+	private BrisanjePredmetaFormController brisanjePredmetaFormController;
 
 	/**
 	 * Create the frame.
 	 */
-	public BrisanjePredmetaForm() {
+	public BrisanjePredmetaForm(NalogDTO nalogDTO) {
+		this.nalogDTO = nalogDTO;
+		brisanjePredmetaFormController = new BrisanjePredmetaFormController(this);
+		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				AccountFormController.resetBrisanjePredmetaFormOpened();
@@ -72,13 +87,50 @@ public class BrisanjePredmetaForm extends JFrame {
 		whiteCorrectionLabel2.setBounds(385, 0, 215, 120);
 		contentPane.add(whiteCorrectionLabel2);
 		
+		initComponents();
+		initButtonsListeners();
+	}
+	
+	private void initComponents() {
 		predmetiCB = new JComboBox<>();
 		predmetiCB.setBounds(20, 165, 350, 35);
 		contentPane.add(predmetiCB);
 		
+		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
+		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
+		
+		predmetiList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
+		
+		for(int i = 0; i < predmetiList.size(); i++) {
+			predmetiCB.addItem((predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
+		}
+		
 		ukloniBtn = new JButton("Ukloni iz mojih predmeta");
 		ukloniBtn.setBounds(390, 165, 180, 35);
 		contentPane.add(ukloniBtn);
+	}
+	
+	private void initButtonsListeners() {
+		
+		ukloniBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				brisanjePredmetaFormController.ukloni();
+			}
+		});
+		
+	}
+
+	public NalogDTO getNalogDTO() {
+		return nalogDTO;
+	}
+
+	public void setNalogDTO(NalogDTO nalogDTO) {
+		this.nalogDTO = nalogDTO;
+	}
+	
+	public PredmetDTO getSelectedPredmet() {
+		return predmetiList.get(predmetiCB.getSelectedIndex());
 	}
 
 }

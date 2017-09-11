@@ -81,8 +81,7 @@ public class KreirajNalogFormController {
 				JOptionPane.showMessageDialog(btn1, "Nalog ispravno kreiran!");
 				try {
 					
-					MainForm mainForm = new MainForm();
-					mainForm.setNalogDTO(nalogDAO.getNalog(nalogDTO.getKorisnickoIme(), nalogDTO.getLozinka()));
+					MainForm mainForm = new MainForm(nalogDAO.getNalog(nalogDTO.getKorisnickoIme(), nalogDTO.getLozinka()));
 					mainForm.setVisible(true);
 					kreirajNalogForm.setVisible(false);
 					

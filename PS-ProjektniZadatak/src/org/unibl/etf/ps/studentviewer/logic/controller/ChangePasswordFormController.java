@@ -37,10 +37,11 @@ public class ChangePasswordFormController {
 		} else {
 			MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
 			NalogDAO nalogDAO = nalogFactory.getNalogDAO();
+			nalogDTO.setLozinka(novaLozinkaHash);
 			
 			if(nalogDAO.updateNalog(nalogDTO)) {
 				JOptionPane.showMessageDialog(changePasswordForm, "Lozinka uspjesno promjenjena.");
-				changePasswordForm.setVisible(false);
+				changePasswordForm.dispose();;
 				AccountFormController.resetChangePasswordFormOpened();
 			} else {
 				JOptionPane.showMessageDialog(changePasswordForm, "Lozinka nije promjenjena.");

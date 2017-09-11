@@ -2,6 +2,10 @@ package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import java.awt.EventQueue;
 import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -31,9 +35,16 @@ public class DodavanjeDodatneNastaveController {
 		String naziv = textFieldNaziv.getText();
 		String datum = textFieldDatum.getText();
 		String napomena = textAreaNapomena.getText();
-
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+		Date startDate = null;
+		try {
+			startDate = df.parse(datum);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (kontroler.validnostDatuma(datum)) {
-			DodatnaNastavaDTO nastava = new DodatnaNastavaDTO(kontroler.getElektrijada().getId(),kontroler.getNalogDTO().getNalogId(),naziv, datum, napomena);
+			DodatnaNastavaDTO nastava = new DodatnaNastavaDTO(2,startDate,naziv,napomena,kontroler.getElektrijada().getId(),kontroler.getNalogDTO().getNalogId());
 			if (kontroler.listaDodatnihNastava.add(nastava)) {
 				dodatnaNastavaDataModel.fireTableDataChanged();
 				tableNastavneTeme.setModel(dodatnaNastavaDataModel);

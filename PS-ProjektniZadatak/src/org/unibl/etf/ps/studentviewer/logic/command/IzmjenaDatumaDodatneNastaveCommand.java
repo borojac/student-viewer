@@ -1,13 +1,15 @@
 package org.unibl.etf.ps.studentviewer.logic.command;
 
+import java.util.Date;
+
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 
 public class IzmjenaDatumaDodatneNastaveCommand extends IzmjenaDodatneNastaveCommand {
 	private DodatnaNastavaDTO dodatnaNastava;
-	private String noviDatum;
-	private String stariDatum;
+	private Date noviDatum;
+	private Date stariDatum;
 
-	public IzmjenaDatumaDodatneNastaveCommand(DodatnaNastavaDTO dodatnaNastava, String noviDatum) {
+	public IzmjenaDatumaDodatneNastaveCommand(DodatnaNastavaDTO dodatnaNastava, Date noviDatum) {
 		this.dodatnaNastava = dodatnaNastava;
 		stariDatum = dodatnaNastava.getDatum();
 		this.noviDatum = noviDatum;
