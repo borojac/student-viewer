@@ -21,7 +21,6 @@ public class KreirajNalogFormController {
 		this.kreirajNalogForm = kreirajNalogForm;
 	}
 	
-	
 	MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
 	NalogDAO nalogDAO = nalogFactory.getNalogDAO();
 	private KreirajNalogForm kreirajNalogForm;

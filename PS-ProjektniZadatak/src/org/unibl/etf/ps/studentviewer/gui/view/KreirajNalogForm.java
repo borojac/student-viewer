@@ -44,7 +44,6 @@ public class KreirajNalogForm extends JFrame{
 	
 	private JPanel contentPane;
 	private JPanel componentsPane;
-	
 	private JLabel korImeLbl, imeLbl, prezimeLbl;
 	private JTextField korImeTf, imeTf, prezimeTf;
 	private JLabel lozinkaLbl, lozinkaPotLbl;
