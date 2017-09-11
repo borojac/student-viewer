@@ -22,4 +22,9 @@ public class MySQLDAOFactory implements DAOFactory {
 		return new MySQLStudentDAO();
 	}
 
+	@Override
+	public DodatnaNastavaDAO getDodatnaNastavaDAO() {
+		return new MySQLDodatnaNastavaDAO();
+	}
+
 }
