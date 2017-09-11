@@ -102,7 +102,7 @@ public class MySQLZahtjevDAO implements ZahtjevDAO {
 	public boolean deleteZahtjev(ZahtjevDTO zahtjevDTO) {
 		boolean retVal = false;
 		
-		String query = "DELETE FROM zahtjev WHERE PredmetId = ? and NalogId =";
+		String query = "DELETE FROM zahtjev WHERE PredmetId = ? and NalogId = ?";
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -130,7 +130,7 @@ public class MySQLZahtjevDAO implements ZahtjevDAO {
 	public ArrayList<ZahtjevDTO> getAllZahtjev() {
 		ArrayList<ZahtjevDTO> retVals = new ArrayList<>();
 		
-		String query = "SELECT * FROM zahtjev WHERE DatumOdobrenja = ?";
+		String query = "SELECT * FROM zahtjev WHERE DatumOdobrenja IS NULL";
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -141,7 +141,7 @@ public class MySQLZahtjevDAO implements ZahtjevDAO {
 			conn = DBUtility.open();
 			ps = conn.prepareStatement(query);
 			
-			ps.setObject(1, null, java.sql.Types.DATE);
+//			ps.setObject(1, null, java.sql.Types.DATE);
 			
 			rs = ps.executeQuery();
 			

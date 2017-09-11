@@ -95,36 +95,37 @@ public class MainForm extends JFrame {
 
 	// ------- EndComponents!!! ------- //
 
-	/**
-	 * Launch the application.
-	 * 
-	 * @throws UnsupportedLookAndFeelException
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
-	 * @throws ClassNotFoundException
-	 */
-	public static void main(String[] args) {
-		System.setProperty("javax.net.ssl.trustStore", "StudentViewer.jks");
-		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
-		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} catch (Exception ex) {}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainForm frame = new MainForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	/**
+//	 * Launch the application.
+//	 * 
+//	 * @throws UnsupportedLookAndFeelException
+//	 * @throws IllegalAccessException
+//	 * @throws InstantiationException
+//	 * @throws ClassNotFoundException
+//	 */
+//	public static void main(String[] args) {
+//		System.setProperty("javax.net.ssl.trustStore", "StudentViewer.jks");
+//		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
+//		try {
+//			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+//		} catch (Exception ex) {}
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					MainForm frame = new MainForm();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * @throws IOException Create the frame. @throws
 	 */
-	public MainForm() throws IOException {
+	public MainForm(NalogDTO nalogDTO) throws IOException {
+		this.nalogDTO = nalogDTO;
 		setResizable(false);
 		setTitle("StudentViewer_v1.0");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -514,15 +515,15 @@ public class MainForm extends JFrame {
 		predmetiCB.setBounds(745, 172, 430, 40);
 		contentPane.add(predmetiCB);
 		
-//		ArrayList<PredmetDTO> predmetiList = new ArrayList<>();
-//		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
-//		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
-//		
-//		predmetiList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
-//		
-//		for(int i = 0; i < predmetiList.size(); i++) {
-//			predmetiCB.addItem((predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
-//		}
+		ArrayList<PredmetDTO> predmetiList = new ArrayList<>();
+		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
+		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
+		
+		predmetiList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
+		
+		for(int i = 0; i < predmetiList.size(); i++) {
+			predmetiCB.addItem((predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
+		}
 	}
 
 	public void refreshTestoviTable() {

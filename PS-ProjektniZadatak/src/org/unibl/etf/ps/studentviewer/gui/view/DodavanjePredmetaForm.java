@@ -102,7 +102,6 @@ public class DodavanjePredmetaForm extends JFrame {
 		
 		for(int i = 0; i < predmetiList.size(); i++) {
 			predmetiCB.addItem(predmetiList.get(i).getSifraPredmeta() + " - " + predmetiList.get(i).getNazivPredmeta());
-			System.out.println(predmetiList.get(i).getSifraPredmeta() + " - " + predmetiList.get(i).getNazivPredmeta() + " - " + i);
 		}
 		
 		predmetiCB.setBounds(20, 165, 380, 35);

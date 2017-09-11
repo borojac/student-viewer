@@ -44,8 +44,7 @@ public class LoginFormController {
 				JOptionPane.showMessageDialog(loginForm, "Korisnicko ime ili lozinka nisu korektno uneseni.");
 			} else {
 				if(nalogDTO.getTipNaloga() == 'K') {
-					MainForm mainForm = new MainForm();
-					mainForm.setNalogDTO(nalogDTO);
+					MainForm mainForm = new MainForm(nalogDTO);
 					mainForm.setVisible(true);
 					loginForm.setVisible(false);
 				} else {
