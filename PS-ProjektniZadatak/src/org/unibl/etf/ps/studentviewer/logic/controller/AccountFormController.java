@@ -1,6 +1,7 @@
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import org.unibl.etf.ps.studentviewer.gui.view.AccountForm;
+import org.unibl.etf.ps.studentviewer.gui.view.BrisanjePredmetaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChangeAccountNameForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChangePasswordForm;
 import org.unibl.etf.ps.studentviewer.gui.view.DodavanjePredmetaForm;

@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.logic.controller;
+package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
+import org.unibl.etf.ps.studentviewer.logic.controller.AccountFormController;
 
 public class BrisanjePredmetaForm extends JFrame {
 
