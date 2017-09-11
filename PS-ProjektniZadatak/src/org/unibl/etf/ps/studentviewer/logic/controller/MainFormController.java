@@ -235,7 +235,7 @@ public class MainFormController {
 			if (selectedRow != -1) {
 				changeFormOpened = true;
 
-				ChangeForm cf = new ChangeForm(this, StudentsForMainTable.getAllStudents().get(selectedRow), selectedRow);
+				ChangeForm cf = new ChangeForm(this, getMainTable().getStudent(selectedRow), selectedRow);
 				cf.setVisible(true);
 			}
 		}
