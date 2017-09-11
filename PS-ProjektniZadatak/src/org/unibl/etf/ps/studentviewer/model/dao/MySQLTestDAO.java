@@ -135,26 +135,31 @@ public class MySQLTestDAO implements TestDAO {
 
 	@Override
 	public boolean addTest(TestDTO test) {
-		String addTestQuery = "INSERT INTO test VALUE (null, ?, ?, ?, ?)";
+		String addTestQuery = "{CALL dodaj_test(?, ?, ?, ?, ?, ?)}";
 		String updateStudentsQuery = "INSERT INTO izlazi_na VALUE (?, ?, ?, ?)";
 
-		boolean retVal = false;
+		boolean retVal = true;
 
 		Connection conn = null;
 		PreparedStatement ps = null;
+		CallableStatement cs = null;
 
 		try {
 			conn = DBUtility.open();
 			conn.setAutoCommit(false);
-			ps = conn.prepareStatement(addTestQuery);
+			cs = conn.prepareCall(addTestQuery);
 
-			ps.setString(1, test.getNaziv());
+			cs.setString(1, test.getNaziv());
 			Date datum = test.getDatum();
-			ps.setDate(2, new java.sql.Date(datum.getTime()));
-			ps.setString(3, test.getNapomena());
-			ps.setInt(4, test.getPredmetId());
+			cs.setDate(2, new java.sql.Date(datum.getTime()));
+			cs.setString(3, test.getNapomena());
+			cs.setInt(4, test.getProcenat());
+			cs.setInt(5, test.getPredmetId());
+			cs.registerOutParameter(6, Types.BOOLEAN);
 
-			retVal = ps.executeUpdate() == 1;
+			cs.executeUpdate();
+			
+			retVal &= cs.getBoolean(6);
 
 			for (StudentNaTestuDTO student : test.getStudenti()) {
 				ps = conn.prepareStatement(updateStudentsQuery);
@@ -179,7 +184,7 @@ public class MySQLTestDAO implements TestDAO {
 			try {
 				conn.setAutoCommit(true);
 			} catch (SQLException e) {}
-			DBUtility.close(conn, ps);
+			DBUtility.close(conn, ps, cs);
 		}
 		return retVal;
 	}
