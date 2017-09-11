@@ -25,7 +25,7 @@ public class AccountFormController {
 		if(changePasswordFormOpened)
 			return false;
 		changePasswordFormOpened = true;
-		ChangePasswordForm changePasswordForm = new ChangePasswordForm();
+		ChangePasswordForm changePasswordForm = new ChangePasswordForm(accountForm.getNalogDTO());
 		changePasswordForm.setVisible(true);
 		return true;
 	}

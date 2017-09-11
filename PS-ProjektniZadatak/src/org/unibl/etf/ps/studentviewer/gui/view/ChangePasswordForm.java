@@ -4,6 +4,8 @@ package org.unibl.etf.ps.studentviewer.gui.view;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -21,8 +23,13 @@ import javax.swing.border.EmptyBorder;
 import org.imgscalr.Scalr;
 //import org.unibl.etf.ps.studentviewer.logic.controller.ChangePasswordFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.AccountFormController;
+import org.unibl.etf.ps.studentviewer.logic.controller.ChangePasswordFormController;
+import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 
 public class ChangePasswordForm extends JFrame {
+	
+	private ChangePasswordFormController changePasswordFormController;
+	private NalogDTO nalogDTO;
 
 	private JPanel contentPane;
 	private JPanel componentsPane;
@@ -33,7 +40,10 @@ public class ChangePasswordForm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ChangePasswordForm() {
+	public ChangePasswordForm(NalogDTO nalogDTO) {
+		this.nalogDTO = nalogDTO;
+		changePasswordFormController = new ChangePasswordFormController(this);
+		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				AccountFormController.resetChangePasswordFormOpened();
@@ -88,7 +98,7 @@ public class ChangePasswordForm extends JFrame {
 		contentPane.add(componentsPane);
 		
 		initComponents();
-		//initButtonsListeners();
+		initButtonsListeners();
 	}
 	private void initComponents() {
 		staraLozinkaLbl = new JLabel("Stara lozinka");
@@ -120,18 +130,30 @@ public class ChangePasswordForm extends JFrame {
 		componentsPane.add(potvrdiBtn);
 	}
 	
-/*private void initButtonsListeners() {
+	private void initButtonsListeners() {
+		
 		potvrdiBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				try {
-					changePasswordFormController.prijava();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				changePasswordFormController.promjena();
 			}
 		});
 		
-	}*/
+	}
+	
+	public NalogDTO getNalogDTO() {
+		return nalogDTO;
+	}
+	public void setNalogDTO(NalogDTO nalogDTO) {
+		this.nalogDTO = nalogDTO;
+	}
+	
+	public String getStaraLozinka() {
+		return String.valueOf(staraLozinkaTf.getPassword());
+	}
+	
+	public String getNovaLozinka() {
+		return String.valueOf(novaLozinkaTf.getPassword());
+	}
 
 }

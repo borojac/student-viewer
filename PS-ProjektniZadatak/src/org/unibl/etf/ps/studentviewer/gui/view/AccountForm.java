@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.AccountFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
+import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 
 public class AccountForm extends JFrame {
 
@@ -31,6 +32,7 @@ public class AccountForm extends JFrame {
 	
 	private MainFormController mainFormController;
 	private AccountFormController accountFormController;
+	private NalogDTO nalogDTO;
 	
 	ArrayList<JButton> buttons = new ArrayList<JButton>();
 	
@@ -43,8 +45,9 @@ public class AccountForm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AccountForm(MainFormController mainFormController) {
+	public AccountForm(MainFormController mainFormController, NalogDTO nalogDTO) {
 		this.mainFormController = mainFormController;
+		this.nalogDTO = nalogDTO;
 		accountFormController = new AccountFormController(this);
 		
 		addWindowListener(new WindowAdapter() {
@@ -167,6 +170,14 @@ public class AccountForm extends JFrame {
 			}
 		});
 		
+	}
+
+	public NalogDTO getNalogDTO() {
+		return nalogDTO;
+	}
+
+	public void setNalogDTO(NalogDTO nalogDTO) {
+		this.nalogDTO = nalogDTO;
 	}
 
 }

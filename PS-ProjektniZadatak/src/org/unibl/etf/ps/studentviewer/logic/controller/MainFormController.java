@@ -109,7 +109,7 @@ public class MainFormController {
 			return false;
 		
 		accountFormOpened = true;
-		AccountForm accountForm = new AccountForm(this);
+		AccountForm accountForm = new AccountForm(this, mainForm.getNalogDTO());
 		accountForm.setVisible(true);
 		
 		return true;
