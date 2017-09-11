@@ -163,4 +163,12 @@ public class MainTable extends JTable {
 		return students.get(row);
 	}
 	
+	public void setStudent(int row, String indeks, String ime, String prezime) {
+		StudentMainTableDTO student = students.get(row);
+		student.setBrojIndeksa(indeks);
+		student.setIme(ime);
+		student.setPrezime(prezime);
+		setStudents(students);
+	}
+	
 }
