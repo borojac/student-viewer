@@ -151,5 +151,40 @@ public class MySQLPredmetDAO implements PredmetDAO {
 		
 		return retVals;
 	}
+	
+	public ArrayList<PredmetDTO> getAllPredmet() {
+		ArrayList<PredmetDTO> retVals = new ArrayList<>();
+		
+		String query = "SELECT PredmetId FROM predmet";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		MySQLDAOFactory predmetFactory = new MySQLDAOFactory();
+		PredmetDAO predmetDAO = predmetFactory.getPredmetDAO();
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				retVals.add(predmetDAO.getPredmet(rs.getInt(1)));
+			}
+			
+			if(retVals.size() == 0) {
+				retVals = null;
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		
+		return retVals;
+	}
 
 }

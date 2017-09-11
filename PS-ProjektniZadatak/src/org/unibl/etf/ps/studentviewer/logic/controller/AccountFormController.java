@@ -44,7 +44,7 @@ public class AccountFormController {
 			return false;
 		
 		dodavanjePredmetaFormOpened = true;
-		DodavanjePredmetaForm dodavanjePredmetaForm = new DodavanjePredmetaForm();
+		DodavanjePredmetaForm dodavanjePredmetaForm = new DodavanjePredmetaForm(accountForm.getNalogDTO());
 		dodavanjePredmetaForm.setVisible(true);
 		return true;
 	}
