@@ -40,6 +40,11 @@ import org.apache.log4j.SimpleLayout;
 import org.unibl.etf.ps.studentviewer.gui.DodatnaNastavaDataTableModel;
 import org.unibl.etf.ps.studentviewer.gui.StudentiZaElektrijaduTableModel;
 import org.unibl.etf.ps.studentviewer.logic.controller.ElektrijadaController;
+import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.DodatnaNastavaDAO;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLDodatnaNastavaDAO;
+import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
@@ -63,6 +68,7 @@ public class ElektrijadaForm extends JFrame {
 	private  ElektrijadaForm forma;
 	private ElektrijadaDTO elektrijadaDTO;
 	private NalogDTO nalogDTO;
+	private DisciplinaDTO disciplinaDTO;
 	private  DodatnaNastavaDataTableModel dodatnaNastavaDataModel;
 	private  StudentiZaElektrijaduTableModel studentiZaElektrijaduDataModel;
 	private  ElektrijadaController elektrijadaController;
@@ -71,24 +77,28 @@ public class ElektrijadaForm extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ElektrijadaForm frame = new ElektrijadaForm(new ElektrijadaDTO(1,new Date(),"Banja Luka"),new NalogDTO());
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		DAOFactory dao = new MySQLDAOFactory();
+		DodatnaNastavaDAO dnDAO = dao.getDodatnaNastavaDAO();
+		System.out.println(dnDAO.dodatneNastave(1, 1,"Programiranje"));
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					ElektrijadaForm frame = new ElektrijadaForm(new ElektrijadaDTO(1,new Date(),"Banja Luka"),new NalogDTO());
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
 	}
 
 	/**
 	 * Create the frame.
 	 */
-	public ElektrijadaForm(ElektrijadaDTO elektrijadaDTO, NalogDTO nalogDTO) throws Exception {
+	public ElektrijadaForm(ElektrijadaDTO elektrijadaDTO, NalogDTO nalogDTO,DisciplinaDTO disciplinaDTO) throws Exception {
 		forma = this;
 		this.elektrijadaDTO = elektrijadaDTO;
+		this.disciplinaDTO = disciplinaDTO;
 		this.nalogDTO = nalogDTO;
 		setTitle("Disciplina Naziv");
 		setResizable(false);
@@ -136,7 +146,7 @@ public class ElektrijadaForm extends JFrame {
 		scrollPaneNastavneTeme.setBorder(UIManager.getBorder("Button.border"));
 		scrollPaneNastavneTeme.setBounds(10, 219, 558, 382);
 
-		elektrijadaController = new ElektrijadaController(forma,elektrijadaDTO,nalogDTO);
+		elektrijadaController = new ElektrijadaController(forma,elektrijadaDTO,nalogDTO,disciplinaDTO);
 
 		String date = "23/10/2012 08:15 AM";
 
@@ -144,7 +154,7 @@ public class ElektrijadaForm extends JFrame {
 		Date startDate = df.parse(date);
 		
 		ElektrijadaController.listaDodatnihNastava
-				.add(new DodatnaNastavaDTO(1,startDate,"Prva","Napomena",1,1));
+				.add(new DodatnaNastavaDTO(1,startDate,"Napomena","Naziv teme",1,disciplinaDTO.getNaziv(),1));
 
 		ElektrijadaController.listaStudenata.add(new StudentZaElektrijaduDTO(2,"1111/11", "Marko", "Marković",
 				"Prvo mjesto na Elektrijadi u Beogradu 2012. godine."));

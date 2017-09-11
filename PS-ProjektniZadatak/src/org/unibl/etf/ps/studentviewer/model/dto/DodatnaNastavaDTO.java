@@ -9,6 +9,7 @@ public class DodatnaNastavaDTO {
 	private String naziv;
 	private Date datum;
 	private String napomena;
+	private String nazivTeme;
 
 	public DodatnaNastavaDTO() {
 		// TODO Auto-generated constructor stub
@@ -16,28 +17,7 @@ public class DodatnaNastavaDTO {
 
 	
 
-	public int getElektrijadaID() {
-		return elektrijadaId;
-	}
-
-
-
-	public void setElektrijadaID(int elektrijadaID) {
-		this.elektrijadaId = elektrijadaID;
-	}
-
-
-
-	public int getNalogID() {
-		return nalogId;
-	}
-
-
-
-	public void setNalogID(int nalogID) {
-		this.nalogId = nalogID;
-	}
-
+	
 
 
 	public int getNastavaId() {
@@ -76,7 +56,7 @@ public class DodatnaNastavaDTO {
 
 
 
-	public DodatnaNastavaDTO(int nastavaId,Date datum, String naziv, String napomena, int elektrijadaId, int nalogId) {
+	public DodatnaNastavaDTO(int nastavaId,Date datum, String napomena,String nazivTeme, int nalogId,String naziv,int elektrijadaId) {
 		super();
 		this.nastavaId = nastavaId;
 		this.elektrijadaId = elektrijadaId;
@@ -84,7 +64,26 @@ public class DodatnaNastavaDTO {
 		this.naziv = naziv;
 		this.datum = datum;
 		this.napomena = napomena;
+		this.nazivTeme = nazivTeme;
 	}
+
+
+
+	public String getNazivTeme() {
+		return nazivTeme;
+	}
+
+
+
+
+
+
+	public void setNazivTeme(String nazivTeme) {
+		this.nazivTeme = nazivTeme;
+	}
+
+
+
 
 
 

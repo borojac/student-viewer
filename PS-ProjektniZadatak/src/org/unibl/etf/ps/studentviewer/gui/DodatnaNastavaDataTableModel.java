@@ -40,7 +40,7 @@ public class DodatnaNastavaDataTableModel extends AbstractTableModel {
 		String name = "??";
 		switch (column) {
 		case 0:
-			name = "Naziv";
+			name = "Naziv Teme";
 			break;
 		case 1:
 			name = "Datum";
@@ -59,7 +59,7 @@ public class DodatnaNastavaDataTableModel extends AbstractTableModel {
 		Object value = null;
 		switch (columnIndex) {
 		case 0:
-			value = nastava.getNaziv();
+			value = nastava.getNazivTeme();
 			break;
 		case 1:{
 			DateFormat df = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy");

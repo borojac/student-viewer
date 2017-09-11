@@ -40,6 +40,7 @@ import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaDatumaDodatneNastaveC
 import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaNapomeneDodatneNastaveCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaNazivaDodatneNastaveCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaPodatkaNapomenaStudentaZaElektrijadu;
+import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
@@ -60,15 +61,21 @@ public class ElektrijadaController {
 	private ElektrijadaForm forma;
 	private ElektrijadaDTO elektrijada;
 	private NalogDTO nalogDTO;
+	private DisciplinaDTO disciplinaDTO;
 	private Stack<Command> undoKomande = new Stack<Command>();
 	private Stack<Command> redoKomande = new Stack<Command>();
 	public static ArrayList<DodatnaNastavaDTO> listaDodatnihNastava = new ArrayList<>();
 	public static ArrayList<StudentZaElektrijaduDTO> listaStudenata = new ArrayList<>();
 
-	public ElektrijadaController(ElektrijadaForm forma, ElektrijadaDTO elektrijada, NalogDTO nalogDTO) {
+	public ElektrijadaController(ElektrijadaForm forma, ElektrijadaDTO elektrijada, NalogDTO nalogDTO,DisciplinaDTO disciplinaDTO) {
 		this.forma = forma;
 		this.elektrijada = elektrijada;
 		this.nalogDTO = nalogDTO;
+		this.disciplinaDTO = disciplinaDTO;
+	}
+
+	public DisciplinaDTO getDisciplinaDTO() {
+		return disciplinaDTO;
 	}
 
 	public ElektrijadaDTO getElektrijada() {
