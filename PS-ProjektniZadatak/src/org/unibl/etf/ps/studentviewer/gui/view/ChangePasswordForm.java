@@ -2,11 +2,10 @@ package org.unibl.etf.ps.studentviewer.gui.view;
 
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.SystemColor;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,12 +16,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import org.imgscalr.Scalr;
 //import org.unibl.etf.ps.studentviewer.logic.controller.ChangePasswordFormController;
+import org.unibl.etf.ps.studentviewer.logic.controller.AccountFormController;
 
 public class ChangePasswordForm extends JFrame {
 
@@ -31,28 +29,18 @@ public class ChangePasswordForm extends JFrame {
 	private JLabel novaLozinkaLbl, staraLozinkaLbl;
 	private JPasswordField novaLozinkaTf, staraLozinkaTf;
 	private JButton potvrdiBtn;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ChangePasswordForm frame = new ChangePasswordForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	
 	/**
 	 * Create the frame.
 	 */
 	public ChangePasswordForm() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				AccountFormController.resetChangePasswordFormOpened();
+			}
+		});
+		
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 10, 650, 400);
 		setTitle("Promjena lozinke");
 		setResizable(false);

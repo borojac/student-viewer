@@ -70,5 +70,13 @@ public class AccountFormController {
 	public static void resetBrisanjePredmetaFormOpened(){
 		brisanjePredmetaFormOpened = false;
 	}
+	
+	public static void resetChangeAccountNameFormOpened(){
+		changeAccountNameFormOpened = false;
+	}
+	
+	public static void resetChangePasswordFormOpened(){
+		changePasswordFormOpened = false;
+	}
 
 }
