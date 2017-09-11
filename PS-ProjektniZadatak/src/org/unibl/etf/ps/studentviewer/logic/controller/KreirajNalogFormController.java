@@ -80,10 +80,12 @@ public class KreirajNalogFormController {
 			if(nalogDAO.addNalog(nalogDTO)) {
 				JOptionPane.showMessageDialog(btn1, "Nalog ispravno kreiran!");
 				try {
+					
 					MainForm mainForm = new MainForm();
 					mainForm.setNalogDTO(nalogDAO.getNalog(nalogDTO.getKorisnickoIme(), nalogDTO.getLozinka()));
 					mainForm.setVisible(true);
 					kreirajNalogForm.setVisible(false);
+					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
