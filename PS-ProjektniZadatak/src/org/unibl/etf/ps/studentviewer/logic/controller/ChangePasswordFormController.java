@@ -41,7 +41,7 @@ public class ChangePasswordFormController {
 			
 			if(nalogDAO.updateNalog(nalogDTO)) {
 				JOptionPane.showMessageDialog(changePasswordForm, "Lozinka uspjesno promjenjena.");
-				changePasswordForm.setVisible(false);
+				changePasswordForm.dispose();;
 				AccountFormController.resetChangePasswordFormOpened();
 			} else {
 				JOptionPane.showMessageDialog(changePasswordForm, "Lozinka nije promjenjena.");

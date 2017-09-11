@@ -28,7 +28,7 @@ public class DodavanjePredmetaFormController {
 		
 		if(zahtjevDAO.addZahtjev(zahtjevDTO)) {
 			JOptionPane.showMessageDialog(dodavanjePredmetaForm, "Zahtjev je uspjesno poslan.");
-			dodavanjePredmetaForm.setVisible(false);
+			dodavanjePredmetaForm.dispose();
 			AccountFormController.resetDodavanjePredmetaFormOpened();
 		} else {
 			JOptionPane.showMessageDialog(dodavanjePredmetaForm, "Zahtjev nije uspjesno poslan.");

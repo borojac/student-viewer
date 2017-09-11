@@ -34,7 +34,7 @@ public class ChangeAccountNameFormController {
 			
 			if(nalogDAO.updateNalog(nalogDTO)) {
 				JOptionPane.showMessageDialog(changeAccountNameForm, "Korisnicko ime uspjesno promjenjeno.");
-				changeAccountNameForm.setVisible(false);
+				changeAccountNameForm.dispose();;
 				AccountFormController.resetChangeAccountNameFormOpened();
 			} else {
 				JOptionPane.showMessageDialog(changeAccountNameForm, "Korisnicko ime nije promjenjeno");
