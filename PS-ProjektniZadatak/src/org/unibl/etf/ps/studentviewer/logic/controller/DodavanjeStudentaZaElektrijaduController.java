@@ -13,8 +13,9 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
 
 public class DodavanjeStudentaZaElektrijaduController {
 
-	public DodavanjeStudentaZaElektrijaduController() {
-		// TODO Auto-generated constructor stub
+	private DodavanjeStudentaZaElektrijaduForm dodavanjeForma;
+	public DodavanjeStudentaZaElektrijaduController(DodavanjeStudentaZaElektrijaduForm dodavanjeForma) {
+		this.dodavanjeForma = dodavanjeForma;
 	}
 
 	public void zatvoriProzor(ElektrijadaForm forma, WindowEvent e) {
@@ -22,7 +23,7 @@ public class DodavanjeStudentaZaElektrijaduController {
 		e.getWindow().dispose();
 	}
 
-	public void dodajStudentaControl(DodavanjeStudentaZaElektrijaduForm dodavanjeForma, ElektrijadaForm forma,
+	public void dodajStudentaControl(
 			JTable tableStudenti, JTable tableStudentiPredmeti,
 			StudentiZaElektrijaduTableModel studentiZaElektrijaduDataModel, ElektrijadaController kontroler) {
 		int[] redovi = tableStudentiPredmeti.getSelectedRows();
@@ -31,7 +32,7 @@ public class DodavanjeStudentaZaElektrijaduController {
 		} else {
 			ArrayList<StudentZaElektrijaduDTO> studentiZaUndoRedo = new ArrayList<>();
 			for (int i : redovi) {
-				StudentZaElektrijaduDTO st = new StudentZaElektrijaduDTO(
+				StudentZaElektrijaduDTO st = new StudentZaElektrijaduDTO(i,
 						(String) tableStudentiPredmeti.getValueAt(i, 0),
 						(String) tableStudentiPredmeti.getValueAt(i, 1),
 						(String) tableStudentiPredmeti.getValueAt(i, 2),
@@ -45,7 +46,7 @@ public class DodavanjeStudentaZaElektrijaduController {
 			tableStudenti.setModel(studentiZaElektrijaduDataModel);
 			tableStudenti.repaint();
 			dodavanjeForma.dispose();
-			forma.setEnabled(true);
+			kontroler.getForma().setEnabled(true);
 
 		}
 	}

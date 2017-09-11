@@ -45,11 +45,11 @@ public class DodavanjeStudentaZaElektrijaduForm extends JFrame {
 	private DodavanjeStudentaZaElektrijaduForm dodavanjeForma;
 
 	public static void popuniListu() {
-		studentiPredmeti.add(new StudentZaElektrijaduDTO("1122/13", "Janko", "Raspopovic", "Napomena"));
-		studentiPredmeti.add(new StudentZaElektrijaduDTO("1245/13", "Marko", "Krusic", "Napomena1"));
-		studentiPredmeti.add(new StudentZaElektrijaduDTO("1236/13", "Sinisa", "Mutic", "Napomena2"));
-		studentiPredmeti.add(new StudentZaElektrijaduDTO("1258/13", "Jovica", "Cubic", "Napomena3"));
-		studentiPredmeti.add(new StudentZaElektrijaduDTO("1126/13", "Dragica", "Takic", "Napomena4"));
+		studentiPredmeti.add(new StudentZaElektrijaduDTO(1,"1122/13", "Janko", "Raspopovic", "Napomena"));
+		studentiPredmeti.add(new StudentZaElektrijaduDTO(2,"1245/13", "Marko", "Krusic", "Napomena1"));
+		studentiPredmeti.add(new StudentZaElektrijaduDTO(3,"1236/13", "Sinisa", "Mutic", "Napomena2"));
+		studentiPredmeti.add(new StudentZaElektrijaduDTO(4,"1258/13", "Jovica", "Cubic", "Napomena3"));
+		studentiPredmeti.add(new StudentZaElektrijaduDTO(5,"1126/13", "Dragica", "Takic", "Napomena4"));
 	}
 
 	public DodavanjeStudentaZaElektrijaduForm(ElektrijadaForm forma, JTable tableStudenti,
@@ -59,7 +59,7 @@ public class DodavanjeStudentaZaElektrijaduForm extends JFrame {
 		this.tableStudenti = tableStudenti;
 		this.elektrijadaController = kontroler;
 		this.studentiZaElektrijaduDataModel = studentiZaElektrijaduDataModel;
-		studentController = new DodavanjeStudentaZaElektrijaduController();
+		studentController = new DodavanjeStudentaZaElektrijaduController(dodavanjeForma);
 		setResizable(false);
 		setTitle("Dodavanje studenata");
 		setBounds(100, 100, 383, 481);
@@ -107,7 +107,7 @@ public class DodavanjeStudentaZaElektrijaduForm extends JFrame {
 		btnDodaj.setToolTipText("Dodaj");
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				studentController.dodajStudentaControl(dodavanjeForma, forma, tableStudenti, tableStudentiPredmeti,
+				studentController.dodajStudentaControl( tableStudenti, tableStudentiPredmeti,
 						studentiZaElektrijaduDataModel, kontroler);
 			}
 		});

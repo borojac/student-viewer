@@ -15,8 +15,9 @@ import org.unibl.etf.ps.studentviewer.gui.view.IzborDatumaZaDodatnuNastavuForm;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 
 public class DodavanjeDodatneNastaveController {
-	public DodavanjeDodatneNastaveController() {
-		// TODO Auto-generated constructor stub
+	private DodavanjeDodatneNastaveForm nastavaForm;
+	public DodavanjeDodatneNastaveController(DodavanjeDodatneNastaveForm nastavaForm) {
+		this.nastavaForm = nastavaForm;
 	}
 
 	public void zatvoriProzor(ElektrijadaForm forma, WindowEvent e) {
@@ -24,15 +25,15 @@ public class DodavanjeDodatneNastaveController {
 		e.getWindow().dispose();
 	}
 
-	public void dodajStudentaControl(JTextField textFieldNaziv, JTextField textFieldDatum, JTextArea textAreaNapomena,
-			DodavanjeDodatneNastaveForm nastavaForm, ElektrijadaForm forma, JTable tableNastavneTeme,
+	public void dodajDodatnuNastavuControl(JTextField textFieldNaziv, JTextField textFieldDatum, JTextArea textAreaNapomena,
+			  JTable tableNastavneTeme,
 			ElektrijadaController kontroler, DodatnaNastavaDataTableModel dodatnaNastavaDataModel) {
 		String naziv = textFieldNaziv.getText();
 		String datum = textFieldDatum.getText();
 		String napomena = textAreaNapomena.getText();
 
 		if (kontroler.validnostDatuma(datum)) {
-			DodatnaNastavaDTO nastava = new DodatnaNastavaDTO(naziv, datum, napomena);
+			DodatnaNastavaDTO nastava = new DodatnaNastavaDTO(kontroler.getElektrijada().getId(),kontroler.getNalogDTO().getNalogId(),naziv, datum, napomena);
 			if (kontroler.listaDodatnihNastava.add(nastava)) {
 				dodatnaNastavaDataModel.fireTableDataChanged();
 				tableNastavneTeme.setModel(dodatnaNastavaDataModel);
@@ -40,7 +41,7 @@ public class DodavanjeDodatneNastaveController {
 				kontroler.dodavanjeNastave(nastava);
 				nastavaForm.setVisible(false);
 				nastavaForm.dispose();
-				forma.setEnabled(true);
+				kontroler.getForma().setEnabled(true);
 			}
 		} else {
 			JOptionPane.showMessageDialog(nastavaForm, "Greska u formi datuma.");

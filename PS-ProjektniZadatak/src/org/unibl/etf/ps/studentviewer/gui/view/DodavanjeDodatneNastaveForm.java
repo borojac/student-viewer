@@ -32,7 +32,6 @@ public class DodavanjeDodatneNastaveForm extends JFrame {
 	private JPanel contentPane;
 	private JTextField textFieldNaziv;
 	private JTextField textFieldDatum;
-	private ElektrijadaForm forma;
 	private JTable tableNastavneTeme;
 	private ElektrijadaController elektrijadaController;
 	private DodatnaNastavaDataTableModel dodatnaNastavaDataModel;
@@ -47,14 +46,13 @@ public class DodavanjeDodatneNastaveForm extends JFrame {
 	 * @param undoRedo
 	 * @param dataModel
 	 */
-	public DodavanjeDodatneNastaveForm(ElektrijadaForm forma, JTable tableNastavneTeme, ElektrijadaController kontroler,
+	public DodavanjeDodatneNastaveForm(JTable tableNastavneTeme, ElektrijadaController kontroler,
 			DodatnaNastavaDataTableModel dodatnaNastavaDataModel) {
-		this.forma = forma;
 		this.tableNastavneTeme = tableNastavneTeme;
 		this.elektrijadaController = kontroler;
 		this.dodatnaNastavaDataModel = dodatnaNastavaDataModel;
 		nastavaForm = this;
-		dodatnaNastavaController = new DodavanjeDodatneNastaveController();
+		dodatnaNastavaController = new DodavanjeDodatneNastaveController(nastavaForm);
 		setResizable(false);
 		setTitle("Dodavanje dodatne nastave");
 		setBounds(100, 100, 270, 393);
@@ -66,7 +64,7 @@ public class DodavanjeDodatneNastaveForm extends JFrame {
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				dodatnaNastavaController.zatvoriProzor(forma, e);
+				dodatnaNastavaController.zatvoriProzor(elektrijadaController.getForma(), e);
 			}
 		});
 		JLabel lblNaziv = new JLabel("Naziv: ");
@@ -94,8 +92,8 @@ public class DodavanjeDodatneNastaveForm extends JFrame {
 		btnDodaj.setToolTipText("Dodaj");
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dodatnaNastavaController.dodajStudentaControl(textFieldNaziv, textFieldDatum, textAreaNapomena,
-						nastavaForm, forma, tableNastavneTeme, kontroler, dodatnaNastavaDataModel);
+				dodatnaNastavaController.dodajDodatnuNastavuControl(textFieldNaziv, textFieldDatum, textAreaNapomena,
+						tableNastavneTeme, kontroler, dodatnaNastavaDataModel);
 
 			}
 		});
@@ -107,7 +105,7 @@ public class DodavanjeDodatneNastaveForm extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				dispose();
-				forma.setEnabled(true);
+				kontroler.getForma().setEnabled(true);
 			}
 		});
 

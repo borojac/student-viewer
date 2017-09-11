@@ -1,24 +1,52 @@
 package org.unibl.etf.ps.studentviewer.model.dto;
 
-import java.io.Serializable;
-
-public class DodatnaNastavaDTO implements Serializable {
+public class DodatnaNastavaDTO {
+	private int elektrijadaID;
+	private int nalogID;
 	private String naziv;
 	private String datum;
 	private String napomena;
 
 	public DodatnaNastavaDTO() {
 		// TODO Auto-generated constructor stub
-		this.naziv = this.napomena = "#";
-		this.datum = null;
 	}
 
-	public DodatnaNastavaDTO(String naziv, String datum, String napomena) {
+	
+
+	public int getElektrijadaID() {
+		return elektrijadaID;
+	}
+
+
+
+	public void setElektrijadaID(int elektrijadaID) {
+		this.elektrijadaID = elektrijadaID;
+	}
+
+
+
+	public int getNalogID() {
+		return nalogID;
+	}
+
+
+
+	public void setNalogID(int nalogID) {
+		this.nalogID = nalogID;
+	}
+
+
+
+	public DodatnaNastavaDTO(int elektrijadaID, int nalogID, String naziv, String datum, String napomena) {
 		super();
+		this.elektrijadaID = elektrijadaID;
+		this.nalogID = nalogID;
 		this.naziv = naziv;
 		this.datum = datum;
 		this.napomena = napomena;
 	}
+
+
 
 	public String getNaziv() {
 		return naziv;
@@ -44,13 +72,19 @@ public class DodatnaNastavaDTO implements Serializable {
 		this.napomena = napomena;
 	}
 
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((datum == null) ? 0 : datum.hashCode());
+		result = prime * result + elektrijadaID;
 		result = prime * result + ((naziv == null) ? 0 : naziv.hashCode());
 		return result;
 	}
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -61,6 +95,13 @@ public class DodatnaNastavaDTO implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		DodatnaNastavaDTO other = (DodatnaNastavaDTO) obj;
+		if (datum == null) {
+			if (other.datum != null)
+				return false;
+		} else if (!datum.equals(other.datum))
+			return false;
+		if (elektrijadaID != other.elektrijadaID)
+			return false;
 		if (naziv == null) {
 			if (other.naziv != null)
 				return false;
@@ -68,4 +109,6 @@ public class DodatnaNastavaDTO implements Serializable {
 			return false;
 		return true;
 	}
+
+	
 }

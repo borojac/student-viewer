@@ -1,19 +1,19 @@
 package org.unibl.etf.ps.studentviewer.model.dto;
 
-import java.io.Serializable;
-
-public class StudentZaElektrijaduDTO implements Serializable {
+public class StudentZaElektrijaduDTO {
+	private int id;
 	private String indeks;
 	private String ime;
 	private String prezime;
 	private String napomena;
 
 	public StudentZaElektrijaduDTO() {
-		indeks = ime = prezime = napomena = "#";
+		
 	}
 
-	public StudentZaElektrijaduDTO(String indeks, String ime, String prezime, String napomena) {
+	public StudentZaElektrijaduDTO(int id,String indeks, String ime, String prezime, String napomena) {
 		super();
+		this.id = id;
 		this.indeks = indeks;
 		this.ime = ime;
 		this.prezime = prezime;
@@ -51,12 +51,22 @@ public class StudentZaElektrijaduDTO implements Serializable {
 	public void setNapomena(String napomena) {
 		this.napomena = napomena;
 	}
+	
+	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((indeks == null) ? 0 : indeks.hashCode());
+		result = prime * result + id;
 		return result;
 	}
 
@@ -69,12 +79,12 @@ public class StudentZaElektrijaduDTO implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		StudentZaElektrijaduDTO other = (StudentZaElektrijaduDTO) obj;
-		if (indeks == null) {
-			if (other.indeks != null)
-				return false;
-		} else if (!indeks.equals(other.indeks))
+		if (id != other.id)
 			return false;
 		return true;
 	}
+
+
+	
 
 }

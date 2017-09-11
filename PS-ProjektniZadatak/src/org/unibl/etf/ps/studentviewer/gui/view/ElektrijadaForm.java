@@ -6,8 +6,12 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -29,6 +33,8 @@ import org.unibl.etf.ps.studentviewer.gui.DodatnaNastavaDataTableModel;
 import org.unibl.etf.ps.studentviewer.gui.StudentiZaElektrijaduTableModel;
 import org.unibl.etf.ps.studentviewer.logic.controller.ElektrijadaController;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
 
 public class ElektrijadaForm extends JFrame {
@@ -44,7 +50,9 @@ public class ElektrijadaForm extends JFrame {
 	private JPanel contentPane;
 	private JTable tableStudenti;
 	private JTable tableDodatneNastave;
-	private static ElektrijadaForm forma;
+	private  ElektrijadaForm forma;
+	private ElektrijadaDTO elektrijadaDTO;
+	private NalogDTO nalogDTO;
 	private static DodatnaNastavaDataTableModel dodatnaNastavaDataModel;
 	private static StudentiZaElektrijaduTableModel studentiZaElektrijaduDataModel;
 	private static ElektrijadaController elektrijadaController;
@@ -56,7 +64,7 @@ public class ElektrijadaForm extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ElektrijadaForm frame = new ElektrijadaForm();
+					ElektrijadaForm frame = new ElektrijadaForm(new ElektrijadaDTO());
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -68,12 +76,23 @@ public class ElektrijadaForm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ElektrijadaForm() throws Exception {
+	public ElektrijadaForm(ElektrijadaDTO elektrijadaDTO) throws Exception {
 		forma = this;
-
+		this.elektrijadaDTO = elektrijadaDTO;
 		setTitle("Disciplina Naziv");
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent event) {
+				EventQueue.invokeLater(new Runnable() {
+
+					@Override
+					public void run() {
+						elektrijadaController.zatvoriProzor(forma);
+					}
+				});
+			}
+		});
 		setBounds(100, 100, 810, 553);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -98,16 +117,16 @@ public class ElektrijadaForm extends JFrame {
 		scrollPaneNastavneTeme.setBorder(UIManager.getBorder("Button.border"));
 		scrollPaneNastavneTeme.setBounds(10, 219, 558, 382);
 
-		elektrijadaController = new ElektrijadaController();
+		elektrijadaController = new ElektrijadaController(forma,elektrijadaDTO,nalogDTO);
 
 		String date = "23/10/2012 08:15 AM";
 
 		Date datum = new SimpleDateFormat("dd/MM/yyyy hh:mm a").parse(date);
 		String newstring = new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(datum);
 		ElektrijadaController.listaDodatnihNastava
-				.add(new DodatnaNastavaDTO("Konstruktor kopije", newstring, "Napomena"));
+				.add(new DodatnaNastavaDTO(1,1,"Konstruktor kopije", newstring, "Napomena"));
 
-		ElektrijadaController.listaStudenata.add(new StudentZaElektrijaduDTO("1111/11", "Marko", "Marković",
+		ElektrijadaController.listaStudenata.add(new StudentZaElektrijaduDTO(2,"1111/11", "Marko", "Marković",
 				"Prvo mjesto na Elektrijadi u Beogradu 2012. godine."));
 
 		studentiZaElektrijaduDataModel = new StudentiZaElektrijaduTableModel(ElektrijadaController.listaStudenata);
@@ -143,6 +162,15 @@ public class ElektrijadaForm extends JFrame {
 			}
 		};
 
+//		contentPane.addKeyListener(new KeyAdapter() {
+//			@Override
+//			public void keyReleased(KeyEvent e) {
+//				elektrijadaController.undoRedoAkcija(dodatnaNastavaDataModel, tableDodatneNastave,
+//						studentiZaElektrijaduDataModel, tableStudenti, e);
+//			}
+//		});
+		
+		
 		tableDodatneNastave.setFont(new Font("Century Gothic", Font.BOLD, 12));
 		tableDodatneNastave.setForeground(new Color(0, 0, 139));
 		tableDodatneNastave.setBackground(new Color(173, 216, 230));
@@ -154,14 +182,14 @@ public class ElektrijadaForm extends JFrame {
 		tableStudenti.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2)
-					elektrijadaController.otvaranjeEditora(e, forma, studentiZaElektrijaduDataModel, true);
+					elektrijadaController.otvaranjeEditora(e, studentiZaElektrijaduDataModel, true);
 			}
 		});
 
 		tableDodatneNastave.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2)
-					elektrijadaController.otvaranjeEditora(e, forma, dodatnaNastavaDataModel, false);
+					elektrijadaController.otvaranjeEditora(e, dodatnaNastavaDataModel, false);
 			}
 		});
 
@@ -177,7 +205,7 @@ public class ElektrijadaForm extends JFrame {
 		JButton btnBrisanjeNastavneTeme = new JButton("Brisanje dodatne nastave");
 		btnBrisanjeNastavneTeme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				elektrijadaController.brisanjeNastaveControl(forma, tableDodatneNastave, dodatnaNastavaDataModel);
+				elektrijadaController.brisanjeNastaveControl( tableDodatneNastave, dodatnaNastavaDataModel);
 			}
 		});
 		btnBrisanjeNastavneTeme.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -186,7 +214,7 @@ public class ElektrijadaForm extends JFrame {
 		JButton btnBrisanjeStudenta = new JButton("Brisanje studenta");
 		btnBrisanjeStudenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				elektrijadaController.brisanjeStudentaControl(forma, tableStudenti, studentiZaElektrijaduDataModel);
+				elektrijadaController.brisanjeStudentaControl( tableStudenti, studentiZaElektrijaduDataModel);
 			}
 		});
 		btnBrisanjeStudenta.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -195,7 +223,7 @@ public class ElektrijadaForm extends JFrame {
 		JButton btnDodavanjeNastavneTeme = new JButton("Dodavanje dodatne nastave");
 		btnDodavanjeNastavneTeme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				elektrijadaController.dodavanjeNastaveControl(forma, tableDodatneNastave, dodatnaNastavaDataModel);
+				elektrijadaController.dodavanjeNastaveControl(tableDodatneNastave, dodatnaNastavaDataModel);
 			}
 		});
 		btnDodavanjeNastavneTeme.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -204,7 +232,7 @@ public class ElektrijadaForm extends JFrame {
 		JButton btnDodajStudenta = new JButton("Dodaj studenta");
 		btnDodajStudenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				elektrijadaController.dodavanjeStudentaControl(forma, tableStudenti, studentiZaElektrijaduDataModel);
+				elektrijadaController.dodavanjeStudentaControl(tableStudenti, studentiZaElektrijaduDataModel);
 			}
 
 		});

@@ -28,18 +28,35 @@ import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaNapomeneDodatneNastav
 import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaNazivaDodatneNastaveCommand;
 import org.unibl.etf.ps.studentviewer.logic.command.IzmjenaPodatkaNapomenaStudentaZaElektrijadu;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
 
-
-
 public class ElektrijadaController {
+	private ElektrijadaForm forma;
+	private ElektrijadaDTO elektrijada;
+	private NalogDTO nalogDTO;
 	private Stack<Command> undoKomande = new Stack<Command>();
 	private Stack<Command> redoKomande = new Stack<Command>();
 	public static ArrayList<DodatnaNastavaDTO> listaDodatnihNastava = new ArrayList<>();
 	public static ArrayList<StudentZaElektrijaduDTO> listaStudenata = new ArrayList<>();
 
-	public ElektrijadaController() {
-		// TODO Auto-generated constructor stub
+	public ElektrijadaController(ElektrijadaForm forma, ElektrijadaDTO elektrijada, NalogDTO nalogDTO) {
+		this.forma = forma;
+		this.elektrijada = elektrijada;
+		this.nalogDTO = nalogDTO;
+	}
+
+	public ElektrijadaDTO getElektrijada() {
+		return elektrijada;
+	}
+	
+	public NalogDTO getNalogDTO() {
+		return nalogDTO;
+	}
+
+	public ElektrijadaForm getForma() {
+		return forma;
 	}
 
 	public void undo(int broj) {
@@ -110,7 +127,7 @@ public class ElektrijadaController {
 		redoKomande.clear();
 	}
 
-	public void otvaranjeEditora(MouseEvent e, ElektrijadaForm forma, AbstractTableModel dataModel, boolean b) {
+	public void otvaranjeEditora(MouseEvent e, AbstractTableModel dataModel, boolean b) {
 		ElektrijadaController controller = this;
 		JTable target = (JTable) e.getSource();
 		int row = target.getSelectedRow();
@@ -122,7 +139,8 @@ public class ElektrijadaController {
 			@Override
 			public void run() {
 				forma.setEnabled(false);
-				EditorZaElektrijaduForm frame = new EditorZaElektrijaduForm(target, forma, dataModel, controller, sadrzajEditora, b);
+				EditorZaElektrijaduForm frame = new EditorZaElektrijaduForm(target, forma, dataModel, controller,
+						sadrzajEditora, b);
 				frame.setVisible(true);
 			}
 		});
@@ -131,7 +149,7 @@ public class ElektrijadaController {
 
 	public boolean validnostDatuma(String vrijednost) {
 		try {
-			
+
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
 			Date datum = sdf.parse(vrijednost);
 			if (!vrijednost.equals(sdf.format(datum)))
@@ -187,12 +205,7 @@ public class ElektrijadaController {
 		ArrayList<StudentZaElektrijaduDTO> listaUndoRedo = new ArrayList<>();
 
 		for (int i = 0; i < redovi; i++) {
-			StudentZaElektrijaduDTO st1 = new StudentZaElektrijaduDTO((String) tableStudenti.getValueAt(i, 0), (String) tableStudenti.getValueAt(i, 1),
-					(String) tableStudenti.getValueAt(i, 2), (String) tableStudenti.getValueAt(i, 3));
-
-			if (this.izbaciStudentaProvjera(st1)) {
-				listaUndoRedo.add(st1);
-			}
+			listaUndoRedo.add(listaStudenata.get(i));
 		}
 		this.izbaciListuIzListe(listaUndoRedo);
 		this.brisanjeStudenta(listaUndoRedo);
@@ -202,26 +215,23 @@ public class ElektrijadaController {
 
 	}
 
-	public void brisanjeNastaveControl(ElektrijadaForm forma, JTable tableNastavneTeme,
+	public void brisanjeNastaveControl( JTable tableNastavneTeme,
 			DodatnaNastavaDataTableModel dodatnaNastavaDataModel) {
 		int row = tableNastavneTeme.getSelectedRow();
 		if (row == -1) {
 			JOptionPane.showMessageDialog(forma, "Nije selektovana ni jedna dodatna nastava.");
 		} else {
-			String naziv = (String) tableNastavneTeme.getValueAt(row, 0);
-			String datum = (String) tableNastavneTeme.getValueAt(row, 1);
-			String napomena = (String) tableNastavneTeme.getValueAt(row, 2);
-			if (this.izbaciNastavuIzListe(naziv, datum, napomena)) {
-				this.brisanjeNastave(new DodatnaNastavaDTO(naziv, datum, napomena));
-				dodatnaNastavaDataModel.fireTableDataChanged();
-				tableNastavneTeme.setModel(dodatnaNastavaDataModel);
-				tableNastavneTeme.repaint();
-			}
+			this.brisanjeNastave(listaDodatnihNastava.get(row));
+			listaDodatnihNastava.remove(row);
+			dodatnaNastavaDataModel.fireTableDataChanged();
+			tableNastavneTeme.setModel(dodatnaNastavaDataModel);
+			tableNastavneTeme.repaint();
+
 		}
 
 	}
 
-	public void brisanjeStudentaControl(ElektrijadaForm forma, JTable tableStudenti,
+	public void brisanjeStudentaControl( JTable tableStudenti,
 			StudentiZaElektrijaduTableModel studentiZaElektrijaduDataModel) {
 		int[] redovi = tableStudenti.getSelectedRows();
 		if (redovi.length == 0) {
@@ -229,13 +239,7 @@ public class ElektrijadaController {
 		} else {
 			ArrayList<StudentZaElektrijaduDTO> listaUndoRedo = new ArrayList<>();
 			for (int i : redovi) {
-				StudentZaElektrijaduDTO st1 = new StudentZaElektrijaduDTO((String) tableStudenti.getValueAt(i, 0),
-						(String) tableStudenti.getValueAt(i, 1), (String) tableStudenti.getValueAt(i, 2),
-						(String) tableStudenti.getValueAt(i, 3));
-
-				if (this.izbaciStudentaProvjera(st1)) {
-					listaUndoRedo.add(st1);
-				}
+					listaUndoRedo.add(listaStudenata.get(i));				
 			}
 			this.izbaciListuIzListe(listaUndoRedo);
 			this.brisanjeStudenta(listaUndoRedo);
@@ -245,14 +249,14 @@ public class ElektrijadaController {
 		}
 	}
 
-	public void dodavanjeNastaveControl(ElektrijadaForm forma, JTable tableNastavneTeme,
+	public void dodavanjeNastaveControl( JTable tableNastavneTeme,
 			DodatnaNastavaDataTableModel dodatnaNastavaDataModel) {
 		ElektrijadaController kontroler = this;
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				forma.setEnabled(false);
-				DodavanjeDodatneNastaveForm frame = new DodavanjeDodatneNastaveForm(forma, tableNastavneTeme, kontroler,
+				DodavanjeDodatneNastaveForm frame = new DodavanjeDodatneNastaveForm(tableNastavneTeme, kontroler,
 						dodatnaNastavaDataModel);
 				frame.setVisible(true);
 			}
@@ -260,7 +264,7 @@ public class ElektrijadaController {
 
 	}
 
-	public void dodavanjeStudentaControl(ElektrijadaForm forma, JTable tableStudenti,
+	public void dodavanjeStudentaControl( JTable tableStudenti,
 			StudentiZaElektrijaduTableModel studentiZaElektrijaduDataModel) {
 		ElektrijadaController kontroler = this;
 		EventQueue.invokeLater(new Runnable() {
@@ -268,8 +272,8 @@ public class ElektrijadaController {
 			public void run() {
 
 				forma.setEnabled(false);
-				DodavanjeStudentaZaElektrijaduForm frame = new DodavanjeStudentaZaElektrijaduForm(forma, tableStudenti, kontroler,
-						studentiZaElektrijaduDataModel);
+				DodavanjeStudentaZaElektrijaduForm frame = new DodavanjeStudentaZaElektrijaduForm(forma, tableStudenti,
+						kontroler, studentiZaElektrijaduDataModel);
 				frame.setVisible(true);
 				studentiZaElektrijaduDataModel.fireTableDataChanged();
 				tableStudenti.setModel(studentiZaElektrijaduDataModel);
@@ -297,4 +301,9 @@ public class ElektrijadaController {
 		studentiZaElektrijaduDataModel.fireTableDataChanged();
 		tableStudenti.repaint();
 	}
+
+	public void zatvoriProzor(ElektrijadaForm forma) {
+
+	}
+
 }
