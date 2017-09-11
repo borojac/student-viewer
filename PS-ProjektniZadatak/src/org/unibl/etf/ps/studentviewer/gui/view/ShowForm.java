@@ -30,6 +30,7 @@ public class ShowForm extends JFrame {
 
 	private JPanel contentPane;
 	private MainFormController mainFormControler;
+	JCheckBox testCheckBox;
 	
 	ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 	
@@ -129,7 +130,7 @@ public class ShowForm extends JFrame {
 		if (ShowViewData.getValue(ShowViewData.D_KOMENTAR))
 			komentarCheckBox.setSelected(true);
 		
-		JCheckBox testCheckBox = new JCheckBox("Test");
+		testCheckBox = new JCheckBox("Test");
 		testCheckBox.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -177,5 +178,13 @@ public class ShowForm extends JFrame {
 	private void initCheckBoxSize() {
 		for (JCheckBox c : boxes) 
 			c.setPreferredSize(new Dimension(150, 20));
+	}
+	
+	public void setTestCheckBox() {
+		testCheckBox.setSelected(true);
+	}
+	
+	public void resetTestCheckBox() {
+		testCheckBox.setSelected(false);
 	}
 }
