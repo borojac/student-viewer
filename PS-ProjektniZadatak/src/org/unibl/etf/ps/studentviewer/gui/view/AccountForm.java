@@ -135,14 +135,14 @@ public class AccountForm extends JFrame {
 		promjenaLozinkeBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				accountFormController.createPromjenaLozinkeForm();
+				accountFormController.createChangePasswordForm();
 			}
 		});
 		
 		promjenaKorImenaBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				accountFormController.createPromjenaKorImenaForm();
+				accountFormController.createChangeAccountNameForm();
 			}
 		});
 		

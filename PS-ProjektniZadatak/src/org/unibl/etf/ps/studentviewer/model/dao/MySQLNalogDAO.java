@@ -34,6 +34,7 @@ public class MySQLNalogDAO implements NalogDAO {
 			if(rs.next()) {
 				retVal = new NalogDTO(rs.getInt(1), rs.getString(2), rs.getString(3),
 						rs.getString(4), rs.getString(5), (rs.getString(6)).charAt(0));
+				retVal.setPredmeti(getPredmeteNaNalogu(retVal.getNalogId()));
 			}
 			
 		} catch(SQLException e) {
@@ -42,7 +43,35 @@ public class MySQLNalogDAO implements NalogDAO {
 			DBUtility.close(conn, rs, ps);
 		}
 		
-		retVal.setPredmeti(getPredmeteNaNalogu(retVal.getNalogId()));
+		return retVal;
+	}
+	
+	public boolean checkNalog(String korisnickoIme) {
+		boolean retVal = false;
+		
+		String getNalogQuery = "SELECT NalogId, Ime, Prezime, KorisnickoIme, Lozinka, TipNaloga"
+				+ " FROM nalog WHERE KorisnickoIme = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getNalogQuery);
+			ps.setString(1, korisnickoIme);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				retVal = true;
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
 		
 		return retVal;
 	}

@@ -21,6 +21,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -41,7 +42,11 @@ import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
+import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
+import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
@@ -51,6 +56,7 @@ public class MainForm extends JFrame {
 
 	private JPanel contentPane;
 	private MainFormController mainFormController = new MainFormController(this);
+	private NalogDTO nalogDTO;
 
 	// ------- Components!!! ------- //
 	ArrayList<JButton> buttons = new ArrayList<JButton>();
@@ -84,6 +90,8 @@ public class MainForm extends JFrame {
 	private JButton btnBrisi;
 	private JLabel correct2Label;
 	private JTextField textField;
+	
+	private JComboBox<String> predmetiCB;
 
 	// ------- EndComponents!!! ------- //
 
@@ -257,6 +265,7 @@ public class MainForm extends JFrame {
 		initButtons();
 		initButtonsListeners();
 		initTable();
+		initPredmetiComboBox();
 		scrollPane = new JScrollPane(mainTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBackground(Color.WHITE);
 		scrollPane.setBorder(UIManager.getBorder("Button.border"));
@@ -496,6 +505,22 @@ public class MainForm extends JFrame {
 		testoviPanel.add(btnBrisi);
 
 	}
+	
+	private void initPredmetiComboBox() {
+		predmetiCB = new JComboBox<>();
+		predmetiCB.setBounds(745, 172, 430, 40);
+		contentPane.add(predmetiCB);
+		
+//		ArrayList<PredmetDTO> predmetiList = new ArrayList<>();
+//		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
+//		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
+//		
+//		predmetiList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
+//		
+//		for(int i = 0; i < predmetiList.size(); i++) {
+//			predmetiCB.addItem((predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
+//		}
+	}
 
 	public void refreshTestoviTable() {
 		TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
@@ -525,4 +550,13 @@ public class MainForm extends JFrame {
 	public double getTableWidth() {
 		return scrollPane.getSize().getWidth();
 	}
+	
+	public NalogDTO getNalogDTO() {
+		return nalogDTO;
+	}
+	
+	public void setNalogDTO(NalogDTO nalogDTO) {
+		this.nalogDTO = nalogDTO;
+	}
+	
 }

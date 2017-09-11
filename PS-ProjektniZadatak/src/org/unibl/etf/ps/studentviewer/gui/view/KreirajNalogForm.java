@@ -34,6 +34,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import org.imgscalr.Scalr;
+import javax.swing.JPasswordField;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.KreirajNalogFormController;;
 
@@ -43,16 +44,17 @@ public class KreirajNalogForm extends JFrame{
 	
 	private JPanel contentPane;
 	private JPanel componentsPane;
-	
 	private JLabel korImeLbl, imeLbl, prezimeLbl;
 	private JTextField korImeTf, imeTf, prezimeTf;
 	private JLabel lozinkaLbl, lozinkaPotLbl;
-	private JTextField lozinkaTf, lozinkaPotTf;
+	private JPasswordField lozinkaTf, lozinkaPotTf;
 	private JButton kreirajBtn;
 	private KreirajNalogFormController kreirajNalogFormController;
-	public String getLozinkaTf(){ return lozinkaTf.getText();}
-	public String getLozinkaPotTf(){ return lozinkaPotTf.getText();}
+	public String getLozinkaTf(){ return String.valueOf(lozinkaTf.getPassword());}
+	public String getLozinkaPotTf(){ return String.valueOf(lozinkaPotTf.getPassword());}
 	public String getKorImeTf(){ return korImeTf.getText();}
+	public String getImeTf(){ return imeTf.getText();}
+	public String getPrezimeTf(){ return prezimeTf.getText();}
 	
 	
       
@@ -149,9 +151,10 @@ public class KreirajNalogForm extends JFrame{
     		lozinkaLbl.setForeground(Color.WHITE);
     		componentsPane.add(lozinkaLbl);
     		
-    		lozinkaTf = new JTextField();
+    		lozinkaTf = new JPasswordField();
     		lozinkaTf.setBounds(200, 220, 250, 35);
     		lozinkaTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
+    		lozinkaTf.setEchoChar('*');
     		componentsPane.add(lozinkaTf);
     		
     		lozinkaPotLbl = new JLabel("Potvrda lozinke");
@@ -160,9 +163,10 @@ public class KreirajNalogForm extends JFrame{
     		lozinkaPotLbl.setForeground(Color.WHITE);
     		componentsPane.add(lozinkaPotLbl);
     		
-    		lozinkaPotTf = new JTextField();
+    		lozinkaPotTf = new JPasswordField();
     		lozinkaPotTf.setBounds(200, 280, 250, 35);
     		lozinkaPotTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
+    		lozinkaPotTf.setEchoChar('*');
     		componentsPane.add(lozinkaPotTf);
             
             kreirajBtn = new JButton("Kreiraj");

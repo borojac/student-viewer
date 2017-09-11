@@ -1,5 +1,6 @@
 package org.unibl.etf.ps.studentviewer.gui.view;
 
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -9,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,37 +21,25 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-
 import org.imgscalr.Scalr;
-import org.unibl.etf.ps.studentviewer.logic.controller.LoginFormController;
+//import org.unibl.etf.ps.studentviewer.logic.controller.ChangePasswordFormController;
 
-public class LoginForm extends JFrame {
+public class ChangePasswordForm extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel componentsPane;
-	
-	private JLabel korImeLbl;
-	private JTextField korImeTf;
-	private JLabel lozinkaLbl;
-	private JPasswordField lozinkaTf;
-	private JButton prijavaBtn;
-	private JButton kreirajNalogBtn;
-	
-	private LoginFormController loginFormController;
+	private JLabel novaLozinkaLbl, staraLozinkaLbl;
+	private JPasswordField novaLozinkaTf, staraLozinkaTf;
+	private JButton potvrdiBtn;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		System.setProperty("javax.net.ssl.trustStore", "StudentViewer.jks");
-		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
-		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} catch (Exception ex) {}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LoginForm frame = new LoginForm();
+					ChangePasswordForm frame = new ChangePasswordForm();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -63,12 +51,10 @@ public class LoginForm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public LoginForm() {
-		loginFormController = new LoginFormController(this);
-		
+	public ChangePasswordForm() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 10, 650, 550);
-		setTitle("Prijava");
+		setBounds(100, 10, 650, 400);
+		setTitle("Promjena lozinke");
 		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
@@ -114,76 +100,50 @@ public class LoginForm extends JFrame {
 		contentPane.add(componentsPane);
 		
 		initComponents();
-		initButtonsListeners();
+		//initButtonsListeners();
 	}
-	
 	private void initComponents() {
-		korImeLbl = new JLabel("Korisnicko ime");
-		korImeLbl.setBounds(0, 10, 250, 35);
-		korImeLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
-		korImeLbl.setForeground(Color.WHITE);
-		componentsPane.add(korImeLbl);
+		staraLozinkaLbl = new JLabel("Stara lozinka");
+		staraLozinkaLbl.setBounds(70, 10, 250, 35);
+		staraLozinkaLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
+		staraLozinkaLbl.setForeground(Color.WHITE);
+		componentsPane.add(staraLozinkaLbl);
 		
-		korImeTf = new JTextField();
-		korImeTf.setBounds(0, 45, 250, 35);
-		korImeTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
-		componentsPane.add(korImeTf);
+		staraLozinkaTf = new JPasswordField();
+		staraLozinkaTf.setEchoChar('*');
+		staraLozinkaTf.setBounds(0, 45, 250, 35);
+		staraLozinkaTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
+		componentsPane.add(staraLozinkaTf);
 		
-		lozinkaLbl = new JLabel("Lozinka");
-		lozinkaLbl.setBounds(0, 80, 250, 35);
-		lozinkaLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
-		lozinkaLbl.setForeground(Color.WHITE);
-		componentsPane.add(lozinkaLbl);
+		novaLozinkaLbl = new JLabel("Nova lozinka");
+		novaLozinkaLbl.setBounds(70, 80, 250, 35);
+		novaLozinkaLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
+		novaLozinkaLbl.setForeground(Color.WHITE);
+		componentsPane.add(novaLozinkaLbl);
 		
-		lozinkaTf = new JPasswordField();
-		lozinkaTf.setEchoChar('*');
-		lozinkaTf.setBounds(0, 115, 250, 35);
-		lozinkaTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
-		componentsPane.add(lozinkaTf);
+		novaLozinkaTf = new JPasswordField();
+		novaLozinkaTf.setEchoChar('*');
+		novaLozinkaTf.setBounds(0, 115, 250, 35);
+		novaLozinkaTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
+		componentsPane.add(novaLozinkaTf);
 		
-		prijavaBtn = new JButton("Prijavi se");
-		prijavaBtn.setBounds(50, 180, 150, 35);
-		componentsPane.add(prijavaBtn);
-		
-		JLabel porukaLbl = new JLabel("Nemate nalog? Ovde mozete da ga napravite.");
-		porukaLbl.setBounds(0, 315, 250, 35);
-		porukaLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 11));
-		porukaLbl.setForeground(Color.WHITE);
-		componentsPane.add(porukaLbl);
-		
-		kreirajNalogBtn = new JButton("Kreiraj nalog");
-		kreirajNalogBtn.setBounds(50, 345, 150, 35);
-		componentsPane.add(kreirajNalogBtn);
+		potvrdiBtn = new JButton("Potvrdi");
+		potvrdiBtn.setBounds(50, 180, 150, 35);
+		componentsPane.add(potvrdiBtn);
 	}
 	
-	private void initButtonsListeners() {
-		
-		kreirajNalogBtn.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				loginFormController.createKreirajNalogForm();
-			}
-		});
-		
-		prijavaBtn.addMouseListener(new MouseAdapter() {
+/*private void initButtonsListeners() {
+		potvrdiBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					loginFormController.prijava();
+					changePasswordFormController.prijava();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 			}
 		});
 		
-	}
-	
-	public String getKorisnickoIme() {
-		return korImeTf.getText();
-	}
-	
-	public String getLozinka() {
-		return String.valueOf(lozinkaTf.getPassword());
-	}
+	}*/
 
 }

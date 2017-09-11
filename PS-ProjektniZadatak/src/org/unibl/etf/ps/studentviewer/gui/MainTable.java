@@ -137,5 +137,9 @@ public class MainTable extends JTable {
 		for (StudentMainTableDTO s : helpList)
 			students.remove(s);
 	}
-
+	
+	public StudentMainTableDTO getStudent(int row) {
+		return students.get(row);
+	}
+	
 }
