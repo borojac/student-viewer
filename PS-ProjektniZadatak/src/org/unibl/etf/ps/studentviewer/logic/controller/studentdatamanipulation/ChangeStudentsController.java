@@ -12,28 +12,25 @@ public class ChangeStudentsController {
 		ArrayList<String> params = new ArrayList<String>();
 		MainFormController mainFormController = null;
 		ChangeForm form = null;
-		int numInList;
+		int number;
 		StudentMainTableDTO student = null;
-		public ChangeStudentsController(MainFormController mainFormController, ArrayList<String> params,
-					StudentMainTableDTO student, int numInlist,	ChangeForm form ) {
+		public ChangeStudentsController(MainFormController mainFormController, ArrayList<String> params, StudentMainTableDTO student, int number, ChangeForm form) {
 			this.mainFormController = mainFormController;
 			this.form = form;
-			this.numInList = numInlist;
+			this.number = number;
 			this.student = student;
 			for (String ob : params) {
 				this.params.add(ob.trim());
 			}
 			changeStudent();
+			
 	}
 		private void changeStudent() {
 			int valid = checkParams();
 			if(valid == 0) {
 				//TODO poziv metode koja cuva novog studenta u bazi
-				//mainFormController.getMainTable().addStudent(student);
+				mainFormController.getMainTable().setStudent(number, params.get(2), params.get(0), params.get(1));
 				//TODO poziv metode koja azurira tabelu
-				student.setIme(params.get(0));
-				student.setPrezime(params.get(1));
-				student.setBrojIndeksa(params.get(2));
 				final String message = "Uspjesno azuriranje!";
 				JOptionPane.showMessageDialog(null, message);
 				form.dispose();
