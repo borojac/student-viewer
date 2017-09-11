@@ -42,12 +42,10 @@ public class LoginFormController {
 			if(nalogDTO == null) {
 				JOptionPane.showMessageDialog(loginForm, "Korisnicko ime ili lozinka nisu korektno uneseni.");
 			} else {
-				
 				MainForm mainForm = new MainForm();
 				mainForm.setNalogDTO(nalogDTO);
 				mainForm.setVisible(true);
 				loginForm.setVisible(false);
-				
 			}
 		}
 	}
