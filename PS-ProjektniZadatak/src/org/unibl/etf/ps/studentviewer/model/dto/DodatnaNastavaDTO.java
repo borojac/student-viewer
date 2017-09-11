@@ -20,6 +20,17 @@ public class DodatnaNastavaDTO {
 	
 
 
+	@Override
+	public String toString() {
+		return "DodatnaNastavaDTO [naziv=" + naziv + ", datum=" + datum + ", napomena=" + napomena + ", nazivTeme="
+				+ nazivTeme + "]";
+	}
+
+
+
+
+
+
 	public int getNastavaId() {
 		return nastavaId;
 	}
