@@ -1,12 +1,14 @@
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.Base64;
 
 import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.view.KreirajNalogForm;
+import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
@@ -75,7 +77,19 @@ public class KreirajNalogFormController {
 		{
 			sLozinkaHash = sha256(sLozinka);
 			NalogDTO nalogDTO = new NalogDTO(sIme, sPrezime, sKorIme, sLozinkaHash, 'K');
-			JOptionPane.showMessageDialog(btn1, "Nalog ispravno kreiran!");
+			if(nalogDAO.addNalog(nalogDTO)) {
+				JOptionPane.showMessageDialog(btn1, "Nalog ispravno kreiran!");
+				try {
+					
+					MainForm mainForm = new MainForm();
+					mainForm.setNalogDTO(nalogDAO.getNalog(nalogDTO.getKorisnickoIme(), nalogDTO.getLozinka()));
+					mainForm.setVisible(true);
+					kreirajNalogForm.setVisible(false);
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return true;
 	}
