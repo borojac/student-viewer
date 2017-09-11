@@ -34,7 +34,7 @@ public class AccountFormController {
 		if(changeAccountNameFormOpened)
 			return false;
 		changeAccountNameFormOpened = true;
-		ChangeAccountNameForm changeAccountNameForm = new ChangeAccountNameForm();
+		ChangeAccountNameForm changeAccountNameForm = new ChangeAccountNameForm(accountForm.getNalogDTO());
 		changeAccountNameForm.setVisible(true);
 		return true;
 	}
