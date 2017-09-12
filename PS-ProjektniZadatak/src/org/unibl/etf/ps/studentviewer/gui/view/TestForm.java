@@ -19,6 +19,7 @@ import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaDatumaTestCom
 import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaNazivaTestaCommand;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaProcentaTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.UkloniStudenteTestCommand;
+import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
@@ -136,8 +137,12 @@ public class TestForm extends JFrame {
 					testParam.getNapomena(), testParam.getProcenat(), testParam.getPredmetId());
 			test.setStudenti(testParam.getStudenti());
 			update = true;
-		} else 
+		} else {
+			PredmetDTO activePredmet = mainForm.getSelectedPredmet();
 			test = new TestDTO();
+			if (activePredmet != null)
+				test.setPredmetId(activePredmet.getPredmetId());
+		}
 
 		testController = new TestController(test, this);
 		parentForm = mainForm;
@@ -629,5 +634,13 @@ public class TestForm extends JFrame {
 		}
 
 		procenatComboBox.setSelectedItem("" + 50);
+	}
+	
+	public void refreshTestoviTable() {
+		parentForm.refreshTestoviTable();
+	}
+	
+	public void testoviClearSelection() {
+		parentForm.testoviClearSelection();
 	}
 }

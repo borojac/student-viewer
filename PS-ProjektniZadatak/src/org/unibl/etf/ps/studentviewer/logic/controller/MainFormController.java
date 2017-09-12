@@ -27,6 +27,7 @@ import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
+import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
@@ -176,20 +177,20 @@ public class MainFormController {
 		});
 	}
 	
-	public void initTestoviTable(JTable testoviTable) {
-
-		DAOFactory testFactory = new MySQLDAOFactory();
-		TestDAO testDAO = testFactory.getTestDAO();
-		// TODO
-		List<TestDTO> data = testDAO.getAllTests(1);
-
-		TestoviTableModel model = new TestoviTableModel(data);
-		testoviTable.setModel(model);
+	public void initTestoviTable() {
+		PredmetDTO activePredmet = mainForm.getSelectedPredmet();
+		if (activePredmet != null) {
+			DAOFactory testFactory = new MySQLDAOFactory();
+			TestDAO testDAO = testFactory.getTestDAO();
+			List<TestDTO> data = testDAO.getAllTests(activePredmet.getPredmetId());
+	
+			mainForm.getTestoviTable().setModel(new TestoviTableModel(data));
+		}
 
 	}
 	
-	public void deleteTestAction(JTable testoviTable) {
-
+	public void deleteTestAction() {
+		JTable testoviTable = mainForm.getTestoviTable();
 		DAOFactory factory = new MySQLDAOFactory();
 		TestDAO testDAO = factory.getTestDAO();
 		TestDTO test = ((TestoviTableModel) testoviTable.getModel()).getRowAt(testoviTable.getSelectedRow());
@@ -199,9 +200,23 @@ public class MainFormController {
 			TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
 			List<TestDTO> data = model.getData();
 			data.remove(testoviTable.getSelectedRow());
-			model.fireTableDataChanged();
+			EventQueue.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					model.fireTableDataChanged();
+				}
+			});
 		}
-			
+
+		EventQueue.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				mainForm.testoviClearSelection();
+			}
+		});
+
 	}
 	
 	public void initMouseHoverAction(MouseEvent event, JTable testoviTable) {
@@ -272,8 +287,16 @@ public class MainFormController {
 		filterFormOpened = false;
 	}
 	
-	public void postaviMainForm() {
-		
+	public void postaviMainForm(PredmetDTO activePredmet) {
+		if (activePredmet != null) {
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					initTestoviTable();
+				}
+			}).start();
+		}
 	}
 	
 }

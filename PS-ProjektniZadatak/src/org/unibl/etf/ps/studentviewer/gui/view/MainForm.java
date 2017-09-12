@@ -162,73 +162,6 @@ public class MainForm extends JFrame {
 		label.setIcon(icon);
 		contentPane.add(label);
 
-		testoviPanel = new JPanel();
-		testoviPanel.setBounds(735, 401, 449, 200);
-		testoviPanel.setBackground(new Color(0, 0, 139));
-		contentPane.add(testoviPanel);
-		testoviPanel.setLayout(null);
-
-		testoviTable = new JTable();
-		testoviTable.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent event) {
-				if (event.getKeyCode() == KeyEvent.VK_DELETE)
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							mainFormController.deleteTestAction(testoviTable);							
-						}
-					}).start();
-			}
-		});
-		testoviTable.setFont(new Font("Century Gothic", Font.BOLD, 12));
-		testoviTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-		testoviTable.setForeground(new Color(0, 0, 139));
-		testoviTable.setBackground(new Color(173, 216, 230));
-
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				mainFormController.initTestoviTable(testoviTable);
-			}
-		}).start();
-
-		testoviTable.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (testoviTable.getSelectedRow() != -1) {
-					btnIzmjeni.setEnabled(true);
-					btnBrisi.setEnabled(true);
-				} else {
-
-					btnIzmjeni.setEnabled(false);
-					btnBrisi.setEnabled(false);
-				}
-				if (e.getClickCount() == 2) {
-					mainFormController.editTestAction(testoviTable);
-				}
-			}
-			@Override
-			public void mouseEntered(MouseEvent event) {
-				new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-						mainFormController.initMouseHoverAction(event, testoviTable);
-					}
-				}).start();
-			}
-		});
-
-		testoviScrollPane = new JScrollPane();
-		testoviScrollPane.setBounds(10, 11, 429, 145);
-		testoviScrollPane.setBackground(Color.WHITE);
-		testoviScrollPane.setBorder(UIManager.getBorder("Button.border"));
-		testoviPanel.add(testoviScrollPane);
-		testoviScrollPane.setViewportView(testoviTable);
 
 		JLabel correct1Label = new JLabel("STUDENT");
 		correct1Label.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 45));
@@ -291,6 +224,8 @@ public class MainForm extends JFrame {
 		scrollPane.setBounds(10, 219, 556, 382);
 		contentPane.add(scrollPane);
 		setButtonsSize();
+		
+		initTestoviPanel();
 	}
 
 	public String getSearchParams() {
@@ -357,7 +292,7 @@ public class MainForm extends JFrame {
 		prikaziPredmetBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				mainFormController.postaviMainForm();
+				mainFormController.postaviMainForm(getSelectedPredmet());
 			}
 		});
 
@@ -383,6 +318,119 @@ public class MainForm extends JFrame {
 		for (JButton btn : buttons) {
 			btn.setPreferredSize(new Dimension(135, 35));
 		}
+	}
+	
+	private void initTestoviPanel() {
+
+		testoviPanel = new JPanel();
+		testoviPanel.setBounds(735, 401, 449, 200);
+		testoviPanel.setBackground(new Color(0, 0, 139));
+		contentPane.add(testoviPanel);
+		testoviPanel.setLayout(null);
+
+		testoviTable = new JTable();
+		testoviTable.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent event) {
+				if (event.getKeyCode() == KeyEvent.VK_DELETE)
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							mainFormController.deleteTestAction();							
+						}
+					}).start();
+			}
+		});
+		testoviTable.setFont(new Font("Century Gothic", Font.BOLD, 12));
+		testoviTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		testoviTable.setForeground(new Color(0, 0, 139));
+		testoviTable.setBackground(new Color(173, 216, 230));
+
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				mainFormController.initTestoviTable();
+			}
+		}).start();
+
+		testoviTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (testoviTable.getSelectedRow() != -1) {
+					btnIzmjeni.setEnabled(true);
+					btnBrisi.setEnabled(true);
+				} else {
+
+					btnIzmjeni.setEnabled(false);
+					btnBrisi.setEnabled(false);
+				}
+				if (e.getClickCount() == 2) {
+					mainFormController.editTestAction(testoviTable);
+				}
+			}
+			@Override
+			public void mouseEntered(MouseEvent event) {
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						mainFormController.initMouseHoverAction(event, testoviTable);
+					}
+				}).start();
+			}
+		});
+
+		testoviScrollPane = new JScrollPane();
+		testoviScrollPane.setBounds(10, 11, 429, 145);
+		testoviScrollPane.setBackground(Color.WHITE);
+		testoviScrollPane.setBorder(UIManager.getBorder("Button.border"));
+		testoviPanel.add(testoviScrollPane);
+		testoviScrollPane.setViewportView(testoviTable);
+		/* Buttons by Stokuca */
+		btnDodaj = new JButton("");
+		btnDodaj.setIcon(new ImageIcon("img/Add_14.png"));
+		btnDodaj.setBackground(new Color(0, 0, 139));
+		btnDodaj.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mainFormController.addTestAction();
+			}
+		});
+		btnDodaj.setBounds(10, 166, 89, 23);
+		testoviPanel.add(btnDodaj);
+
+		btnIzmjeni = new JButton("");
+		btnIzmjeni.setIcon(new ImageIcon("img/Edit_14.png"));
+		btnIzmjeni.setBackground(new Color(0, 0, 139));
+		btnIzmjeni.setEnabled(false);
+		btnIzmjeni.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				mainFormController.editTestAction(testoviTable);
+			}
+		});
+		btnIzmjeni.setBounds(109, 166, 89, 23);
+		testoviPanel.add(btnIzmjeni);
+
+		btnBrisi = new JButton("");
+		btnBrisi.setIcon(new ImageIcon("img/Delete_14.png"));
+		btnBrisi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						mainFormController.deleteTestAction();					
+					}
+				}).start();
+
+			}
+		});
+		btnBrisi.setBackground(new Color(0, 0, 139));
+		btnBrisi.setBounds(208, 166, 89, 23);
+		btnBrisi.setEnabled(false);
+		testoviPanel.add(btnBrisi);
 	}
 
 	private void initButtons() {
@@ -500,48 +548,7 @@ public class MainForm extends JFrame {
 
 
 
-		/* Buttons by Stokuca */
-		btnDodaj = new JButton("");
-		btnDodaj.setIcon(new ImageIcon("img/Add_14.png"));
-		btnDodaj.setBackground(new Color(0, 0, 139));
-		btnDodaj.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				mainFormController.addTestAction();
-			}
-		});
-		btnDodaj.setBounds(10, 166, 89, 23);
-		testoviPanel.add(btnDodaj);
-
-		btnIzmjeni = new JButton("");
-		btnIzmjeni.setIcon(new ImageIcon("img/Edit_14.png"));
-		btnIzmjeni.setBackground(new Color(0, 0, 139));
-		btnIzmjeni.setEnabled(false);
-		btnIzmjeni.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				mainFormController.editTestAction(testoviTable);
-			}
-		});
-		btnIzmjeni.setBounds(109, 166, 89, 23);
-		testoviPanel.add(btnIzmjeni);
-
-		btnBrisi = new JButton("");
-		btnBrisi.setIcon(new ImageIcon("img/Delete_14.png"));
-		btnBrisi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-						mainFormController.deleteTestAction(testoviTable);					
-					}
-				}).start();
-
-			}
-		});
-		btnBrisi.setBackground(new Color(0, 0, 139));
-		btnBrisi.setBounds(208, 166, 89, 23);
-		btnBrisi.setEnabled(false);
-		testoviPanel.add(btnBrisi);
+		
 		
 		/* Buttons by Mijic */
 		
@@ -591,19 +598,25 @@ public class MainForm extends JFrame {
 	}
 
 	public void refreshTestoviTable() {
-		TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
-		DAOFactory factory = new MySQLDAOFactory();
-		TestDAO testDAO = factory.getTestDAO();
+		PredmetDTO activePredmet = getSelectedPredmet();
+		if (activePredmet != null) {
+			TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
+			DAOFactory factory = new MySQLDAOFactory();
+			TestDAO testDAO = factory.getTestDAO();
 
-		List<TestDTO> data = testDAO.getAllTests(1);
-		EventQueue.invokeLater(new Runnable() {
+			List<TestDTO> data = testDAO.getAllTests(activePredmet.getPredmetId());
+			EventQueue.invokeLater(new Runnable() {
 
-			@Override
-			public void run() {
-				model.setData(data);
-				model.fireTableDataChanged();				
-			}
-		});
+				@Override
+				public void run() {
+					model.setData(data);
+				}
+			});
+		}
+	}
+
+	public JTable getTestoviTable() {
+		return testoviTable;
 	}
 
 	public MainTable getMainTable() {
@@ -630,6 +643,12 @@ public class MainForm extends JFrame {
 	public PredmetDTO getSelectedPredmet() {
 		int i = predmetiCB.getSelectedIndex();
 		return (i == -1) ? null : predmetiList.get(i);
+	}
+	
+	public void testoviClearSelection() {
+		testoviTable.clearSelection();
+		btnBrisi.setEnabled(false);
+		btnIzmjeni.setEnabled(false);
 	}
 	
 }

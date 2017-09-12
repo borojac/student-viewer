@@ -69,7 +69,7 @@ public class TestController {
 
 	private CommandStack undoStack = new CommandStack();
 	private CommandStack redoStack = new CommandStack();
-	
+
 	private TestDTO test;
 	private TestForm testForm;
 
@@ -109,7 +109,7 @@ public class TestController {
 			undoStack.push(command);
 		}
 	}
-	
+
 	public void windowClosingAction() {
 		if (!undoStack.isEmpty()) {
 			String[] options = { "	Da	", "	Ne	" };
@@ -122,7 +122,21 @@ public class TestController {
 				testForm.dispose();
 			}
 		} else
-			testForm.dispose();
+			EventQueue.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					testForm.dispose();
+				}
+			});
+		EventQueue.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				testForm.testoviClearSelection();
+
+			}
+		});
 	}
 
 	public List<StudentNaTestuDTO> importFromExcel() throws FileNotFoundException, IOException {
@@ -134,14 +148,14 @@ public class TestController {
 		fileChooser.addChoosableFileFilter(excelFileFilter);
 		fileChooser.setFileFilter(excelFileFilter);
 		fileChooser.showOpenDialog(null);
-		
+
 		File chosenFile = fileChooser.getSelectedFile();
-		
+
 		Set<StudentNaTestuDTO> data = new HashSet<>(test.getStudenti());
 		DAOFactory factory = new MySQLDAOFactory();
 		StudentDAO studentDAO = factory.getStudentDAO();
 		TestDAO testDAO = factory.getTestDAO();
-		
+
 
 		if (chosenFile != null && chosenFile.exists() && chosenFile.getAbsolutePath().endsWith(".xls")) {
 			POIFSFileSystem fileSystem = new POIFSFileSystem(new FileInputStream(chosenFile));
@@ -157,10 +171,10 @@ public class TestController {
 					break;
 				}
 			}
-			
+
 			HSSFRow titleRow = sheet.getRow(rowIndex - 1);
-			
-			
+
+
 			for (int i = rowIndex; i < sheet.getPhysicalNumberOfRows(); ++i) {
 				HSSFRow row = sheet.getRow(i);
 				String brojIndeksa = row.getCell(0).getStringCellValue().trim();
@@ -171,8 +185,8 @@ public class TestController {
 						break;
 					}
 				}
-				
-				
+
+
 				int brojBodova = 0;
 				String komentar = "";
 				if ("Bodovi".equals(titleRow.getCell(4).getStringCellValue().trim())
@@ -183,13 +197,13 @@ public class TestController {
 					komentar = row.getCell(5).getStringCellValue().trim();
 				}
 				boolean verified = testDAO.verifyStudent(brojIndeksa, test.getTestId());
-				
+
 				if (verified) {
 					StudentNaPredmetuDTO tmp = studentDAO.getStudentBy(brojIndeksa);
 					data.add(new StudentNaTestuDTO(tmp.getStudentId(), brojIndeksa, 
 							tmp.getIme(), tmp.getPrezime(), brojBodova, komentar));
 				}
-				
+
 			}
 
 			workbook.close();
@@ -211,7 +225,7 @@ public class TestController {
 					break;
 				}
 			}
-			
+
 			Row titleRow = sheet.getRow(rowIndex - 1);
 
 			for (int i = rowIndex; i < sheet.getPhysicalNumberOfRows(); ++i) {
@@ -224,8 +238,8 @@ public class TestController {
 						break;
 					}
 				}
-				
-				
+
+
 				int brojBodova = 0;
 				String komentar = "";
 				if ("Bodovi".equals(titleRow.getCell(4).getStringCellValue().trim())
@@ -241,7 +255,7 @@ public class TestController {
 					data.add(new StudentNaTestuDTO(tmp.getStudentId(), brojIndeksa, 
 							tmp.getIme(), tmp.getPrezime(), brojBodova, komentar));
 				}
-				
+
 
 
 			}
@@ -269,12 +283,12 @@ public class TestController {
 			final String aPath = chosenFile.getAbsolutePath();
 			chosenFile = new File(aPath + ".pdf");
 		}
-		
+
 		Font font = FontFactory.getFont("fonts/tahoma.ttf", BaseFont.IDENTITY_H, 12);
 		Document doc = new Document();
 		OutputStream os = new FileOutputStream(chosenFile);
 		PdfWriter writer = PdfWriter.getInstance(doc, os);
-		
+
 		Paragraph title = new Paragraph();
 		title.setIndentationLeft(60f);
 		title.setFont(font);
@@ -284,11 +298,11 @@ public class TestController {
 		title.add("\n\n");
 		title.add("Napomena:\t" + test.getNapomena());
 		title.add("\n\n");
-		
+
 		Paragraph spacing = new Paragraph("\n\n");
 		spacing.add("Studenti na testu:");
 		spacing.add("\n\n");
-		
+
 		Paragraph body = new Paragraph();
 		body.setIndentationLeft(60f);
 		body.setFont(font);
@@ -322,7 +336,7 @@ public class TestController {
 	}
 
 	public void print(TestDTO test) throws IOException, DocumentException, PrinterException {
-		
+
 		Font font = FontFactory.getFont("fonts/tahoma.ttf", BaseFont.IDENTITY_H, 12);
 		Document doc = new Document();
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -336,11 +350,11 @@ public class TestController {
 		title.add("\n\n");
 		title.add("Napomena:\t" + test.getNapomena());
 		title.add("\n\n");
-		
+
 		Paragraph spacing = new Paragraph("\n\n");
 		spacing.add("Studenti na testu:");
 		spacing.add("\n\n");
-		
+
 		Paragraph body = new Paragraph();
 		body.setIndentationLeft(60f);
 		body.setFont(font);
@@ -386,7 +400,7 @@ public class TestController {
 		StringBuilder statisticsBuilder = new StringBuilder();
 
 		int izaslo = test.getStudenti().size();
-//		int ukupno = predmetDAO.getAllStudents().size();
+		//		int ukupno = predmetDAO.getAllStudents().size();
 		int ukupno = 100;
 		int polozilo = 0, deset = 0, devet = 0, osam = 0, sedam = 0, sest = 0;
 
@@ -407,8 +421,8 @@ public class TestController {
 		}
 
 		statisticsBuilder.append("Izaslo: " + izaslo + "/" + ukupno + " " + 
-		String.format("(%.2f %%)", (double)izaslo / (double) polozilo * 100.0)).append('\n');
-		
+				String.format("(%.2f %%)", (double)izaslo / (double) polozilo * 100.0)).append('\n');
+
 		statisticsBuilder.append(">50%: " + polozilo
 				+ String.format("(%.2f %%)", (double)polozilo / (double) izaslo * 100.0)).append('\n');
 		statisticsBuilder.append("<50%: " + (izaslo - polozilo)
@@ -493,35 +507,46 @@ public class TestController {
 	}
 
 	public void addTestAction() {
-		DAOFactory factory = new MySQLDAOFactory();
-		TestDAO testDAO = factory.getTestDAO();
-		if (!testDAO.addTest(test))
-			EventQueue.invokeLater(new Runnable() {
-				
-				@Override
-				public void run() {
-					JOptionPane.showMessageDialog(testForm, "Dodavanje nije uspjelo. Pokušajte ponovo.", "Greška", JOptionPane.ERROR_MESSAGE);
-				}
-			});
-		else 
-			EventQueue.invokeLater(new Runnable() {
-				
-				@Override
-				public void run() {
-					testForm.dispose();
-				}
-			});
-		
+		if (test.getNaziv() != null && !"".equals(test.getNaziv())) {
+			DAOFactory factory = new MySQLDAOFactory();
+			TestDAO testDAO = factory.getTestDAO();
+			if (!testDAO.addTest(test))
+				EventQueue.invokeLater(new Runnable() {
+
+					@Override
+					public void run() {
+						JOptionPane.showMessageDialog(testForm, "Dodavanje nije uspjelo. Pokušajte ponovo.", "Greška", JOptionPane.ERROR_MESSAGE);
+					}
+				});
+			else
+				EventQueue.invokeLater(new Runnable() {
+
+					@Override
+					public void run() {
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+								testForm.refreshTestoviTable();
+							}
+						}).start();
+						testForm.dispose();
+						testForm.testoviClearSelection();
+					}
+				});
+		} else
+			JOptionPane.showMessageDialog(testForm, "Morate unijeti naziv testa");
+
 
 	}
 
 	public void updateTestAction() {
 		DAOFactory factory = new MySQLDAOFactory();
 		TestDAO testDAO = factory.getTestDAO();
-		
+
 		if (!testDAO.updateTest(test))
 			EventQueue.invokeLater(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					JOptionPane.showMessageDialog(testForm, "Ažuriranje nije uspjelo. Pokušajte ponovo.", "Greška", JOptionPane.ERROR_MESSAGE);
@@ -529,14 +554,15 @@ public class TestController {
 			});
 		else
 			EventQueue.invokeLater(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					testForm.dispose();
+					testForm.testoviClearSelection();
 				}
 			});
 	}
-	
+
 	public void addStudents() {
 		final TestController testController = this;
 		EventQueue.invokeLater(new Runnable() {
@@ -552,7 +578,7 @@ public class TestController {
 		this.executeCommand(new UkloniStudenteTestCommand(test, model, forRemoving));
 
 		EventQueue.invokeLater(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				testForm.refreshStatistics();
@@ -560,6 +586,6 @@ public class TestController {
 			}
 		});
 	}
-	
+
 
 }
