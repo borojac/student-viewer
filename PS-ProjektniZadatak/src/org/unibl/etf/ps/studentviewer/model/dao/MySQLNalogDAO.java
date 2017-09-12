@@ -158,7 +158,7 @@ public class MySQLNalogDAO implements NalogDAO {
 	public boolean updateNalog(NalogDTO nalog) {
 		boolean retVal = false;
 		
-		String query = "UPDATE nalog SET Ime = ?, Prezime = ?, KorisnickoIme = ?, Lozinka = ?, TipNaloga = ?, StanjeGT = ?";
+		String query = "UPDATE nalog SET Ime = ?, Prezime = ?, KorisnickoIme = ?, Lozinka = ?, TipNaloga = ?, StanjeGT = ? WHERE NalogId = ?";
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -175,6 +175,7 @@ public class MySQLNalogDAO implements NalogDAO {
 			ps.setString(4, nalog.getLozinka());
 			ps.setString(5, String.valueOf(nalog.getTipNaloga()));
 			ps.setObject(6, null, java.sql.Types.BLOB);
+			ps.setInt(7, nalog.getNalogId());
 			
 			retVal = ps.executeUpdate() == 1;
 			
@@ -246,7 +247,7 @@ public class MySQLNalogDAO implements NalogDAO {
 	public boolean removePredmet(PredmetDTO predmet, NalogDTO nalog) {
 		boolean retVal = false;
 		
-		String query = "DELETE FROM predaje WHERE PredmetId = ? and NalogId =";
+		String query = "DELETE FROM predaje WHERE PredmetId = ? and NalogId = ?";
 		
 		Connection conn = null;
 		PreparedStatement ps = null;

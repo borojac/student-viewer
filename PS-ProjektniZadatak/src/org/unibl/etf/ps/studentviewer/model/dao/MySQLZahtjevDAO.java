@@ -60,7 +60,7 @@ public class MySQLZahtjevDAO implements ZahtjevDAO {
 	public boolean updateZahtjev(ZahtjevDTO zahtjevDTO) {
 		boolean retVal = false;
 		
-		String query = "UPDATE zahtjev SET AdminId = ?, DatumZahtjeva = ?, DatumOdobrenja = ?";
+		String query = "UPDATE zahtjev SET AdminId = ?, DatumZahtjeva = ?, DatumOdobrenja = ? WHERE PredmetId = ? and NalogId = ?";
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -74,6 +74,8 @@ public class MySQLZahtjevDAO implements ZahtjevDAO {
 			ps.setInt(1, zahtjevDTO.getAdminId());
 			ps.setDate(2, new java.sql.Date(zahtjevDTO.getDatumZahtjeva().getTime()));
 			ps.setDate(3, new java.sql.Date(System.currentTimeMillis()));
+			ps.setInt(4, zahtjevDTO.getPredmetId());
+			ps.setInt(5, zahtjevDTO.getNalogId());
 			
 			retVal = ps.executeUpdate() == 1;
 			

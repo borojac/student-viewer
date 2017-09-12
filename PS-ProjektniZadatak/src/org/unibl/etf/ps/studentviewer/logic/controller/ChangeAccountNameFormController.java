@@ -25,7 +25,7 @@ public class ChangeAccountNameFormController {
 			JOptionPane.showMessageDialog(changeAccountNameForm, "Oba polja moraju biti popunjena.");
 		} else if(!staroKorIme.equals(nalogDTO.getKorisnickoIme())) {
 			JOptionPane.showMessageDialog(changeAccountNameForm, "Nekorektan unos starog korisnickog imena");
-		} else if(!staroKorIme.equals(novoKorIme)) {
+		} else if(staroKorIme.equals(novoKorIme)) {
 			JOptionPane.showMessageDialog(changeAccountNameForm, "Novo korisnicko ime se mora razlikovati od starog.");
 		} else {
 			MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
@@ -34,7 +34,7 @@ public class ChangeAccountNameFormController {
 			
 			if(nalogDAO.updateNalog(nalogDTO)) {
 				JOptionPane.showMessageDialog(changeAccountNameForm, "Korisnicko ime uspjesno promjenjeno.");
-				changeAccountNameForm.dispose();;
+				changeAccountNameForm.dispose();
 				AccountFormController.resetChangeAccountNameFormOpened();
 			} else {
 				JOptionPane.showMessageDialog(changeAccountNameForm, "Korisnicko ime nije promjenjeno");

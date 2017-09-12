@@ -23,6 +23,7 @@ import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.AccountFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.DodavanjePredmetaFormController;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
@@ -97,8 +98,18 @@ public class DodavanjePredmetaForm extends JFrame {
 		
 		MySQLDAOFactory predmetFactory = new MySQLDAOFactory();
 		PredmetDAO predmetDAO = predmetFactory.getPredmetDAO();
+		NalogDAO nalogDAO = predmetFactory.getNalogDAO();
 		
 		predmetiList = predmetDAO.getAllPredmet();
+		
+		ArrayList<PredmetDTO> predmetiNaNaloguList = new ArrayList<>();
+		predmetiNaNaloguList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
+		
+		for(int i = 0; i < predmetiNaNaloguList.size(); i++) {
+			if(predmetiList.contains(predmetiNaNaloguList.get(i))) {
+				predmetiList.remove(predmetiNaNaloguList.get(i));
+			}
+		}
 		
 		for(int i = 0; i < predmetiList.size(); i++) {
 			predmetiCB.addItem(predmetiList.get(i).getSifraPredmeta() + " - " + predmetiList.get(i).getNazivPredmeta());
