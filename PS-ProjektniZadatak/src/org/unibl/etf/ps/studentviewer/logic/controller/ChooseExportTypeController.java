@@ -56,11 +56,12 @@ public class ChooseExportTypeController {
 			JOptionPane.showMessageDialog(null, message);
 			form.setVisible(true);
 		} else if (print) {
-
 			print(podaci, header);
+			mainFormController.resetExporting();
 
 		} else {
 			pdf(podaci, header);
+			mainFormController.resetExporting();
 		}
 
 	}
@@ -77,30 +78,22 @@ public class ChooseExportTypeController {
 		title.setFont(font);
 		for (int i = 0; i < header.length; i++) {
 			title.add(header[i]);
-			int j = 20 - header[i].length();
-			while (j > 0) {
-				title.add(" ");
-				j--;
-			}
+			title.setTabSettings(new TabSettings(80));
+			title.add(Chunk.TABBING);
 		}
+
 
 		Paragraph spacing = new Paragraph(System.lineSeparator());
 
 		Paragraph body = new Paragraph();
 		body.setIndentationLeft(60f);
 		body.setFont(font);
-		body.setTabSettings(new TabSettings());
+		body.setTabSettings(new TabSettings(80));
 		for (String[] student : studentiTabela) {
-			StringBuilder studentString = new StringBuilder();
 			for (int i = 0; i < student.length; i++) {
-				studentString.append(student[i]);
-				int j = 20 - student[i].length();
-				while (j > 0) {
-					studentString.append(" ");
-					j--;
-				}
-			}
-			body.add(new Chunk(studentString.toString()));
+				body.add(student[i]);
+					body.add(Chunk.TABBING);
+			}			
 			body.add(System.lineSeparator());
 		}
 		doc.open();
@@ -119,6 +112,7 @@ public class ChooseExportTypeController {
 			job.print();
 		}
 		printDoc.close();
+		
 	}
 
 	public void pdf(ArrayList<String[]> studentiTabela, String[] header) throws DocumentException, IOException {
@@ -142,21 +136,19 @@ public class ChooseExportTypeController {
 		title.setFont(font);
 		for (int i = 0; i < header.length; i++) {
 			title.add(header[i]);
-			title.add(Chunk.TABBING);
+			title.setTabSettings(new TabSettings(80));
 			title.add(Chunk.TABBING);
 		}
 
 		Paragraph spacing = new Paragraph(System.lineSeparator());
 
 		Paragraph body = new Paragraph();
-		body.setTabSettings(new TabSettings(10));
 		body.setIndentationLeft(60f);
 		body.setFont(font);
-		body.setTabSettings(new TabSettings());
+		body.setTabSettings(new TabSettings(80));
 		for (String[] student : studentiTabela) {
 			for (int i = 0; i < student.length; i++) {
 				body.add(student[i]);
-				for(int j = 0; j < (15-student[i].trim().length())/5; j++)
 					body.add(Chunk.TABBING);
 			}			
 			body.add(System.lineSeparator());
@@ -169,6 +161,9 @@ public class ChooseExportTypeController {
 		writer.flush();
 		writer.close();
 		os.close();
+		
+		final String message = "Uspjesno cuvanje PDF dokumenta!";
+		JOptionPane.showMessageDialog(null, message);
 	}
 
 }
