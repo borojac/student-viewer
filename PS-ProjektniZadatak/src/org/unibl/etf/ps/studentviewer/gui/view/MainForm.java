@@ -57,6 +57,8 @@ public class MainForm extends JFrame {
 	private JPanel contentPane;
 	private MainFormController mainFormController = new MainFormController(this);
 	private NalogDTO nalogDTO;
+	
+	private ArrayList<PredmetDTO> predmetiList;
 
 	// ------- Components!!! ------- //
 	ArrayList<JButton> buttons = new ArrayList<JButton>();
@@ -351,6 +353,13 @@ public class MainForm extends JFrame {
 				mainFormController.createAccountForm();
 			}
 		});
+		
+		prikaziPredmetBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				mainFormController.postaviMainForm();
+			}
+		});
 
 	}
 
@@ -551,7 +560,6 @@ public class MainForm extends JFrame {
 		predmetiCB.setBounds(745, 200, 430, 35);
 		contentPane.add(predmetiCB);
 		
-		ArrayList<PredmetDTO> predmetiList = new ArrayList<>();
 		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
 		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
 		
@@ -617,6 +625,11 @@ public class MainForm extends JFrame {
 	
 	public void setNalogDTO(NalogDTO nalogDTO) {
 		this.nalogDTO = nalogDTO;
+	}
+	
+	public PredmetDTO getSelectedPredmet() {
+		int i = predmetiCB.getSelectedIndex();
+		return (i == -1) ? null : predmetiList.get(i);
 	}
 	
 }
