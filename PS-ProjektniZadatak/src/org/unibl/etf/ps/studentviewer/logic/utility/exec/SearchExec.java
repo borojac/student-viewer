@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
+import org.unibl.etf.ps.studentviewer.logic.utility.SearchUtil;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class SearchExec extends Exec {
@@ -20,21 +21,9 @@ public class SearchExec extends Exec {
 		mainFormController.getScheduler().add(this);
 	}
 
-	public void execute() { // move to SearchUtil
-		MainTableModel model = (MainTableModel) mainFormController.getMainTable().getModel();
+	public void execute() { 
+		ArrayList<StudentMainTableDTO> searchedStudents = SearchUtil.searchForStudents(mainFormController, params);
 		MainTable table = mainFormController.getMainTable();
-		ArrayList<StudentMainTableDTO> students = mainFormController.getMainTable().getStudents();
-		ArrayList<StudentMainTableDTO> searchedStudents = new ArrayList<StudentMainTableDTO>();
-
-		for (StudentMainTableDTO s : students) {
-			for (String param : params) {
-				if (s.getIme().toLowerCase().contains(param.toLowerCase()) || s.getBrojIndeksa().contains(param)
-						|| s.getPrezime().toLowerCase().contains(param.toLowerCase())) {
-					if (!searchedStudents.contains(s))
-						searchedStudents.add(s);
-				}
-			}
-		}
 		if (searchedStudents.size() > 0) {
 			table.setStudents(searchedStudents);
 			table.repaint();
