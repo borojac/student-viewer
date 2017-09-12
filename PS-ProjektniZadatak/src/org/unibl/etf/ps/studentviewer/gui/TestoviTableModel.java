@@ -23,6 +23,7 @@ public class TestoviTableModel extends AbstractTableModel {
 	
 	public void setData(List<TestDTO> data) {
 		this.data = data;
+		fireTableDataChanged();
 	}
 	
 	public List<TestDTO> getData() {
