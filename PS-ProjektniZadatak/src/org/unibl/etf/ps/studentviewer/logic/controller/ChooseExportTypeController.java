@@ -155,7 +155,7 @@ public class ChooseExportTypeController {
 		body.setTabSettings(new TabSettings());
 		for (String[] student : studentiTabela) {
 			for (int i = 0; i < student.length; i++) {
-				body.add(new Chunk(student[i]));
+				body.add(student[i]);
 				for(int j = 0; j < (15-student[i].trim().length())/5; j++)
 					body.add(Chunk.TABBING);
 			}			
