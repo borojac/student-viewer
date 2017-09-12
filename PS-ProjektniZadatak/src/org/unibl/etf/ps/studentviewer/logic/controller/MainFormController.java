@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -228,17 +227,19 @@ public class MainFormController {
 			af.setVisible(true);
 		}
 
-		public void createChangeForm(int selectedRow) {
+		public void createChangeForm(int[] selectedRow) {
 			if (changeFormOpened)
 				return;
-			if (selectedRow != -1) {
+			if (selectedRow != null && selectedRow.length == 1) {
 				changeFormOpened = true;
 
-				ChangeForm cf = new ChangeForm(this, getMainTable().getStudent(selectedRow), selectedRow);
+				ChangeForm cf = new ChangeForm(this, getMainTable().getStudent(selectedRow[0]), selectedRow[0]);
 				cf.setVisible(true);
+			}else {
+				final String message = "Odaberite samo jednog studenta za izmjenu!";
+				JOptionPane.showMessageDialog(null, message);
 			}
-		}
-		
+		}	
 		public void deleteStudentsControler(int[] selectedRows) {
 			if (deleting)
 				return;

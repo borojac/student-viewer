@@ -1,7 +1,7 @@
 /**
  * @author dejan
  */
-package org.unibl.etf.ps.studentviewer.logic.exec.studentdatamanipulation;
+package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import java.io.BufferedInputStream;
 import java.io.File;
