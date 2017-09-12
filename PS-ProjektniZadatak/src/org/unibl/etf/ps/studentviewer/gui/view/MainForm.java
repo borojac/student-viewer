@@ -423,6 +423,7 @@ public class MainForm extends JFrame {
 		deleteBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				/*Stankovic*/
 				int[] selectedRows = mainTable.getSelectedRows();
 				mainFormController.deleteStudentsControler(selectedRows);
 			}
@@ -434,7 +435,8 @@ public class MainForm extends JFrame {
 		changeBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				int selectedRow = mainTable.getSelectedRow();
+				/*Stankovic*/
+				int[] selectedRow = mainTable.getSelectedRows();
 				mainFormController.createChangeForm(selectedRow);
 			}
 		});
