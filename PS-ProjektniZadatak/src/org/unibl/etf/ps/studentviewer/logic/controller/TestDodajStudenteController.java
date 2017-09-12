@@ -12,8 +12,8 @@ import org.unibl.etf.ps.studentviewer.gui.StudentListModel;
 import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
 import org.unibl.etf.ps.studentviewer.gui.view.TestDodajStudenteForm;
 import org.unibl.etf.ps.studentviewer.gui.view.TestForm;
-import org.unibl.etf.ps.studentviewer.logic.command.Command;
-import org.unibl.etf.ps.studentviewer.logic.command.DodajStudenteTestCommand;
+import org.unibl.etf.ps.studentviewer.logic.utility.command.Command;
+import org.unibl.etf.ps.studentviewer.logic.utility.command.DodajStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 
 public class TestDodajStudenteController {

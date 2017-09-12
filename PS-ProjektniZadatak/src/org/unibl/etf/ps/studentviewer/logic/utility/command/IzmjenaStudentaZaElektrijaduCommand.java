@@ -1,6 +1,6 @@
-package org.unibl.etf.ps.studentviewer.logic.command;
+package org.unibl.etf.ps.studentviewer.logic.utility.command;
 
-public abstract class IzmjenaDodatneNastaveCommand implements Command {
+public class IzmjenaStudentaZaElektrijaduCommand implements Command {
 
 	@Override
 	public void execute() {

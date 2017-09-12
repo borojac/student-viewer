@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.unibl.etf.ps.studentviewer.gui.view.FilterForm;
-import org.unibl.etf.ps.studentviewer.logic.exec.FilterExec;
+import org.unibl.etf.ps.studentviewer.logic.utility.exec.FilterExec;
 
 public class FilterFormController {
 	// ArrayList<Student> firstParam;

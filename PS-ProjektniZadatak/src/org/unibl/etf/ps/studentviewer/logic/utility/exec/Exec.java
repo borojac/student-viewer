@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.logic.exec;
+package org.unibl.etf.ps.studentviewer.logic.utility.exec;
 
 import java.util.ArrayList;
 

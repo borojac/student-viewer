@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.unibl.etf.ps.studentviewer.gui.view.SortChooseForm;
 import org.unibl.etf.ps.studentviewer.gui.view.SortForm;
-import org.unibl.etf.ps.studentviewer.logic.exec.SortExec;
 import org.unibl.etf.ps.studentviewer.logic.utility.Sort;
+import org.unibl.etf.ps.studentviewer.logic.utility.exec.SortExec;
 
 public class SortFormController {
 	MainFormController mainFormController = null;

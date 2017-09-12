@@ -15,10 +15,10 @@ import javax.swing.border.EmptyBorder;
 
 import org.unibl.etf.ps.studentviewer.gui.StudentListModel;
 import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
-import org.unibl.etf.ps.studentviewer.logic.command.Command;
-import org.unibl.etf.ps.studentviewer.logic.command.DodajStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.controller.TestController;
 import org.unibl.etf.ps.studentviewer.logic.controller.TestDodajStudenteController;
+import org.unibl.etf.ps.studentviewer.logic.utility.command.Command;
+import org.unibl.etf.ps.studentviewer.logic.utility.command.DodajStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;

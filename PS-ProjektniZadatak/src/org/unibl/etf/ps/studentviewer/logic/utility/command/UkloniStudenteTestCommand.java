@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.logic.command;
+package org.unibl.etf.ps.studentviewer.logic.utility.command;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;

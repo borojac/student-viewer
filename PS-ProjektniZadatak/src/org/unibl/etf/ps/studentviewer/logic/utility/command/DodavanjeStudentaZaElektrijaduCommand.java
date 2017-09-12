@@ -1,22 +1,22 @@
-package org.unibl.etf.ps.studentviewer.logic.command;
+package org.unibl.etf.ps.studentviewer.logic.utility.command;
 
 import java.util.ArrayList;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.ElektrijadaController;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
 
-public class BrisanjeStudentaZaElektrijaduCommand implements Command {
+public class DodavanjeStudentaZaElektrijaduCommand implements Command {
 
 	private ArrayList<StudentZaElektrijaduDTO> st;
 
-	public BrisanjeStudentaZaElektrijaduCommand(ArrayList<StudentZaElektrijaduDTO> st) {
+	public DodavanjeStudentaZaElektrijaduCommand(ArrayList<StudentZaElektrijaduDTO> st) {
 		this.st = st;
 	}
 
 	@Override
 	public void execute() {
 		for (StudentZaElektrijaduDTO s : st) {
-			ElektrijadaController.listaStudenata.remove(s);
+			ElektrijadaController.listaStudenata.add(s);
 		}
 
 	}
@@ -24,7 +24,7 @@ public class BrisanjeStudentaZaElektrijaduCommand implements Command {
 	@Override
 	public void unExecute() {
 		for (StudentZaElektrijaduDTO s : st) {
-			ElektrijadaController.listaStudenata.add(s);
+			ElektrijadaController.listaStudenata.remove(s);
 		}
 
 	}
