@@ -16,6 +16,7 @@ import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -77,13 +78,26 @@ public class ElektrijadaForm extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		System.setProperty("javax.net.ssl.trustStore", "StudentViewer.jks");
+		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
 		DAOFactory dao = new MySQLDAOFactory();
 		DodatnaNastavaDAO dnDAO = dao.getDodatnaNastavaDAO();
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+		Date startDate = null;
+		String datum = "20-3-2011 02:20:00";
+		try {
+			startDate = df.parse(datum);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println(dnDAO.dodajDodatnuNastavu(new DodatnaNastavaDTO(0, startDate, "napomena", "naziv", 1, "Programiranje", 1)));
 		System.out.println(dnDAO.dodatneNastave(1, 1,"Programiranje"));
 //		EventQueue.invokeLater(new Runnable() {
 //			public void run() {
 //				try {
-//					ElektrijadaForm frame = new ElektrijadaForm(new ElektrijadaDTO(1,new Date(),"Banja Luka"),new NalogDTO());
+//					ElektrijadaForm frame = new ElektrijadaForm(new ElektrijadaDTO(1,new Date(),"Banja Luka"),new NalogDTO(),new DisciplinaDTO());
 //					frame.setVisible(true);
 //				} catch (Exception e) {
 //					e.printStackTrace();

@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
@@ -90,16 +91,19 @@ public class MySQLDodatnaNastavaDAO implements DodatnaNastavaDAO {
 			conn = DBUtility.open();
 			conn.setAutoCommit(false);
 			ps = conn.prepareStatement(addTestQuery);
+
+			java.sql.Timestamp timestamp = new java.sql.Timestamp(dodatnaNastava.getDatum().getTime());
+			
 			
 			ps.setInt(1, dodatnaNastava.getNastavaId());
-			ps.setDate(2, new java.sql.Date(dodatnaNastava.getDatum().getTime()));
+			ps.setTimestamp(2, timestamp);
 			ps.setString(3, dodatnaNastava.getNapomena());
 			ps.setString(4, dodatnaNastava.getNazivTeme());
 			ps.setInt(5, dodatnaNastava.getNalogId());
 			ps.setString(6, dodatnaNastava.getNaziv());
 			ps.setInt(7, dodatnaNastava.getElektrijadaId());
 			
-			retVal = ps.executeUpdate() == 1;
+			retVal &= ps.executeUpdate() == 1;
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		} finally {
