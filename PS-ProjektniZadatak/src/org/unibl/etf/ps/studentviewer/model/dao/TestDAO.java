@@ -13,6 +13,6 @@ public interface TestDAO {
 	public boolean deleteTest(TestDTO test);
 	public List<StudentNaTestuDTO> getAllStudents(int idTesta);
 	public List<TestDTO> getAllTests();
-	public List<StudentNaTestuDTO> getStudentsOnPredmet(int predmetId);
+	public List<StudentNaTestuDTO> getStudentsNotOnTest(TestDTO test);
 	public boolean verifyStudent(String brojIndeksa, int idTesta);
 }

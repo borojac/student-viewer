@@ -9,12 +9,13 @@ import org.unibl.etf.ps.studentviewer.gui.view.DodavanjeDodatneNastaveForm;
 import org.unibl.etf.ps.studentviewer.gui.view.IzborDatumaZaDodatnuNastavuForm;
 
 public class IzborDatumaZaDodatnuNastavuController {
-	public IzborDatumaZaDodatnuNastavuController() {
-		// TODO Auto-generated constructor stub
+	private IzborDatumaZaDodatnuNastavuForm izborDatumaForma;
+
+	public IzborDatumaZaDodatnuNastavuController(IzborDatumaZaDodatnuNastavuForm izborDatumaForma) {
+		this.izborDatumaForma = izborDatumaForma;
 	}
 
-	public void zatvoriProzor(JTextField textFieldDatum, DodavanjeDodatneNastaveForm nastavaForm, JFrame frame,
-			IzborDatumaZaDodatnuNastavuForm izborDatumaForma) {
+	public void zatvoriProzor(JTextField textFieldDatum, DodavanjeDodatneNastaveForm nastavaForm, JFrame frame) {
 		textFieldDatum.setText(new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(izborDatumaForma.getDate()));
 		nastavaForm.setEnabled(true);
 		frame.setVisible(false);

@@ -92,39 +92,43 @@ public class MainForm extends JFrame {
 	private JTextField textField;
 	
 	private JComboBox<String> predmetiCB;
+	private JButton prikaziPredmetBtn;
+	private JComboBox<String> disciplineCB;
+	private JButton prikaziDisciplinuBtn;
 
 	// ------- EndComponents!!! ------- //
 
-	/**
-	 * Launch the application.
-	 * 
-	 * @throws UnsupportedLookAndFeelException
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
-	 * @throws ClassNotFoundException
-	 */
-	public static void main(String[] args) {
-		System.setProperty("javax.net.ssl.trustStore", "StudentViewer.jks");
-		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
-		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} catch (Exception ex) {}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainForm frame = new MainForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	/**
+//	 * Launch the application.
+//	 * 
+//	 * @throws UnsupportedLookAndFeelException
+//	 * @throws IllegalAccessException
+//	 * @throws InstantiationException
+//	 * @throws ClassNotFoundException
+//	 */
+//	public static void main(String[] args) {
+//		System.setProperty("javax.net.ssl.trustStore", "StudentViewer.jks");
+//		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
+//		try {
+//			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+//		} catch (Exception ex) {}
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					MainForm frame = new MainForm();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * @throws IOException Create the frame. @throws
 	 */
-	public MainForm() throws IOException {
+	public MainForm(NalogDTO nalogDTO) throws IOException {
+		this.nalogDTO = nalogDTO;
 		setResizable(false);
 		setTitle("StudentViewer_v1.0");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -261,11 +265,24 @@ public class MainForm extends JFrame {
 		textField.setBounds(97, 172, 263, 25);
 		contentPane.add(textField);
 		textField.setColumns(10);
+		
+		JLabel predmetiLbl = new JLabel("Moji predmeti:");
+		predmetiLbl.setForeground(Color.WHITE);
+		predmetiLbl.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		predmetiLbl.setBounds(745, 172, 200, 25);
+		contentPane.add(predmetiLbl);
+		
+		JLabel disciplineLbl = new JLabel("Moje discipline:");
+		disciplineLbl.setForeground(Color.WHITE);
+		disciplineLbl.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		disciplineLbl.setBounds(745, 280, 200, 25);
+		contentPane.add(disciplineLbl);
 
 		initButtons();
 		initButtonsListeners();
 		initTable();
 		initPredmetiComboBox();
+		initDisciplineComboBox();
 		scrollPane = new JScrollPane(mainTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBackground(Color.WHITE);
 		scrollPane.setBorder(UIManager.getBorder("Button.border"));
@@ -508,23 +525,53 @@ public class MainForm extends JFrame {
 		btnBrisi.setBounds(208, 166, 89, 23);
 		btnBrisi.setEnabled(false);
 		testoviPanel.add(btnBrisi);
+		
+		/* Buttons by Mijic */
+		
+		prikaziPredmetBtn = new JButton("Prikazi predmet");
+		prikaziPredmetBtn.setBounds(1040, 240, 135, 35);
+		contentPane.add(prikaziPredmetBtn);
+		
+		prikaziDisciplinuBtn = new JButton("Prikazi disciplinu");
+		prikaziDisciplinuBtn.setBounds(1040, 350, 135, 35);
+		contentPane.add(prikaziDisciplinuBtn);
 
 	}
 	
 	private void initPredmetiComboBox() {
 		predmetiCB = new JComboBox<>();
-		predmetiCB.setBounds(745, 172, 430, 40);
+		predmetiCB.setBounds(745, 200, 430, 35);
 		contentPane.add(predmetiCB);
 		
-//		ArrayList<PredmetDTO> predmetiList = new ArrayList<>();
-//		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
-//		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
-//		
-//		predmetiList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
-//		
-//		for(int i = 0; i < predmetiList.size(); i++) {
-//			predmetiCB.addItem((predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
-//		}
+		ArrayList<PredmetDTO> predmetiList = new ArrayList<>();
+		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
+		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
+		
+		predmetiList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
+		
+		for(int i = 0; i < predmetiList.size(); i++) {
+			predmetiCB.addItem((predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
+		}
+	}
+	
+	private void initDisciplineComboBox() {
+		disciplineCB = new JComboBox<>();
+		disciplineCB.setBounds(745, 310, 430, 35);
+		contentPane.add(disciplineCB);
+	}
+	
+	public void resetPredmetiComboBox() {
+		predmetiCB.removeAllItems();
+		ArrayList<PredmetDTO> predmetiList = new ArrayList<>();
+		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
+		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
+		
+		predmetiList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
+		System.out.println(predmetiList.size());
+		
+		for(int i = 0; i < predmetiList.size(); i++) {
+			predmetiCB.addItem((predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
+		}
 	}
 
 	public void refreshTestoviTable() {

@@ -26,8 +26,7 @@ public class MySQLTestDAO implements TestDAO {
 	public TestDTO getTest(int idTesta) {
 		TestDTO retVal = null;
 
-		String getTestQuery = "SELECT TestId, Naziv, Datum, Napomna, PredmetId"
-				+ " FROM test WHERE TestId=?";
+		String getTestQuery = "SELECT * FROM test WHERE TestId=?";
 		String getStudentsQuery = "SELECT StudentId, BrojIndeksa, Ime, Prezime, BrojBodova, Komentar"
 				+ " FROM izlazi_na INNER JOIN student USING(StudentId) WHERE TestId=?";
 		Connection conn = null;
@@ -136,26 +135,31 @@ public class MySQLTestDAO implements TestDAO {
 
 	@Override
 	public boolean addTest(TestDTO test) {
-		String addTestQuery = "INSERT INTO test VALUE (null, ?, ?, ?, ?)";
+		String addTestQuery = "{CALL dodaj_test(?, ?, ?, ?, ?, ?)}";
 		String updateStudentsQuery = "INSERT INTO izlazi_na VALUE (?, ?, ?, ?)";
 
-		boolean retVal = false;
+		boolean retVal = true;
 
 		Connection conn = null;
 		PreparedStatement ps = null;
+		CallableStatement cs = null;
 
 		try {
 			conn = DBUtility.open();
 			conn.setAutoCommit(false);
-			ps = conn.prepareStatement(addTestQuery);
+			cs = conn.prepareCall(addTestQuery);
 
-			ps.setInt(1, test.getPredmetId());
-			ps.setString(2, test.getNaziv());
+			cs.setString(1, test.getNaziv());
 			Date datum = test.getDatum();
-			ps.setDate(3, new java.sql.Date(datum.getTime()));
-			ps.setString(4, test.getNapomena());
+			cs.setDate(2, new java.sql.Date(datum.getTime()));
+			cs.setString(3, test.getNapomena());
+			cs.setInt(4, test.getProcenat());
+			cs.setInt(5, test.getPredmetId());
+			cs.registerOutParameter(6, Types.BOOLEAN);
 
-			retVal = ps.executeUpdate() == 1;
+			cs.executeUpdate();
+			
+			retVal &= cs.getBoolean(6);
 
 			for (StudentNaTestuDTO student : test.getStudenti()) {
 				ps = conn.prepareStatement(updateStudentsQuery);
@@ -180,7 +184,7 @@ public class MySQLTestDAO implements TestDAO {
 			try {
 				conn.setAutoCommit(true);
 			} catch (SQLException e) {}
-			DBUtility.close(conn, ps);
+			DBUtility.close(conn, ps, cs);
 		}
 		return retVal;
 	}
@@ -267,7 +271,9 @@ public class MySQLTestDAO implements TestDAO {
 			rs = s.executeQuery(query);
 
 			while (rs.next()) {
-				TestDTO tmp = new TestDTO(rs.getInt(1), rs.getString(3), new Date(rs.getDate(4).getTime()), rs.getString(5), rs.getInt(6), rs.getInt(2));
+				TestDTO tmp = new TestDTO(rs.getInt(1), rs.getString(2), 
+						new Date(rs.getDate(3).getTime()), rs.getString(4),
+						rs.getInt(5), rs.getInt(6));
 				tmp.setStudenti(getAllStudents(tmp.getTestId()));
 				retVals.add(tmp);
 			}
@@ -282,10 +288,12 @@ public class MySQLTestDAO implements TestDAO {
 	}
 
 	@Override
-	public List<StudentNaTestuDTO> getStudentsOnPredmet(int predmetId) {
+	public List<StudentNaTestuDTO> getStudentsNotOnTest(TestDTO test) {
 		List<StudentNaTestuDTO> retVals = new ArrayList<>();
 		
-		String query = "SELECT StudentId, BrojIndeksa, Ime, Prezime FROM slusa INNER JOIN student USING(StudentId) WHERE PredmetId=?";
+		String query = "SELECT StudentId, BrojIndeksa, Ime, Prezime FROM slusa"
+				+ " INNER JOIN student USING(StudentId)"
+				+ " WHERE PredmetId=?";
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -295,7 +303,7 @@ public class MySQLTestDAO implements TestDAO {
 			conn = DBUtility.open();
 			ps = conn.prepareStatement(query);
 			
-			ps.setInt(1, predmetId);
+			ps.setInt(1, test.getPredmetId());
 			rs = ps.executeQuery();
 			
 			while (rs.next()) {

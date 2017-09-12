@@ -1,6 +1,10 @@
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -8,13 +12,16 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.AbstractTableModel;
 
+import org.unibl.etf.ps.studentviewer.gui.view.EditorZaElektrijaduForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ElektrijadaForm;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
 
 public class EditorZaElektrijaduController {
-	public EditorZaElektrijaduController() {
-		// TODO Auto-generated constructor stub
+	private EditorZaElektrijaduForm editorForma;
+	
+	public EditorZaElektrijaduController(EditorZaElektrijaduForm editorForma) {
+		this.editorForma = editorForma;
 	}
 
 	public void zatvoriProzor(WindowEvent e, ElektrijadaForm forma) {
@@ -23,7 +30,7 @@ public class EditorZaElektrijaduController {
 	}
 
 	public void izvrsiIzmjene(boolean izbor, ElektrijadaController elektrijadaController, JTable target,
-			JTextArea textArea, JFrame unosTeksta, AbstractTableModel dataModel, ElektrijadaForm forma) {
+			JTextArea textArea, AbstractTableModel dataModel) {
 		if (!izbor) {
 			String izmjena = "";
 			String procitano = textArea.getText();
@@ -35,20 +42,28 @@ public class EditorZaElektrijaduController {
 
 					elektrijadaController.izmjenaNazivaDodatneNastave(dodatnaNastava, procitano);
 				} else if (column == 1) {
+					DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+					Date startDate = null;
+					try {
+						startDate = df.parse(procitano);
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					if (elektrijadaController.validnostDatuma(procitano)) {
 
-						elektrijadaController.izmjenaDatumaDodatneNastave(dodatnaNastava, procitano);
+						elektrijadaController.izmjenaDatumaDodatneNastave(dodatnaNastava, startDate);
 					} else
-						JOptionPane.showMessageDialog(unosTeksta, "Greska u formi datuma.");
+						JOptionPane.showMessageDialog(editorForma, "Greska u formi datuma.");
 				} else if (column == 2) {
 
 					elektrijadaController.izmjenaNapomeneDodatneNastave(dodatnaNastava, procitano);
 				}
 
 				target.setModel(dataModel);
-				unosTeksta.setVisible(false);
-				unosTeksta.dispose();
-				forma.setEnabled(true);
+				editorForma.setVisible(false);
+				editorForma.dispose();
+				elektrijadaController.getForma().setEnabled(true);
 			}
 		} else {
 			String izmjena = "";
@@ -62,9 +77,9 @@ public class EditorZaElektrijaduController {
 				}
 
 				target.setModel(dataModel);
-				unosTeksta.setVisible(false);
-				unosTeksta.dispose();
-				forma.setEnabled(true);
+				editorForma.setVisible(false);
+				editorForma.dispose();
+				elektrijadaController.getForma().setEnabled(true);
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import org.unibl.etf.ps.studentviewer.gui.view.AccountForm;
+import org.unibl.etf.ps.studentviewer.gui.view.BrisanjePredmetaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChangeAccountNameForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChangePasswordForm;
 import org.unibl.etf.ps.studentviewer.gui.view.DodavanjePredmetaForm;
@@ -25,7 +26,7 @@ public class AccountFormController {
 		if(changePasswordFormOpened)
 			return false;
 		changePasswordFormOpened = true;
-		ChangePasswordForm changePasswordForm = new ChangePasswordForm();
+		ChangePasswordForm changePasswordForm = new ChangePasswordForm(accountForm.getNalogDTO());
 		changePasswordForm.setVisible(true);
 		return true;
 	}
@@ -34,7 +35,7 @@ public class AccountFormController {
 		if(changeAccountNameFormOpened)
 			return false;
 		changeAccountNameFormOpened = true;
-		ChangeAccountNameForm changeAccountNameForm = new ChangeAccountNameForm();
+		ChangeAccountNameForm changeAccountNameForm = new ChangeAccountNameForm(accountForm.getNalogDTO());
 		changeAccountNameForm.setVisible(true);
 		return true;
 	}
@@ -44,7 +45,7 @@ public class AccountFormController {
 			return false;
 		
 		dodavanjePredmetaFormOpened = true;
-		DodavanjePredmetaForm dodavanjePredmetaForm = new DodavanjePredmetaForm();
+		DodavanjePredmetaForm dodavanjePredmetaForm = new DodavanjePredmetaForm(accountForm.getNalogDTO());
 		dodavanjePredmetaForm.setVisible(true);
 		return true;
 	}
@@ -54,7 +55,7 @@ public class AccountFormController {
 			return false;
 		
 		brisanjePredmetaFormOpened = true;
-		BrisanjePredmetaForm brisanjePredmetaForm = new BrisanjePredmetaForm();
+		BrisanjePredmetaForm brisanjePredmetaForm = new BrisanjePredmetaForm(accountForm.getNalogDTO(), accountForm.getMainFormController().getMainForm());
 		brisanjePredmetaForm.setVisible(true);
 		return true;
 	}

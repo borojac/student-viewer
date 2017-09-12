@@ -1,12 +1,14 @@
 package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.Color;
-import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -19,6 +21,12 @@ import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.AccountFormController;
+import org.unibl.etf.ps.studentviewer.logic.controller.DodavanjePredmetaFormController;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
+import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
+import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 
 public class DodavanjePredmetaForm extends JFrame {
 
@@ -26,11 +34,18 @@ public class DodavanjePredmetaForm extends JFrame {
 	
 	private JComboBox<String> predmetiCB;
 	private JButton posaljiZahtjevBtn;
+	
+	private NalogDTO nalogDTO;
+	private DodavanjePredmetaFormController dodavanjePredmetaFormController;
+	
+	private ArrayList<PredmetDTO> predmetiList;
 
 	/**
 	 * Create the frame.
 	 */
-	public DodavanjePredmetaForm() {
+	public DodavanjePredmetaForm(NalogDTO nalogDTO) {
+		this.nalogDTO = nalogDTO;
+		dodavanjePredmetaFormController = new DodavanjePredmetaFormController(this);
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -73,13 +88,64 @@ public class DodavanjePredmetaForm extends JFrame {
 		whiteCorrectionLabel2.setBounds(385, 0, 215, 120);
 		contentPane.add(whiteCorrectionLabel2);
 		
+		initComponents();
+		initButtonsListeners();
+	}
+	
+	private void initComponents() {
+		
 		predmetiCB = new JComboBox<>();
+		
+		MySQLDAOFactory predmetFactory = new MySQLDAOFactory();
+		PredmetDAO predmetDAO = predmetFactory.getPredmetDAO();
+		NalogDAO nalogDAO = predmetFactory.getNalogDAO();
+		
+		predmetiList = predmetDAO.getAllPredmet();
+		
+		ArrayList<PredmetDTO> predmetiNaNaloguList = new ArrayList<>();
+		predmetiNaNaloguList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
+		
+		for(int i = 0; i < predmetiNaNaloguList.size(); i++) {
+			if(predmetiList.contains(predmetiNaNaloguList.get(i))) {
+				predmetiList.remove(predmetiNaNaloguList.get(i));
+			}
+		}
+		
+		for(int i = 0; i < predmetiList.size(); i++) {
+			predmetiCB.addItem(predmetiList.get(i).getSifraPredmeta() + " - " + predmetiList.get(i).getNazivPredmeta());
+		}
+		
 		predmetiCB.setBounds(20, 165, 380, 35);
 		contentPane.add(predmetiCB);
 		
 		posaljiZahtjevBtn = new JButton("Posalji zahtjev");
 		posaljiZahtjevBtn.setBounds(420, 165, 150, 35);
 		contentPane.add(posaljiZahtjevBtn);
+		
+	}
+	
+	private void initButtonsListeners() {
+		
+		posaljiZahtjevBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				dodavanjePredmetaFormController.posaljiZahtjev();
+			}
+		});
+		
+	}
+
+	public NalogDTO getNalogDTO() {
+		return nalogDTO;
+	}
+
+	public void setNalogDTO(NalogDTO nalogDTO) {
+		this.nalogDTO = nalogDTO;
+	}
+	
+	public PredmetDTO getSelectedPredmet() {
+		int i = predmetiCB.getSelectedIndex();
+		return (i == -1) ? null : predmetiList.get(i);
 	}
 
 }

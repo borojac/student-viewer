@@ -11,6 +11,39 @@ import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 
 public class MySQLNalogDAO implements NalogDAO {
+	
+	@Override
+	public NalogDTO getNalog(int nalogId) {
+		NalogDTO retVal = null;
+		
+		String getNalogQuery = "SELECT NalogId, Ime, Prezime, KorisnickoIme, Lozinka, TipNaloga"
+				+ " FROM nalog WHERE NalogId = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getNalogQuery);
+			ps.setInt(1, nalogId);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				retVal = new NalogDTO(rs.getInt(1), rs.getString(2), rs.getString(3),
+						rs.getString(4), rs.getString(5), (rs.getString(6)).charAt(0));
+				retVal.setPredmeti(getPredmeteNaNalogu(retVal.getNalogId()));
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		
+		return retVal;
+	}
 
 	@Override
 	public NalogDTO getNalog(String korisnickoIme, String lozinka) {
@@ -125,7 +158,7 @@ public class MySQLNalogDAO implements NalogDAO {
 	public boolean updateNalog(NalogDTO nalog) {
 		boolean retVal = false;
 		
-		String query = "UPDATE nalog SET Ime = ?, Prezime = ?, KorisnickoIme = ?, Lozinka = ?, TipNaloga = ?, StanjeGT = ?";
+		String query = "UPDATE nalog SET Ime = ?, Prezime = ?, KorisnickoIme = ?, Lozinka = ?, TipNaloga = ?, StanjeGT = ? WHERE NalogId = ?";
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -142,6 +175,7 @@ public class MySQLNalogDAO implements NalogDAO {
 			ps.setString(4, nalog.getLozinka());
 			ps.setString(5, String.valueOf(nalog.getTipNaloga()));
 			ps.setObject(6, null, java.sql.Types.BLOB);
+			ps.setInt(7, nalog.getNalogId());
 			
 			retVal = ps.executeUpdate() == 1;
 			
@@ -213,7 +247,7 @@ public class MySQLNalogDAO implements NalogDAO {
 	public boolean removePredmet(PredmetDTO predmet, NalogDTO nalog) {
 		boolean retVal = false;
 		
-		String query = "DELETE FROM predaje WHERE PredmetId = ? and NalogId =";
+		String query = "DELETE FROM predaje WHERE PredmetId = ? and NalogId = ?";
 		
 		Connection conn = null;
 		PreparedStatement ps = null;

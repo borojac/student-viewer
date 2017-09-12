@@ -8,6 +8,7 @@ import java.util.Base64;
 
 import javax.swing.JOptionPane;
 
+import org.unibl.etf.ps.studentviewer.gui.view.AdministratorForm;
 import org.unibl.etf.ps.studentviewer.gui.view.KreirajNalogForm;
 import org.unibl.etf.ps.studentviewer.gui.view.LoginForm;
 import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
@@ -42,11 +43,16 @@ public class LoginFormController {
 			if(nalogDTO == null) {
 				JOptionPane.showMessageDialog(loginForm, "Korisnicko ime ili lozinka nisu korektno uneseni.");
 			} else {
-				
-				MainForm mainForm = new MainForm();
-				mainForm.setNalogDTO(nalogDTO);
-				mainForm.setVisible(true);
-				loginForm.setVisible(false);
+				if(nalogDTO.getTipNaloga() == 'K') {
+					MainForm mainForm = new MainForm(nalogDTO);
+					mainForm.setVisible(true);
+					loginForm.setVisible(false);
+				} else {
+					AdministratorForm adminForm = new AdministratorForm();
+					adminForm.setNalogDTO(nalogDTO);
+					adminForm.setVisible(true);
+					loginForm.setVisible(false);
+				}
 				
 			}
 		}

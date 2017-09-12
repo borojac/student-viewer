@@ -7,6 +7,7 @@ import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 
 public interface NalogDAO {
 	
+	public NalogDTO getNalog(int nalogId);
 	public NalogDTO getNalog(String korisnickoIme, String lozinka);
 	public boolean checkNalog(String korisnickoIme);
 	public boolean addNalog(NalogDTO nalog);
