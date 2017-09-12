@@ -33,6 +33,7 @@ import org.unibl.etf.ps.studentviewer.logic.controller.ChooseExportTypeControlle
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 
 import com.itextpdf.text.DocumentException;
+import java.awt.Font;
 
 
 public class ExportStudentsForm extends JFrame {
@@ -42,6 +43,7 @@ public class ExportStudentsForm extends JFrame {
 	JCheckBox chckbxNewCheckBoxVise = new JCheckBox("");
 
 	public ExportStudentsForm(MainFormController mainFormController) {
+		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
 				   mainFormController.resetExporting();
@@ -49,7 +51,7 @@ public class ExportStudentsForm extends JFrame {
 			  });
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 304, 288);
+		setBounds(100, 100, 293, 288);
 		contentPane =new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -106,11 +108,12 @@ public class ExportStudentsForm extends JFrame {
 		panel1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JTextArea stampanjeLbl = new JTextArea();
+		stampanjeLbl.setFont(new Font("Tahoma", Font.BOLD, 13));
 		stampanjeLbl.setLineWrap(true);
 		stampanjeLbl.setEditable(false);
 		stampanjeLbl.setForeground(Color.WHITE);
 		stampanjeLbl.setBackground(new Color(0,0,139));
-		stampanjeLbl.setText("  Stampanje");
+		stampanjeLbl.setText("   Stampanje");
 		panel1.add(stampanjeLbl);
 		
 		
@@ -129,6 +132,7 @@ public class ExportStudentsForm extends JFrame {
 		panel2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JTextArea txtrDodavanjeVise = new JTextArea();
+		txtrDodavanjeVise.setFont(new Font("Tahoma", Font.BOLD, 13));
 		txtrDodavanjeVise.setEditable(false);
 		txtrDodavanjeVise.setForeground(Color.WHITE);
 		txtrDodavanjeVise.setBackground(new Color(0,0,139));
