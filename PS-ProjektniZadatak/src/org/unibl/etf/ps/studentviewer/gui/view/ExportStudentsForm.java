@@ -44,7 +44,7 @@ public class ExportStudentsForm extends JFrame {
 	public ExportStudentsForm(MainFormController mainFormController) {
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
-				   mainFormController.resetChooseAddTypeFormOpened();
+				   mainFormController.resetExporting();
 			   }
 			  });
 		

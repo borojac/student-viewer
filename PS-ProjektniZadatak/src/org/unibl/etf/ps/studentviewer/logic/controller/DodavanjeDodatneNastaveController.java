@@ -46,6 +46,7 @@ public class DodavanjeDodatneNastaveController {
 		if (kontroler.validnostDatuma(datum)) {
 			DodatnaNastavaDTO nastava = new DodatnaNastavaDTO(2,startDate,napomena,naziv,kontroler.getNalogDTO().getNalogId(),kontroler.getDisciplinaDTO().getNaziv(),kontroler.getElektrijada().getId());
 			if (kontroler.listaDodatnihNastava.add(nastava)) {
+				
 				dodatnaNastavaDataModel.fireTableDataChanged();
 				tableNastavneTeme.setModel(dodatnaNastavaDataModel);
 				tableNastavneTeme.repaint();
