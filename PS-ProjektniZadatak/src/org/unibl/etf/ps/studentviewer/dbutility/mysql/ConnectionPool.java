@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.logic.utility.dbutility;
+package org.unibl.etf.ps.studentviewer.dbutility.mysql;
 
 import java.io.File;
 import java.io.FileInputStream;

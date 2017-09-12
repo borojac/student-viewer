@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.unibl.etf.ps.studentviewer.logic.utility.dbutility.DBUtility;
+import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
 
 public class MySQLStudentDAO extends StudentDAO {
