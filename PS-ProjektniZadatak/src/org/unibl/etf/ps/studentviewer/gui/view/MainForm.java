@@ -217,6 +217,7 @@ public class MainForm extends JFrame {
 		initButtonsListeners();
 		initTable();
 		initPredmetiComboBox();
+		initComboBoxListener();
 		initDisciplineComboBox();
 		scrollPane = new JScrollPane(mainTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBackground(Color.WHITE);
@@ -581,6 +582,15 @@ public class MainForm extends JFrame {
 		disciplineCB = new JComboBox<>();
 		disciplineCB.setBounds(745, 310, 430, 35);
 		contentPane.add(disciplineCB);
+	}
+	
+	private void initComboBoxListener() {
+		predmetiCB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainFormController.postaviMainForm(getSelectedPredmet());
+			}
+		});
 	}
 	
 	public void resetPredmetiComboBox() {
