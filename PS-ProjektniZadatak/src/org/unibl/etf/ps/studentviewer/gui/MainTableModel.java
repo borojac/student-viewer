@@ -73,7 +73,6 @@ public class MainTableModel extends DefaultTableModel {
 		
 		if (data.get(0).size() < n)
 			return;
-		
 		for (Vector<String> vec : data) {
 			vec.remove(n);
 		}

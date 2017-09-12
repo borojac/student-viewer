@@ -359,10 +359,13 @@ public class MainForm extends JFrame {
 		mainTable.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		mainTable.setForeground(new Color(0, 0, 139));
 		mainTable.setBackground(new Color(173, 216, 230));
-		mainTable.setModel(new MainTableModel());
+		MainTableModel model = new MainTableModel();
+		mainTable.setModel(model);
 		ArrayList<StudentMainTableDTO> tempList = new ArrayList<>();
 		for (StudentMainTableDTO s : StudentsForMainTable.getAllStudents())
 			tempList.add(s);
+
+		model.setColumnIdentifiers(new Object[] {"Indeks", "Ime", "Prezime"});	
 		mainTable.setStudents(tempList);
 		mainTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		

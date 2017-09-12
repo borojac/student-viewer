@@ -34,6 +34,8 @@ public class ShowViewData {
 	}
 	
 	public static boolean getValue(String s) {
+		if (s == null)
+			return false;
 		if (s.contains("."))
 			return DD_TEST.get(s);
 		else if (D_TEST.equals(s))

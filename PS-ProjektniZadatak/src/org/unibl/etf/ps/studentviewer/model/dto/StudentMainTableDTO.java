@@ -79,12 +79,16 @@ public class StudentMainTableDTO {
 		if (ShowViewData.D_KOMENTAR.equals(type) || Sort.KOMENTAR.equals(type))
 			return komentar;
 		
-		if (type.contains("."))
-			return (testovi.get(type) != null) ? testovi.get(type) : "none";
+		if (type.startsWith(ShowViewData.D_TEST) || type.startsWith(Sort.TEST)) 
+			return (testovi.get(type.substring(7)) != null) ? testovi.get(type.substring(7)) : "none";
 		
 		return null;
 	}
 
+	public String getTest(String ispit) {
+		return testovi.get(ispit);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

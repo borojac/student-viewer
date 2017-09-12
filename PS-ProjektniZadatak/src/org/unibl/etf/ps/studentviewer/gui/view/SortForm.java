@@ -10,6 +10,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -37,13 +38,17 @@ public class SortForm extends JFrame {
 	private JCheckBox komentarCheckBox = null;
 	private JCheckBox elektrijadaCheckBox = null;
 	private JCheckBox ispitCheckBox = null;
+	private JCheckBox testCheckBox = null;
 	private JCheckBox kolokvijumCheckBox = null;
 
 	private JTextArea textArea = null;
 	private MainFormController mainFormControler = null;
 
 	private JPanel panel = null;
-
+	private JPanel panel_1;
+	
+	ArrayList<String> examsToSort = new ArrayList<String>();
+	
 	/**
 	 * Launch the application.
 	 */
@@ -51,6 +56,25 @@ public class SortForm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	
+	
+	
+	public void setExamsToSort(ArrayList<String> exams) {
+		this.examsToSort = exams;
+	}
+	
+	public void resetTestCheckBox() {
+		testCheckBox.setSelected(false);
+	}
+
+	public void setTestCheckBox() {
+		testCheckBox.setSelected(true);
+	}
+
+	public ArrayList<String> getExamsToSort() {
+		return examsToSort;
+	}
+
 	public SortForm(MainFormController mainFormControler) {
 		
 		addWindowListener(new WindowAdapter() {
@@ -61,25 +85,21 @@ public class SortForm extends JFrame {
 		
 		this.mainFormControler = mainFormControler;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 318, 465);
+		setBounds(100, 100, 318, 438);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		panel = new JPanel();
-		panel.setBackground(new Color(0, 0, 139));
-		panel.setBounds(10, 159, 121, 205);
-		contentPane.add(panel);
-		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(414, 111, -143, 276);
+		panel_1 = new JPanel();
+		panel_1.setBackground(new Color(0, 0, 139));
+		panel_1.setBounds(10, 159, 121, 188);
 		contentPane.add(panel_1);
+		panel_1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(141, 159, 151, 205);
+		scrollPane.setBounds(141, 159, 151, 188);
 		contentPane.add(scrollPane);
 
 		textArea = new JTextArea();
@@ -114,12 +134,12 @@ public class SortForm extends JFrame {
 		sortButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				new SortFormController(mainFormControler, SortForm.this);
+				new SortFormController(mainFormControler, SortForm.this).sort();
 				   mainFormControler.resetSortFormOpened();
 				   SortForm.this.dispose();
 			}
 		});
-		sortButton.setBounds(104, 387, 89, 29);
+		sortButton.setBounds(102, 360, 89, 29);
 		contentPane.add(sortButton);
 
 		initCheckBoxes();
@@ -135,7 +155,8 @@ public class SortForm extends JFrame {
 			return brojIndeksaCheckBox.isSelected();
 		}else if (Sort.ELEKTRIJADA.equals(TYPE)) {
 			return elektrijadaCheckBox.isSelected();
-		}
+		}else if (Sort.KOMENTAR.equals(TYPE))
+			return komentarCheckBox.isSelected();
 		return false;
 	}
 	
@@ -175,9 +196,19 @@ public class SortForm extends JFrame {
 				new SortFormController().addToSortParams(Sort.ELEKTRIJADA, SortForm.this);
 			}
 		});
+		
+		testCheckBox.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				new SortFormController(mainFormControler, SortForm.this).createSortChooseForm(SortForm.this);
+				SortForm.this.setVisible(false);
+			}
+		});
 
 	}
-
+	
+	
+	
 	public String getSortParams() {
 		return textArea.getText();
 	}
@@ -193,43 +224,37 @@ public class SortForm extends JFrame {
 		imeCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
 		imeCheckBox.setBackground(new Color(0, 0, 139));
 		imeCheckBox.setForeground(new Color(255, 255, 255));
-		panel.add(imeCheckBox);
+		panel_1.add(imeCheckBox);
 
 		prezimeCheckBox = new JCheckBox("Prezime");
 		prezimeCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
 		prezimeCheckBox.setBackground(new Color(0, 0, 139));
 		prezimeCheckBox.setForeground(new Color(255, 255, 255));
-		panel.add(prezimeCheckBox);
+		panel_1.add(prezimeCheckBox);
 
 		brojIndeksaCheckBox = new JCheckBox("Broj indeksa");
 		brojIndeksaCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
 		brojIndeksaCheckBox.setBackground(new Color(0, 0, 139));
 		brojIndeksaCheckBox.setForeground(new Color(255, 255, 255));
-		panel.add(brojIndeksaCheckBox);
+		panel_1.add(brojIndeksaCheckBox);
 
 		komentarCheckBox = new JCheckBox("Komentar");
 		komentarCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
 		komentarCheckBox.setBackground(new Color(0, 0, 139));
 		komentarCheckBox.setForeground(new Color(255, 255, 255));
-		panel.add(komentarCheckBox);
+		panel_1.add(komentarCheckBox);
 
 		elektrijadaCheckBox = new JCheckBox("Elektrijada");
 		elektrijadaCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
 		elektrijadaCheckBox.setBackground(new Color(0, 0, 139));
 		elektrijadaCheckBox.setForeground(new Color(255, 255, 255));
-		panel.add(elektrijadaCheckBox);
+		panel_1.add(elektrijadaCheckBox);
 
-		ispitCheckBox = new JCheckBox("Ispit");
-		ispitCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
-		ispitCheckBox.setBackground(new Color(0, 0, 139));
-		ispitCheckBox.setForeground(new Color(255, 255, 255));
-		panel.add(ispitCheckBox);
-
-		kolokvijumCheckBox = new JCheckBox("Kolokvijum");
-		kolokvijumCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
-		kolokvijumCheckBox.setBackground(new Color(0, 0, 139));
-		kolokvijumCheckBox.setForeground(new Color(255, 255, 255));
-		panel.add(kolokvijumCheckBox);
+		testCheckBox = new JCheckBox("Test");
+		
+		testCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		testCheckBox.setBackground(new Color(0, 0, 139));
+		testCheckBox.setForeground(new Color(255, 255, 255));
+		panel_1.add(testCheckBox);
 	}
-	
 }

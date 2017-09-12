@@ -9,6 +9,7 @@ import java.util.Vector;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
+import org.apache.poi.ddf.EscherColorRef.SysIndexSource;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STUnsignedDecimalNumber;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
@@ -16,8 +17,10 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 public class MainTable extends JTable {
 
 	private ArrayList<StudentMainTableDTO> students = null;
-	private static String[] columnIdentifiers = null ;//= { "Indeks", "Ime", "Prezime", "Elektrijada", "Komentar" };
+	private static String[] columnIdentifiers = null;// = { "Indeks", "Ime", "Prezime", "Elektrijada", "Komentar" };
 	private HashMap<String, String> map = new HashMap<String, String>();
+
+	private static String[] currentIdentifiers;
 
 	static {
 		ArrayList<String> identifiers = new ArrayList<String>();
@@ -28,18 +31,18 @@ public class MainTable extends JTable {
 		identifiers.add("Elektrijada");
 		identifiers.add("Komentar");
 		identifiers.addAll(Arrays.asList(StudentsForMainTable.getAllIspiti()));
-		
+
 		columnIdentifiers = new String[identifiers.size()];
-		for (int i = 0; i < columnIdentifiers.length; i ++)
+		for (int i = 0; i < columnIdentifiers.length; i++)
 			columnIdentifiers[i] = new String(identifiers.get(i));
 
 	}
-	
+
 	public void setStudents(ArrayList<StudentMainTableDTO> students) {
 		this.students = students;
 		MainTableModel model = (MainTableModel) getModel();
+
 		model.setData(getStudentsForModel());
-		model.setColumnIdentifiers(columnIdentifiers);
 
 		setSizeOfColumns();
 		repaint();
@@ -51,20 +54,28 @@ public class MainTable extends JTable {
 		ArrayList<String> columnNames = new ArrayList<String>();
 		for (int i = 0; i < getColumnCount(); i++)
 			columnNames.add(getColumnName(i));
+
 		int ii = 0;
 		for (String s : columnIdentifiers) {
-
-			if (columnNames.contains(s))
-				ii++;
-
+			
 			if (columnNames.contains(s) && !ShowViewData.getValue(map.get(s))) {
 				model.removeColumn(columnNames.indexOf(s));
 				columnNames.remove(s);
 				model.setColumnIdentifiers(columnNames.toArray());
+			} else
+
+			if (columnNames.contains(s)) {
+				ii++;
 			} else if (!columnNames.contains(s) && ShowViewData.getValue(map.get(s))) {
 				Vector<String> values = new Vector<String>();
 				for (StudentMainTableDTO student : students) {
-					String property = student.getProperty(map.get(s));
+
+					String property = null;
+					String control = "";
+					if (s.contains("."))
+						control = ShowViewData.D_TEST + " ";
+					
+					property = student.getProperty(control + map.get(s));
 					values.add(property);
 				}
 				model.insertColumn(ii, values);
@@ -115,8 +126,12 @@ public class MainTable extends JTable {
 				forRet[i][j++] = student.getElektrijada();
 
 			if (ShowViewData.getValue(ShowViewData.D_KOMENTAR))
-				forRet[i][j++] = student.getElektrijada();
-
+				forRet[i][j++] = student.getKomentar();
+			
+			for (String s : StudentsForMainTable.getAllIspiti())
+				if (ShowViewData.getValue(s)) {
+					forRet[i][j++] = student.getTest(s);
+				}
 			i++;
 		}
 		return forRet;
@@ -129,7 +144,7 @@ public class MainTable extends JTable {
 		map.put("Prezime", ShowViewData.D_PREZIME);
 		map.put("Elektrijada", ShowViewData.D_ELEKTRIJADA);
 		map.put("Komentar", ShowViewData.D_KOMENTAR);
-		for (int i = 5; i < columnIdentifiers.length; i ++)
+		for (int i = 5; i < columnIdentifiers.length; i++)
 			map.put(columnIdentifiers[i], columnIdentifiers[i]);
 		initView();
 	}
@@ -147,7 +162,7 @@ public class MainTable extends JTable {
 		}
 		return false;
 	}
-	
+
 	public void deleteStudents(int[] selectedRows) {
 		ArrayList<StudentMainTableDTO> helpList = new ArrayList<StudentMainTableDTO>();
 		for (int i : selectedRows) {
@@ -158,11 +173,11 @@ public class MainTable extends JTable {
 			students.remove(s);
 		setStudents(students);
 	}
-	
+
 	public StudentMainTableDTO getStudent(int row) {
 		return students.get(row);
 	}
-	
+
 	public void setStudent(int row, String indeks, String ime, String prezime) {
 		StudentMainTableDTO student = students.get(row);
 		student.setBrojIndeksa(indeks);
@@ -170,5 +185,5 @@ public class MainTable extends JTable {
 		student.setPrezime(prezime);
 		setStudents(students);
 	}
-	
+
 }
