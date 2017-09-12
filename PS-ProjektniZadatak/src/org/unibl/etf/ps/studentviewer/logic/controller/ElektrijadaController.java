@@ -6,6 +6,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,7 +30,6 @@ import org.unibl.etf.ps.studentviewer.gui.StudentiZaElektrijaduTableModel;
 import org.unibl.etf.ps.studentviewer.gui.view.DodavanjeDodatneNastaveForm;
 import org.unibl.etf.ps.studentviewer.gui.view.DodavanjeStudentaZaElektrijaduForm;
 import org.unibl.etf.ps.studentviewer.gui.view.EditorZaElektrijaduForm;
-import org.unibl.etf.ps.studentviewer.gui.view.EksportStudentiZaElektrijaduForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ElektrijadaForm;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.BrisanjeDodatneNastaveCommand;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.BrisanjeStudentaZaElektrijaduCommand;
@@ -40,6 +40,10 @@ import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaDatumaDodatne
 import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaNapomeneDodatneNastaveCommand;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaNazivaDodatneNastaveCommand;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaPodatkaNapomenaStudentaZaElektrijadu;
+import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.DodatnaNastavaDAO;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.StudentDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
@@ -67,7 +71,8 @@ public class ElektrijadaController {
 	public static ArrayList<DodatnaNastavaDTO> listaDodatnihNastava = new ArrayList<>();
 	public static ArrayList<StudentZaElektrijaduDTO> listaStudenata = new ArrayList<>();
 
-	public ElektrijadaController(ElektrijadaForm forma, ElektrijadaDTO elektrijada, NalogDTO nalogDTO,DisciplinaDTO disciplinaDTO) {
+	public ElektrijadaController(ElektrijadaForm forma, ElektrijadaDTO elektrijada, NalogDTO nalogDTO,
+			DisciplinaDTO disciplinaDTO) {
 		this.forma = forma;
 		this.elektrijada = elektrijada;
 		this.nalogDTO = nalogDTO;
@@ -81,7 +86,7 @@ public class ElektrijadaController {
 	public ElektrijadaDTO getElektrijada() {
 		return elektrijada;
 	}
-	
+
 	public NalogDTO getNalogDTO() {
 		return nalogDTO;
 	}
@@ -246,8 +251,7 @@ public class ElektrijadaController {
 
 	}
 
-	public void brisanjeNastaveControl( JTable tableNastavneTeme,
-			DodatnaNastavaDataTableModel dodatnaNastavaDataModel) {
+	public void brisanjeNastaveControl(JTable tableNastavneTeme, DodatnaNastavaDataTableModel dodatnaNastavaDataModel) {
 		int row = tableNastavneTeme.getSelectedRow();
 		if (row == -1) {
 			JOptionPane.showMessageDialog(forma, "Nije selektovana ni jedna dodatna nastava.");
@@ -257,12 +261,11 @@ public class ElektrijadaController {
 			dodatnaNastavaDataModel.fireTableDataChanged();
 			tableNastavneTeme.setModel(dodatnaNastavaDataModel);
 			tableNastavneTeme.repaint();
-
 		}
 
 	}
 
-	public void brisanjeStudentaControl( JTable tableStudenti,
+	public void brisanjeStudentaControl(JTable tableStudenti,
 			StudentiZaElektrijaduTableModel studentiZaElektrijaduDataModel) {
 		int[] redovi = tableStudenti.getSelectedRows();
 		if (redovi.length == 0) {
@@ -270,7 +273,7 @@ public class ElektrijadaController {
 		} else {
 			ArrayList<StudentZaElektrijaduDTO> listaUndoRedo = new ArrayList<>();
 			for (int i : redovi) {
-					listaUndoRedo.add(listaStudenata.get(i));				
+				listaUndoRedo.add(listaStudenata.get(i));
 			}
 			this.izbaciListuIzListe(listaUndoRedo);
 			this.brisanjeStudenta(listaUndoRedo);
@@ -280,7 +283,7 @@ public class ElektrijadaController {
 		}
 	}
 
-	public void dodavanjeNastaveControl( JTable tableNastavneTeme,
+	public void dodavanjeNastaveControl(JTable tableNastavneTeme,
 			DodatnaNastavaDataTableModel dodatnaNastavaDataModel) {
 		ElektrijadaController kontroler = this;
 		EventQueue.invokeLater(new Runnable() {
@@ -295,7 +298,7 @@ public class ElektrijadaController {
 
 	}
 
-	public void dodavanjeStudentaControl( JTable tableStudenti,
+	public void dodavanjeStudentaControl(JTable tableStudenti,
 			StudentiZaElektrijaduTableModel studentiZaElektrijaduDataModel) {
 		ElektrijadaController kontroler = this;
 		EventQueue.invokeLater(new Runnable() {
@@ -334,21 +337,83 @@ public class ElektrijadaController {
 	}
 
 	public void zatvoriProzor(ElektrijadaForm forma) {
+		if (!undoKomande.isEmpty()) {
+			String[] options = { "	Da	", "	Ne	" };
+			int result = JOptionPane.showOptionDialog(forma,
+					"Imate nesačuvanih izmjena. Da li ste sigurni da želite zatvoriti prozor? Izmjene neće biti sačuvane!",
+					"Potvrda zatvaranja", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
+					options[1]);
+			if (result == JOptionPane.YES_OPTION) {
+				forma.dispose();
+			} else {
+				this.sacuvajIzmjeneUBazu();
+			}
+		} else {
+			EventQueue.invokeLater(new Runnable() {
 
-	}
-
-	public void exportPdf(Logger logger) {
-		ElektrijadaController kontroler = this;
+				@Override
+				public void run() {
+					forma.dispose();
+				}
+			});
+		}
 		EventQueue.invokeLater(new Runnable() {
+
 			@Override
 			public void run() {
-
-				forma.setEnabled(false);
-				EksportStudentiZaElektrijaduForm eksportForma = new EksportStudentiZaElektrijaduForm(kontroler, logger);
-				eksportForma.setVisible(true);
+				forma.dispose();
 			}
 		});
-		
+	}
+
+	public void exportPdf(Logger logger) throws DocumentException, IOException {
+		JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
+		int retVal = fileChooser.showSaveDialog(null);
+		if (retVal != JFileChooser.APPROVE_OPTION)
+			return;
+		File chosenFile = fileChooser.getSelectedFile();
+		if (!chosenFile.getAbsolutePath().endsWith(".pdf")) {
+			final String aPath = chosenFile.getAbsolutePath();
+			chosenFile = new File(aPath + ".pdf");
+		}
+
+		Font font = FontFactory.getFont("fonts/tahoma.ttf", BaseFont.IDENTITY_H, 12);
+		Document doc = new Document();
+		OutputStream os = new FileOutputStream(chosenFile);
+		PdfWriter writer = PdfWriter.getInstance(doc, os);
+
+		Paragraph title = new Paragraph();
+		title.setIndentationLeft(60f);
+		title.setFont(font);
+		title.add("Elektrijada - " + this.getElektrijada().getLokacija());
+		title.add("\n\n");
+		title.add("Datum: " + new SimpleDateFormat("dd.MM.yyyy").format(this.getElektrijada().getDatum()));
+		title.add("\n\n");
+
+		Paragraph spacing = new Paragraph("\n\n");
+		spacing.add("Studenti na testu:");
+		spacing.add("\n\n");
+
+		Paragraph body = new Paragraph();
+		body.setIndentationLeft(60f);
+		body.setFont(font);
+		body.setTabSettings(new TabSettings());
+		for (StudentZaElektrijaduDTO student : listaStudenata) {
+			final String studentString = student.getIndeks() + " " + student.getIme() + " " + student.getPrezime() + " "
+					+ student.getNapomena();
+			body.add(new Chunk(studentString));
+			body.add("\n");
+			body.add("\n");
+		}
+		doc.open();
+		doc.add(title);
+		doc.add(spacing);
+		doc.add(body);
+		doc.close();
+		writer.flush();
+		writer.close();
+		os.close();
+
 	}
 
 	public void exportStampac() throws DocumentException, InvalidPasswordException, IOException, PrinterException {
@@ -359,21 +424,22 @@ public class ElektrijadaController {
 		Paragraph title = new Paragraph();
 		title.setIndentationLeft(60f);
 		title.setFont(font);
-		title.add("Elektrijada - "+this.getElektrijada().getLokacija());
+		title.add("Elektrijada - " + this.getElektrijada().getLokacija());
 		title.add("\n\n");
 		title.add("Datum: " + new SimpleDateFormat("dd.MM.yyyy").format(this.getElektrijada().getDatum()));
 		title.add("\n\n");
-		
+
 		Paragraph spacing = new Paragraph("\n\n");
 		spacing.add("Studenti za Elektrijadu:");
 		spacing.add("\n\n");
-		
+
 		Paragraph body = new Paragraph();
 		body.setIndentationLeft(60f);
 		body.setFont(font);
 		body.setTabSettings(new TabSettings());
-		for (StudentZaElektrijaduDTO student : this.listaStudenata) {
-			final String studentString = student.getIndeks() + " " + student.getIme() + " " + student.getPrezime()+" "+student.getNapomena();
+		for (StudentZaElektrijaduDTO student : listaStudenata) {
+			final String studentString = student.getIndeks() + " " + student.getIme() + " " + student.getPrezime() + " "
+					+ student.getNapomena();
 			body.add(new Chunk(studentString));
 			body.add("\n");
 			body.add("\n");
@@ -394,7 +460,86 @@ public class ElektrijadaController {
 			job.print();
 		}
 		printDoc.close();
-		
+
 	}
 
+	public void sacuvajIzmjeneUBazu() {
+		if (!undoKomande.isEmpty()) {
+			DAOFactory dao = new MySQLDAOFactory();
+			DodatnaNastavaDAO dnDAO = dao.getDodatnaNastavaDAO();
+			StudentDAO stDAO = dao.getStudentDAO();
+
+			ArrayList<StudentZaElektrijaduDTO> listaStudentaZaElektrijaduIzBaze = (ArrayList<StudentZaElektrijaduDTO>) stDAO
+					.getStudentiZaElektrijadu(nalogDTO.getNalogId(), elektrijada.getId(), disciplinaDTO.getNaziv());
+			ArrayList<DodatnaNastavaDTO> listaDodatnihNastavaIzBaze = (ArrayList<DodatnaNastavaDTO>) dnDAO
+					.getDodatneNastave(elektrijada.getId(), nalogDTO.getNalogId(), disciplinaDTO.getNaziv());
+
+			for (StudentZaElektrijaduDTO student : listaStudenata) {
+				boolean prisutan = false;
+				for (StudentZaElektrijaduDTO studentIzBaze : listaStudentaZaElektrijaduIzBaze) {
+					if (student.getId() == studentIzBaze.getId()) {
+						if (!student.getNapomena().equals(studentIzBaze.getNapomena())) {
+							stDAO.azurirajStudentaZaElektrijadu(student);
+						}
+						prisutan = true;
+						break;
+					}
+				}
+				if (!prisutan) {
+					stDAO.dodajStudentaZaElektrijadu(student, elektrijada.getId(), disciplinaDTO.getNaziv());
+				}
+			}
+
+			for (StudentZaElektrijaduDTO studentIzBaze : listaStudentaZaElektrijaduIzBaze) {
+				if (!listaStudenata.contains(studentIzBaze)) {
+					stDAO.obrisiStudentaZaElektrijadu(studentIzBaze.getId());
+				}
+			}
+
+			for (DodatnaNastavaDTO nastava : listaDodatnihNastava) {
+				boolean prisutna = false;
+				for (DodatnaNastavaDTO nastavaIzBaze : listaDodatnihNastavaIzBaze) {
+					if (nastava.getNastavaId() == nastavaIzBaze.getNastavaId()) {
+						if (!nastava.getNazivTeme().equals(nastavaIzBaze.getNazivTeme())
+								|| !nastava.getDatum().equals(nastavaIzBaze.getDatum())
+								|| !nastava.getNapomena().equals(nastavaIzBaze.getNapomena())) {
+							dnDAO.azurirajDodatnuNastavu(nastava);
+						}
+						prisutna = true;
+						break;
+					}
+				}
+				if (!prisutna) {
+					dnDAO.dodajDodatnuNastavu(nastava);
+				}
+			}
+
+			for (DodatnaNastavaDTO nastavaIzBaza : listaDodatnihNastavaIzBaze) {
+				boolean prisutna = false;
+				for (DodatnaNastavaDTO nastava : listaDodatnihNastava) {
+					if (nastavaIzBaza.getNastavaId() == nastava.getNastavaId()) {
+						prisutna = true;
+						break;
+					}
+				}
+				if (!prisutna)
+					dnDAO.obrisiDodatnuNastavu(nastavaIzBaza.getNastavaId());
+			}
+
+			EventQueue.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					JOptionPane.showMessageDialog(forma, "Izmjene su uspješno sačuvane.");
+				}
+			});
+
+		} else {
+			EventQueue.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					JOptionPane.showMessageDialog(forma, "Nema izmjena.");
+				}
+			});
+		}
+	}
 }

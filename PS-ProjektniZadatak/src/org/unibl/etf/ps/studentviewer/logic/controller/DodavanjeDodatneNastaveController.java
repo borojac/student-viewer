@@ -16,6 +16,9 @@ import org.unibl.etf.ps.studentviewer.gui.DodatnaNastavaDataTableModel;
 import org.unibl.etf.ps.studentviewer.gui.view.DodavanjeDodatneNastaveForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ElektrijadaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.IzborDatumaZaDodatnuNastavuForm;
+import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.DodatnaNastavaDAO;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 
 public class DodavanjeDodatneNastaveController {
@@ -46,7 +49,6 @@ public class DodavanjeDodatneNastaveController {
 		if (kontroler.validnostDatuma(datum)) {
 			DodatnaNastavaDTO nastava = new DodatnaNastavaDTO(2,startDate,napomena,naziv,kontroler.getNalogDTO().getNalogId(),kontroler.getDisciplinaDTO().getNaziv(),kontroler.getElektrijada().getId());
 			if (kontroler.listaDodatnihNastava.add(nastava)) {
-				
 				dodatnaNastavaDataModel.fireTableDataChanged();
 				tableNastavneTeme.setModel(dodatnaNastavaDataModel);
 				tableNastavneTeme.repaint();
