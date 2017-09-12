@@ -20,7 +20,7 @@ public class SortUtil {
 					if (Sort.BROJ_INDEKSA.equals(param)) {
 						Integer godina1 = new Integer(o1.getProperty(param).split("/")[1]);
 						Integer godina2 = new Integer(o2.getProperty(param).split("/")[1]);
-						result = godina1.compareTo(godina2);
+						result = godina2.compareTo(godina1);
 						if (result == 0) {
 							Integer broj1 = new Integer(o1.getProperty(param).split("/")[0]);
 							Integer broj2 = new Integer(o2.getProperty(param).split("/")[0]);
