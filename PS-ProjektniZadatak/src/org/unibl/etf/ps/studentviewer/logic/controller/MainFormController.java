@@ -15,6 +15,7 @@ import org.unibl.etf.ps.studentviewer.gui.view.AccountForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AddForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChangeForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChooseAddTypeForm;
+import org.unibl.etf.ps.studentviewer.gui.view.ExportStudentsForm;
 import org.unibl.etf.ps.studentviewer.gui.view.FilterForm;
 import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ShowForm;
@@ -41,6 +42,7 @@ public class MainFormController {
 	private boolean chooseAddTypeFormOpened = false;
 	private boolean changeFormOpened = false;
 	private boolean deleting = false;
+	private boolean exporting = false;
 
 	public void resetAddFormOpened() {
 		addFormOpened = false;
@@ -58,6 +60,9 @@ public class MainFormController {
 		deleting = false;
 	}
 
+	public void resetExporting() {
+		exporting = false;
+	}
 	/* Stankovic end */
 	
 	
@@ -247,6 +252,13 @@ public class MainFormController {
 			new DeleteStudentsController(this, selectedRows);
 		}
 		
+		public void choseExportType() {
+			if (exporting)
+				return;
+			exporting = true;
+			ExportStudentsForm esf = new ExportStudentsForm(this);
+			esf.setVisible(true);
+		}
 		
 		// Stankovic end//
 	/*

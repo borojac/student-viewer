@@ -441,6 +441,11 @@ public class MainForm extends JFrame {
 		buttons.add(changeBtn);
 
 		exportBtn = new JButton("Eksportuj");
+		exportBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mainFormController.choseExportType();
+			}
+		});
 		buttonPanel.add(exportBtn);
 		buttons.add(exportBtn);
 
