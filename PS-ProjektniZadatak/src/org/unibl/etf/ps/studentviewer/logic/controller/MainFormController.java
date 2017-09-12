@@ -271,4 +271,9 @@ public class MainFormController {
 	public void resetFilterFormOpened() {
 		filterFormOpened = false;
 	}
+	
+	public void postaviMainForm() {
+		
+	}
+	
 }
