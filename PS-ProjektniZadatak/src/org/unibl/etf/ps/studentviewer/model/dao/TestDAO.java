@@ -12,7 +12,7 @@ public interface TestDAO {
 	public boolean addTest(TestDTO test);
 	public boolean deleteTest(TestDTO test);
 	public List<StudentNaTestuDTO> getAllStudents(int idTesta);
-	public List<TestDTO> getAllTests();
+	public List<TestDTO> getAllTests(int predmetId);
 	public List<StudentNaTestuDTO> getStudentsNotOnTest(TestDTO test);
 	public boolean verifyStudent(String brojIndeksa, int idTesta);
 }

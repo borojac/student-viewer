@@ -180,7 +180,8 @@ public class MainFormController {
 
 		DAOFactory testFactory = new MySQLDAOFactory();
 		TestDAO testDAO = testFactory.getTestDAO();
-		List<TestDTO> data = testDAO.getAllTests();
+		// TODO
+		List<TestDTO> data = testDAO.getAllTests(1);
 
 		TestoviTableModel model = new TestoviTableModel(data);
 		testoviTable.setModel(model);
@@ -262,7 +263,7 @@ public class MainFormController {
 		
 		// Stankovic end//
 	/*
-	 * TODO - ko vec radi sa predmetima, za testove mi treba predmet u kontroleru
+	 * TODO - ko vec radi sa predmetima, za testove mi treba predmet u kontroleru ili formi
 	 */
 //	public PredmetDTO getPredmet() {
 //		return predmet;

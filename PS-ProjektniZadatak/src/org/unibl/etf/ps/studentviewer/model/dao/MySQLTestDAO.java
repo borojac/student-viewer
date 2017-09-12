@@ -255,20 +255,22 @@ public class MySQLTestDAO implements TestDAO {
 	}
 
 	@Override
-	public List<TestDTO> getAllTests() {
+	public List<TestDTO> getAllTests(int predmetId) {
 		List<TestDTO> retVals = new ArrayList<>();
 
-		String query = "SELECT * FROM test";
+		String query = "SELECT * FROM test WHERE PredmetId=?";
 
 		Connection conn = null;
 		ResultSet rs = null;
-		Statement s = null;
+		PreparedStatement ps = null;
 
 		try {
 			conn = DBUtility.open();
 
-			s = conn.createStatement();			
-			rs = s.executeQuery(query);
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, predmetId);
+			
+			rs = ps.executeQuery();
 
 			while (rs.next()) {
 				TestDTO tmp = new TestDTO(rs.getInt(1), rs.getString(2), 
@@ -280,7 +282,7 @@ public class MySQLTestDAO implements TestDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DBUtility.close(rs, s, conn);
+			DBUtility.close(rs, ps, conn);
 		}
 
 

@@ -587,7 +587,7 @@ public class MainForm extends JFrame {
 		DAOFactory factory = new MySQLDAOFactory();
 		TestDAO testDAO = factory.getTestDAO();
 
-		List<TestDTO> data = testDAO.getAllTests();
+		List<TestDTO> data = testDAO.getAllTests(1);
 		EventQueue.invokeLater(new Runnable() {
 
 			@Override
