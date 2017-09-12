@@ -1,3 +1,6 @@
+/**
+ * @author dejan
+ */
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import java.awt.print.PrinterException;

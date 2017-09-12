@@ -504,6 +504,7 @@ public class MainForm extends JFrame {
 		exportBtn = new JButton("Eksportuj");
 		exportBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				/*Stankovic*/
 				mainFormController.choseExportType();
 			}
 		});

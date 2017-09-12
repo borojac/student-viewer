@@ -1,3 +1,6 @@
+/**
+ * @author dejan
+ */
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import java.util.ArrayList;
@@ -6,10 +9,10 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class AddChangeStudentsHelpController {
 	public AddChangeStudentsHelpController() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public int checkParams(ArrayList<String> params) {
+		
 		String param1 = params.get(0);
 		if (param1.length() < 2 || param1.length() > 20) return 1;
 		char[] ime = param1.toCharArray();
