@@ -20,15 +20,20 @@ public class BrisanjePredmetaFormController {
 		NalogDTO nalogDTO = brisanjePredmetaForm.getNalogDTO();
 		PredmetDTO predmetDTO = brisanjePredmetaForm.getSelectedPredmet();
 		
-		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
-		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
-		
-		if(nalogDAO.removePredmet(predmetDTO, nalogDTO)) {
-			JOptionPane.showMessageDialog(brisanjePredmetaForm, "Predmet uspjesno uklonjen.");
-			brisanjePredmetaForm.dispose();
-			AccountFormController.resetBrisanjePredmetaFormOpened();
+		if(predmetDTO == null) {
+			
 		} else {
-			JOptionPane.showMessageDialog(brisanjePredmetaForm, "Predmet nije uspjesno uklnonjen.");
+			MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
+			NalogDAO nalogDAO = nalogFactory.getNalogDAO();
+		
+			if(nalogDAO.removePredmet(predmetDTO, nalogDTO)) {
+				JOptionPane.showMessageDialog(brisanjePredmetaForm, "Predmet uspjesno uklonjen.");
+				brisanjePredmetaForm.getMainForm().resetPredmetiComboBox();
+				brisanjePredmetaForm.dispose();
+				AccountFormController.resetBrisanjePredmetaFormOpened();
+			} else {
+				JOptionPane.showMessageDialog(brisanjePredmetaForm, "Predmet nije uspjesno uklnonjen.");
+			}
 		}
 	}
 

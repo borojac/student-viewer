@@ -19,19 +19,24 @@ public class DodavanjePredmetaFormController {
 	
 	public void posaljiZahtjev() {
 		PredmetDTO predmetDTO = dodavanjePredmetaForm.getSelectedPredmet();
-		NalogDTO nalogDTO = dodavanjePredmetaForm.getNalogDTO();
 		
-		ZahtjevDTO zahtjevDTO = new ZahtjevDTO(predmetDTO.getPredmetId(), nalogDTO.getNalogId());
-		
-		MySQLDAOFactory zahtjevFactory = new MySQLDAOFactory();
-		ZahtjevDAO zahtjevDAO = zahtjevFactory.getZahtjevDAO();
-		
-		if(zahtjevDAO.addZahtjev(zahtjevDTO)) {
-			JOptionPane.showMessageDialog(dodavanjePredmetaForm, "Zahtjev je uspjesno poslan.");
-			dodavanjePredmetaForm.dispose();
-			AccountFormController.resetDodavanjePredmetaFormOpened();
+		if(predmetDTO == null) {
+			
 		} else {
-			JOptionPane.showMessageDialog(dodavanjePredmetaForm, "Zahtjev nije uspjesno poslan.");
+			NalogDTO nalogDTO = dodavanjePredmetaForm.getNalogDTO();
+		
+			ZahtjevDTO zahtjevDTO = new ZahtjevDTO(predmetDTO.getPredmetId(), nalogDTO.getNalogId());
+		
+			MySQLDAOFactory zahtjevFactory = new MySQLDAOFactory();
+			ZahtjevDAO zahtjevDAO = zahtjevFactory.getZahtjevDAO();
+		
+			if(zahtjevDAO.addZahtjev(zahtjevDTO)) {
+				JOptionPane.showMessageDialog(dodavanjePredmetaForm, "Zahtjev je uspjesno poslan.");
+				dodavanjePredmetaForm.dispose();
+				AccountFormController.resetDodavanjePredmetaFormOpened();
+			} else {
+				JOptionPane.showMessageDialog(dodavanjePredmetaForm, "Zahtjev nije uspjesno poslan.");
+			}
 		}
 	}
 

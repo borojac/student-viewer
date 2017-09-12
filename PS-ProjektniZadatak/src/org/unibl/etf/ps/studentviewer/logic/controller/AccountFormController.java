@@ -55,7 +55,7 @@ public class AccountFormController {
 			return false;
 		
 		brisanjePredmetaFormOpened = true;
-		BrisanjePredmetaForm brisanjePredmetaForm = new BrisanjePredmetaForm(accountForm.getNalogDTO());
+		BrisanjePredmetaForm brisanjePredmetaForm = new BrisanjePredmetaForm(accountForm.getNalogDTO(), accountForm.getMainFormController().getMainForm());
 		brisanjePredmetaForm.setVisible(true);
 		return true;
 	}

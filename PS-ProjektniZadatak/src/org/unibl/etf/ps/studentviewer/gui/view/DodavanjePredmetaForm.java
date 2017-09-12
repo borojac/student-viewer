@@ -144,7 +144,8 @@ public class DodavanjePredmetaForm extends JFrame {
 	}
 	
 	public PredmetDTO getSelectedPredmet() {
-		return predmetiList.get(predmetiCB.getSelectedIndex());
+		int i = predmetiCB.getSelectedIndex();
+		return (i == -1) ? null : predmetiList.get(i);
 	}
 
 }

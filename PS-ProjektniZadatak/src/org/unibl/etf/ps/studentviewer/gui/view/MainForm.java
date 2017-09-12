@@ -525,6 +525,20 @@ public class MainForm extends JFrame {
 			predmetiCB.addItem((predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
 		}
 	}
+	
+	public void resetPredmetiComboBox() {
+		predmetiCB.removeAllItems();
+		ArrayList<PredmetDTO> predmetiList = new ArrayList<>();
+		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
+		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
+		
+		predmetiList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
+		System.out.println(predmetiList.size());
+		
+		for(int i = 0; i < predmetiList.size(); i++) {
+			predmetiCB.addItem((predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
+		}
+	}
 
 	public void refreshTestoviTable() {
 		TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();

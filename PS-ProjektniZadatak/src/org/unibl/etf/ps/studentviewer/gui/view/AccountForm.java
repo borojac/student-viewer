@@ -180,4 +180,12 @@ public class AccountForm extends JFrame {
 		this.nalogDTO = nalogDTO;
 	}
 
+	public MainFormController getMainFormController() {
+		return mainFormController;
+	}
+
+	public void setMainFormController(MainFormController mainFormController) {
+		this.mainFormController = mainFormController;
+	}
+
 }

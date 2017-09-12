@@ -38,12 +38,14 @@ public class BrisanjePredmetaForm extends JFrame {
 	
 	private NalogDTO nalogDTO;
 	private BrisanjePredmetaFormController brisanjePredmetaFormController;
+	private MainForm mainForm;
 
 	/**
 	 * Create the frame.
 	 */
-	public BrisanjePredmetaForm(NalogDTO nalogDTO) {
+	public BrisanjePredmetaForm(NalogDTO nalogDTO, MainForm mainForm) {
 		this.nalogDTO = nalogDTO;
+		this.mainForm = mainForm;
 		brisanjePredmetaFormController = new BrisanjePredmetaFormController(this);
 		
 		addWindowListener(new WindowAdapter() {
@@ -130,7 +132,16 @@ public class BrisanjePredmetaForm extends JFrame {
 	}
 	
 	public PredmetDTO getSelectedPredmet() {
-		return predmetiList.get(predmetiCB.getSelectedIndex());
+		int i = predmetiCB.getSelectedIndex();
+		return (i == -1) ? null : predmetiList.get(i);
+	}
+
+	public MainForm getMainForm() {
+		return mainForm;
+	}
+
+	public void setMainForm(MainForm mainForm) {
+		this.mainForm = mainForm;
 	}
 
 }
