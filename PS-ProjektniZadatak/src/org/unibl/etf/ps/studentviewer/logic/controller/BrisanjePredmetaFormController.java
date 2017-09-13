@@ -1,5 +1,8 @@
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
+import java.util.ArrayList;
+
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.view.BrisanjePredmetaForm;
@@ -34,6 +37,57 @@ public class BrisanjePredmetaFormController {
 			} else {
 				JOptionPane.showMessageDialog(brisanjePredmetaForm, "Predmet nije uspjesno uklnonjen.");
 			}
+		}
+	}
+	
+	public synchronized void postaviStudijskePrograme(JComboBox<String> studijskiProgramiCB, short ciklus) {
+		studijskiProgramiCB.removeAllItems();
+		ArrayList<String> studijskiProgramiList = new ArrayList<>();
+		MySQLDAOFactory factory = new MySQLDAOFactory();
+		NalogDAO nalogDAO = factory.getNalogDAO();
+		ArrayList<PredmetDTO> predmeti = nalogDAO.getPredmeteNaNalogu(brisanjePredmetaForm.getNalogDTO().getNalogId());
+		for(int i = 0; i < predmeti.size(); i++) {
+			if(predmeti.get(i).getCiklus() == ciklus && !studijskiProgramiList.contains(predmeti.get(i).getNazivSP())) {
+				studijskiProgramiList.add(predmeti.get(i).getNazivSP());
+			}
+		}
+		for(int i = 0; i < studijskiProgramiList.size(); i++) {
+			studijskiProgramiCB.addItem(studijskiProgramiList.get(i));
+		}
+		brisanjePredmetaForm.setStudijskiProgramiList(studijskiProgramiList);
+	}
+	
+	public void postaviPredmete(JComboBox<String> predmetiCB, short ciklus, String studijskiProgram, String skolskaGodina) {
+		predmetiCB.removeAllItems();
+		MySQLDAOFactory factory = new MySQLDAOFactory();
+		NalogDAO nalogDAO = factory.getNalogDAO();
+		ArrayList<PredmetDTO> predmeti = nalogDAO.getPredmeteNaNalogu(brisanjePredmetaForm.getNalogDTO().getNalogId());
+		int k = 0;
+		while(k < predmeti.size()) {
+			if(predmeti.get(k).getCiklus() != ciklus) {
+				predmeti.remove(k);
+			} else {
+				k++;
+			}
+		}
+		k = 0;
+		while(k < predmeti.size()) {
+			if(!predmeti.get(k).getNazivSP().equals(studijskiProgram)) {
+				predmeti.remove(k);
+			} else {
+				k++;
+			}
+		}
+		k = 0;
+		while(k < predmeti.size()) {
+			if(!predmeti.get(k).getSkolskaGodina().equals(skolskaGodina)) {
+				predmeti.remove(k);
+			} else {
+				k++;
+			}
+		}
+		for(int i = 0; i < predmeti.size(); i++) {
+			predmetiCB.addItem(predmeti.get(i).getNazivPredmeta());
 		}
 	}
 

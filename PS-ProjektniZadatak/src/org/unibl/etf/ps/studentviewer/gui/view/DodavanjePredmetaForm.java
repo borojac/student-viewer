@@ -149,19 +149,6 @@ public class DodavanjePredmetaForm extends JFrame {
 			skolskeGodineCB.addItem(skolskeGodineList.get(i));
 		}
 		
-//		ArrayList<PredmetDTO> predmetiNaNaloguList = new ArrayList<>();
-//		predmetiNaNaloguList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
-//		
-//		for(int i = 0; i < predmetiNaNaloguList.size(); i++) {
-//			if(predmetiList.contains(predmetiNaNaloguList.get(i))) {
-//				predmetiList.remove(predmetiNaNaloguList.get(i));
-//			}
-//		}
-//		
-//		for(int i = 0; i < predmetiList.size(); i++) {
-//			predmetiCB.addItem(predmetiList.get(i).getSifraPredmeta() + " - " + predmetiList.get(i).getNazivPredmeta());
-//		}
-		
 		ciklusLbl = new JLabel("Ciklus:");
 		ciklusLbl.setBounds(20, 140, 100, 25);
 		ciklusLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 15));
