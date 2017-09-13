@@ -38,7 +38,7 @@ public class FilterChooseFormController {
 		}
 		
 		if (donjaGranica > gornjaGranica) {
-			JOptionPane.showInternalMessageDialog(null, "Donja granica ne moze da bude veca od gornje!");
+			JOptionPane.showMessageDialog(null, "Donja granica ne moze da bude veca od gornje!");
 			return false;
 		}
 		
