@@ -171,7 +171,7 @@ public ChangeForm(MainFormController mainFormController,StudentMainTableDTO stud
 				tmp.addActionListener(new ActionListener() {
 					   @Override
 					    public void actionPerformed(ActionEvent e) {
-					      field.requestFocusInWindow(); 
+					      addButton.doClick();
 					    }
 					}); 		
 			}
@@ -180,7 +180,7 @@ public ChangeForm(MainFormController mainFormController,StudentMainTableDTO stud
 		tmp.addActionListener(new ActionListener() {
 			   @Override
 			    public void actionPerformed(ActionEvent e) {
-			      addButton.requestFocusInWindow(); 
+			      addButton.doClick(); 
 			    }
 			});
 	}
