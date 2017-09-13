@@ -24,6 +24,8 @@ import org.unibl.etf.ps.studentviewer.logic.utility.Filter;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class FilterChooseForm extends JFrame {
 
@@ -78,6 +80,13 @@ public class FilterChooseForm extends JFrame {
 	 * @param filterFormController 
 	 */
 	public FilterChooseForm(FilterForm filterForm, FilterFormController filterFormController) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				FilterChooseForm.this.dispose();
+				filterForm.setVisible(true);
+			}
+		});
 		this.ffc = filterFormController;
 		this.filterForm = filterForm;
 		setResizable(false);
