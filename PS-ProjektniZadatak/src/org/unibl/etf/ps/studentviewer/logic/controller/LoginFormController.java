@@ -19,18 +19,32 @@ import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 public class LoginFormController {
 	
 	private LoginForm loginForm;
+	private static boolean mainFormOpened = false;
+	private static boolean kreirajNalogFormOpened = false;
 	
 	public LoginFormController(LoginForm loginForm) {
 		this.loginForm = loginForm;
 	}
 	
 	public void createKreirajNalogForm() {
+		if(kreirajNalogFormOpened) {
+			return;
+		}
+		
+		kreirajNalogFormOpened = true;
+		
 		KreirajNalogForm kreirajNalogForm = new KreirajNalogForm();
 		kreirajNalogForm.setVisible(true);
 		loginForm.setVisible(false);
 	}
 	
 	public void prijava() throws IOException {
+		if(mainFormOpened) {
+			return;
+		}
+		
+		mainFormOpened = true;
+		
 		String korisnickoIme = loginForm.getKorisnickoIme();
 		String lozinkaHash = sha256(loginForm.getLozinka());
 		
