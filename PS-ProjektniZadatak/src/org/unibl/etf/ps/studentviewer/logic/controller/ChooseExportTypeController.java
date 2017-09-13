@@ -58,7 +58,7 @@ public class ChooseExportTypeController {
 
 		if (!(print || pdf)) {
 			final String message = "Morate izabrati jednu opciju!";
-			JOptionPane.showMessageDialog(null, message);
+			JOptionPane.showMessageDialog(null, message,"Obavjestenje!", JOptionPane.INFORMATION_MESSAGE);
 			form.setVisible(true);
 		} else if (print) {
 			print(podaci, header);
@@ -173,7 +173,7 @@ public class ChooseExportTypeController {
 		os.close();
 		
 		final String message = "Uspjesno cuvanje PDF dokumenta!";
-		JOptionPane.showMessageDialog(null, message);
-	}
+		JOptionPane.showMessageDialog(null, message,"Obavjestenje!", JOptionPane.INFORMATION_MESSAGE);
+		}
 
 }

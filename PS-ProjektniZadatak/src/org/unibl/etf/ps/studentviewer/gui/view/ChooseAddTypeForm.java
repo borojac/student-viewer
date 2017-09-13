@@ -39,6 +39,7 @@ public class ChooseAddTypeForm extends JFrame {
 	JCheckBox chckbxNewCheckBoxVise = new JCheckBox("");
 
 	public ChooseAddTypeForm(MainFormController mainFormController) {
+		setTitle("Nacin dodavanja");
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
