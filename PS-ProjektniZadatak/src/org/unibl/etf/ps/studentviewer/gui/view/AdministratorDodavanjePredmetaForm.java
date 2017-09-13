@@ -30,7 +30,9 @@ import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorDodavanjePre
 import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
+import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 
 public class AdministratorDodavanjePredmetaForm extends JFrame {
@@ -45,11 +47,12 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 	private JTextField nazivTf;
 	private JTextField ectsTf;
 	private JTextField semestarTf;
-	private JTextField tipPredmetaTf;
+	/*private JTextField tipPredmetaTf;
 	private JTextField skolskaGodinaTf;
 	private JTextField nazivSPTf;
 	private JTextField ciklusTf;
-	private JButton addButton;
+	private JButton addButton;*/
+	private NalogDTO nalogDTO;
 	private JRadioButton obavezan, izborni;
 	private ButtonGroup bg;
 	AdministratorFormController administratorFormController;
@@ -290,6 +293,40 @@ private void initButtonsListeners() {
 		});
 		
 	}
+
+public NalogDTO getNalogDTO() {
+	return nalogDTO;
+}
+
+public void setNalogDTO(NalogDTO nalogDTO) {
+	this.nalogDTO = nalogDTO;
+}
+
+public void setStudijskiProgramiList(ArrayList<String> studijskiProgramiList) {
+	this.studijskiProgramiList = studijskiProgramiList;
+}
+
+
+public short getSelectedCiklus() {
+	int i = ciklusiCB.getSelectedIndex();
+	return (i == -1) ? null : ciklusiList.get(i);
+}
+
+public String getSelectedStudijskiProgram() {
+	int i = studijskiProgramiCB.getSelectedIndex();
+	return (i == -1) ? null : studijskiProgramiList.get(i);
+}
+
+public String getSelectedSkolskaGodina() {
+	int i = skolskeGodineCB.getSelectedIndex();
+	return (i == -1) ? null : skolskeGodineList.get(i);
+}
+
+public ArrayList<PredmetDTO> getPredmetiNaNalogu() {
+	MySQLDAOFactory factory = new MySQLDAOFactory();
+	NalogDAO nalogDAO = factory.getNalogDAO();
+	return nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
+}
 
 	/**
 	 * Create the frame.
