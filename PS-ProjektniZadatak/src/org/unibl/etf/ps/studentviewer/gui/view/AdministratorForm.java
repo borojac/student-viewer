@@ -42,6 +42,7 @@ public class AdministratorForm extends JFrame {
 	private JButton dodajPredmeteBtn;
 	private JButton dodajStudProgBtn;
 	private JButton odjavaBtn;
+	private JButton dodajDisciplinuBtn;
 	private JScrollPane	scrollPane;
 	private ArrayList<ZahtjevDTO> list;
 	
@@ -145,19 +146,23 @@ public class AdministratorForm extends JFrame {
 		componentsPane.add(odobriBtn);
 		  
 		odbijBtn = new JButton("Odbij");
-		odbijBtn.setBounds(15, 110, 180, 40);
+		odbijBtn.setBounds(15, 100, 180, 40);
 		componentsPane.add(odbijBtn);
 		
 		dodajPredmeteBtn = new JButton("Dodaj predmete");
-		dodajPredmeteBtn.setBounds(15, 170, 180, 40);
+		dodajPredmeteBtn.setBounds(15, 150, 180, 40);
 		componentsPane.add(dodajPredmeteBtn);
 		
+		dodajDisciplinuBtn = new JButton("Dodaj disciplinu");
+		dodajDisciplinuBtn.setBounds(15, 200, 180, 40);
+		componentsPane.add(dodajDisciplinuBtn);
+		
 		dodajStudProgBtn = new JButton("Dodaj studijske programe");
-		dodajStudProgBtn.setBounds(15, 230, 180, 40);
+		dodajStudProgBtn.setBounds(15, 250, 180, 40);
 		componentsPane.add(dodajStudProgBtn);
 		
 		odjavaBtn = new JButton("Odjava");
-		odjavaBtn.setBounds(15, 290, 180, 40);
+		odjavaBtn.setBounds(15, 300, 180, 40);
 		componentsPane.add(odjavaBtn);
 		    
 		dtm = new DefaultTableModel();

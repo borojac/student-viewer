@@ -36,7 +36,7 @@ public class AdministratorFormController {
 		catf.setVisible(true);
 	}
 	
-	public void createAddForm() {
+	public void createAddPredmetForm() {
 		if (addFormOpened)
 			return;
 
@@ -53,6 +53,10 @@ public class AdministratorFormController {
 	
 	public void resetChooseAddTypeFormOpened() {
 		predmetChooseAddTypeFormOpened = false;
+	}
+	
+	public void resetAddFormOpened(){
+		addFormOpened = false;
 	}
 	
 	public void odbij() {
