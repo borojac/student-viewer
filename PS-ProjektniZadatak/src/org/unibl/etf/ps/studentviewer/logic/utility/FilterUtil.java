@@ -49,6 +49,7 @@ public class FilterUtil {
 				Integer viseOd = new Integer(testoviMap.get(test).get(Filter.VISE_OD));
 				Integer manjeOd = new Integer(testoviMap.get(test).get(Filter.MANJE_OD));
 
+				
 				if (izasao)
 					if (s.getTest(test) == null) {
 						breakControl = true;
@@ -73,17 +74,19 @@ public class FilterUtil {
 						break;
 					}
 
-				Integer poeni = new Integer(s.getTest(test));
-				if (viseOd > poeni) {
-					breakControl = true;
-					break;
-				}
+				if (!nijeIzasao && s.getTest(test) != null) {
+					
+					Integer poeni = new Integer(s.getTest(test));
+					if (viseOd > poeni) {
+						breakControl = true;
+						break;
+					}
 
-				if (manjeOd < poeni) {
-					breakControl = true;
-					break;
+					if (manjeOd < poeni) {
+						breakControl = true;
+						break;
+					}
 				}
-
 			}
 			if (breakControl)
 				continue;
@@ -92,7 +95,8 @@ public class FilterUtil {
 		}
 
 		if (filteredStudents.size() == 0) {
-			JOptionPane.showMessageDialog(null, "Nema odgovarajucih rezultata! Nijedna promjena na tabeli nije izvrsena.");
+			JOptionPane.showMessageDialog(null,
+					"Nema odgovarajucih rezultata! Nijedna promjena na tabeli nije izvrsena.");
 			filteredStudents = currentStudents;
 		}
 		return filteredStudents;

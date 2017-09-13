@@ -130,7 +130,7 @@ public class MainTable extends JTable {
 			
 			for (String s : StudentsForMainTable.getAllIspiti())
 				if (ShowViewData.getValue(s)) {
-					forRet[i][j++] = student.getTest(s);
+					forRet[i][j++] = student.getTestForShowView(s);
 				}
 			i++;
 		}

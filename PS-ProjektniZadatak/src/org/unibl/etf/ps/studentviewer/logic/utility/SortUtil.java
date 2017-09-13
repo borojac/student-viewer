@@ -7,7 +7,6 @@ import java.util.HashMap;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class SortUtil {
-	
 
 	public static Comparator<StudentMainTableDTO> getComparator(ArrayList<StudentMainTableDTO> students, ArrayList<String> params) {
 		Comparator<StudentMainTableDTO> comparator = new Comparator<StudentMainTableDTO>() {
@@ -27,8 +26,20 @@ public class SortUtil {
 							result = broj1.compareTo(broj2);
 						}
 					}else if (param.startsWith(Sort.TEST)) {
-						Integer broj1 = new Integer(o1.getProperty(param));
-						Integer broj2 = new Integer(o2.getProperty(param));
+						String help1 = null;
+						String help2 = null;
+						if ("/".equals(o1.getProperty(param)))
+							help1 = "-1";
+						else
+							help1 = o1.getProperty(param);
+						
+						if ("/".equals(o2.getProperty(param)))
+								help2 = "-1";
+						else 
+							help2 = o2.getProperty(param);
+						
+						Integer broj1 = new Integer(help1);
+						Integer broj2 = new Integer(help2);
 						result = broj2.compareTo(broj1);
 					}else
 						result = o1.getProperty(param).compareTo(o2.getProperty(param));
@@ -43,5 +54,5 @@ public class SortUtil {
 		};
 		return comparator;
 	}
-	
+
 }
