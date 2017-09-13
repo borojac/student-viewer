@@ -50,12 +50,16 @@ public class LoginFormController {
 		
 		if("".equals(korisnickoIme) || "".equals(loginForm.getLozinka())) {
 			JOptionPane.showMessageDialog(loginForm, "Niste unijeli korisnicko ime ili lozinku.");
+			resetAdminFormOpened();
+			resetMainFormOpened();
 		} else {
 			MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
 			NalogDAO nalogDAO = nalogFactory.getNalogDAO();
 			NalogDTO nalogDTO = nalogDAO.getNalog(korisnickoIme, lozinkaHash);
 			if(nalogDTO == null) {
 				JOptionPane.showMessageDialog(loginForm, "Korisnicko ime ili lozinka nisu korektno uneseni.");
+				resetAdminFormOpened();
+				resetMainFormOpened();
 			} else {
 				if(nalogDTO.getTipNaloga() == 'K') {
 					MainForm mainForm = new MainForm(nalogDTO);
