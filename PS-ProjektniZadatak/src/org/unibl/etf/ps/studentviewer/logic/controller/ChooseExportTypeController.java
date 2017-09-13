@@ -1,3 +1,6 @@
+/**
+ * @author dejan
+ */
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import java.awt.print.PrinterException;
@@ -25,6 +28,8 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.TabSettings;
 import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfName;
+import com.itextpdf.text.pdf.PdfPage;
 import com.itextpdf.text.pdf.PdfWriter;
 
 public class ChooseExportTypeController {
@@ -73,6 +78,9 @@ public class ChooseExportTypeController {
 		Document doc = new Document();
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		PdfWriter writer = PdfWriter.getInstance(doc, os);
+		if(header.length > 4)
+			writer.addPageDictEntry(PdfName.DEFAULT, PdfPage.LANDSCAPE);
+		
 		Paragraph title = new Paragraph();
 		title.setIndentationLeft(60f);
 		title.setFont(font);
@@ -130,6 +138,8 @@ public class ChooseExportTypeController {
 		Document doc = new Document();
 		OutputStream os = new FileOutputStream(chosenFile);
 		PdfWriter writer = PdfWriter.getInstance(doc, os);
+		if(header.length > 4)
+			writer.addPageDictEntry(PdfName.DEFAULT, PdfPage.LANDSCAPE);
 
 		Paragraph title = new Paragraph();
 		title.setIndentationLeft(60f);

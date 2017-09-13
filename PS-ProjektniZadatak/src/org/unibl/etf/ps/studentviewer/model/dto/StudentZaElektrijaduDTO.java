@@ -8,10 +8,10 @@ public class StudentZaElektrijaduDTO {
 	private String komentar;
 
 	public StudentZaElektrijaduDTO() {
-		
+
 	}
 
-	public StudentZaElektrijaduDTO(int id,String indeks, String ime, String prezime, String komentar) {
+	public StudentZaElektrijaduDTO(int id, String indeks, String ime, String prezime, String komentar) {
 		super();
 		this.id = id;
 		this.indeks = indeks;
@@ -51,8 +51,6 @@ public class StudentZaElektrijaduDTO {
 	public void setNapomena(String komentar) {
 		this.komentar = komentar;
 	}
-	
-	
 
 	public int getId() {
 		return id;
@@ -83,7 +81,6 @@ public class StudentZaElektrijaduDTO {
 			return false;
 		return true;
 	}
-
 
 	
 

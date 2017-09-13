@@ -5,6 +5,7 @@ import org.unibl.etf.ps.studentviewer.gui.view.BrisanjePredmetaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChangeAccountNameForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChangePasswordForm;
 import org.unibl.etf.ps.studentviewer.gui.view.DodavanjePredmetaForm;
+import org.unibl.etf.ps.studentviewer.gui.view.LoginForm;
 
 public class AccountFormController {
 	
@@ -61,6 +62,13 @@ public class AccountFormController {
 	}
 	
 	public synchronized boolean odjava() {
+		LoginFormController.resetMainFormOpened();
+		LoginFormController.resetAdminFormOpened();
+		MainFormController.resetAccountFormOpened();
+		accountForm.getMainFormController().getMainForm().dispose();
+		accountForm.dispose();
+		LoginForm loginForm = new LoginForm();
+		loginForm.setVisible(true);
 		return true;
 	}
 	

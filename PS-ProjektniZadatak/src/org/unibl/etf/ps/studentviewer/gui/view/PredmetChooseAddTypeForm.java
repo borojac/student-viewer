@@ -1,20 +1,15 @@
-/**
- * @author dejan
- */
 package org.unibl.etf.ps.studentviewer.gui.view;
 
-
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,35 +18,35 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import org.imgscalr.Scalr;
+import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.ChooseAddTypeController;
-import org.unibl.etf.ps.studentviewer.logic.controller.ChooseExportTypeController;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
+import org.unibl.etf.ps.studentviewer.logic.controller.PredmetChooseAddTypeFormController;
 
-import com.itextpdf.text.DocumentException;
 import java.awt.Font;
 
 
-public class ExportStudentsForm extends JFrame {
+public class PredmetChooseAddTypeForm extends JFrame {
 
 	private JPanel contentPane;
 	JCheckBox chckbxNewCheckBoxJedan = new JCheckBox("");
 	JCheckBox chckbxNewCheckBoxVise = new JCheckBox("");
 
-	public ExportStudentsForm(MainFormController mainFormController) {
+	public PredmetChooseAddTypeForm(AdministratorFormController administratorFormController) {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
-				   mainFormController.resetExporting();
+				   administratorFormController.resetChooseAddTypeFormOpened();
 			   }
 			  });
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 293, 288);
+		setBounds(100, 100, 293, 287);
 		contentPane =new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -87,15 +82,10 @@ public class ExportStudentsForm extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				boolean print = chckbxNewCheckBoxJedan.isSelected();
-				boolean pdf = chckbxNewCheckBoxVise.isSelected();
-				ExportStudentsForm.this.dispose();
-				try {
-					new ChooseExportTypeController(mainFormController, print, pdf, ExportStudentsForm.this);
-				} catch (IOException | DocumentException | PrinterException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}	
+				boolean jedan = chckbxNewCheckBoxJedan.isSelected();
+				boolean vise = chckbxNewCheckBoxVise.isSelected();
+				PredmetChooseAddTypeForm.this.dispose();
+				new PredmetChooseAddTypeFormController(administratorFormController, jedan, vise, PredmetChooseAddTypeForm.this);	
 			}
 		});
 		chooseButton.setBounds(96, 217, 89, 29);
@@ -107,14 +97,13 @@ public class ExportStudentsForm extends JFrame {
 		contentPane.add(panel1);
 		panel1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JTextArea stampanjeLbl = new JTextArea();
-		stampanjeLbl.setFont(new Font("Tahoma", Font.BOLD, 13));
-		stampanjeLbl.setLineWrap(true);
-		stampanjeLbl.setEditable(false);
-		stampanjeLbl.setForeground(Color.WHITE);
-		stampanjeLbl.setBackground(new Color(0,0,139));
-		stampanjeLbl.setText("   Stampanje");
-		panel1.add(stampanjeLbl);
+		JTextArea txtrDodavanjeJednog = new JTextArea();
+		txtrDodavanjeJednog.setEditable(false);
+		txtrDodavanjeJednog.setForeground(Color.WHITE);
+		txtrDodavanjeJednog.setBackground(new Color(0,0,139));
+		txtrDodavanjeJednog.setText("     Dodavanje" + System.lineSeparator()+"jednog predmeta");
+		txtrDodavanjeJednog.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panel1.add(txtrDodavanjeJednog);
 		
 		
 		chckbxNewCheckBoxJedan.addChangeListener(new ChangeListener() {
@@ -126,17 +115,18 @@ public class ExportStudentsForm extends JFrame {
 		panel1.add(chckbxNewCheckBoxJedan);
 		
 		JPanel panel2 = new JPanel();
-		panel2.setBounds(179, 131, 48, 75);
+		panel2.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panel2.setBounds(145, 131, 111, 75);
 		panel2.setBackground(new Color(0,0,139));
 		contentPane.add(panel2);
 		panel2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JTextArea txtrDodavanjeVise = new JTextArea();
-		txtrDodavanjeVise.setFont(new Font("Tahoma", Font.BOLD, 13));
 		txtrDodavanjeVise.setEditable(false);
 		txtrDodavanjeVise.setForeground(Color.WHITE);
 		txtrDodavanjeVise.setBackground(new Color(0,0,139));
-		txtrDodavanjeVise.setText("PDF");
+		txtrDodavanjeVise.setText("    Dodavanje" + System.lineSeparator()+" vise predmeta");
+		txtrDodavanjeVise.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panel2.add(txtrDodavanjeVise);
 		chckbxNewCheckBoxVise.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -148,3 +138,11 @@ public class ExportStudentsForm extends JFrame {
 		panel2.add(chckbxNewCheckBoxVise);
 	}
 }
+	/**
+	 * Launch the application.
+	 */
+
+	/**
+	 * Create the frame.
+	 */
+	

@@ -1,9 +1,7 @@
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 import javax.swing.JOptionPane;
@@ -19,18 +17,34 @@ import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 public class LoginFormController {
 	
 	private LoginForm loginForm;
+	private static boolean mainFormOpened = false;
+	private static boolean adminFormOpened = false;
+	private static boolean kreirajNalogFormOpened = false;
 	
 	public LoginFormController(LoginForm loginForm) {
 		this.loginForm = loginForm;
 	}
 	
 	public void createKreirajNalogForm() {
+		if(kreirajNalogFormOpened) {
+			return;
+		}
+		
+		kreirajNalogFormOpened = true;
+		
 		KreirajNalogForm kreirajNalogForm = new KreirajNalogForm();
 		kreirajNalogForm.setVisible(true);
 		loginForm.setVisible(false);
 	}
 	
 	public void prijava() throws IOException {
+		if(mainFormOpened || adminFormOpened) {
+			return;
+		}
+		
+		mainFormOpened = true;
+		adminFormOpened = true;
+		
 		String korisnickoIme = loginForm.getKorisnickoIme();
 		String lozinkaHash = sha256(loginForm.getLozinka());
 		
@@ -46,12 +60,12 @@ public class LoginFormController {
 				if(nalogDTO.getTipNaloga() == 'K') {
 					MainForm mainForm = new MainForm(nalogDTO);
 					mainForm.setVisible(true);
-					loginForm.setVisible(false);
+					loginForm.dispose();
 				} else {
 					AdministratorForm adminForm = new AdministratorForm();
 					adminForm.setNalogDTO(nalogDTO);
 					adminForm.setVisible(true);
-					loginForm.setVisible(false);
+					loginForm.dispose();
 				}
 				
 			}
@@ -67,6 +81,14 @@ public class LoginFormController {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public static void resetMainFormOpened() {
+		mainFormOpened = false;
+	}
+	
+	public static void resetAdminFormOpened() {
+		adminFormOpened = false;
 	}
 
 }

@@ -29,6 +29,7 @@ import javax.swing.event.ChangeListener;
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.ChooseAddTypeController;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
+import java.awt.Font;
 
 
 public class ChooseAddTypeForm extends JFrame {
@@ -38,6 +39,7 @@ public class ChooseAddTypeForm extends JFrame {
 	JCheckBox chckbxNewCheckBoxVise = new JCheckBox("");
 
 	public ChooseAddTypeForm(MainFormController mainFormController) {
+		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
 				   mainFormController.resetChooseAddTypeFormOpened();
@@ -45,7 +47,7 @@ public class ChooseAddTypeForm extends JFrame {
 			  });
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 304, 288);
+		setBounds(100, 100, 293, 287);
 		contentPane =new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -101,6 +103,7 @@ public class ChooseAddTypeForm extends JFrame {
 		txtrDodavanjeJednog.setForeground(Color.WHITE);
 		txtrDodavanjeJednog.setBackground(new Color(0,0,139));
 		txtrDodavanjeJednog.setText("   Dodavanje" + System.lineSeparator()+"jednog studenta");
+		txtrDodavanjeJednog.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panel1.add(txtrDodavanjeJednog);
 		
 		
@@ -113,7 +116,8 @@ public class ChooseAddTypeForm extends JFrame {
 		panel1.add(chckbxNewCheckBoxJedan);
 		
 		JPanel panel2 = new JPanel();
-		panel2.setBounds(145, 131, 134, 75);
+		panel2.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panel2.setBounds(145, 131, 111, 75);
 		panel2.setBackground(new Color(0,0,139));
 		contentPane.add(panel2);
 		panel2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -123,6 +127,7 @@ public class ChooseAddTypeForm extends JFrame {
 		txtrDodavanjeVise.setForeground(Color.WHITE);
 		txtrDodavanjeVise.setBackground(new Color(0,0,139));
 		txtrDodavanjeVise.setText("   Dodavanje" + System.lineSeparator()+" vise studenata");
+		txtrDodavanjeVise.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panel2.add(txtrDodavanjeVise);
 		chckbxNewCheckBoxVise.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {

@@ -6,17 +6,13 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -44,14 +40,11 @@ import org.unibl.etf.ps.studentviewer.logic.controller.ElektrijadaController;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.DodatnaNastavaDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDodatnaNastavaDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
-
-import com.itextpdf.text.DocumentException;
 
 public class ElektrijadaForm extends JFrame {
 
@@ -66,14 +59,15 @@ public class ElektrijadaForm extends JFrame {
 	private JPanel contentPane;
 	private JTable tableStudenti;
 	private JTable tableDodatneNastave;
-	private  ElektrijadaForm forma;
+	private ElektrijadaForm forma;
 	private ElektrijadaDTO elektrijadaDTO;
 	private NalogDTO nalogDTO;
 	private DisciplinaDTO disciplinaDTO;
-	private  DodatnaNastavaDataTableModel dodatnaNastavaDataModel;
-	private  StudentiZaElektrijaduTableModel studentiZaElektrijaduDataModel;
-	private  ElektrijadaController elektrijadaController;
+	private DodatnaNastavaDataTableModel dodatnaNastavaDataModel;
+	private StudentiZaElektrijaduTableModel studentiZaElektrijaduDataModel;
+	private ElektrijadaController elektrijadaController;
 	private Logger logger = Logger.getLogger(ElektrijadaForm.class);
+
 	/**
 	 * Launch the application.
 	 */
@@ -82,34 +76,24 @@ public class ElektrijadaForm extends JFrame {
 		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
 		DAOFactory dao = new MySQLDAOFactory();
 		DodatnaNastavaDAO dnDAO = dao.getDodatnaNastavaDAO();
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-		Date startDate = null;
-		String datum = "20-3-2011 02:20:00";
-		try {
-			startDate = df.parse(datum);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		System.out.println(dnDAO.dodajDodatnuNastavu(new DodatnaNastavaDTO(0, startDate, "napomena", "naziv", 1, "Programiranje", 1)));
-		System.out.println(dnDAO.dodatneNastave(1, 1,"Programiranje"));
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					ElektrijadaForm frame = new ElektrijadaForm(new ElektrijadaDTO(1,new Date(),"Banja Luka"),new NalogDTO(),new DisciplinaDTO());
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
+		// EventQueue.invokeLater(new Runnable() {
+		// public void run() {
+		// try {
+		// ElektrijadaForm frame = new ElektrijadaForm(new ElektrijadaDTO(1,new
+		// Date(),"Banja Luka"),new NalogDTO(),new DisciplinaDTO());
+		// frame.setVisible(true);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// }
+		// });
 	}
 
 	/**
 	 * Create the frame.
 	 */
-	public ElektrijadaForm(ElektrijadaDTO elektrijadaDTO, NalogDTO nalogDTO,DisciplinaDTO disciplinaDTO) throws Exception {
+	public ElektrijadaForm(ElektrijadaDTO elektrijadaDTO, NalogDTO nalogDTO, DisciplinaDTO disciplinaDTO)
+			throws Exception {
 		forma = this;
 		this.elektrijadaDTO = elektrijadaDTO;
 		this.disciplinaDTO = disciplinaDTO;
@@ -132,7 +116,8 @@ public class ElektrijadaForm extends JFrame {
 			File logFolder = new File("./log");
 			if (!logFolder.exists())
 				logFolder.mkdirs();
-			logger.addAppender(new FileAppender(new SimpleLayout(), "./log/" + ElektrijadaForm.class.getSimpleName() + ".log"));
+			logger.addAppender(
+					new FileAppender(new SimpleLayout(), "./log/" + ElektrijadaForm.class.getSimpleName() + ".log"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -160,17 +145,17 @@ public class ElektrijadaForm extends JFrame {
 		scrollPaneNastavneTeme.setBorder(UIManager.getBorder("Button.border"));
 		scrollPaneNastavneTeme.setBounds(10, 219, 558, 382);
 
-		elektrijadaController = new ElektrijadaController(forma,elektrijadaDTO,nalogDTO,disciplinaDTO);
+		elektrijadaController = new ElektrijadaController(forma, elektrijadaDTO, nalogDTO, disciplinaDTO);
 
 		String date = "23/10/2012 08:15 AM";
 
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
 		Date startDate = df.parse(date);
-		
-		ElektrijadaController.listaDodatnihNastava
-				.add(new DodatnaNastavaDTO(1,startDate,"Napomena","Naziv teme",1,disciplinaDTO.getNaziv(),1));
 
-		ElektrijadaController.listaStudenata.add(new StudentZaElektrijaduDTO(2,"1111/11", "Marko", "Marković",
+		ElektrijadaController.listaDodatnihNastava
+				.add(new DodatnaNastavaDTO(1, startDate, "Napomena", "Naziv teme", 1, disciplinaDTO.getNaziv(), 1));
+
+		ElektrijadaController.listaStudenata.add(new StudentZaElektrijaduDTO(2, "1111/11", "Marko", "Marković",
 				"Prvo mjesto na Elektrijadi u Beogradu 2012. godine."));
 
 		studentiZaElektrijaduDataModel = new StudentiZaElektrijaduTableModel(ElektrijadaController.listaStudenata);
@@ -197,7 +182,7 @@ public class ElektrijadaForm extends JFrame {
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
 				if (c instanceof JComponent) {
-					if (column == 2 ) {
+					if (column == 2) {
 						JComponent jc = (JComponent) c;
 						jc.setToolTipText(getValueAt(row, column).toString());
 					}
@@ -206,15 +191,15 @@ public class ElektrijadaForm extends JFrame {
 			}
 		};
 
-//		contentPane.addKeyListener(new KeyAdapter() {
-//			@Override
-//			public void keyReleased(KeyEvent e) {
-//				elektrijadaController.undoRedoAkcija(dodatnaNastavaDataModel, tableDodatneNastave,
-//						studentiZaElektrijaduDataModel, tableStudenti, e);
-//			}
-//		});
-		
-		
+		// contentPane.addKeyListener(new KeyAdapter() {
+		// @Override
+		// public void keyReleased(KeyEvent e) {
+		// elektrijadaController.undoRedoAkcija(dodatnaNastavaDataModel,
+		// tableDodatneNastave,
+		// studentiZaElektrijaduDataModel, tableStudenti, e);
+		// }
+		// });
+
 		tableDodatneNastave.setFont(new Font("Century Gothic", Font.BOLD, 12));
 		tableDodatneNastave.setForeground(new Color(0, 0, 139));
 		tableDodatneNastave.setBackground(new Color(173, 216, 230));
@@ -249,7 +234,7 @@ public class ElektrijadaForm extends JFrame {
 		JButton btnBrisanjeNastavneTeme = new JButton("Brisanje dodatne nastave");
 		btnBrisanjeNastavneTeme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				elektrijadaController.brisanjeNastaveControl( tableDodatneNastave, dodatnaNastavaDataModel);
+				elektrijadaController.brisanjeNastaveControl(tableDodatneNastave, dodatnaNastavaDataModel);
 			}
 		});
 		btnBrisanjeNastavneTeme.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -258,7 +243,7 @@ public class ElektrijadaForm extends JFrame {
 		JButton btnBrisanjeStudenta = new JButton("Brisanje studenta");
 		btnBrisanjeStudenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				elektrijadaController.brisanjeStudentaControl( tableStudenti, studentiZaElektrijaduDataModel);
+				elektrijadaController.brisanjeStudentaControl(tableStudenti, studentiZaElektrijaduDataModel);
 			}
 		});
 		btnBrisanjeStudenta.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -286,7 +271,25 @@ public class ElektrijadaForm extends JFrame {
 		JButton btnExportPdff = new JButton("Export pdf");
 		btnExportPdff.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					elektrijadaController.exportPdf(logger);			
+
+				try {
+					elektrijadaController.exportPdf(logger);
+				} catch (Exception e1) {
+					EventQueue.invokeLater(new Runnable() {
+
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(forma,
+									"Eksportovanje nije uspjelo. Pogledajte log za detalje:\n"
+											+ new File("log" + "/" + ElektrijadaForm.class.getSimpleName() + ".log")
+													.getAbsolutePath(),
+									"Greška", JOptionPane.ERROR_MESSAGE);
+						}
+					});
+
+					logger.error("Eksportovanje nije uspjelo", e1);
+
+				}
 			}
 		});
 		btnExportPdff.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -303,16 +306,17 @@ public class ElektrijadaForm extends JFrame {
 						@Override
 						public void run() {
 							JOptionPane.showMessageDialog(forma,
-									"Štampanje nije uspjelo. Pogledajte log za detalje:\n" + new File("log" + "/" + ElektrijadaForm.class.getSimpleName() + ".log").getAbsolutePath(), 
-									"Greška", 
-									JOptionPane.ERROR_MESSAGE);
+									"Štampanje nije uspjelo. Pogledajte log za detalje:\n"
+											+ new File("log" + "/" + ElektrijadaForm.class.getSimpleName() + ".log")
+													.getAbsolutePath(),
+									"Greška", JOptionPane.ERROR_MESSAGE);
 						}
 					});
 
 					logger.error("Štampanje nije uspjelo", e1);
 
 				}
-				
+
 			}
 		});
 		btnExporttampa.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -347,6 +351,15 @@ public class ElektrijadaForm extends JFrame {
 						studentiZaElektrijaduDataModel, tableStudenti);
 			}
 		});
+
+		JButton btnNewButton = new JButton("Sačuvaj");
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnNewButton.setToolTipText("Redo");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				elektrijadaController.sacuvajIzmjeneUBazu();
+			}
+		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup().addContainerGap()
@@ -357,7 +370,7 @@ public class ElektrijadaForm extends JFrame {
 										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(scrollPaneStudenti, Alignment.LEADING, GroupLayout.PREFERRED_SIZE,
 										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGap(112)
+						.addGap(108)
 						.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 								.addComponent(btnExporttampa, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
 								.addComponent(btnExportPdff, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
@@ -366,35 +379,40 @@ public class ElektrijadaForm extends JFrame {
 								.addComponent(btnBrisanjeStudenta, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
 								.addComponent(btnBrisanjeNastavneTeme, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
 								.addComponent(btnBrisanjeListe, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(btnNazad, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(btnUndo, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(btnRedo, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 107,
-												Short.MAX_VALUE)))
+								.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(
+												btnNewButton, GroupLayout.PREFERRED_SIZE, 107,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(18)
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+												.addComponent(btnNazad, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE,
+														107, Short.MAX_VALUE)
+												.addComponent(btnUndo, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(btnRedo, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE,
+														107, Short.MAX_VALUE))))
 						.addContainerGap()));
 		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
 				.createSequentialGroup().addContainerGap().addGroup(gl_contentPane
-						.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane.createSequentialGroup()
+						.createParallelGroup(Alignment.TRAILING).addGroup(gl_contentPane.createSequentialGroup()
 								.addComponent(lblListaStudenata).addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(scrollPaneStudenti, GroupLayout.PREFERRED_SIZE,
-										224, GroupLayout.PREFERRED_SIZE)
+								.addComponent(scrollPaneStudenti, GroupLayout.PREFERRED_SIZE, 224,
+										GroupLayout.PREFERRED_SIZE)
 								.addGap(35).addComponent(lblListaNastavnihTema)
 								.addPreferredGap(ComponentPlacement.UNRELATED)
 								.addComponent(scrollPaneNastavneTeme, GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
-						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-								.addComponent(btnExporttampa).addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(btnExportPdff).addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(btnDodajStudenta).addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(btnDodavanjeNastavneTeme).addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(btnBrisanjeStudenta).addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(btnBrisanjeNastavneTeme).addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(btnBrisanjeListe).addGap(18).addComponent(btnUndo).addGap(18)
-								.addComponent(btnRedo).addGap(18).addComponent(btnNazad)))
+						.addGroup(gl_contentPane.createSequentialGroup().addComponent(btnExporttampa)
+								.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnExportPdff)
+								.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnDodajStudenta)
+								.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnDodavanjeNastavneTeme)
+								.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnBrisanjeStudenta)
+								.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnBrisanjeNastavneTeme)
+								.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnBrisanjeListe).addGap(18)
+								.addComponent(btnUndo).addGap(18).addComponent(btnRedo).addGap(18)
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(btnNazad)
+										.addComponent(btnNewButton))))
 				.addGap(40)));
 
 		contentPane.setLayout(gl_contentPane);
 	}
-
 }

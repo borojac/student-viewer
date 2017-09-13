@@ -6,11 +6,11 @@ import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 
 public interface DodatnaNastavaDAO {
 
-	public List<DodatnaNastavaDTO> dodatneNastave(int elektrijadId, int nalogId, String naziv);
+	public List<DodatnaNastavaDTO> getDodatneNastave(int elektrijadId, int nalogId, String naziv);
 
 	public boolean azurirajDodatnuNastavu(DodatnaNastavaDTO dodatnaNastava);
 
 	public boolean dodajDodatnuNastavu(DodatnaNastavaDTO dodatnaNastava);
 
-	public boolean obrisiDodatnuNastavu(DodatnaNastavaDTO dodatnaNastava);
+	public boolean obrisiDodatnuNastavu(int idDodatneNastave);
 }

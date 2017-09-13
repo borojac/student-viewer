@@ -1,6 +1,7 @@
 package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
@@ -18,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import org.imgscalr.Scalr;
@@ -37,6 +39,10 @@ public class AdministratorForm extends JFrame {
 	private JPanel componentsPane;
 	private JButton odobriBtn;
 	private JButton odbijBtn;
+	private JButton dodajPredmeteBtn;
+	private JButton dodajStudProgBtn;
+	private JButton odjavaBtn;
+	private JButton dodajDisciplinuBtn;
 	private JScrollPane	scrollPane;
 	private ArrayList<ZahtjevDTO> list;
 	
@@ -44,6 +50,26 @@ public class AdministratorForm extends JFrame {
 	private AdministratorFormController administratorFormController;
 	
 	private DefaultTableModel dtm;
+	
+	
+	
+	public static void main(String[] args) {
+		System.setProperty("javax.net.ssl.trustStore", "StudentViewer.jks");
+		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (Exception ex) {}
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					AdministratorForm frame = new AdministratorForm();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the frame.
@@ -95,7 +121,7 @@ public class AdministratorForm extends JFrame {
 		componentsPane = new JPanel();
 		componentsPane.setBackground(new Color(0, 0, 139));
 		componentsPane.setLayout(null);
-		componentsPane.setBounds(0, 400, 600, 430);
+		componentsPane.setBounds(430, 130, 600, 430);
 		contentPane.add(componentsPane);
 		
 		initComponents();
@@ -112,16 +138,32 @@ public class AdministratorForm extends JFrame {
 		
 		adminZahtjeviJt = new JTable();
 		scrollPane = new JScrollPane(adminZahtjeviJt);
-		scrollPane.setBounds(70, 150, 500, 250);
+		scrollPane.setBounds(20, 150, 400, 350);
 		contentPane.add(scrollPane);
 		  
 		odobriBtn = new JButton("Odobri");
-		odobriBtn.setBounds(140, 40, 120, 40);
+		odobriBtn.setBounds(15, 50, 180, 40);
 		componentsPane.add(odobriBtn);
 		  
 		odbijBtn = new JButton("Odbij");
-		odbijBtn.setBounds(380, 40, 120, 40);
+		odbijBtn.setBounds(15, 100, 180, 40);
 		componentsPane.add(odbijBtn);
+		
+		dodajPredmeteBtn = new JButton("Dodaj predmete");
+		dodajPredmeteBtn.setBounds(15, 150, 180, 40);
+		componentsPane.add(dodajPredmeteBtn);
+		
+		dodajDisciplinuBtn = new JButton("Dodaj disciplinu");
+		dodajDisciplinuBtn.setBounds(15, 200, 180, 40);
+		componentsPane.add(dodajDisciplinuBtn);
+		
+		dodajStudProgBtn = new JButton("Dodaj studijske programe");
+		dodajStudProgBtn.setBounds(15, 250, 180, 40);
+		componentsPane.add(dodajStudProgBtn);
+		
+		odjavaBtn = new JButton("Odjava");
+		odjavaBtn.setBounds(15, 300, 180, 40);
+		componentsPane.add(odjavaBtn);
 		    
 		dtm = new DefaultTableModel();
 		dtm.addColumn("Ime");
@@ -149,10 +191,24 @@ public class AdministratorForm extends JFrame {
 			}
 		});
 		
+		dodajPredmeteBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				administratorFormController.createPredmetChooseAddTypeForm();
+			}
+		});
+		
 		odbijBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				administratorFormController.odbij();
+			}
+		});
+		
+		odjavaBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				administratorFormController.odjava();
 			}
 		});
 		

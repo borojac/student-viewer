@@ -14,6 +14,9 @@ import javax.swing.table.AbstractTableModel;
 
 import org.unibl.etf.ps.studentviewer.gui.view.EditorZaElektrijaduForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ElektrijadaForm;
+import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.DodatnaNastavaDAO;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
 
@@ -34,6 +37,8 @@ public class EditorZaElektrijaduController {
 		if (!izbor) {
 			String izmjena = "";
 			String procitano = textArea.getText();
+			DAOFactory dao = new MySQLDAOFactory();
+			DodatnaNastavaDAO dnDAO = dao.getDodatnaNastavaDAO();
 			if (procitano.length() > 0) {
 				int row = target.getSelectedRow();
 				int column = target.getSelectedColumn();
