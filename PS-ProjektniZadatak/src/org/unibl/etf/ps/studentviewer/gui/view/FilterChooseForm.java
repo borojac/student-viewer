@@ -80,17 +80,11 @@ public class FilterChooseForm extends JFrame {
 	 * @param filterFormController 
 	 */
 	public FilterChooseForm(FilterForm filterForm, FilterFormController filterFormController) {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent arg0) {
-				FilterChooseForm.this.dispose();
-				filterForm.setVisible(true);
-			}
-		});
+		
 		this.ffc = filterFormController;
 		this.filterForm = filterForm;
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 244, 385);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
@@ -225,5 +219,12 @@ public class FilterChooseForm extends JFrame {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
+		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				filterForm.setVisible(true);
+			}
+		});
 	}
 }
