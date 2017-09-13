@@ -49,7 +49,7 @@ public class ShowForm extends JFrame {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 267, 387);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(0, 0, 205));
+		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -80,7 +80,7 @@ public class ShowForm extends JFrame {
 		contentPane.add(whiteCorrectionLabel2);
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(0, 0, 205));
+		panel.setBackground(new Color(0, 0, 139));
 		panel.setBounds(45, 131, 170, 181);
 		contentPane.add(panel);
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -88,7 +88,7 @@ public class ShowForm extends JFrame {
 		JCheckBox indeksCheckBox = new JCheckBox("Indeks");
 		indeksCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
 		indeksCheckBox.setForeground(new Color(255, 255, 255));
-		indeksCheckBox.setBackground(new Color(0, 0, 205));
+		indeksCheckBox.setBackground(new Color(0, 0, 139));
 		panel.add(indeksCheckBox);
 		boxes.add(indeksCheckBox);
 		if (ShowViewData.getValue(ShowViewData.D_BROJINDEKSA))
@@ -97,7 +97,7 @@ public class ShowForm extends JFrame {
 		JCheckBox imeCheckBox = new JCheckBox("Ime");
 		imeCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
 		imeCheckBox.setForeground(new Color(255, 255, 255));
-		imeCheckBox.setBackground(new Color(0, 0, 205));
+		imeCheckBox.setBackground(new Color(0, 0, 139));
 		panel.add(imeCheckBox);
 		boxes.add(imeCheckBox);
 		if(ShowViewData.getValue(ShowViewData.D_IME))
@@ -106,7 +106,7 @@ public class ShowForm extends JFrame {
 		JCheckBox prezimeCheckBox = new JCheckBox("Prezime");
 		prezimeCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
 		prezimeCheckBox.setForeground(new Color(255, 255, 255));
-		prezimeCheckBox.setBackground(new Color(0, 0, 205));
+		prezimeCheckBox.setBackground(new Color(0, 0, 139));
 		panel.add(prezimeCheckBox);
 		boxes.add(prezimeCheckBox);
 		if (ShowViewData.getValue(ShowViewData.D_PREZIME))
@@ -115,7 +115,7 @@ public class ShowForm extends JFrame {
 		JCheckBox elektrijadaCheckBox = new JCheckBox("Elektrijada");
 		elektrijadaCheckBox.setForeground(new Color(255, 255, 255));
 		elektrijadaCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
-		elektrijadaCheckBox.setBackground(new Color(0, 0, 205));
+		elektrijadaCheckBox.setBackground(new Color(0, 0, 139));
 		panel.add(elektrijadaCheckBox);
 		boxes.add(elektrijadaCheckBox);
 		if (ShowViewData.getValue(ShowViewData.D_ELEKTRIJADA))
@@ -124,7 +124,7 @@ public class ShowForm extends JFrame {
 		JCheckBox komentarCheckBox = new JCheckBox("Komentar");
 		komentarCheckBox.setForeground(new Color(255, 255, 255));
 		komentarCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
-		komentarCheckBox.setBackground(new Color(0, 0, 205));
+		komentarCheckBox.setBackground(new Color(0, 0, 139));
 		panel.add(komentarCheckBox);
 		boxes.add(komentarCheckBox);
 		if (ShowViewData.getValue(ShowViewData.D_KOMENTAR))
@@ -140,7 +140,7 @@ public class ShowForm extends JFrame {
 		});
 		testCheckBox.setForeground(new Color(255, 255, 255));
 		testCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
-		testCheckBox.setBackground(new Color(0, 0, 205));
+		testCheckBox.setBackground(new Color(0, 0, 139));
 		panel.add(testCheckBox);
 		boxes.add(testCheckBox);
 		if (ShowViewData.getValue(ShowViewData.D_TEST))
