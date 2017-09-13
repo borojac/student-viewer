@@ -10,7 +10,7 @@ public class StudentMainTableDTO {
 	private String brojIndeksa;
 	private String ime;
 	private String prezime;
-	private String komentar = "none"; // Mozda lista komentara
+	private String komentar = ""; // Mozda lista komentara
 	private String elektrijada = "NE";
 	private HashMap<String, String> testovi = new HashMap<String, String>();
 	
@@ -116,6 +116,15 @@ public class StudentMainTableDTO {
 
 	public String getElektrijada() {
 		return elektrijada;
+	}
+
+	public void setElektrijada() {
+		elektrijada = "DA";
+		
+	}
+	
+	public void resetElektrijada() {
+		elektrijada = "NE";
 	}
 	
 	

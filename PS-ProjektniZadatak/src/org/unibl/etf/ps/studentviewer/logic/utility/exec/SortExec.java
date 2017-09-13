@@ -19,12 +19,12 @@ public class SortExec extends Exec {
 		for(Object o : params) {
 			this.params.add((String)o);
 		}
-		students = mainFormController.getMainTable().getStudents();
 		mainFormController.getScheduler().add(this);
 	}
 	
 	public void execute() {
 		Comparator<StudentMainTableDTO> comparator = SortUtil.getComparator(students, params);
+		students = mainFormController.getMainTable().getStudents();
 		students.sort(comparator);
 		mainFormController.getMainTable().setStudents(students);
 		mainFormController.getMainTable().changeView();

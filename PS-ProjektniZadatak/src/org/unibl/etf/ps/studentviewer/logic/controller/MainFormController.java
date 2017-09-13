@@ -88,7 +88,6 @@ public class MainFormController {
 	}
 	
 	
-	
 	public MainFormController() {
 		super();
 		// TODO Auto-generated constructor stub

@@ -32,7 +32,13 @@ public class StudentsForMainTable {
 				testovi.put("02.08.2016.", new Integer(i).toString());
 				student.setTestovi(testovi);
 				String komentar = "nekakav komentar " + i;
+				if (i % 3 == 0)
+					komentar = "";
 				student.setKomentar(komentar);
+				if ( i % 2 == 0)
+					student.setElektrijada();
+				else
+					student.resetElektrijada();
 				
 				allStudents.add(student);
 			}

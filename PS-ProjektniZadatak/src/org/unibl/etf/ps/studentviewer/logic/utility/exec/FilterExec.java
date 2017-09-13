@@ -1,27 +1,31 @@
 package org.unibl.etf.ps.studentviewer.logic.utility.exec;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Set;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
+import org.unibl.etf.ps.studentviewer.logic.utility.FilterUtil;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class FilterExec extends Exec {
-	private String thirdParam;
-	private Date fourthParam;
-	private double fifthParam;
-	private double sixthParam;
+	MainFormController mainFormController;
+	HashMap<String, HashMap<String, String>> testovi;
+	ArrayList<String> controlParams;
 	
-	public FilterExec(MainFormController mainFormController, ArrayList<Object> params) {
-		this.mainFormController = mainFormController;
-		//firstParam = params.get(0);
-		secondParam = (String)params.get(1);
-		thirdParam = (String)params.get(2);
-		fourthParam = (Date)params.get(3);
-		fifthParam = (double)params.get(4);
-		sixthParam = (double)params.get(5);
+	
+	public FilterExec(MainFormController mainFormControler, HashMap<String, HashMap<String, String>> hashMap, ArrayList<String> controlParams) {
+		this.mainFormController = mainFormControler;
+		this.testovi = hashMap;
+		this.controlParams = controlParams;
+		mainFormController.getScheduler().add(this);
 	}
-	
-	public void run() {
-		mainFormController.resetFilterFormOpened();
+
+	public void execute() {
+		ArrayList<StudentMainTableDTO> filteredStudents = FilterUtil.filter(mainFormController, testovi, controlParams);
+		mainFormController.getMainTable().setStudents(filteredStudents);
+		mainFormController.getMainTable().changeView();
+		students = filteredStudents;
+		super.execute();
 	}
 }
