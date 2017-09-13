@@ -43,8 +43,8 @@ public class FilterUtil {
 				boolean nijePolozen = "true".equals(testoviMap.get(test).get(Filter.NIJE_POLOZEN));
 				boolean izasao = "true".equals(testoviMap.get(test).get(Filter.IZASAO));
 				boolean nijeIzasao = "true".equals(testoviMap.get(test).get(Filter.NIJE_IZASAO));
-				String viseOd = testoviMap.get(test).get(Filter.VISE_OD);
-				String manjeOd = testoviMap.get(test).get(Filter.MANJE_OD);
+				Integer viseOd = new Integer(testoviMap.get(test).get(Filter.VISE_OD));
+				Integer manjeOd = new Integer(testoviMap.get(test).get(Filter.MANJE_OD));
 				
 				if (izasao)
 					if (s.getTest(test) == null) {
@@ -69,7 +69,17 @@ public class FilterUtil {
 						breakControl = true;
 						break;
 					}
-			
+				
+				Integer poeni = new Integer(s.getTest(test));
+				if (viseOd > poeni) {
+					breakControl = true;
+					break;
+				}
+				
+				if (manjeOd < poeni) {
+					breakControl = true;
+					break;
+				}
 				
 			}
 			if (breakControl)
