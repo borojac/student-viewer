@@ -71,6 +71,7 @@ public class AddForm extends JFrame {
 	}
 	
 public AddForm(MainFormController mainFormController) {
+	setTitle("Dodavanje");
 		setResizable(false);
 		
 		addWindowListener(new WindowAdapter() {

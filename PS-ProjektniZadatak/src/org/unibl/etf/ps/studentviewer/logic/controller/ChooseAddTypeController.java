@@ -19,7 +19,7 @@ public class ChooseAddTypeController {
 		this.mainFormController = mainFormController;
 		if (!(one || more)) {
 			final String message = "Morate izabrati jednu opciju!";
-			JOptionPane.showMessageDialog(null, message);
+			JOptionPane.showMessageDialog(null, message, "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 			form.setVisible(true);
 		} else if (one) {
 			this.mainFormController.createAddForm();
@@ -30,33 +30,36 @@ public class ChooseAddTypeController {
 
 				ArrayList<StudentMainTableDTO> listaZaTabelu = new ArrayList<>();
 				AddChangeStudentsHelpController help = new AddChangeStudentsHelpController();
+				ArrayList<Integer> vrsteSGreskama = new ArrayList<>();
+				int i = 1;
 				for (String[] data : studenti) {
 					String indeks = data[0];
 					String ime = data[1];
 					String prezime = data[2];
 					StudentMainTableDTO newStudent = new StudentMainTableDTO(indeks, ime, prezime);
-					listaZaTabelu.add(newStudent);
-
-				}
-				// TODO poziv metode koja cuva listu u bazi
-				int i = 1;
-				for (StudentMainTableDTO student : listaZaTabelu) {
-					if (help.checkParams(student) == 0) { //ispravni parametri za ovog studenta
-						if (!mainFormController.getMainTable().addStudent(student)) {
-							final String message = "Greska pri unosu studenta!";
-							JOptionPane.showMessageDialog(null, message);
-						}
-					}else {
-						StringBuilder sb = new StringBuilder();
-						sb.append("Pogresni parametri u ");
-						sb.append(i);
-						sb.append(". vrsti dokumenta!");
-						String message = sb.toString();
-						JOptionPane.showMessageDialog(null, message);
-					}
+					if (help.checkParams(newStudent) == 0)
+						listaZaTabelu.add(newStudent);
+					else
+						vrsteSGreskama.add(i);
 					i++;
 				}
-				// TODO poziv metode koja azurira tabelu
+				// TODO poziv metode koja cuva listu u bazi
+				if (vrsteSGreskama.size() == 0)
+					for (StudentMainTableDTO student : listaZaTabelu) {
+						if (!mainFormController.getMainTable().addStudent(student)) {
+							final String message = "Greska pri unosu studenta!";
+							JOptionPane.showMessageDialog(null, message, "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+						}
+					}
+				else {
+					StringBuilder message = new StringBuilder("Greske u ");
+					for(Integer num : vrsteSGreskama) {
+						message.append(num);
+						message.append(", ");
+					}
+					String tmp = message.reverse().delete(0, 2).reverse().append(" vrsti").toString();
+					JOptionPane.showMessageDialog(null, tmp, "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+				}
 				mainFormController.resetChooseAddTypeFormOpened();
 			} catch (IOException e) {
 				e.printStackTrace();

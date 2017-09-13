@@ -61,6 +61,7 @@ public class ChangeForm extends JFrame {
 	}
 
 public ChangeForm(MainFormController mainFormController,StudentMainTableDTO student, int numInList) {
+	setTitle("Izmjena");
 		setResizable(false);
 		
 		addWindowListener(new WindowAdapter() {

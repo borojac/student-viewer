@@ -15,13 +15,14 @@ public class DeleteStudentsController {
 			delete();
 		else {
 			final String message = "Odaberite studente za brisanje!";
-			JOptionPane.showMessageDialog(null, message);
+			JOptionPane.showMessageDialog(null, message,"Obavjestenje!", JOptionPane.INFORMATION_MESSAGE);
 		}
 		mainFormController.resetDeleting();
 	}
 	
 	private void delete() {
 			JOptionPane jop = new JOptionPane();
+			jop.setName("Potvrda brisanja");
 			StringBuilder sb = new StringBuilder();
 			sb.append("Sigurno zelite da obrisete ");
 			if(selectedRows.length == 1)
@@ -31,7 +32,7 @@ public class DeleteStudentsController {
 			if(jop.showConfirmDialog(null, sb.toString()) == JOptionPane.YES_OPTION) {
 				mainFormController.getMainTable().deleteStudents(selectedRows);
 				final String message = "Uspjesno brisanje!";
-				JOptionPane.showMessageDialog(null, message);
+				JOptionPane.showMessageDialog(null, message,"Obavjestenje!", JOptionPane.INFORMATION_MESSAGE);
 			}
 	}
 }
