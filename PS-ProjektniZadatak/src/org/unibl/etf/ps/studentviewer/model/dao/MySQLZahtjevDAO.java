@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
+import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ZahtjevDTO;
 
 public class MySQLZahtjevDAO implements ZahtjevDAO {
@@ -143,12 +145,43 @@ public class MySQLZahtjevDAO implements ZahtjevDAO {
 			conn = DBUtility.open();
 			ps = conn.prepareStatement(query);
 			
-//			ps.setObject(1, null, java.sql.Types.DATE);
-			
 			rs = ps.executeQuery();
 			
 			while(rs.next()) {
 				retVals.add(new ZahtjevDTO(rs.getInt(3), rs.getInt(1), rs.getInt(2), rs.getDate(4), rs.getDate(5)));
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		
+		return retVals;
+	}
+	
+	public ArrayList<PredmetDTO> getPredmeteSaZahtjevomZaDan(int nalogId, Date date) {
+		ArrayList<PredmetDTO> retVals = new ArrayList<>();
+		
+		String getPredmetIdQuery = "SELECT PredmetId FROM zahtjev WHERE NalogId = ? and DatumZahtjeva = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getPredmetIdQuery);
+			ps.setInt(1, nalogId);
+			ps.setDate(2, new java.sql.Date(date.getTime()));
+			rs = ps.executeQuery();
+			
+			MySQLDAOFactory factory = new MySQLDAOFactory();
+			PredmetDAO predmetDAO = factory.getPredmetDAO();
+			
+			while(rs.next()) {
+				retVals.add(predmetDAO.getPredmet(rs.getInt(1)));
 			}
 			
 		} catch(SQLException e) {

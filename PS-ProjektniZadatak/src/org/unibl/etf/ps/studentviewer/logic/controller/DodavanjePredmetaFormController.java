@@ -1,6 +1,7 @@
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -42,6 +43,7 @@ public class DodavanjePredmetaFormController {
 				JOptionPane.showMessageDialog(dodavanjePredmetaForm, "Zahtjev nije uspjesno poslan.");
 			}
 		}
+		
 	}
 	
 	public synchronized void postaviStudijskePrograme(JComboBox<String> studijskiProgramiCB, short ciklus) {
@@ -95,8 +97,15 @@ public class DodavanjePredmetaFormController {
 				predmeti.remove(predmetiNaNaloguList.get(i));
 			}
 		}
+		ZahtjevDAO zahtjevDAO = factory.getZahtjevDAO();
+		ArrayList<PredmetDTO> zahtjevaniPredmeti = zahtjevDAO.getPredmeteSaZahtjevomZaDan(dodavanjePredmetaForm.getNalogDTO().getNalogId(), new Date(System.currentTimeMillis()));
+		for(int i = 0; i < zahtjevaniPredmeti.size(); i++) {
+			if(predmeti.contains(zahtjevaniPredmeti.get(i))) {
+				predmeti.remove(zahtjevaniPredmeti.get(i));
+			}
+		}
 		for(int i = 0; i < predmeti.size(); i++) {
-			predmetiCB.addItem(predmeti.get(i).getSifraPredmeta() + " - " + predmeti.get(i).getNazivPredmeta());
+			predmetiCB.addItem(predmeti.get(i).getNazivPredmeta());
 		}
 	}
 

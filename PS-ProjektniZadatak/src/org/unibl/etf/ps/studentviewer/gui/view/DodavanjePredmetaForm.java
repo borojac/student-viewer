@@ -254,8 +254,15 @@ public class DodavanjePredmetaForm extends JFrame {
 	}
 	
 	public PredmetDTO getSelectedPredmet() {
-		int i = predmetiCB.getSelectedIndex();
-		return (i == -1) ? null : predmetiList.get(i);
+		String s = (String)predmetiCB.getSelectedItem();
+		PredmetDTO predmetDTO = null;
+		for(int i = 0; i < predmetiList.size(); i++) {
+			if(s.equals(predmetiList.get(i).getNazivPredmeta())) {
+				predmetDTO = predmetiList.get(i);
+				break;
+			}
+		}
+		return predmetDTO;
 	}
 	
 	public short getSelectedCiklus() {
