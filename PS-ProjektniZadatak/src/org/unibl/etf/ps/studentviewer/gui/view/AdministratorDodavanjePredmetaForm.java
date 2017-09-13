@@ -4,16 +4,20 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,8 +26,12 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
+import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorDodavanjePredmetaFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
+import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 
 public class AdministratorDodavanjePredmetaForm extends JFrame {
 
@@ -46,6 +54,15 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 	private ButtonGroup bg;
 	AdministratorFormController administratorFormController;
 	private JButton button;
+	AdministratorDodavanjePredmetaFormController administratorDodavanjePredmetaFormController;
+	
+	private JComboBox<Short> ciklusiCB;
+	private JComboBox<String> studijskiProgramiCB;
+	private JComboBox<String> skolskeGodineCB;
+	private ArrayList<PredmetDTO> predmetiList;
+	private ArrayList<Short> ciklusiList;
+	private ArrayList<String> studijskiProgramiList;
+	private ArrayList<String> skolskeGodineList;
 
 	/**
 	 * Launch the application.
@@ -120,7 +137,7 @@ setResizable(false);
  		contentPane.add(sifraLbl);
  		
  		sifraTf = new JTextField();
-		sifraTf.setBounds(175, 130, 160, 45);
+		sifraTf.setBounds(175, 140, 160, 25);
 		sifraTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
 		contentPane.add(sifraTf);
 		
@@ -131,7 +148,7 @@ setResizable(false);
  		contentPane.add(nazivLbl);
  		
  		nazivTf = new JTextField();
-		nazivTf.setBounds(175, 185, 160, 45);
+		nazivTf.setBounds(175, 195, 160, 25);
 		nazivTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
 		contentPane.add(nazivTf);
 		
@@ -142,7 +159,7 @@ setResizable(false);
  		contentPane.add(ectsLbl);
  		
  		ectsTf = new JTextField();
-		ectsTf.setBounds(175, 240, 160, 45);
+		ectsTf.setBounds(175, 250, 160, 25);
 		ectsTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
 		contentPane.add(ectsTf);
 		
@@ -153,7 +170,7 @@ setResizable(false);
  		contentPane.add(semestarLbl);
  		
  		semestarTf = new JTextField();
-		semestarTf.setBounds(175, 295, 160, 45);
+		semestarTf.setBounds(175, 305, 160, 25);
 		semestarTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
 		contentPane.add(semestarTf);
 		
@@ -179,10 +196,55 @@ setResizable(false);
  		skolskaGodinaLbl.setForeground(Color.WHITE);
  		contentPane.add(skolskaGodinaLbl);
  		
- 		skolskaGodinaTf = new JTextField();
+ 		MySQLDAOFactory factory = new MySQLDAOFactory();
+		PredmetDAO predmetDAO = factory.getPredmetDAO();
+ 		
+		ciklusiCB = new JComboBox<>();
+		studijskiProgramiCB = new JComboBox<>();
+		skolskeGodineCB = new JComboBox<>();
+ 		predmetiList = predmetDAO.getAllPredmet();
+		
+		ciklusiList = new ArrayList<>();
+		studijskiProgramiList = new ArrayList<>();
+		skolskeGodineList = new ArrayList<>();
+		
+		for(int i = 0; i < predmetiList.size(); i++) {
+			if(!ciklusiList.contains(predmetiList.get(i).getCiklus())) {
+				ciklusiList.add(predmetiList.get(i).getCiklus());
+			}
+		}
+		
+		for(int i = 0; i < ciklusiList.size(); i++) {
+			ciklusiCB.addItem(ciklusiList.get(i));
+		}
+		
+		ciklusiCB.setSelectedIndex(0);
+		
+		for(int i = 0; i < predmetiList.size(); i++) {
+			if(!studijskiProgramiList.contains(predmetiList.get(i).getNazivSP())) {
+				studijskiProgramiList.add(predmetiList.get(i).getNazivSP());
+			}
+			if(!skolskeGodineList.contains(predmetiList.get(i).getSkolskaGodina())) {
+				skolskeGodineList.add(predmetiList.get(i).getSkolskaGodina());
+			}
+		}
+		
+		for(int i = 0; i < skolskeGodineList.size(); i++) {
+			skolskeGodineCB.addItem(skolskeGodineList.get(i));
+		}
+		
+		for(int i = 0; i < studijskiProgramiList.size(); i++)
+		{
+			studijskiProgramiCB.addItem(studijskiProgramiList.get(i));
+		}
+		
+		skolskeGodineCB.setBounds(175, 415, 160, 25);
+		contentPane.add(skolskeGodineCB);
+ 		
+ 		/*skolskaGodinaTf = new JTextField();
 		skolskaGodinaTf.setBounds(175, 405, 160, 45);
 		skolskaGodinaTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
-		contentPane.add(skolskaGodinaTf);
+		contentPane.add(skolskaGodinaTf);*/
 		
 		nazivSPLbl = new JLabel("Studijski program");
  		nazivSPLbl.setBounds(15, 460, 250, 45);
@@ -190,10 +252,13 @@ setResizable(false);
  		nazivSPLbl.setForeground(Color.WHITE);
  		contentPane.add(nazivSPLbl);
  		
- 		nazivSPTf = new JTextField();
+ 		studijskiProgramiCB.setBounds(175, 470, 160, 25);
+		contentPane.add(studijskiProgramiCB);
+ 		
+ 		/*nazivSPTf = new JTextField();
 		nazivSPTf.setBounds(175, 460, 160, 45);
 		nazivSPTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
-		contentPane.add(nazivSPTf);
+		contentPane.add(nazivSPTf);*/
 		
 		ciklusLbl = new JLabel("Studijski ciklus");
  		ciklusLbl.setBounds(15, 515, 250, 45);
@@ -201,15 +266,29 @@ setResizable(false);
  		ciklusLbl.setForeground(Color.WHITE);
  		contentPane.add(ciklusLbl);
  		
- 		ciklusTf = new JTextField();
+ 		ciklusiCB.setBounds(175, 525, 160, 25);
+		contentPane.add(ciklusiCB);
+ 		
+ 		/*ciklusTf = new JTextField();
 		ciklusTf.setBounds(175, 515, 160, 45);
 		ciklusTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
-		contentPane.add(ciklusTf);
+		contentPane.add(ciklusTf);*/
 		
 		button = new JButton("Potvrdi");
 		button.setBounds(100,580,160,25);
 		contentPane.add(button);
  		
+	}
+	
+private void initButtonsListeners() {
+		
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				administratorDodavanjePredmetaFormController.dodajPredmet();
+			}
+		});
+		
 	}
 
 	/**
