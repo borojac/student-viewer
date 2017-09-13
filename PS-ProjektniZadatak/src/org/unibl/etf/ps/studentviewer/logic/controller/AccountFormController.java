@@ -63,6 +63,7 @@ public class AccountFormController {
 	
 	public synchronized boolean odjava() {
 		LoginFormController.resetMainFormOpened();
+		LoginFormController.resetAdminFormOpened();
 		MainFormController.resetAccountFormOpened();
 		accountForm.getMainFormController().getMainForm().dispose();
 		accountForm.dispose();

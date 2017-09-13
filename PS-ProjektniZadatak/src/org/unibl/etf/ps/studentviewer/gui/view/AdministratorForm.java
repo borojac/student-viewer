@@ -205,6 +205,13 @@ public class AdministratorForm extends JFrame {
 			}
 		});
 		
+		odjavaBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				administratorFormController.odjava();
+			}
+		});
+		
 	}
 
 	public NalogDTO getNalogDTO() {

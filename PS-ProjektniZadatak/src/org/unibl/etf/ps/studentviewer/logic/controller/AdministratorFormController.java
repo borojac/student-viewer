@@ -3,10 +3,9 @@ package org.unibl.etf.ps.studentviewer.logic.controller;
 import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
-import org.unibl.etf.ps.studentviewer.gui.view.AddForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdministratorDodavanjePredmetaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdministratorForm;
-import org.unibl.etf.ps.studentviewer.gui.view.ChooseAddTypeForm;
+import org.unibl.etf.ps.studentviewer.gui.view.LoginForm;
 import org.unibl.etf.ps.studentviewer.gui.view.PredmetChooseAddTypeForm;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
@@ -86,6 +85,14 @@ public class AdministratorFormController {
 			JOptionPane.showMessageDialog(administratorForm, "Zahtjev odobren.");
 			administratorForm.removeSelectedRow();
 		}
+	}
+	
+	public void odjava() {
+		LoginFormController.resetAdminFormOpened();
+		LoginFormController.resetMainFormOpened();
+		administratorForm.dispose();
+		LoginForm loginForm = new LoginForm();
+		loginForm.setVisible(true);
 	}
 
 }

@@ -18,6 +18,7 @@ public class LoginFormController {
 	
 	private LoginForm loginForm;
 	private static boolean mainFormOpened = false;
+	private static boolean adminFormOpened = false;
 	private static boolean kreirajNalogFormOpened = false;
 	
 	public LoginFormController(LoginForm loginForm) {
@@ -37,11 +38,12 @@ public class LoginFormController {
 	}
 	
 	public void prijava() throws IOException {
-		if(mainFormOpened) {
+		if(mainFormOpened || adminFormOpened) {
 			return;
 		}
 		
 		mainFormOpened = true;
+		adminFormOpened = true;
 		
 		String korisnickoIme = loginForm.getKorisnickoIme();
 		String lozinkaHash = sha256(loginForm.getLozinka());
@@ -83,6 +85,10 @@ public class LoginFormController {
 	
 	public static void resetMainFormOpened() {
 		mainFormOpened = false;
+	}
+	
+	public static void resetAdminFormOpened() {
+		adminFormOpened = false;
 	}
 
 }
