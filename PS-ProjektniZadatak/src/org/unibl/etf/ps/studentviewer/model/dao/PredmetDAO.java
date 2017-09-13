@@ -12,5 +12,7 @@ public interface PredmetDAO {
 	public ArrayList<StudentNaPredmetuDTO> getStudentsOnPredmet(int predmetId);
 	public ArrayList<TestDTO> getTestsOnPredmet(int predmetId);
 	public ArrayList<PredmetDTO> getAllPredmet();
+	public boolean addPredmet(PredmetDTO predmetDTO);
+	public boolean addPredmete(ArrayList<PredmetDTO> predmeti);
 
 }

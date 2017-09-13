@@ -44,6 +44,20 @@ public class PredmetDTO {
 		studenti = new ArrayList<>();
 		testovi = new ArrayList<>();
 	}
+	
+	public PredmetDTO(String sifraPredmeta, String nazivPredmeta, short ects, short semestar, char tipPredmeta, String nazivSP, String skolskaGodina, short ciklus) {
+		predmetId = 0;
+		this.sifraPredmeta = sifraPredmeta;
+		this.nazivPredmeta = nazivPredmeta;
+		this.ects = ects;
+		this.semestar = semestar;
+		this.tipPredmeta = tipPredmeta;
+		this.nazivSP = nazivSP;
+		this.skolskaGodina = skolskaGodina;
+		this.ciklus = ciklus;
+		studenti = new ArrayList<>();
+		testovi = new ArrayList<>();
+	}
 
 	public int getPredmetId() {
 		return predmetId;

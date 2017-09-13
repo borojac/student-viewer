@@ -196,5 +196,97 @@ public class MySQLPredmetDAO implements PredmetDAO {
 		
 		return retVals;
 	}
+	
+	public boolean addPredmet(PredmetDTO predmetDTO) {
+		boolean retVal = false;
+		
+		String getSGId = "SELECT SGId FROM skolska_godina WHERE SkolskaGodina = ?";
+		String getSPId = "SELECT SPId FROM studijski_program WHERE NazivSP = ? and Ciklus = ?";
+		String addToPredmet = "INSERT INTO predmet VALUE (null , ?, ?, ?)";
+		String addToPredmetNaFakultetu = "INSERT INTO predmet VALUE (?, ?, ?)";
+		String addToPNaSP = "INSERT INTO p_na_sp VALUE (?, ?, ?, ?)";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getSGId);
+			ps.setString(1, predmetDTO.getSkolskaGodina());
+			rs = ps.executeQuery();
+			
+			int sgId = 0;
+			int spId = 0;
+			
+			if(rs.next()) {
+				sgId = rs.getInt(1);
+			}
+			
+			ps = conn.prepareStatement(getSPId);
+			ps.setString(1, predmetDTO.getNazivSP());
+			ps.setShort(2, predmetDTO.getCiklus());
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				spId = rs.getInt(1);
+			}
+			
+			ps = conn.prepareStatement(addToPredmetNaFakultetu);
+			ps.setString(1, predmetDTO.getSifraPredmeta());
+			ps.setString(2, predmetDTO.getNazivPredmeta());
+			ps.setShort(3, predmetDTO.getEcts());
+			
+			retVal = ps.executeUpdate() == 1;
+			
+			ps = conn.prepareStatement(addToPredmet);
+			ps.setInt(1, sgId);
+			ps.setString(2, predmetDTO.getSifraPredmeta());
+			ps.setInt(3, spId);
+			
+			retVal = ps.executeUpdate() == 1;
+			
+			ps = conn.prepareStatement(addToPNaSP);
+			ps.setString(1, predmetDTO.getSifraPredmeta());
+			ps.setInt(2, spId);
+			ps.setShort(3, predmetDTO.getSemestar());
+			ps.setString(4, String.valueOf(predmetDTO.getTipPredmeta()));
+			
+			retVal = ps.executeUpdate() == 1;
+			
+			if(retVal) {
+				conn.commit();
+			} else {
+				throw new SQLException("Rollback needed!");
+			}
+			
+		} catch(SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException ex) {}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {}
+			DBUtility.close(conn, ps);
+		}
+		
+		return retVal;
+	}
+	
+	public boolean addPredmete(ArrayList<PredmetDTO> predmeti) {
+		boolean retVal = false;
+		
+		for(int i = 0; i < predmeti.size(); i++) {
+			if(!addPredmet(predmeti.get(i))) {
+				retVal = false;
+				break;
+			}
+		}
+		
+		return retVal;
+	}
 
 }
