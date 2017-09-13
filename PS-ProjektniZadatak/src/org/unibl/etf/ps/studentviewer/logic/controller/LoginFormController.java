@@ -1,9 +1,7 @@
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 import javax.swing.JOptionPane;
@@ -60,12 +58,12 @@ public class LoginFormController {
 				if(nalogDTO.getTipNaloga() == 'K') {
 					MainForm mainForm = new MainForm(nalogDTO);
 					mainForm.setVisible(true);
-					loginForm.setVisible(false);
+					loginForm.dispose();
 				} else {
 					AdministratorForm adminForm = new AdministratorForm();
 					adminForm.setNalogDTO(nalogDTO);
 					adminForm.setVisible(true);
-					loginForm.setVisible(false);
+					loginForm.dispose();
 				}
 				
 			}
@@ -81,6 +79,10 @@ public class LoginFormController {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public static void resetMainFormOpened() {
+		mainFormOpened = false;
 	}
 
 }
