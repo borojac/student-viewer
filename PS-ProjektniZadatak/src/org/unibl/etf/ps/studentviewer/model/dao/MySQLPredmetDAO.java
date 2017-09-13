@@ -17,9 +17,11 @@ public class MySQLPredmetDAO implements PredmetDAO {
 	public PredmetDTO getPredmet(int predmetId) {
 		PredmetDTO retVal = null;
 		
-		String getPredmetQuery = "SELECT PredmetId, SifraPredmeta, Naziv, ECTS, Semestar, TipPredmeta, NazivSP, SkolskaGodina"
+		String getPredmetQuery = "SELECT PredmetId, SifraPredmeta, Naziv, ECTS, Semestar, TipPredmeta, NazivSP, SkolskaGodina, Ciklus"
 				+ " FROM ((predmet INNER JOIN studijski_program USING(SPId)) INNER JOIN predmet_na_fakultetu USING(SifraPredmeta)) INNER JOIN p_na_sp USING(SifraPredmeta)"
 				+ " WHERE PredmetId = ?";
+		
+		String getSkolskaGodinaQuery = "SELECT SkolskaGodina FROM skolska_godina WHERE SGId = ?";
 		
 		String getStudentsQuery = "SELECT * FROM student";
 		
@@ -38,7 +40,15 @@ public class MySQLPredmetDAO implements PredmetDAO {
 			
 			if(rs.next()) {
 				retVal = new PredmetDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getShort(4),
-						rs.getShort(5), (rs.getString(6)).charAt(0), rs.getString(7), rs.getString(8));
+						rs.getShort(5), (rs.getString(6)).charAt(0), rs.getString(7), rs.getString(8), rs.getShort(9));
+			}
+			
+			ps = conn.prepareStatement(getSkolskaGodinaQuery);
+			ps.setInt(1, rs.getInt(8));
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				retVal.setSkolskaGodina(rs.getString(1));
 			}
 			
 		} catch(SQLException e) {

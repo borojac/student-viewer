@@ -12,6 +12,7 @@ public class PredmetDTO {
 	private char tipPredmeta;
 	private String nazivSP;
 	private String skolskaGodina;
+	private short ciklus;
 	
 	private ArrayList<StudentNaPredmetuDTO> studenti;
 	private ArrayList<TestDTO> testovi;
@@ -25,11 +26,12 @@ public class PredmetDTO {
 		tipPredmeta = 'o';
 		nazivSP = "";
 		skolskaGodina = "";
+		ciklus = 0;
 		studenti = new ArrayList<>();
 		testovi = new ArrayList<>();
 	}
 	
-	public PredmetDTO(int predmetId, String sifraPredmeta, String nazivPredmeta, short ects, short semestar, char tipPredmeta, String nazivSP, String skolskaGodina) {
+	public PredmetDTO(int predmetId, String sifraPredmeta, String nazivPredmeta, short ects, short semestar, char tipPredmeta, String nazivSP, String skolskaGodina, short ciklus) {
 		this.predmetId = predmetId;
 		this.sifraPredmeta = sifraPredmeta;
 		this.nazivPredmeta = nazivPredmeta;
@@ -38,6 +40,7 @@ public class PredmetDTO {
 		this.tipPredmeta = tipPredmeta;
 		this.nazivSP = nazivSP;
 		this.skolskaGodina = skolskaGodina;
+		this.ciklus = ciklus;
 		studenti = new ArrayList<>();
 		testovi = new ArrayList<>();
 	}
@@ -104,6 +107,14 @@ public class PredmetDTO {
 
 	public void setSkolskaGodina(String skolskaGodina) {
 		this.skolskaGodina = skolskaGodina;
+	}
+
+	public short getCiklus() {
+		return ciklus;
+	}
+
+	public void setCiklus(short ciklus) {
+		this.ciklus = ciklus;
 	}
 
 	public ArrayList<StudentNaPredmetuDTO> getStudenti() {
