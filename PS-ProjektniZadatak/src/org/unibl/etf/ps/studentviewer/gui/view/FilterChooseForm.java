@@ -80,6 +80,7 @@ public class FilterChooseForm extends JFrame {
 	 * @param filterFormController 
 	 */
 	public FilterChooseForm(FilterForm filterForm, FilterFormController filterFormController) {
+		setTitle("TestINFO");
 		
 		this.ffc = filterFormController;
 		this.filterForm = filterForm;
