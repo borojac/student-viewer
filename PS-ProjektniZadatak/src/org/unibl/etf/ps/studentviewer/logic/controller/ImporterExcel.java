@@ -49,8 +49,26 @@ public class ImporterExcel {
 				String[] tmp = new String[numOfColumns];
 				for(int j = 0; j < numOfColumns; j++) {
 					HSSFCell cell = row.getCell(j);
-					if(cell != null)
-					tmp[j] = cell.getStringCellValue().trim();
+					if(cell != null) {
+						switch(cell.getCellTypeEnum()) { 
+						/**
+						 * @author Dejan Mijic
+						 */
+						case NUMERIC:
+							Double d = Double.parseDouble(String.valueOf(cell.getNumericCellValue()));
+							int k = d.intValue();
+							tmp[j] = String.valueOf(k).trim();
+							break;
+						/**
+						 * 
+						 */
+						case STRING:
+							tmp[j] = cell.getStringCellValue().trim();
+							break;
+						default:
+							break;
+						}
+					}
 					else{
 						tmp[j] = "";
 					}
@@ -70,8 +88,26 @@ public class ImporterExcel {
 				String[] tmp = new String[numOfColumns];
 				for(int j = 0; j < numOfColumns; j++) {
 					Cell cell = row.getCell(j);
-					if(cell != null)
-					tmp[j] = cell.getStringCellValue().trim();
+					if(cell != null) {
+						switch(cell.getCellTypeEnum()) { 
+						/**
+						 * @author Dejan Mijic
+						 */
+						case NUMERIC:
+							Double d = Double.parseDouble(String.valueOf(cell.getNumericCellValue()));
+							int k = d.intValue();
+							tmp[j] = String.valueOf(k).trim();
+							break;
+						/**
+						 * 
+						 */
+						case STRING:
+							tmp[j] = cell.getStringCellValue().trim();
+							break;
+						default:
+							break;
+						}
+					}
 					else{
 						tmp[j] = "";
 					}
