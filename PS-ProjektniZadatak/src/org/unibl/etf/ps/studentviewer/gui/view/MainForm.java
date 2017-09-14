@@ -93,7 +93,6 @@ public class MainForm extends JFrame {
 	private JTextField textField;
 	
 	private JComboBox<String> predmetiCB;
-	private JButton prikaziPredmetBtn;
 	private JComboBox<String> disciplineCB;
 	private JButton prikaziDisciplinuBtn;
 
@@ -258,13 +257,6 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				mainFormController.createAccountForm();
-			}
-		});
-		
-		prikaziPredmetBtn.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				mainFormController.postaviMainForm(getSelectedPredmet());
 			}
 		});
 
@@ -524,10 +516,6 @@ public class MainForm extends JFrame {
 		
 		
 		/* Buttons by Mijic */
-		
-		prikaziPredmetBtn = new JButton("Prikazi predmet");
-		prikaziPredmetBtn.setBounds(1040, 240, 135, 35);
-		contentPane.add(prikaziPredmetBtn);
 		
 		prikaziDisciplinuBtn = new JButton("Prikazi disciplinu");
 		prikaziDisciplinuBtn.setBounds(1040, 350, 135, 35);

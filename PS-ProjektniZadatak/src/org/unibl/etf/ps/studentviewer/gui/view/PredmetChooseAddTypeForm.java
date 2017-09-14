@@ -1,7 +1,6 @@
 package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,14 +17,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormController;
-import org.unibl.etf.ps.studentviewer.logic.controller.ChooseAddTypeController;
-import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.PredmetChooseAddTypeFormController;
 
 import java.awt.Font;
@@ -38,20 +34,20 @@ public class PredmetChooseAddTypeForm extends JFrame {
 	JCheckBox chckbxNewCheckBoxVise = new JCheckBox("");
 
 	public PredmetChooseAddTypeForm(AdministratorFormController administratorFormController) {
-		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
-				   administratorFormController.resetChooseAddTypeFormOpened();
+				   AdministratorFormController.resetChooseAddTypeFormOpened();
 			   }
-			  });
+		});
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setResizable(false);
 		setBounds(100, 100, 293, 287);
 		contentPane =new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setContentPane(contentPane);
 		
 		JLabel label = new JLabel("");
 		label.setBounds(56, 0, 171, 120);
@@ -60,7 +56,6 @@ public class PredmetChooseAddTypeForm extends JFrame {
 			headerImage = Scalr.resize(headerImage, Scalr.Mode.FIT_EXACT, label.getWidth(), label.getHeight(), null);
 			label.setIcon(new ImageIcon(headerImage));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		contentPane.add(label);
@@ -137,12 +132,5 @@ public class PredmetChooseAddTypeForm extends JFrame {
 		chckbxNewCheckBoxVise.setBackground(new Color(0,0,139));
 		panel2.add(chckbxNewCheckBoxVise);
 	}
-}
-	/**
-	 * Launch the application.
-	 */
-
-	/**
-	 * Create the frame.
-	 */
 	
+}	

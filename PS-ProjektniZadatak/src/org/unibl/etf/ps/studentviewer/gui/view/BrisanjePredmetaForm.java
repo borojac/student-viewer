@@ -195,7 +195,7 @@ public class BrisanjePredmetaForm extends JFrame {
 		ukloniBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				brisanjePredmetaFormController.ukloni();
+				brisanjePredmetaFormController.ukloniPredmet();
 			}
 		});
 		

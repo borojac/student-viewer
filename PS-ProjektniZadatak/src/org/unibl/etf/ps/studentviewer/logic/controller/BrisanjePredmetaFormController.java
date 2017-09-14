@@ -19,7 +19,7 @@ public class BrisanjePredmetaFormController {
 		this.brisanjePredmetaForm = brisanjePredmetaForm;
 	}
 	
-	public void ukloni() {
+	public void ukloniPredmet() {
 		NalogDTO nalogDTO = brisanjePredmetaForm.getNalogDTO();
 		PredmetDTO predmetDTO = brisanjePredmetaForm.getSelectedPredmet();
 		
@@ -35,7 +35,7 @@ public class BrisanjePredmetaFormController {
 				brisanjePredmetaForm.dispose();
 				AccountFormController.resetBrisanjePredmetaFormOpened();
 			} else {
-				JOptionPane.showMessageDialog(brisanjePredmetaForm, "Predmet nije uspjesno uklnonjen.");
+				JOptionPane.showMessageDialog(brisanjePredmetaForm, "Predmet nije uspjesno uklonjen.");
 			}
 		}
 	}

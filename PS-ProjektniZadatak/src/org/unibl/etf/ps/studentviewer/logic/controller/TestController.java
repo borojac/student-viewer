@@ -27,28 +27,26 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.experimental.categories.IncludeCategories;
 import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
 import org.unibl.etf.ps.studentviewer.gui.view.TestDodajStudenteForm;
 import org.unibl.etf.ps.studentviewer.gui.view.TestForm;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.Command;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.CommandStack;
-import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaBrojaBodovaTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.UkloniStudenteTestCommand;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.StudentDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
@@ -58,12 +56,18 @@ import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.TabSettings;
 import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.parser.ContentByteUtils;
 
 public class TestController {
 
@@ -119,7 +123,14 @@ public class TestController {
 					JOptionPane.QUESTION_MESSAGE, null,
 					options, options[1]);
 			if (result == JOptionPane.YES_OPTION) {
-				testForm.dispose();
+				EventQueue.invokeLater(new Runnable() {
+
+					@Override
+					public void run() {
+						testForm.dispose();
+						testForm.refreshTestoviTable();
+					}
+				});
 			}
 		} else
 			EventQueue.invokeLater(new Runnable() {
@@ -278,61 +289,68 @@ public class TestController {
 		int retVal = fileChooser.showSaveDialog(null);
 		if (retVal != JFileChooser.APPROVE_OPTION)
 			return;
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		fileChooser.setFileSystemView(FileSystemView.getFileSystemView());
 		File chosenFile = fileChooser.getSelectedFile();
 		if (!chosenFile.getAbsolutePath().endsWith(".pdf")) {
 			final String aPath = chosenFile.getAbsolutePath();
 			chosenFile = new File(aPath + ".pdf");
 		}
-
-		Font font = FontFactory.getFont("fonts/tahoma.ttf", BaseFont.IDENTITY_H, 12);
-		Document doc = new Document();
-		OutputStream os = new FileOutputStream(chosenFile);
-		PdfWriter writer = PdfWriter.getInstance(doc, os);
-
-		Paragraph title = new Paragraph();
-		title.setIndentationLeft(60f);
-		title.setFont(font);
-		title.add(test.getNaziv());
-		title.add("\n\n");
-		title.add("Datum: " + new SimpleDateFormat("dd.MM.yyyy").format(test.getDatum()));
-		title.add("\n\n");
-		title.add("Napomena:\t" + test.getNapomena());
-		title.add("\n\n");
-
-		Paragraph spacing = new Paragraph("\n\n");
-		spacing.add("Studenti na testu:");
-		spacing.add("\n\n");
-
-		Paragraph body = new Paragraph();
-		body.setIndentationLeft(60f);
-		body.setFont(font);
-		body.setTabSettings(new TabSettings());
-		for (StudentNaTestuDTO student : test.getStudenti()) {
-			final String studentString = student.getBrojIndeksa() + " " + student.getIme() + " " + student.getPrezime();
-			final String bodovi = "" + student.getBrojBodova();
-			final String komentar = student.getKomentar();
-			body.add(new Chunk(studentString));
-			body.add(Chunk.TABBING);
-			body.add(Chunk.TABBING);
-			body.add(Chunk.TABBING);
-			body.add(Chunk.TABBING);
-			body.add(new Chunk(bodovi));
-			body.add(Chunk.TABBING);
-			body.add(Chunk.TABBING);
-			body.add(Chunk.TABBING);
-			body.add(Chunk.TABBING);
-			body.add(new Chunk(komentar));
-			body.add("\n");
-			body.add("\n");
+		int result = JOptionPane.YES_OPTION;
+		if (chosenFile.exists()) {
+			String[] options = {"	Da	", "	Ne	" };
+			result = JOptionPane.showOptionDialog(fileChooser, "Fajl već postoji. Prepisati preko postojećeg?",
+					"Potvrda prepisa", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+					null, options, options[1]);
 		}
-		doc.open();
-		doc.add(title);
-		doc.add(spacing);
-		doc.add(body);
-		doc.close();
-		writer.flush();
-		writer.close();
-		os.close();
+
+		if (result == JOptionPane.YES_OPTION) {
+			Font font = FontFactory.getFont("fonts/tahoma.ttf", BaseFont.IDENTITY_H, 12);
+			Document doc = new Document();
+			OutputStream os = new FileOutputStream(chosenFile);
+			PdfWriter writer = PdfWriter.getInstance(doc, os);
+
+			Paragraph title = new Paragraph();
+			title.setIndentationLeft(60f);
+			title.setFont(font);
+			title.add(test.getNaziv());
+			title.add("\n\n");
+			title.add("Datum: " + new SimpleDateFormat("dd.MM.yyyy").format(test.getDatum()));
+			title.add("\n\n");
+			title.add("Napomena:\t" + test.getNapomena());
+			title.add("\n\n");
+
+			Paragraph spacing = new Paragraph("\n\n");
+			spacing.add("Studenti na testu:");
+			spacing.add("\n\n");
+
+
+			Paragraph body = new Paragraph();
+			body.setFont(font);
+			int index = 1;
+			for (StudentNaTestuDTO student : test.getStudenti()) {
+				PdfPTable table = new PdfPTable(4);
+				table.setWidthPercentage(100f);
+				table.setWidths(new int[] {1, 5, 1, 7});
+				table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+				table.addCell(index + ". ");
+				table.addCell(student.toString());
+				table.addCell(student.getBrojBodova() + "");
+				table.addCell(student.getKomentar());
+				body.add(table);
+				++index;
+			}
+
+			doc.open();
+			doc.add(title);
+			doc.add(spacing);
+			doc.add(body);
+			doc.close();
+
+			writer.flush();
+			writer.close();
+			os.close();
+		}
 	}
 
 	public void print(TestDTO test) throws IOException, DocumentException, PrinterException {
@@ -356,27 +374,21 @@ public class TestController {
 		spacing.add("\n\n");
 
 		Paragraph body = new Paragraph();
-		body.setIndentationLeft(60f);
 		body.setFont(font);
-		body.setTabSettings(new TabSettings());
+		int index = 1;
 		for (StudentNaTestuDTO student : test.getStudenti()) {
-			final String studentString = student.getBrojIndeksa() + " " + student.getIme() + " " + student.getPrezime();
-			final String bodovi = "" + student.getBrojBodova();
-			final String komentar = student.getKomentar();
-			body.add(new Chunk(studentString));
-			body.add(Chunk.TABBING);
-			body.add(Chunk.TABBING);
-			body.add(Chunk.TABBING);
-			body.add(Chunk.TABBING);
-			body.add(new Chunk(bodovi));
-			body.add(Chunk.TABBING);
-			body.add(Chunk.TABBING);
-			body.add(Chunk.TABBING);
-			body.add(Chunk.TABBING);
-			body.add(new Chunk(komentar));
-			body.add("\n");
-			body.add("\n");
+			PdfPTable table = new PdfPTable(4);
+			table.setWidthPercentage(100f);
+			table.setWidths(new int[] {1, 5, 1, 7});
+			table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+			table.addCell(index + ". ");
+			table.addCell(student.toString());
+			table.addCell(student.getBrojBodova() + "");
+			table.addCell(student.getKomentar());
+			body.add(table);
+			++index;
 		}
+
 		doc.open();
 		doc.add(title);
 		doc.add(spacing);
@@ -396,12 +408,13 @@ public class TestController {
 	}
 
 	public String getTestStatistics() {
-		//		TODO - dodati ukupan broj studenata na predmetu - potreban PredmetDTO
+		DAOFactory factory = new MySQLDAOFactory();
+		PredmetDAO predmetDAO = factory.getPredmetDAO();
+
 		StringBuilder statisticsBuilder = new StringBuilder();
 
 		int izaslo = test.getStudenti().size();
-		//		int ukupno = predmetDAO.getAllStudents().size();
-		int ukupno = 100;
+		int ukupno = predmetDAO.getStudentsOnPredmet(test.getPredmetId()).size();
 		int polozilo = 0, deset = 0, devet = 0, osam = 0, sedam = 0, sest = 0;
 
 		for (StudentNaTestuDTO student : test.getStudenti()) {
@@ -421,18 +434,18 @@ public class TestController {
 		}
 
 		statisticsBuilder.append("Izaslo: " + izaslo + "/" + ukupno + " " + 
-				String.format("(%.2f %%)", (double)izaslo / (double) polozilo * 100.0)).append('\n');
+				String.format("(%.2f %%)", (double)izaslo / (double) ukupno * 100.0)).append('\n');
 
 		statisticsBuilder.append(">50%: " + polozilo
-				+ String.format("(%.2f %%)", (double)polozilo / (double) izaslo * 100.0)).append('\n');
+				+ String.format(" (%.2f %%)", (double)polozilo / (double) izaslo * 100.0)).append('\n');
 		statisticsBuilder.append("<50%: " + (izaslo - polozilo)
-				+ String.format("(%.2f %%)", (double)(izaslo-polozilo) / (double)izaslo * 100.0)).append('\n');
-		statisticsBuilder.append(">90%: " + deset
-				+ String.format("(%.2f %%)", (double)deset / (double)polozilo * 100.0)).append('\n');
-		statisticsBuilder.append("80%-90%: " + devet + String.format("(%.2f %%)", (double)devet / (double)polozilo * 100.0)).append('\n');
-		statisticsBuilder.append("70%-80%: " + osam + String.format("(%.2f %%)", (double)osam / (double)polozilo * 100.0)).append('\n');
-		statisticsBuilder.append("60%-70%: " + sedam + String.format("(%.2f %%)", (double)sedam / (double)polozilo * 100.0)).append('\n');
-		statisticsBuilder.append("50%-60%: " + sest + String.format("(%.2f %%)", (double)sest / (double)polozilo * 100.0));
+				+ String.format(" (%.2f %%)", (double)(izaslo-polozilo) / (double)izaslo * 100.0)).append('\n');
+		statisticsBuilder.append("90%-100%: " + deset
+				+ String.format(" (%.2f %%)", (double)deset / (double)polozilo * 100.0)).append('\n');
+		statisticsBuilder.append("80%-90%: " + devet + String.format(" (%.2f %%)", (double)devet / (double)polozilo * 100.0)).append('\n');
+		statisticsBuilder.append("70%-80%: " + osam + String.format(" (%.2f %%)", (double)osam / (double)polozilo * 100.0)).append('\n');
+		statisticsBuilder.append("60%-70%: " + sedam + String.format(" (%.2f %%)", (double)sedam / (double)polozilo * 100.0)).append('\n');
+		statisticsBuilder.append("50%-60%: " + sest + String.format(" (%.2f %%)", (double)sest / (double)polozilo * 100.0));
 
 		return statisticsBuilder.toString();
 	}

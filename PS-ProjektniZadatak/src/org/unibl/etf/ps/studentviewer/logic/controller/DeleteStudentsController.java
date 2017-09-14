@@ -5,6 +5,9 @@ package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import javax.swing.JOptionPane;
 
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentDAO;
+import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
+
 public class DeleteStudentsController {
 	MainFormController mainFormController = null;
 	int[] selectedRows = null;
@@ -30,6 +33,12 @@ public class DeleteStudentsController {
 			else
 				sb.append("oznacene studente?");
 			if(jop.showConfirmDialog(null, sb.toString()) == JOptionPane.YES_OPTION) {
+				MySQLStudentDAO dao = new MySQLStudentDAO();
+				for(int i = 0; i < selectedRows.length; i++) {
+					String indeks = mainFormController.getMainTable().getStudent(selectedRows[i]).getBrojIndeksa();
+					PredmetDTO predmet = mainFormController.getMainForm().getSelectedPredmet();
+					dao.obrisiStudentaSaPredmeta(dao.getStudentBy(indeks).getStudentId(), predmet);
+				}
 				mainFormController.getMainTable().deleteStudents(selectedRows);
 				final String message = "Uspjesno brisanje!";
 				JOptionPane.showMessageDialog(null, message,"Obavjestenje!", JOptionPane.INFORMATION_MESSAGE);

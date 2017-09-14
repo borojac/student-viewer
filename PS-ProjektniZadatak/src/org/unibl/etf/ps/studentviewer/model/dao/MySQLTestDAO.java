@@ -90,8 +90,8 @@ public class MySQLTestDAO implements TestDAO {
 			cs = conn.prepareCall(deleteStudentsQuery);
 			cs.setInt(1, test.getTestId());
 			cs.registerOutParameter(2, Types.BOOLEAN);
-			cs.executeUpdate();
-			retVal = cs.getBoolean(2);
+			if (cs.executeUpdate() > 0)
+				retVal &= cs.getBoolean(2);
 			
 			ps = conn.prepareStatement(updateTestQuery);
 			ps.setString(1, test.getNaziv());
@@ -101,6 +101,8 @@ public class MySQLTestDAO implements TestDAO {
 			ps.setInt(5, test.getPredmetId());
 			ps.setInt(6, test.getTestId());
 			retVal &= ps.executeUpdate() == 1;
+			
+			DBUtility.close(ps);
 			
 			ps = conn.prepareStatement(addStudentsQuery);
 			if (test.getStudenti().size() > 0) {
@@ -146,21 +148,23 @@ public class MySQLTestDAO implements TestDAO {
 
 		try {
 			conn = DBUtility.open();
-			conn.setAutoCommit(false);
 			cs = conn.prepareCall(addTestQuery);
-
+			conn.setAutoCommit(false);
 			cs.setString(1, test.getNaziv());
 			Date datum = test.getDatum();
 			cs.setDate(2, new java.sql.Date(datum.getTime()));
 			cs.setString(3, test.getNapomena());
 			cs.setInt(4, test.getProcenat());
 			cs.setInt(5, test.getPredmetId());
-			cs.registerOutParameter(6, Types.BOOLEAN);
+			cs.registerOutParameter(6, Types.INTEGER);
 
-			cs.executeUpdate();
-			
-			retVal &= cs.getBoolean(6);
-
+			if (cs.executeUpdate() == 1) {
+				int testId = cs.getInt(6);
+				test.setTestId(testId);
+				retVal &= testId > 0;
+			} else {
+				throw new SQLException("Dodavanje testa nije uspjelo. Pokušajte ponovo!");
+			}
 			for (StudentNaTestuDTO student : test.getStudenti()) {
 				ps = conn.prepareStatement(updateStudentsQuery);
 				ps.setInt(1, test.getTestId());

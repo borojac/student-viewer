@@ -130,7 +130,7 @@ public class ChangeAccountNameForm extends JFrame {
 		potvrdiBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				changeAccountNameFormController.promjena();
+				changeAccountNameFormController.promjenaKorisnickogImena();
 			}
 		});
 		

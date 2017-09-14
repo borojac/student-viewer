@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.view.ChangeForm;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class ChangeStudentsController {
@@ -31,9 +32,11 @@ public class ChangeStudentsController {
 			AddChangeStudentsHelpController help = new AddChangeStudentsHelpController(); //pomocna klasa da se izbjegne dupliciranje koda
 			int valid = help.checkParams(params);
 			if(valid == 0) {
-				//TODO poziv metode koja cuva novog studenta u bazi
+				MySQLStudentDAO dao = new MySQLStudentDAO();
+				StudentMainTableDTO newStudent = new StudentMainTableDTO(params.get(2), params.get(0), params.get(1));
+				dao.azurirajStudentaUListi(newStudent, student.getBrojIndeksa());
 				mainFormController.getMainTable().setStudent(number, params.get(2), params.get(0), params.get(1));
-				//TODO poziv metode koja azurira tabelu
+
 				final String message = "Uspjesno azuriranje!";
 				JOptionPane.showMessageDialog(null, message,"Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 				form.dispose();

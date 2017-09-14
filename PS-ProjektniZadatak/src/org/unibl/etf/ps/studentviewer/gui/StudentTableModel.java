@@ -100,17 +100,20 @@ public class StudentTableModel extends AbstractTableModel {
 		if (columnIndex == 3 && aValue instanceof String) {
 			try {
 				int brBodova = Integer.parseInt((String) aValue);
-				if (brBodova != (int) getValueAt(rowIndex, columnIndex))
+				if (brBodova <=100 && brBodova >= 0 && brBodova != (int) getValueAt(rowIndex, columnIndex)) {
 					testController.executeCommand(
 							new IzmjenaBrojaBodovaTestCommand(student, brBodova));
+					this.fireTableCellUpdated(rowIndex, columnIndex);
+				}
 			} catch (NumberFormatException ex) {}
 		} else if (columnIndex == 4 && aValue instanceof String) {
 			String komentar = (String) aValue;
-			if (!komentar.equals((String) getValueAt(rowIndex, columnIndex)))
+			if (!komentar.equals((String) getValueAt(rowIndex, columnIndex))) {
 				testController.executeCommand(
 						new IzmjenaKomentaraTestCommand(student, komentar));
+				this.fireTableCellUpdated(rowIndex, columnIndex);
+			}
 		}
-//		fireTableDataChanged();
 	}
 	
 	
