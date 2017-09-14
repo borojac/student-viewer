@@ -135,7 +135,7 @@ public class ChangePasswordForm extends JFrame {
 		potvrdiBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				changePasswordFormController.promjena();
+				changePasswordFormController.promjenaLozinke();
 			}
 		});
 		

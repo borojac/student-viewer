@@ -1,8 +1,6 @@
 package org.unibl.etf.ps.studentviewer.gui.view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -48,24 +46,6 @@ public class AdministratorDodavanjeStudijskogProgramaForm extends JFrame {
 	private ArrayList<PredmetDTO> predmetiList;
 	private JButton button;
 	private AdministratorDodavanjeStudijskogCiklusaFormController administratorDodavanjeStudijskogCiklusaFormController;
-
-
-
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AdministratorDodavanjeStudijskogProgramaForm frame = new AdministratorDodavanjeStudijskogProgramaForm(administratorFormController);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 	
 	public AdministratorDodavanjeStudijskogProgramaForm()
 	{

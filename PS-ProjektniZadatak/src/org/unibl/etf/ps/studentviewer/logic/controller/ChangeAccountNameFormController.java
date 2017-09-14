@@ -15,7 +15,7 @@ public class ChangeAccountNameFormController {
 		this.changeAccountNameForm = changeAccountNameForm;
 	}
 	
-	public void promjena() {
+	public void promjenaKorisnickogImena() {
 		String staroKorIme = changeAccountNameForm.getStaroKorIme();
 		String novoKorIme = changeAccountNameForm.getNovoKorIme();
 		

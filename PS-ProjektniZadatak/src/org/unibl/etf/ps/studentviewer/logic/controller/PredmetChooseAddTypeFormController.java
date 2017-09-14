@@ -87,7 +87,7 @@ public class PredmetChooseAddTypeFormController {
 					}
 					JOptionPane.showMessageDialog(predmetChoseAddTypeForm, message.toString());
 				}
-				administratorFormController.resetChooseAddTypeFormOpened();
+				AdministratorFormController.resetChooseAddTypeFormOpened();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

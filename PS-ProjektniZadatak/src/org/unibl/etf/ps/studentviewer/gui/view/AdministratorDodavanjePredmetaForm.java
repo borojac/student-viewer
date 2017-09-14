@@ -63,8 +63,8 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
-				administratorFormController.resetAddFormOpened();
-				administratorFormController.resetChooseAddTypeFormOpened();
+				AdministratorFormController.resetAddFormOpened();
+				AdministratorFormController.resetChooseAddTypeFormOpened();
 			}
 		});
 		

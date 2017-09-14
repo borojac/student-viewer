@@ -169,7 +169,7 @@ public class AdministratorForm extends JFrame {
 		odobriBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				administratorFormController.odobri();
+				administratorFormController.odobriZahtjev();
 			}
 		});
 		
@@ -192,7 +192,7 @@ public class AdministratorForm extends JFrame {
 		odbijBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				administratorFormController.odbij();
+				administratorFormController.odbijZahtjev();
 			}
 		});
 		

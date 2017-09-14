@@ -68,7 +68,7 @@ public class AdministratorFormController {
 		addFormOpened = false;
 	}
 	
-	public void odbij() {
+	public void odbijZahtjev() {
 		ZahtjevDTO zahtjevDTO = administratorForm.getSelectedZahtjev();
 		
 		MySQLDAOFactory zahtjevFactory = new MySQLDAOFactory();
@@ -80,7 +80,7 @@ public class AdministratorFormController {
 		}
 	}
 	
-	public void odobri() {
+	public void odobriZahtjev() {
 		ZahtjevDTO zahtjevDTO = administratorForm.getSelectedZahtjev();
 		
 		MySQLDAOFactory factory = new MySQLDAOFactory();

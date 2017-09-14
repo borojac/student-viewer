@@ -18,7 +18,7 @@ public class ChangePasswordFormController {
 		this.changePasswordForm = changePasswordForm;
 	}
 	
-	public void promjena() {
+	public void promjenaLozinke() {
 		String staraLozinka = changePasswordForm.getStaraLozinka();
 		String novaLozinka = changePasswordForm.getNovaLozinka();
 		String staraLozinkaHash = sha256(staraLozinka);
