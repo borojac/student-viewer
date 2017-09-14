@@ -19,7 +19,7 @@ public class BrisanjePredmetaFormController {
 		this.brisanjePredmetaForm = brisanjePredmetaForm;
 	}
 	
-	public void ukloni() {
+	public void ukloniPredmet() {
 		NalogDTO nalogDTO = brisanjePredmetaForm.getNalogDTO();
 		PredmetDTO predmetDTO = brisanjePredmetaForm.getSelectedPredmet();
 		

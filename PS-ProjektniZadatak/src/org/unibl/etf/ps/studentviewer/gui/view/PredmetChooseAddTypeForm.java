@@ -36,7 +36,7 @@ public class PredmetChooseAddTypeForm extends JFrame {
 	public PredmetChooseAddTypeForm(AdministratorFormController administratorFormController) {
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
-				   administratorFormController.resetChooseAddTypeFormOpened();
+				   AdministratorFormController.resetChooseAddTypeFormOpened();
 			   }
 		});
 		
