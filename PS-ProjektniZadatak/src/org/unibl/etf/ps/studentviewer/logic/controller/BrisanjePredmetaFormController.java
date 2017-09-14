@@ -35,7 +35,7 @@ public class BrisanjePredmetaFormController {
 				brisanjePredmetaForm.dispose();
 				AccountFormController.resetBrisanjePredmetaFormOpened();
 			} else {
-				JOptionPane.showMessageDialog(brisanjePredmetaForm, "Predmet nije uspjesno uklnonjen.");
+				JOptionPane.showMessageDialog(brisanjePredmetaForm, "Predmet nije uspjesno uklonjen.");
 			}
 		}
 	}

@@ -1,9 +1,9 @@
 package org.unibl.etf.ps.studentviewer.gui.view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -28,35 +29,23 @@ import javax.swing.border.EmptyBorder;
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorDodavanjePredmetaFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormController;
-import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 
 public class AdministratorDodavanjePredmetaForm extends JFrame {
 
 	private JPanel contentPane;
-	private JPanel componentPane;
-	private MainFormController mainFormController = null;
 	private JLabel sifraLbl, ectsLbl, tipPredmetaLbl, nazivSPLbl;
 	private JLabel nazivLbl, semestarLbl, skolskaGodinaLbl, ciklusLbl;
-	private JPanel panel = null;
 	private JTextField sifraTf;
 	private JTextField nazivTf;
 	private JTextField ectsTf;
 	private JTextField semestarTf;
-	/*private JTextField tipPredmetaTf;
-	private JTextField skolskaGodinaTf;
-	private JTextField nazivSPTf;
-	private JTextField ciklusTf;
-	private JButton addButton;*/
-	private NalogDTO nalogDTO;
 	private JRadioButton obavezan, izborni;
 	private ButtonGroup bg;
 	AdministratorFormController administratorFormController;
-	private JButton button;
+	private JButton potvrdiBtn;
 	AdministratorDodavanjePredmetaFormController administratorDodavanjePredmetaFormController;
 	
 	private JComboBox<Short> ciklusiCB;
@@ -67,35 +56,21 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 	private ArrayList<String> studijskiProgramiList;
 	private ArrayList<String> skolskeGodineList;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AdministratorDodavanjePredmetaForm frame = new AdministratorDodavanjePredmetaForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+	
+	public AdministratorDodavanjePredmetaForm(AdministratorFormController administratorFormController) {
+		
+		administratorDodavanjePredmetaFormController = new AdministratorDodavanjePredmetaFormController(this);
+		
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				administratorFormController.resetAddFormOpened();
+				administratorFormController.resetChooseAddTypeFormOpened();
 			}
 		});
 		
-	}
-	public AdministratorDodavanjePredmetaForm(AdministratorFormController administratorFormController)
-	{
-setResizable(false);
-		
-		addWindowListener(new WindowAdapter() {
-			   public void windowClosing(WindowEvent evt) {
-				   administratorFormController.resetAddFormOpened();
-				   administratorFormController.resetChooseAddTypeFormOpened();
-			   }
-			  });
-		this.administratorFormController = administratorFormController;
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 360, 640);
+		setBounds(100, 100, 360, 650);
 		contentPane =new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -110,7 +85,6 @@ setResizable(false);
 			headerImage = Scalr.resize(headerImage, Scalr.Mode.FIT_EXACT, label.getWidth(), label.getHeight(), null);
 			label.setIcon(new ImageIcon(headerImage));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		contentPane.add(label);
@@ -128,11 +102,12 @@ setResizable(false);
 		contentPane.add(label_2);
 		
 		initComponents();
-		
+		initButtonsListeners();
+		initComboBoxListener();
+		administratorDodavanjePredmetaFormController.postaviStudijskePrograme(studijskiProgramiCB, getCiklus());
 	}
 	
-	public void initComponents()
-	{
+	private void initComponents() {
 		sifraLbl = new JLabel("Šifra predmeta");
  		sifraLbl.setBounds(15, 130, 250, 45);
  		sifraLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
@@ -184,14 +159,15 @@ setResizable(false);
  		contentPane.add(tipPredmetaLbl);
  		
  		obavezan = new JRadioButton("Obavezan");
-            obavezan.setBounds(175, 355, 160, 15);
-            izborni = new JRadioButton("Izborni");
-            izborni.setBounds(175, 375, 160, 15);  
- 		 bg = new ButtonGroup(); 
-            bg.add(obavezan); 
-            bg.add(izborni);
-            add(obavezan);
-            add(izborni);
+        obavezan.setBounds(175, 355, 160, 15);
+        izborni = new JRadioButton("Izborni");
+        izborni.setBounds(175, 375, 160, 15);  
+ 		bg = new ButtonGroup(); 
+        bg.add(obavezan); 
+        bg.add(izborni);
+        contentPane.add(obavezan);
+        contentPane.add(izborni);
+        obavezan.setSelected(true);
  		
  		skolskaGodinaLbl = new JLabel("Školska godina");
  		skolskaGodinaLbl.setBounds(15, 405, 250, 45);
@@ -236,18 +212,8 @@ setResizable(false);
 			skolskeGodineCB.addItem(skolskeGodineList.get(i));
 		}
 		
-		for(int i = 0; i < studijskiProgramiList.size(); i++)
-		{
-			studijskiProgramiCB.addItem(studijskiProgramiList.get(i));
-		}
-		
 		skolskeGodineCB.setBounds(175, 415, 160, 25);
 		contentPane.add(skolskeGodineCB);
- 		
- 		/*skolskaGodinaTf = new JTextField();
-		skolskaGodinaTf.setBounds(175, 405, 160, 45);
-		skolskaGodinaTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
-		contentPane.add(skolskaGodinaTf);*/
 		
 		nazivSPLbl = new JLabel("Studijski program");
  		nazivSPLbl.setBounds(15, 460, 250, 45);
@@ -257,11 +223,6 @@ setResizable(false);
  		
  		studijskiProgramiCB.setBounds(175, 470, 160, 25);
 		contentPane.add(studijskiProgramiCB);
- 		
- 		/*nazivSPTf = new JTextField();
-		nazivSPTf.setBounds(175, 460, 160, 45);
-		nazivSPTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
-		contentPane.add(nazivSPTf);*/
 		
 		ciklusLbl = new JLabel("Studijski ciklus");
  		ciklusLbl.setBounds(15, 515, 250, 45);
@@ -271,21 +232,16 @@ setResizable(false);
  		
  		ciklusiCB.setBounds(175, 525, 160, 25);
 		contentPane.add(ciklusiCB);
- 		
- 		/*ciklusTf = new JTextField();
-		ciklusTf.setBounds(175, 515, 160, 45);
-		ciklusTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
-		contentPane.add(ciklusTf);*/
 		
-		button = new JButton("Potvrdi");
-		button.setBounds(100,580,160,25);
-		contentPane.add(button);
+		potvrdiBtn = new JButton("Potvrdi");
+		potvrdiBtn.setBounds(100,580,160,25);
+		contentPane.add(potvrdiBtn);
  		
 	}
 	
-private void initButtonsListeners() {
+	private void initButtonsListeners() {
 		
-		button.addMouseListener(new MouseAdapter() {
+		potvrdiBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				administratorDodavanjePredmetaFormController.dodajPredmet();
@@ -293,45 +249,71 @@ private void initButtonsListeners() {
 		});
 		
 	}
+	
+	private void initComboBoxListener() {
+		
+		ciklusiCB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				administratorDodavanjePredmetaFormController.postaviStudijskePrograme(studijskiProgramiCB, getCiklus());
+			}
+		});
+		
+	}
 
-public NalogDTO getNalogDTO() {
-	return nalogDTO;
-}
-
-public void setNalogDTO(NalogDTO nalogDTO) {
-	this.nalogDTO = nalogDTO;
-}
-
-public void setStudijskiProgramiList(ArrayList<String> studijskiProgramiList) {
-	this.studijskiProgramiList = studijskiProgramiList;
-}
-
-
-public short getSelectedCiklus() {
-	int i = ciklusiCB.getSelectedIndex();
-	return (i == -1) ? null : ciklusiList.get(i);
-}
-
-public String getSelectedStudijskiProgram() {
-	int i = studijskiProgramiCB.getSelectedIndex();
-	return (i == -1) ? null : studijskiProgramiList.get(i);
-}
-
-public String getSelectedSkolskaGodina() {
-	int i = skolskeGodineCB.getSelectedIndex();
-	return (i == -1) ? null : skolskeGodineList.get(i);
-}
-
-public ArrayList<PredmetDTO> getPredmetiNaNalogu() {
-	MySQLDAOFactory factory = new MySQLDAOFactory();
-	NalogDAO nalogDAO = factory.getNalogDAO();
-	return nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
-}
-
-	/**
-	 * Create the frame.
-	 */
-	public AdministratorDodavanjePredmetaForm() {
+	public void setStudijskiProgramiList(ArrayList<String> studijskiProgramiList) {
+		this.studijskiProgramiList = studijskiProgramiList;
+	}
+	
+	public String getSifra() {
+		return sifraTf.getText();
+	}
+	
+	public String getNazivPredmeta() {
+		return nazivTf.getText();
+	}
+	
+	public short getEcts() {
+		if("".equals(ectsTf.getText())) {
+			return -1;
+		}
+		try {
+			return Short.parseShort(ectsTf.getText());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Nekorektan unos ECTS bodova.");
+		}
+		return 0;
+	}
+	
+	public short getSemestar() {
+		if("".equals(semestarTf.getText())) {
+			return -1;
+		}
+		try {
+			return Short.parseShort(semestarTf.getText());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Nekorektan unos semestra.");
+		}
+		return 0;
+	}
+	
+	public String getSkolskaGodina() {
+		return skolskeGodineList.get(skolskeGodineCB.getSelectedIndex());
+	}
+	
+	public short getCiklus() {
+		return ciklusiList.get(ciklusiCB.getSelectedIndex());
+	}
+	
+	public String getStudijskiProgram() {
+		return (String)studijskiProgramiCB.getSelectedItem();
+	}
+	
+	public char getTipPredmeta() {
+		if(obavezan.isSelected()) {
+			return 'O';
+		}
+		return 'I';
 	}
 
 }

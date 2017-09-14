@@ -11,20 +11,16 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class PredmetChooseAddTypeFormController {
-	AdministratorFormController administratorFormController = null;
-	private PredmetChooseAddTypeForm pred;
 
 	public PredmetChooseAddTypeFormController(AdministratorFormController administratorFormController, boolean one, boolean more, 
 			PredmetChooseAddTypeForm predmetChoseAddTypeForm) {
 		
-		this.administratorFormController = administratorFormController;
-		this.pred = predmetChoseAddTypeForm;
 		if (!(one || more)) {
 			final String message = "Morate izabrati jednu opciju!";
 			JOptionPane.showMessageDialog(null, message);
 			predmetChoseAddTypeForm.setVisible(true);
 		} else if (one) {
-			this.administratorFormController.createAddPredmetForm();
+			administratorFormController.createAddPredmetForm();
 		} else {
 			try {
 				ImporterExcel importerExcel = new ImporterExcel();
@@ -64,10 +60,10 @@ public class PredmetChooseAddTypeFormController {
 					MySQLDAOFactory factory = new MySQLDAOFactory();
 					PredmetDAO predmetDAO = factory.getPredmetDAO();
 					if (predmetDAO.addPredmete(lista)) {
-						JOptionPane.showMessageDialog(pred, "Uspjesno dodati predmeti!");
+						JOptionPane.showMessageDialog(predmetChoseAddTypeForm, "Uspjesno dodati predmeti!");
 					}
 					else {
-						JOptionPane.showMessageDialog(pred, "Neuspjesno dodavanje predmeta!");
+						JOptionPane.showMessageDialog(predmetChoseAddTypeForm, "Neuspjesno dodavanje predmeta!");
 					}
 				} else {
 					StringBuilder message = new StringBuilder("Podaci nisu uneseni! Greska u ");
