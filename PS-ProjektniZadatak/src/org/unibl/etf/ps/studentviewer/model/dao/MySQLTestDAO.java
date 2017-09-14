@@ -90,8 +90,8 @@ public class MySQLTestDAO implements TestDAO {
 			cs = conn.prepareCall(deleteStudentsQuery);
 			cs.setInt(1, test.getTestId());
 			cs.registerOutParameter(2, Types.BOOLEAN);
-			cs.executeUpdate();
-			retVal = cs.getBoolean(2);
+			if (cs.executeUpdate() > 0)
+				retVal &= cs.getBoolean(2);
 			
 			ps = conn.prepareStatement(updateTestQuery);
 			ps.setString(1, test.getNaziv());
@@ -101,6 +101,8 @@ public class MySQLTestDAO implements TestDAO {
 			ps.setInt(5, test.getPredmetId());
 			ps.setInt(6, test.getTestId());
 			retVal &= ps.executeUpdate() == 1;
+			
+			DBUtility.close(ps);
 			
 			ps = conn.prepareStatement(addStudentsQuery);
 			if (test.getStudenti().size() > 0) {
@@ -157,9 +159,8 @@ public class MySQLTestDAO implements TestDAO {
 			cs.setInt(5, test.getPredmetId());
 			cs.registerOutParameter(6, Types.BOOLEAN);
 
-			cs.executeUpdate();
-			
-			retVal &= cs.getBoolean(6);
+			if (cs.executeUpdate() == 1)
+				retVal &= cs.getBoolean(6);
 
 			for (StudentNaTestuDTO student : test.getStudenti()) {
 				ps = conn.prepareStatement(updateStudentsQuery);
