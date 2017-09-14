@@ -61,6 +61,7 @@ public class ChangeForm extends JFrame {
 	}
 
 public ChangeForm(MainFormController mainFormController,StudentMainTableDTO student, int numInList) {
+	setTitle("Izmjena");
 		setResizable(false);
 		
 		addWindowListener(new WindowAdapter() {
@@ -170,7 +171,7 @@ public ChangeForm(MainFormController mainFormController,StudentMainTableDTO stud
 				tmp.addActionListener(new ActionListener() {
 					   @Override
 					    public void actionPerformed(ActionEvent e) {
-					      field.requestFocusInWindow(); 
+					      addButton.doClick();
 					    }
 					}); 		
 			}
@@ -179,7 +180,7 @@ public ChangeForm(MainFormController mainFormController,StudentMainTableDTO stud
 		tmp.addActionListener(new ActionListener() {
 			   @Override
 			    public void actionPerformed(ActionEvent e) {
-			      addButton.requestFocusInWindow(); 
+			      addButton.doClick(); 
 			    }
 			});
 	}

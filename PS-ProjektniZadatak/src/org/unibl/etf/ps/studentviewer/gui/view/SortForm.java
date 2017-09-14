@@ -76,6 +76,7 @@ public class SortForm extends JFrame {
 	}
 
 	public SortForm(MainFormController mainFormControler) {
+		setTitle("Sortiranje");
 		
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {

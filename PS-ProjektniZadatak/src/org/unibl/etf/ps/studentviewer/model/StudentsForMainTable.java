@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentMainTableDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class StudentsForMainTable {
@@ -21,16 +22,14 @@ public class StudentsForMainTable {
 			BufferedReader in = new BufferedReader(new FileReader("data.txt"));
 			String line = null;
 			int i = 0;
-			while((line = in.readLine()) != null) {
-				i++;
-				String ime = line.split(" ")[0];
-				String prezime = line.split(" ")[1];
-				
-				StudentMainTableDTO student = new StudentMainTableDTO(i + "/14", ime, prezime);
+			allStudents = new MySQLStudentMainTableDAO().getAllStudents();
+			for(StudentMainTableDTO student : allStudents) {
 				HashMap<String, String> testovi = new HashMap<String, String>();
 				testovi.put("22.11.2017.", new Integer(100 - i).toString());
 				testovi.put("02.08.2016.", new Integer(i).toString());
+
 				student.setTestovi(testovi);
+				
 				String komentar = "nekakav komentar " + i;
 				if (i % 3 == 0)
 					komentar = "";
@@ -40,9 +39,9 @@ public class StudentsForMainTable {
 				else
 					student.resetElektrijada();
 				
-				allStudents.add(student);
+				i++;
 			}
-		
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

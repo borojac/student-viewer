@@ -35,24 +35,24 @@ public class ChangeStudentsController {
 				mainFormController.getMainTable().setStudent(number, params.get(2), params.get(0), params.get(1));
 				//TODO poziv metode koja azurira tabelu
 				final String message = "Uspjesno azuriranje!";
-				JOptionPane.showMessageDialog(null, message);
+				JOptionPane.showMessageDialog(null, message,"Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 				form.dispose();
 				mainFormController.resetChangeFormOpened();
 				}
 			else if(valid == 1) {
 				final String message = "Pogresan unos za ime studenta!";
-				JOptionPane.showMessageDialog(null, message);
+				JOptionPane.showMessageDialog(null, message,"Upozorenje!", JOptionPane.WARNING_MESSAGE);
 				form.setIme(student.getIme());
 				form.setVisible(true);
 			}else if(valid == 2) {
 				final String message = "Pogresan unos za prezime studenta!";
-				JOptionPane.showMessageDialog(null, message);
+				JOptionPane.showMessageDialog(null, message,"Upozorenje!", JOptionPane.WARNING_MESSAGE);
 				form.setPrezime(student.getPrezime());
 				form.setVisible(true);
 			}else if(valid == 3) {
 				final String message = "Pogresan unos za broj indeksa! "
 						+ "Ocekivani format je: broj/godina";
-				JOptionPane.showMessageDialog(null, message);
+				JOptionPane.showMessageDialog(null, message,"Upozorenje!", JOptionPane.WARNING_MESSAGE);
 				form.setBrojIndeksa(student.getBrojIndeksa());
 				form.setVisible(true);
 			}

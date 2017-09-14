@@ -71,6 +71,7 @@ public class AddForm extends JFrame {
 	}
 	
 public AddForm(MainFormController mainFormController) {
+	setTitle("Dodavanje");
 		setResizable(false);
 		
 		addWindowListener(new WindowAdapter() {
@@ -182,7 +183,7 @@ public AddForm(MainFormController mainFormController) {
 				tmp.addActionListener(new ActionListener() {
 					   @Override
 					    public void actionPerformed(ActionEvent e) {
-					      field.requestFocusInWindow(); 
+					      addButton.doClick();
 					    }
 					}); 		
 			}
@@ -191,7 +192,7 @@ public AddForm(MainFormController mainFormController) {
 		tmp.addActionListener(new ActionListener() {
 			   @Override
 			    public void actionPerformed(ActionEvent e) {
-			      addButton.requestFocusInWindow(); 
+			      addButton.doClick();
 			    }
 			});
 	}

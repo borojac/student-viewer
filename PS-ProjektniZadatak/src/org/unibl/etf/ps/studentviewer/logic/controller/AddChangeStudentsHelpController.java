@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class AddChangeStudentsHelpController {
+	ArrayList<String> params;
 	public AddChangeStudentsHelpController() {
 	}
 	
@@ -55,10 +56,14 @@ public class AddChangeStudentsHelpController {
 	}
 	
 	public int checkParams(StudentMainTableDTO student) {
-		ArrayList <String> params = new ArrayList<>();
+		params = new ArrayList<>();
 		params.add(student.getIme());
 		params.add(student.getPrezime());
 		params.add(student.getBrojIndeksa());
-		return checkParams(params);
+		int retVal = checkParams(params);
+		student.setIme(params.get(0));
+		student.setPrezime(params.get(1));
+		student.setBrojIndeksa(params.remove(2));
+		return retVal;
 	}
 }

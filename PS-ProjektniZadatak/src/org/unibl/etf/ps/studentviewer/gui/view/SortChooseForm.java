@@ -40,6 +40,7 @@ public class SortChooseForm extends JFrame {
 	 * Create the frame.
 	 */
 	public SortChooseForm(SortForm sf, MainFormController mainFormController, SortFormController sfc) {
+		setTitle("Izbor testova");
 		setResizable(false);
 		this.sfc = sfc;
 		this.sf = sf;

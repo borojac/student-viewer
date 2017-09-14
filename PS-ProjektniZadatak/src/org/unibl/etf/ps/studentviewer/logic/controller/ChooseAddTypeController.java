@@ -19,7 +19,7 @@ public class ChooseAddTypeController {
 		this.mainFormController = mainFormController;
 		if (!(one || more)) {
 			final String message = "Morate izabrati jednu opciju!";
-			JOptionPane.showMessageDialog(null, message);
+			JOptionPane.showMessageDialog(null, message, "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 			form.setVisible(true);
 		} else if (one) {
 			this.mainFormController.createAddForm();
@@ -30,33 +30,43 @@ public class ChooseAddTypeController {
 
 				ArrayList<StudentMainTableDTO> listaZaTabelu = new ArrayList<>();
 				AddChangeStudentsHelpController help = new AddChangeStudentsHelpController();
+				int vrsteSGreskama = 0;
+				int i = 1;
+				StudentMainTableDTO newStudent = null;
+				int paramValid = 0;
 				for (String[] data : studenti) {
 					String indeks = data[0];
 					String ime = data[1];
 					String prezime = data[2];
-					StudentMainTableDTO newStudent = new StudentMainTableDTO(indeks, ime, prezime);
-					listaZaTabelu.add(newStudent);
-
-				}
-				// TODO poziv metode koja cuva listu u bazi
-				int i = 1;
-				for (StudentMainTableDTO student : listaZaTabelu) {
-					if (help.checkParams(student) == 0) { //ispravni parametri za ovog studenta
-						if (!mainFormController.getMainTable().addStudent(student)) {
-							final String message = "Greska pri unosu studenta!";
-							JOptionPane.showMessageDialog(null, message);
-						}
-					}else {
-						StringBuilder sb = new StringBuilder();
-						sb.append("Pogresni parametri u ");
-						sb.append(i);
-						sb.append(". vrsti dokumenta!");
-						String message = sb.toString();
-						JOptionPane.showMessageDialog(null, message);
+					newStudent = new StudentMainTableDTO(indeks, ime, prezime);
+					paramValid = help.checkParams(newStudent);
+					if (paramValid == 0)
+						listaZaTabelu.add(newStudent);
+					else {
+						vrsteSGreskama = i;
+						break;
 					}
 					i++;
 				}
-				// TODO poziv metode koja azurira tabelu
+				// TODO poziv metode koja cuva listu u bazi
+				if (vrsteSGreskama == 0)
+					for (StudentMainTableDTO student : listaZaTabelu) {
+						if (!mainFormController.getMainTable().addStudent(student)) {
+							final String message = "Greska pri unosu studenta!";
+							JOptionPane.showMessageDialog(null, message, "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+						}
+					}
+				else {
+					StringBuilder message = new StringBuilder("Podaci nisu uneseni! Greska u ");
+					message.append(vrsteSGreskama).append(". vrsti dokumenta, kod podatka o ");
+					if(paramValid == 1)
+						message.append("imenu.");
+					else if(paramValid == 2)
+						message.append("prezimenu.");
+					else
+						message.append("broju indeksa.");
+					JOptionPane.showMessageDialog(null, message.toString(), "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+				}
 				mainFormController.resetChooseAddTypeFormOpened();
 			} catch (IOException e) {
 				e.printStackTrace();

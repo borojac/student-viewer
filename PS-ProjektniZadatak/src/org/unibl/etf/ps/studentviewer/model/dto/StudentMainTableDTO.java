@@ -80,13 +80,19 @@ public class StudentMainTableDTO {
 			return komentar;
 		
 		if (type.startsWith(ShowViewData.D_TEST) || type.startsWith(Sort.TEST)) 
-			return (testovi.get(type.substring(7)) != null) ? testovi.get(type.substring(7)) : "none";
+			return (testovi.get(type.substring(7)) != null) ? testovi.get(type.substring(7)) : "/";
 		
 		return null;
 	}
 
-	public String getTest(String ispit) {
-		return testovi.get(ispit);
+	public String getTestForShowView(String test) {
+		if (testovi.get(test) == null)
+			return "/";
+		return testovi.get(test);
+	}
+	
+	public String getTest(String test) {
+		return testovi.get(test);
 	}
 	
 	@Override

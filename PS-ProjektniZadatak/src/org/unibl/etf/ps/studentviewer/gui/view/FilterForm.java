@@ -105,6 +105,7 @@ public class FilterForm extends JFrame {
 	 * Create the frame.
 	 */
 	public FilterForm(MainFormController mainFormControler) {
+		setTitle("Filtriranje");
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
