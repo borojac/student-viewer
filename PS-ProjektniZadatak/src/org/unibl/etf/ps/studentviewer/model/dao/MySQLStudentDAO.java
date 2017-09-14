@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
+import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
 
@@ -161,6 +163,162 @@ public class MySQLStudentDAO extends StudentDAO {
 			DBUtility.close(conn, ps);
 
 			retVal = true;
+		}
+		return retVal;
+	}
+	
+	/*Stankovic*/
+	@Override
+	public boolean dodajStudentaUListu(StudentMainTableDTO student) {
+		boolean retVal = true;
+
+		String addStudentQuery = "INSERT INTO student VALUE (?, ?, ?, ?)";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		
+		try {
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(addStudentQuery);
+
+			
+			ps.setInt(1, 0);
+			ps.setString(2, student.getBrojIndeksa());
+			ps.setString(3, student.getIme());
+			ps.setString(4, student.getPrezime());
+			
+
+
+			retVal &= ps.executeUpdate() == 1;
+		} catch (SQLException ex) {
+			try {
+				retVal = false;
+				conn.rollback();
+			} catch (SQLException e) {
+				
+			}
+		} finally {
+			DBUtility.close(conn, ps);
+
+		}
+		return retVal;
+	}
+
+
+	@Override
+	public boolean obrisiStudentaSaPredmeta(int studentID, PredmetDTO predmet) {
+		boolean retVal = true;
+
+		String deleteStudentQuery = "DELETE FROM slusa WHERE StudentId=? AND PredmetId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DBUtility.open();
+
+			ps = conn.prepareStatement(deleteStudentQuery);
+			ps.setInt(1, studentID);
+			ps.setInt(2, predmet.getPredmetId());
+			
+			retVal &= ps.executeUpdate() == 1;
+
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+				retVal = true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DBUtility.close(conn, ps);
+
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public boolean azurirajStudentaUListi(StudentMainTableDTO student, String stariIndeks) {
+		boolean retVal = true;
+
+		String updateTestQuery = "UPDATE student SET BrojIndeksa=? SET Ime=? SET Prezime=? WHERE BrojIndeksa=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try {
+			conn = DBUtility.open();
+			conn.setAutoCommit(false);
+			ps = conn.prepareStatement(updateTestQuery);
+
+			ps.setString(1, student.getBrojIndeksa());
+			ps.setString(2, student.getIme());
+			ps.setString(3, student.getPrezime());
+			ps.setString(4, stariIndeks);
+
+			retVal &= ps.executeUpdate() == 1;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DBUtility.close(conn, ps);
+
+			retVal = true;
+		}
+		return retVal;
+	}
+	/*Stankovic end*/
+
+	@Override
+	public boolean dodajStudentaNaPredmet(StudentMainTableDTO student, PredmetDTO predmet) {
+		boolean retVal = true;
+
+		String addStudentQuery = "INSERT INTO slusa VALUE (?, ?)";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		
+		try {
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(addStudentQuery);
+
+			
+			ps.setInt(1, getStudentBy(student.getBrojIndeksa()).getStudentId());
+			ps.setInt(2, predmet.getPredmetId());
+			
+
+
+			retVal &= ps.executeUpdate() == 1;
+		} catch (SQLException ex) {
+			try {
+				retVal = false;
+				conn.rollback();
+			} catch (SQLException e) {
+				
+			}
+		} finally {
+			DBUtility.close(conn, ps);
+
 		}
 		return retVal;
 	}

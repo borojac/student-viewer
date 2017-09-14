@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.view.ChooseAddTypeForm;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class ChooseAddTypeController {
@@ -49,19 +50,28 @@ public class ChooseAddTypeController {
 					i++;
 				}
 				// TODO poziv metode koja cuva listu u bazi
-				if (vrsteSGreskama == 0)
+				MySQLStudentDAO insert = new MySQLStudentDAO();
+				boolean greska = false;
+				if (vrsteSGreskama == 0) {
 					for (StudentMainTableDTO student : listaZaTabelu) {
 						if (!mainFormController.getMainTable().addStudent(student)) {
 							final String message = "Greska pri unosu studenta!";
 							JOptionPane.showMessageDialog(null, message, "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+							greska = true;
+							break;
 						}
+						insert.dodajStudentaUListu(student); // dodavanje u bazu podataka
 					}
-				else {
+					if (!greska) {
+						final String message = "Uspjesno dodavanje!";
+						JOptionPane.showMessageDialog(null, message, "Obavjestenje!", JOptionPane.INFORMATION_MESSAGE);
+					}
+				} else {
 					StringBuilder message = new StringBuilder("Podaci nisu uneseni! Greska u ");
 					message.append(vrsteSGreskama).append(". vrsti dokumenta, kod podatka o ");
-					if(paramValid == 1)
+					if (paramValid == 1)
 						message.append("imenu.");
-					else if(paramValid == 2)
+					else if (paramValid == 2)
 						message.append("prezimenu.");
 					else
 						message.append("broju indeksa.");
