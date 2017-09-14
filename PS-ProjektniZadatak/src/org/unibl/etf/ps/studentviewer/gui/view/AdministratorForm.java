@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -51,29 +53,6 @@ public class AdministratorForm extends JFrame {
 	
 	private DefaultTableModel dtm;
 	
-	
-	
-	public static void main(String[] args) {
-		System.setProperty("javax.net.ssl.trustStore", "StudentViewer.jks");
-		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
-		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} catch (Exception ex) {}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AdministratorForm frame = new AdministratorForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public AdministratorForm() {
 		administratorFormController = new AdministratorFormController(this);
 		
@@ -126,6 +105,7 @@ public class AdministratorForm extends JFrame {
 		
 		initComponents();
 		initButtonsListeners();
+		initTableListener();
 	}
 
 	private void initComponents() {
@@ -143,10 +123,12 @@ public class AdministratorForm extends JFrame {
 		  
 		odobriBtn = new JButton("Odobri");
 		odobriBtn.setBounds(15, 50, 180, 40);
+		odobriBtn.setEnabled(false);
 		componentsPane.add(odobriBtn);
 		  
 		odbijBtn = new JButton("Odbij");
 		odbijBtn.setBounds(15, 100, 180, 40);
+		odbijBtn.setEnabled(false);
 		componentsPane.add(odbijBtn);
 		
 		dodajPredmeteBtn = new JButton("Dodaj predmete");
@@ -184,9 +166,9 @@ public class AdministratorForm extends JFrame {
 	
 	private void initButtonsListeners() {
 		
-		odobriBtn.addMouseListener(new MouseAdapter() {
+		odobriBtn.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				administratorFormController.odobri();
 			}
 		});
@@ -207,9 +189,9 @@ public class AdministratorForm extends JFrame {
 			
 		});
 		
-		odbijBtn.addMouseListener(new MouseAdapter() {
+		odbijBtn.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				administratorFormController.odbij();
 			}
 		});
@@ -218,6 +200,23 @@ public class AdministratorForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				administratorFormController.odjava();
+			}
+		});
+		
+	}
+	
+	private void initTableListener() {
+		
+		adminZahtjeviJt.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(adminZahtjeviJt.getSelectedRow() != -1) {
+					odbijBtn.setEnabled(true);
+					odobriBtn.setEnabled(true);
+				} else {
+					odbijBtn.setEnabled(false);
+					odobriBtn.setEnabled(false);
+				}
 			}
 		});
 		
