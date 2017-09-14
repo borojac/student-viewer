@@ -1,27 +1,24 @@
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import org.unibl.etf.ps.studentviewer.gui.view.PredmetChooseAddTypeForm;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 
 public class PredmetChooseAddTypeFormController {
 	AdministratorFormController administratorFormController = null;
 	private PredmetChooseAddTypeForm pred;
-	PredmetDTO predmetDTO;
-	PredmetDAO predmetDAO;
-	short pom1, pom2, pom3;
-	char pom4;
 
-	
 	public PredmetChooseAddTypeFormController(AdministratorFormController administratorFormController, boolean one, boolean more, 
-			PredmetChooseAddTypeForm predmetChoseAddTypeForm)
-	{
+			PredmetChooseAddTypeForm predmetChoseAddTypeForm) {
+		
 		this.administratorFormController = administratorFormController;
+		this.pred = predmetChoseAddTypeForm;
 		if (!(one || more)) {
 			final String message = "Morate izabrati jednu opciju!";
 			JOptionPane.showMessageDialog(null, message);
@@ -34,34 +31,66 @@ public class PredmetChooseAddTypeFormController {
 				ArrayList<String[]> predmeti = importerExcel.getData(8);
 
 				ArrayList<PredmetDTO> lista = new ArrayList<>();
-				AddChangeStudentsHelpController help = new AddChangeStudentsHelpController();
+				AddChangePredmetHelpController help = new AddChangePredmetHelpController();
+				int paramValid = 0;
+				int redSaGreskom = 0;
+				int k = 1;
 				for (String[] data : predmeti) {
-					String sifra = data[0];
-					String naziv = data[1];
-					String ects = data[2];
-					pom1 = Short.parseShort(ects);
-					String semestar = data[3];
-					pom2 = Short.parseShort(semestar);
-					String tipPredmeta = data[4];
-					pom4 = tipPredmeta.charAt(0);
-					String nazivSP = data[5];
-					String skolskaGodina = data[6];
-					String ciklus = data[7];
-					pom3 = Short.parseShort(ciklus);
-					PredmetDTO newPredmet = new PredmetDTO(sifra, naziv, pom1, pom2, pom4, nazivSP, skolskaGodina, pom3);
-					lista.add(newPredmet);
+					ArrayList<String> params = new ArrayList<>();
+					for(int i = 0; i < data.length; i++) {
+						params.add(data[i]);
+					}
+					paramValid = help.checkParams(params);
+					if(paramValid == 0) {
+						String sifra = params.get(0);
+						String naziv = params.get(1);
+						short ects = Short.parseShort(params.get(2));
+						short semestar = Short.parseShort(params.get(3));
+						char tipPredmeta = params.get(4).charAt(0);
+						String nazivSP = params.get(5);
+						String skolskaGodina = params.get(6);
+						short ciklus = Short.parseShort(params.get(7));
+						PredmetDTO newPredmet = new PredmetDTO(sifra, naziv, ects, semestar, tipPredmeta, nazivSP, skolskaGodina, ciklus);
+						lista.add(newPredmet);
+					} else {
+						redSaGreskom = k;
+						break;
+					}
+					k++;
 				}
-				if (predmetDAO.addPredmete(lista))
-				{
-					JOptionPane.showMessageDialog(pred, "Uspjesno dodati predmeti!");
+				if(predmeti.size() == 0) {
+					
+				} else if(redSaGreskom == 0) {
+					MySQLDAOFactory factory = new MySQLDAOFactory();
+					PredmetDAO predmetDAO = factory.getPredmetDAO();
+					if (predmetDAO.addPredmete(lista)) {
+						JOptionPane.showMessageDialog(pred, "Uspjesno dodati predmeti!");
+					}
+					else {
+						JOptionPane.showMessageDialog(pred, "Neuspjesno dodavanje predmeta!");
+					}
+				} else {
+					StringBuilder message = new StringBuilder("Podaci nisu uneseni! Greska u ");
+					message.append(redSaGreskom).append(". vrsti dokumenta, kod podatka o ");
+					if(paramValid == 1) {
+						message.append("sifri predmeta.");
+					} else if(paramValid == 2) {
+						message.append("nazivu predmeta.");
+					} else if(paramValid == 3) {
+						message.append("ECTS bodovima.");
+					} else if(paramValid == 4) {
+						message.append("semestru.");
+					} else if(paramValid == 5) {
+						message.append("tipu predmeta.");
+					} else if(paramValid == 6) {
+						message.append("nazivu studijskog programa.");
+					} else if(paramValid == 7) {
+						message.append("skolskoj godini.");
+					} else {
+						message.append("ciklusu.");
+					}
+					JOptionPane.showMessageDialog(predmetChoseAddTypeForm, message.toString());
 				}
-				else
-				{
-					JOptionPane.showMessageDialog(pred, "Neuspjesno dodavanje predmeta!");
-				}
-				// TODO poziv metode koja cuva listu u bazi
-				
-				// TODO poziv metode koja azurira tabelu
 				administratorFormController.resetChooseAddTypeFormOpened();
 			} catch (IOException e) {
 				e.printStackTrace();
