@@ -247,13 +247,13 @@ public class MainFormController {
 			af.setVisible(true);
 		}
 
-		public void createChangeForm(int[] selectedRow) {
+		public void createChangeForm(int[] selectedRows) {
 			if (changeFormOpened)
 				return;
-			if (selectedRow != null && selectedRow.length == 1) {
+			if (selectedRows != null && selectedRows.length == 1) {
 				changeFormOpened = true;
 
-				ChangeForm cf = new ChangeForm(this, getMainTable().getStudent(selectedRow[0]), selectedRow[0]);
+				ChangeForm cf = new ChangeForm(this, getMainTable().getStudent(selectedRows[0]), selectedRows[0]);
 				cf.setVisible(true);
 			}else {
 				final String message = "Odaberite samo jednog studenta za izmjenu!";

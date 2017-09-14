@@ -65,7 +65,7 @@ public class ChooseExportTypeController {
 			mainFormController.resetExporting();
 
 		} else {
-			pdf(podaci, header);
+			savePDF(podaci, header);
 			mainFormController.resetExporting();
 		}
 
@@ -123,7 +123,7 @@ public class ChooseExportTypeController {
 		
 	}
 
-	public void pdf(ArrayList<String[]> studentiTabela, String[] header) throws DocumentException, IOException {
+	public void savePDF(ArrayList<String[]> studentiTabela, String[] header) throws DocumentException, IOException {
 		JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
 		int retVal = fileChooser.showSaveDialog(null);
 		if (retVal != JFileChooser.APPROVE_OPTION)
