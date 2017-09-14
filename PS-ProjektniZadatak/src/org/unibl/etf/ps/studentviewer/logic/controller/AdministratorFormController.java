@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.view.AdministratorDodavanjePredmetaForm;
+import org.unibl.etf.ps.studentviewer.gui.view.AdministratorDodavanjeStudijskogProgramaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdministratorForm;
 import org.unibl.etf.ps.studentviewer.gui.view.LoginForm;
 import org.unibl.etf.ps.studentviewer.gui.view.PredmetChooseAddTypeForm;
@@ -20,6 +21,7 @@ public class AdministratorFormController {
 	private AdministratorForm administratorForm;
 	private boolean predmetChooseAddTypeFormOpened = false;
 	private boolean addFormOpened = false;
+	private boolean dodajStudProgOpened = false;
 	
 	public AdministratorFormController(AdministratorForm administratorForm) {
 		this.administratorForm = administratorForm;
@@ -33,6 +35,16 @@ public class AdministratorFormController {
 
 		PredmetChooseAddTypeForm catf = new PredmetChooseAddTypeForm(this);
 		catf.setVisible(true);
+	}
+	
+	public void dodajStudProg()
+	{
+		if(dodajStudProgOpened)
+		return;
+		
+		dodajStudProgOpened = true;
+		AdministratorDodavanjeStudijskogProgramaForm ad = new AdministratorDodavanjeStudijskogProgramaForm(this);
+		ad.setVisible(true);
 	}
 	
 	public void createAddPredmetForm() {
@@ -52,6 +64,11 @@ public class AdministratorFormController {
 	
 	public void resetChooseAddTypeFormOpened() {
 		predmetChooseAddTypeFormOpened = false;
+	}
+	
+	public void resetDodajStudProgOpened()
+	{
+		dodajStudProgOpened = false;
 	}
 	
 	public void resetAddFormOpened(){

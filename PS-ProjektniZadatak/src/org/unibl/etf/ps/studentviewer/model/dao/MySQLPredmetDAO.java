@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
@@ -203,7 +205,7 @@ public class MySQLPredmetDAO implements PredmetDAO {
 		String getSGId = "SELECT SGId FROM skolska_godina WHERE SkolskaGodina = ?";
 		String getSPId = "SELECT SPId FROM studijski_program WHERE NazivSP = ? and Ciklus = ?";
 		String addToPredmet = "INSERT INTO predmet VALUE (null , ?, ?, ?)";
-		String addToPredmetNaFakultetu = "INSERT INTO predmet VALUE (?, ?, ?)";
+		String addToPredmetNaFakultetu = "INSERT INTO predmet_na_fakultetu VALUE (?, ?, ?)";
 		String addToPNaSP = "INSERT INTO p_na_sp VALUE (?, ?, ?, ?)";
 		
 		Connection conn = null;
@@ -213,6 +215,7 @@ public class MySQLPredmetDAO implements PredmetDAO {
 		try {
 			
 			conn = DBUtility.open();
+			conn.setAutoCommit(false);
 			ps = conn.prepareStatement(getSGId);
 			ps.setString(1, predmetDTO.getSkolskaGodina());
 			rs = ps.executeQuery();
@@ -222,6 +225,9 @@ public class MySQLPredmetDAO implements PredmetDAO {
 			
 			if(rs.next()) {
 				sgId = rs.getInt(1);
+			} else {
+				JOptionPane.showMessageDialog(null, "Nekorektno unesena skolska godina.");
+				return false;
 			}
 			
 			ps = conn.prepareStatement(getSPId);
@@ -231,6 +237,9 @@ public class MySQLPredmetDAO implements PredmetDAO {
 			
 			if(rs.next()) {
 				spId = rs.getInt(1);
+			} else {
+				JOptionPane.showMessageDialog(null, "Nekorektno unesen naziv studijskog programa.");
+				return false;
 			}
 			
 			ps = conn.prepareStatement(addToPredmetNaFakultetu);
@@ -238,14 +247,8 @@ public class MySQLPredmetDAO implements PredmetDAO {
 			ps.setString(2, predmetDTO.getNazivPredmeta());
 			ps.setShort(3, predmetDTO.getEcts());
 			
-			retVal = ps.executeUpdate() == 1;
-			
-			ps = conn.prepareStatement(addToPredmet);
-			ps.setInt(1, sgId);
-			ps.setString(2, predmetDTO.getSifraPredmeta());
-			ps.setInt(3, spId);
-			
-			retVal = ps.executeUpdate() == 1;
+			int i = ps.executeUpdate();
+			retVal = i == 1;
 			
 			ps = conn.prepareStatement(addToPNaSP);
 			ps.setString(1, predmetDTO.getSifraPredmeta());
@@ -253,7 +256,16 @@ public class MySQLPredmetDAO implements PredmetDAO {
 			ps.setShort(3, predmetDTO.getSemestar());
 			ps.setString(4, String.valueOf(predmetDTO.getTipPredmeta()));
 			
-			retVal = ps.executeUpdate() == 1;
+			i = ps.executeUpdate();
+			retVal = i == 1;
+			
+			ps = conn.prepareStatement(addToPredmet);
+			ps.setInt(1, sgId);
+			ps.setString(2, predmetDTO.getSifraPredmeta());
+			ps.setInt(3, spId);
+			
+			i = ps.executeUpdate();
+			retVal = i == 1;
 			
 			if(retVal) {
 				conn.commit();
@@ -277,7 +289,7 @@ public class MySQLPredmetDAO implements PredmetDAO {
 	}
 	
 	public boolean addPredmete(ArrayList<PredmetDTO> predmeti) {
-		boolean retVal = false;
+		boolean retVal = true;
 		
 		for(int i = 0; i < predmeti.size(); i++) {
 			if(!addPredmet(predmeti.get(i))) {

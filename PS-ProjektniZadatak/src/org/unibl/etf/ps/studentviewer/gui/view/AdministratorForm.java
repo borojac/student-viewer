@@ -198,6 +198,15 @@ public class AdministratorForm extends JFrame {
 			}
 		});
 		
+		dodajStudProgBtn.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e){
+				administratorFormController.dodajStudProg();
+			}
+			
+		});
+		
 		odbijBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
