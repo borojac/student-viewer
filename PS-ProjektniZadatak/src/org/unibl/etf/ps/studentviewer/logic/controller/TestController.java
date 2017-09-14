@@ -284,7 +284,7 @@ public class TestController {
 	}
 
 
-	public void export(TestDTO test) throws DocumentException, IOException {
+	public void export() throws DocumentException, IOException {
 		JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
 		int retVal = fileChooser.showSaveDialog(null);
 		if (retVal != JFileChooser.APPROVE_OPTION)
@@ -353,7 +353,7 @@ public class TestController {
 		}
 	}
 
-	public void print(TestDTO test) throws IOException, DocumentException, PrinterException {
+	public void print() throws IOException, DocumentException, PrinterException {
 
 		Font font = FontFactory.getFont("fonts/tahoma.ttf", BaseFont.IDENTITY_H, 12);
 		Document doc = new Document();

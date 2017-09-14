@@ -226,7 +226,7 @@ public class MySQLTestDAO implements TestDAO {
 	}
 
 	@Override
-	public List<StudentNaTestuDTO> getAllStudents(int idTesta) {
+	public List<StudentNaTestuDTO> getStudentsOnTest(int idTesta) {
 		List<StudentNaTestuDTO> retVals = new ArrayList<>();
 		String query = "SELECT StudentId, BrojIndeksa, Ime, Prezime, BrojBodova, Komentar"
 				+ " FROM student INNER JOIN izlazi_na USING(StudentId) WHERE TestId = ?";
@@ -280,7 +280,7 @@ public class MySQLTestDAO implements TestDAO {
 				TestDTO tmp = new TestDTO(rs.getInt(1), rs.getString(2), 
 						new Date(rs.getDate(3).getTime()), rs.getString(4),
 						rs.getInt(5), rs.getInt(6));
-				tmp.setStudenti(getAllStudents(tmp.getTestId()));
+				tmp.setStudenti(getStudentsOnTest(tmp.getTestId()));
 				retVals.add(tmp);
 			}
 		} catch (SQLException e) {
@@ -294,7 +294,7 @@ public class MySQLTestDAO implements TestDAO {
 	}
 
 	@Override
-	public List<StudentNaTestuDTO> getStudentsNotOnTest(TestDTO test) {
+	public List<StudentNaTestuDTO> getStudentsOnPredmet(TestDTO test) {
 		List<StudentNaTestuDTO> retVals = new ArrayList<>();
 		
 		String query = "SELECT StudentId, BrojIndeksa, Ime, Prezime FROM slusa"

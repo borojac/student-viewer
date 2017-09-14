@@ -81,7 +81,7 @@ public class TestDodajStudenteForm extends JDialog {
 		
 		StudentListModel allStudentsListModel = new StudentListModel();
 
-		List<StudentNaTestuDTO> data = testDAO.getStudentsNotOnTest(testController.getTest());
+		List<StudentNaTestuDTO> data = testDAO.getStudentsOnPredmet(testController.getTest());
 		allStudentsListModel.setData(data);
 		
 		scrollPane = new JScrollPane();
