@@ -16,7 +16,7 @@ public class MySQLStudentMainTableDAO implements StudentMainTableDAO {
 	public ArrayList<StudentMainTableDTO> getAllStudents() {
 		ArrayList<StudentMainTableDTO> list = new ArrayList<StudentMainTableDTO>();
 
-		String getAllStudentsQuerry = "Select * FROM student";
+		String getAllStudentsQuerry = "SELECT * FROM student";
 
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -29,7 +29,9 @@ public class MySQLStudentMainTableDAO implements StudentMainTableDAO {
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				list.add(new StudentMainTableDTO(rs.getString(2), rs.getString(3), rs.getString(4)));
+				StudentMainTableDTO student = new StudentMainTableDTO(rs.getString(2), rs.getString(3), rs.getString(4));
+				setCommentForStudent(student, rs.getInt(1));
+				list.add(student);
 			}
 
 		} catch (SQLException e) {
@@ -38,6 +40,36 @@ public class MySQLStudentMainTableDAO implements StudentMainTableDAO {
 			DBUtility.close(conn, rs, ps);
 		}
 		return list;
+	}
+	
+	public void setCommentForStudent(StudentMainTableDTO student, int id) {
+		String getCommentQuerry = "SELECT Komentar FROM slusa WHERE StudentId=?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getCommentQuerry);
+			ps.setInt(1, id);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				String s = rs.getString(1);
+				if (s == null)
+					student.setKomentar("");
+				else
+					student.setKomentar(s);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		
 	}
 
 }

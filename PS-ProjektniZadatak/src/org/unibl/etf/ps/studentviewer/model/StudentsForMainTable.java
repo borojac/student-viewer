@@ -30,10 +30,10 @@ public class StudentsForMainTable {
 
 				student.setTestovi(testovi);
 				
-				String komentar = "nekakav komentar " + i;
-				if (i % 3 == 0)
-					komentar = "";
-				student.setKomentar(komentar);
+//				String komentar = "nekakav komentar " + i;
+//				if (i % 3 == 0)
+//					komentar = "";
+//				student.setKomentar(komentar);
 				if ( i % 2 == 0)
 					student.setElektrijada();
 				else

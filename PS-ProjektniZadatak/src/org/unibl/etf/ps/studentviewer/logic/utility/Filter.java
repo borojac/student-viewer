@@ -5,7 +5,6 @@ public interface Filter {
 	public static String POLOZEN = "F_POLOZEN";
 	public static String NIJE_POLOZEN = "F_NIJEPOLOZEN";
 	public static String BROJ_POENA = "F_BROJPOENA";
-	public static String INTERVAL_POENA = "F_INTERVALPOENA";
 	public static String VISE_OD = "F_VISEOD";
 	public static String MANJE_OD = "F_MANJEOD";
 	public static String IZASAO = "F_IZASAO";

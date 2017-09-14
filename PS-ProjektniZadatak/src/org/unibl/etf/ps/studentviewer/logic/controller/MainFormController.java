@@ -67,7 +67,7 @@ public class MainFormController {
 	/* Stankovic end */
 	
 	
-	public static void resetSortFormOpened(){
+	public void resetSortFormOpened(){
 		sortFormOpened = false;
 	}
 	

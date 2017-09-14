@@ -17,10 +17,8 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 public class MainTable extends JTable {
 
 	private ArrayList<StudentMainTableDTO> students = null;
-	private static String[] columnIdentifiers = null;// = { "Indeks", "Ime", "Prezime", "Elektrijada", "Komentar" };
+	private static String[] columnIdentifiers = null;
 	private HashMap<String, String> map = new HashMap<String, String>();
-
-	private static String[] currentIdentifiers;
 
 	static {
 		ArrayList<String> identifiers = new ArrayList<String>();
@@ -42,7 +40,7 @@ public class MainTable extends JTable {
 		this.students = students;
 		MainTableModel model = (MainTableModel) getModel();
 
-		model.setData(getStudentsForModel());
+		model.setData(getStudentsForShow());
 
 		setSizeOfColumns();
 		repaint();
@@ -106,7 +104,7 @@ public class MainTable extends JTable {
 		return students;
 	}
 
-	private String[][] getStudentsForModel() {
+	private String[][] getStudentsForShow() {
 		int columnCount = (getColumnCount() != 0) ? getColumnCount() : 3;
 		String[][] forRet = new String[students.size()][columnCount];
 		int i = 0;
@@ -146,14 +144,8 @@ public class MainTable extends JTable {
 		map.put("Komentar", ShowViewData.D_KOMENTAR);
 		for (int i = 5; i < columnIdentifiers.length; i++)
 			map.put(columnIdentifiers[i], columnIdentifiers[i]);
-		initView();
 	}
 
-	// TO-DO sa studentima
-
-	private void initView() {
-		// Dovuci podatke i prikazati
-	}
 
 	public boolean addStudent(StudentMainTableDTO student) {
 		if (!StudentsForMainTable.getAllStudents().contains(student)) {

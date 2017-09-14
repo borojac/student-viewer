@@ -21,8 +21,6 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
-import org.unibl.etf.ps.studentviewer.gui.ShowViewData;
-import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.SortChooseFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.SortFormController;
 import org.unibl.etf.ps.studentviewer.logic.utility.Sort;
@@ -34,12 +32,12 @@ public class SortChooseForm extends JFrame {
 	SortForm sf;
 	SortFormController sfc;
 	JList<String> chooseList;
-	JList<String> choosenList;
+	JList<String> chosenList;
 
 	/*
 	 * Create the frame.
 	 */
-	public SortChooseForm(SortForm sf, MainFormController mainFormController, SortFormController sfc) {
+	public SortChooseForm(SortForm sf, SortFormController sfc) {
 		setTitle("Izbor testova");
 		setResizable(false);
 		this.sfc = sfc;
@@ -82,13 +80,13 @@ public class SortChooseForm extends JFrame {
 			scrollPane_1.setBounds(209, 177, 113, 179);
 			contentPane.add(scrollPane_1);
 			
-			choosenList = new JList<String>();
-			choosenList.setFont(new Font("Century", Font.BOLD, 13));
+			chosenList = new JList<String>();
+			chosenList.setFont(new Font("Century", Font.BOLD, 13));
 			DefaultListModel<String> model2 = new DefaultListModel<String>();
 			for (String s : sf.getExamsToSort())
 				model2.addElement(s);
-			choosenList.setModel(model2);
-			scrollPane_1.setViewportView(choosenList);
+			chosenList.setModel(model2);
+			scrollPane_1.setViewportView(chosenList);
 			
 			chooseList = new JList<String>();
 			DefaultListModel<String> model1 = new DefaultListModel<String>();
@@ -158,8 +156,8 @@ public class SortChooseForm extends JFrame {
 		return chooseList;
 	}
 	
-	public JList getChoosenList() {
-		return choosenList;
+	public JList getchosenList() {
+		return chosenList;
 	}
 	
 	public String[] getLeftSelected() {
@@ -169,7 +167,7 @@ public class SortChooseForm extends JFrame {
 	}
 	
 	public String[] getRightSelected() {
-		List<String> selectedList = choosenList.getSelectedValuesList();
+		List<String> selectedList = chosenList.getSelectedValuesList();
 		String[] forRet = selectedList.toArray(new String[selectedList.size()]);
 		return forRet;
 	}

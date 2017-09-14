@@ -1,6 +1,5 @@
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import org.unibl.etf.ps.studentviewer.gui.view.FilterChooseForm;
@@ -9,8 +8,6 @@ import org.unibl.etf.ps.studentviewer.logic.utility.Filter;
 import org.unibl.etf.ps.studentviewer.logic.utility.exec.FilterExec;
 
 public class FilterFormController {
-	String secondParam;
-	Date thirdParam;
 	MainFormController mainFormControler;
 	FilterForm filterForm = null;
 	

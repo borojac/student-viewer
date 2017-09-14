@@ -52,7 +52,6 @@ import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
 public class MainForm extends JFrame {
 
-	private MainForm mainForm;
 
 	private JPanel contentPane;
 	private MainFormController mainFormController = new MainFormController(this);
@@ -100,31 +99,6 @@ public class MainForm extends JFrame {
 
 	// ------- EndComponents!!! ------- //
 
-//	/**
-//	 * Launch the application.
-//	 * 
-//	 * @throws UnsupportedLookAndFeelException
-//	 * @throws IllegalAccessException
-//	 * @throws InstantiationException
-//	 * @throws ClassNotFoundException
-//	 */
-//	public static void main(String[] args) {
-//		System.setProperty("javax.net.ssl.trustStore", "StudentViewer.jks");
-//		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
-//		try {
-//			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-//		} catch (Exception ex) {}
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					MainForm frame = new MainForm();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * @throws IOException Create the frame. @throws
@@ -141,15 +115,12 @@ public class MainForm extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		
 
 		buttonPanel = new JPanel();
 		buttonPanel.setBackground(new Color(0, 0, 139));
 		buttonPanel.setBounds(578, 219, 147, 382);
 		contentPane.add(buttonPanel);
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 12));
-
-		mainForm = this;
 
 		BufferedImage img = ImageIO.read(new File("img\\BellTower-RGB(JPG).jpg"));
 		BufferedImage correctionImage = ImageIO.read(new File("img\\whiteCorrection.png"));

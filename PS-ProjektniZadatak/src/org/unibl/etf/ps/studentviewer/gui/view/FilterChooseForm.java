@@ -2,6 +2,10 @@ package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -22,10 +26,6 @@ import org.unibl.etf.ps.studentviewer.logic.controller.FilterChooseFormControlle
 import org.unibl.etf.ps.studentviewer.logic.controller.FilterFormController;
 import org.unibl.etf.ps.studentviewer.logic.utility.Filter;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class FilterChooseForm extends JFrame {
 
