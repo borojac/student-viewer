@@ -34,7 +34,6 @@ public class DodavanjeStudentaZaElektrijaduForm extends JFrame {
 	 */
 	private static final long serialVersionUID = -810389623048410641L;
 	private JPanel contentPane;
-	private static ArrayList<StudentZaElektrijaduDTO> studentiPredmeti = new ArrayList<>();
 	private JTable tableStudentiPredmeti;
 	private StudentiZaElektrijaduTableModel modelStudentiPredmeti;
 	private ElektrijadaForm forma;
@@ -44,13 +43,6 @@ public class DodavanjeStudentaZaElektrijaduForm extends JFrame {
 	private DodavanjeStudentaZaElektrijaduController studentController;
 	private DodavanjeStudentaZaElektrijaduForm dodavanjeForma;
 
-	public static void popuniListu() {
-		studentiPredmeti.add(new StudentZaElektrijaduDTO(1,"1122/13", "Janko", "Raspopovic", "Napomena"));
-		studentiPredmeti.add(new StudentZaElektrijaduDTO(2,"1245/13", "Marko", "Krusic", "Napomena1"));
-		studentiPredmeti.add(new StudentZaElektrijaduDTO(3,"1236/13", "Sinisa", "Mutic", "Napomena2"));
-		studentiPredmeti.add(new StudentZaElektrijaduDTO(4,"1258/13", "Jovica", "Cubic", "Napomena3"));
-		studentiPredmeti.add(new StudentZaElektrijaduDTO(5,"1126/13", "Dragica", "Takic", "Napomena4"));
-	}
 
 	public DodavanjeStudentaZaElektrijaduForm(ElektrijadaForm forma, JTable tableStudenti,
 			ElektrijadaController kontroler, StudentiZaElektrijaduTableModel studentiZaElektrijaduDataModel) {
@@ -67,9 +59,9 @@ public class DodavanjeStudentaZaElektrijaduForm extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setBackground(new Color(0, 0, 139));
 		setContentPane(contentPane);
-		popuniListu();
 
-		modelStudentiPredmeti = new StudentiZaElektrijaduTableModel(studentiPredmeti);
+		studentController.setIzborStudenta(kontroler);
+		modelStudentiPredmeti = new StudentiZaElektrijaduTableModel(studentController.getListaStudenataIzbor());
 		tableStudentiPredmeti = new JTable(modelStudentiPredmeti) {
 			/**
 			 * 
@@ -108,7 +100,7 @@ public class DodavanjeStudentaZaElektrijaduForm extends JFrame {
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				studentController.dodajStudentaControl( tableStudenti, tableStudentiPredmeti,
-						studentiZaElektrijaduDataModel, kontroler);
+						studentiZaElektrijaduDataModel,kontroler);
 			}
 		});
 

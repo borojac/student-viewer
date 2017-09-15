@@ -10,8 +10,9 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
 public abstract class StudentDAO {
 	public abstract StudentNaPredmetuDTO getStudentBy(String brojIndeksa);
 
-	public abstract List<StudentZaElektrijaduDTO> getStudentiZaElektrijadu(int idNaloga, int idElektrijade,
-			String nazivDiscipline);
+	public abstract List<StudentZaElektrijaduDTO> getIzborStudentaZaElektrijadu(int idNaloga, String disciplina, int idElektrijade);
+	
+	public abstract List<StudentZaElektrijaduDTO> getStudentiZaElektrijadu(String disciplina, int idElektrijade);
 
 	public abstract boolean dodajStudentaZaElektrijadu(StudentZaElektrijaduDTO student, int idElektrijade,
 			String nazivDiscipline);
@@ -19,11 +20,14 @@ public abstract class StudentDAO {
 	public abstract boolean obrisiStudentaZaElektrijadu(int idStudenta);
 
 	public abstract boolean azurirajStudentaZaElektrijadu(StudentZaElektrijaduDTO student);
-	
-	/*Stankovic*/
+
+	/* Stankovic */
 	public abstract boolean dodajStudentaUListu(StudentMainTableDTO student);
+
 	public abstract boolean obrisiStudentaSaPredmeta(int studentID, PredmetDTO predmet);
+
 	public abstract boolean azurirajStudentaUListi(StudentMainTableDTO student, String stariIndeks);
+
 	public abstract boolean dodajStudentaNaPredmet(StudentMainTableDTO student, PredmetDTO predmet);
-	/*Stankovic end*/
+	/* Stankovic end */
 }

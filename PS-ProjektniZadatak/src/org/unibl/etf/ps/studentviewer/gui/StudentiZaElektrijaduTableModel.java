@@ -67,7 +67,7 @@ public class StudentiZaElektrijaduTableModel extends AbstractTableModel {
 			value = st.getPrezime();
 			break;
 		case 3:
-			value = st.getNapomena();
+			value = st.getKomentar();
 			break;
 		}
 		return value;

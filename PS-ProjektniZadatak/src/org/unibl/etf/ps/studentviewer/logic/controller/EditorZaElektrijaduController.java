@@ -42,7 +42,7 @@ public class EditorZaElektrijaduController {
 			if (procitano.length() > 0) {
 				int row = target.getSelectedRow();
 				int column = target.getSelectedColumn();
-				DodatnaNastavaDTO dodatnaNastava = elektrijadaController.listaDodatnihNastava.get(row);
+				DodatnaNastavaDTO dodatnaNastava = elektrijadaController.getListaDodatnihNastava().get(row);
 				if (column == 0) {
 
 					elektrijadaController.izmjenaNazivaDodatneNastave(dodatnaNastava, procitano);
@@ -76,7 +76,7 @@ public class EditorZaElektrijaduController {
 			if (procitano.length() > 0) {
 				int row = target.getSelectedRow();
 				int column = target.getSelectedColumn();
-				StudentZaElektrijaduDTO st = elektrijadaController.listaStudenata.get(row);
+				StudentZaElektrijaduDTO st = elektrijadaController.getListaStudenata().get(row);
 				if (column == 3) {
 					elektrijadaController.izmjenaPodatkaNapomena(st, procitano);
 				}

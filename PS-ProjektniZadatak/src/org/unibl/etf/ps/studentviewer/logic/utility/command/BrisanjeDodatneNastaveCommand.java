@@ -6,19 +6,21 @@ import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 public class BrisanjeDodatneNastaveCommand implements Command {
 
 	private DodatnaNastavaDTO dodatnaNastava;
-
-	public BrisanjeDodatneNastaveCommand(DodatnaNastavaDTO dodatnaNastava) {
+	private ElektrijadaController kontroler;
+	
+	public BrisanjeDodatneNastaveCommand(DodatnaNastavaDTO dodatnaNastava, ElektrijadaController kontroler) {
 		this.dodatnaNastava = dodatnaNastava;
+		this.kontroler = kontroler;
 	}
 
 	@Override
 	public void execute() {
-		ElektrijadaController.listaDodatnihNastava.remove(dodatnaNastava);
+		kontroler.getListaDodatnihNastava().remove(dodatnaNastava);
 	}
 
 	@Override
 	public void unExecute() {
-		ElektrijadaController.listaDodatnihNastava.add(dodatnaNastava);
+		kontroler.getListaDodatnihNastava().add(dodatnaNastava);
 	}
 
 	@Override

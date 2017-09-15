@@ -8,15 +8,16 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
 public class BrisanjeStudentaZaElektrijaduCommand implements Command {
 
 	private ArrayList<StudentZaElektrijaduDTO> st;
-
-	public BrisanjeStudentaZaElektrijaduCommand(ArrayList<StudentZaElektrijaduDTO> st) {
+	private ElektrijadaController kontroler;
+	
+	public BrisanjeStudentaZaElektrijaduCommand(ArrayList<StudentZaElektrijaduDTO> st, ElektrijadaController kontroler) {
 		this.st = st;
 	}
 
 	@Override
 	public void execute() {
 		for (StudentZaElektrijaduDTO s : st) {
-			ElektrijadaController.listaStudenata.remove(s);
+			kontroler.getListaStudenata().remove(s);
 		}
 
 	}
@@ -24,7 +25,7 @@ public class BrisanjeStudentaZaElektrijaduCommand implements Command {
 	@Override
 	public void unExecute() {
 		for (StudentZaElektrijaduDTO s : st) {
-			ElektrijadaController.listaStudenata.add(s);
+			kontroler.getListaStudenata().add(s);
 		}
 
 	}

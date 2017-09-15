@@ -530,9 +530,7 @@ public class MainForm extends JFrame {
 		redoButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				ArrayList<StudentMainTableDTO> students = UndoRedoData.redo();
-				if(students != null)
-					mainTable.setStudents(students);
+				
 			}
 		});
 		redoButton.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -549,6 +547,12 @@ public class MainForm extends JFrame {
 		prikaziDisciplinuBtn = new JButton("Prikazi disciplinu");
 		prikaziDisciplinuBtn.setBounds(1040, 350, 135, 35);
 		contentPane.add(prikaziDisciplinuBtn);
+		redoButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				mainFormController.prikaziDisciplinu(nalogDTO,disciplineCB);
+			}
+		});
 
 	}
 	

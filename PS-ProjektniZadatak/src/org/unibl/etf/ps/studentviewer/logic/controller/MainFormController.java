@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
@@ -15,6 +16,8 @@ import org.unibl.etf.ps.studentviewer.gui.view.AccountForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AddForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChangeForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChooseAddTypeForm;
+import org.unibl.etf.ps.studentviewer.gui.view.DodavanjeStudentaZaElektrijaduForm;
+import org.unibl.etf.ps.studentviewer.gui.view.ElektrijadaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ExportStudentsForm;
 import org.unibl.etf.ps.studentviewer.gui.view.FilterForm;
 import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
@@ -25,8 +28,13 @@ import org.unibl.etf.ps.studentviewer.logic.utility.exec.ExecScheduler;
 import org.unibl.etf.ps.studentviewer.logic.utility.exec.SearchExec;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.ElektrijadaDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.StudentDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
+import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
@@ -296,6 +304,24 @@ public class MainFormController {
 				}
 			}).start();
 		}
+	}
+
+	public void prikaziDisciplinu(NalogDTO nalogDTO, JComboBox<String> disciplineCB) {
+		String nazivDiscipline = (String) disciplineCB.getSelectedItem();
+		DAOFactory dao = new MySQLDAOFactory();
+		ElektrijadaDAO deDAO = dao.getElektrijadaDAO();
+		ElektrijadaDTO elektrijadaDTO = deDAO.getElektrijadaDTO(nalogDTO.getNalogId(), nazivDiscipline);
+		DisciplinaDTO disciplinaDTO = new DisciplinaDTO(nazivDiscipline, elektrijadaDTO.getId());
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+
+				mainForm.setVisible(false);
+				ElektrijadaForm frame = new ElektrijadaForm(elektrijadaDTO, nalogDTO, disciplinaDTO,mainForm);
+				frame.setVisible(true);
+			}
+		});
+		
 	}
 	
 }

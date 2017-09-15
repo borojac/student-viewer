@@ -31,6 +31,7 @@ import org.unibl.etf.ps.studentviewer.gui.view.DodavanjeDodatneNastaveForm;
 import org.unibl.etf.ps.studentviewer.gui.view.DodavanjeStudentaZaElektrijaduForm;
 import org.unibl.etf.ps.studentviewer.gui.view.EditorZaElektrijaduForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ElektrijadaForm;
+import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.BrisanjeDodatneNastaveCommand;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.BrisanjeStudentaZaElektrijaduCommand;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.Command;
@@ -39,7 +40,7 @@ import org.unibl.etf.ps.studentviewer.logic.utility.command.DodavanjeStudentaZaE
 import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaDatumaDodatneNastaveCommand;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaNapomeneDodatneNastaveCommand;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaNazivaDodatneNastaveCommand;
-import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaPodatkaNapomenaStudentaZaElektrijadu;
+import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaPodatkaKomentarStudentaZaElektrijaduCommand;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.DodatnaNastavaDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
@@ -68,15 +69,35 @@ public class ElektrijadaController {
 	private DisciplinaDTO disciplinaDTO;
 	private Stack<Command> undoKomande = new Stack<Command>();
 	private Stack<Command> redoKomande = new Stack<Command>();
-	public static ArrayList<DodatnaNastavaDTO> listaDodatnihNastava = new ArrayList<>();
-	public static ArrayList<StudentZaElektrijaduDTO> listaStudenata = new ArrayList<>();
-
+	private ArrayList<DodatnaNastavaDTO> listaDodatnihNastava;
+	private ArrayList<StudentZaElektrijaduDTO> listaStudenata;
+	private MainForm mainForm;
+	
 	public ElektrijadaController(ElektrijadaForm forma, ElektrijadaDTO elektrijada, NalogDTO nalogDTO,
-			DisciplinaDTO disciplinaDTO) {
+			DisciplinaDTO disciplinaDTO, MainForm mainForm) {
 		this.forma = forma;
 		this.elektrijada = elektrijada;
 		this.nalogDTO = nalogDTO;
 		this.disciplinaDTO = disciplinaDTO;
+		this.listaDodatnihNastava = new ArrayList<>();
+		this.listaStudenata = new ArrayList<>();
+		this.mainForm = mainForm;
+	}
+
+	public ArrayList<DodatnaNastavaDTO> getListaDodatnihNastava() {
+		return listaDodatnihNastava;
+	}
+
+	public void setListaDodatnihNastava(ArrayList<DodatnaNastavaDTO> listaDodatnihNastava) {
+		this.listaDodatnihNastava = listaDodatnihNastava;
+	}
+
+	public ArrayList<StudentZaElektrijaduDTO> getListaStudenata() {
+		return listaStudenata;
+	}
+
+	public void setListaStudenata(ArrayList<StudentZaElektrijaduDTO> listaStudenata) {
+		this.listaStudenata = listaStudenata;
 	}
 
 	public DisciplinaDTO getDisciplinaDTO() {
@@ -134,31 +155,31 @@ public class ElektrijadaController {
 	}
 
 	public void izmjenaPodatkaNapomena(StudentZaElektrijaduDTO student, String novaNapomena) {
-		Command komanda = new IzmjenaPodatkaNapomenaStudentaZaElektrijadu(student, novaNapomena);
+		Command komanda = new IzmjenaPodatkaKomentarStudentaZaElektrijaduCommand(student, novaNapomena);
 		undoKomande.add(komanda);
 		redoKomande.clear();
 	}
 
 	public void dodavanjeNastave(DodatnaNastavaDTO nt) {
-		Command komanda = new DodavanjeDodatneNastaveCommand(nt);
+		Command komanda = new DodavanjeDodatneNastaveCommand(nt,this);
 		undoKomande.add(komanda);
 		redoKomande.clear();
 	}
 
 	public void brisanjeNastave(DodatnaNastavaDTO dodatnaNastava) {
-		Command komanda = new BrisanjeDodatneNastaveCommand(dodatnaNastava);
+		Command komanda = new BrisanjeDodatneNastaveCommand(dodatnaNastava,this);
 		undoKomande.add(komanda);
 		redoKomande.clear();
 	}
 
 	public void dodavanjeStudenta(ArrayList<StudentZaElektrijaduDTO> st) {
-		Command komanda = new DodavanjeStudentaZaElektrijaduCommand(st);
+		Command komanda = new DodavanjeStudentaZaElektrijaduCommand(st,this);
 		undoKomande.add(komanda);
 		redoKomande.clear();
 	}
 
 	public void brisanjeStudenta(ArrayList<StudentZaElektrijaduDTO> st) {
-		Command komanda = new BrisanjeStudentaZaElektrijaduCommand(st);
+		Command komanda = new BrisanjeStudentaZaElektrijaduCommand(st,this);
 		undoKomande.add(komanda);
 		redoKomande.clear();
 	}
@@ -344,16 +365,24 @@ public class ElektrijadaController {
 					"Potvrda zatvaranja", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
 					options[1]);
 			if (result == JOptionPane.YES_OPTION) {
+				if(!this.listaStudenata.isEmpty())
+					this.listaStudenata.clear();
+				forma.setVisible(false);
 				forma.dispose();
+				mainForm.setVisible(true);
 			} else {
 				this.sacuvajIzmjeneUBazu();
 			}
 		} else {
+			if(!this.listaStudenata.isEmpty())
+				this.listaStudenata.clear();
 			EventQueue.invokeLater(new Runnable() {
 
 				@Override
 				public void run() {
+					forma.setVisible(false);
 					forma.dispose();
+					mainForm.setVisible(true);
 				}
 			});
 		}
@@ -361,7 +390,9 @@ public class ElektrijadaController {
 
 			@Override
 			public void run() {
+				forma.setVisible(false);
 				forma.dispose();
+				mainForm.setVisible(true);
 			}
 		});
 	}
@@ -400,7 +431,7 @@ public class ElektrijadaController {
 		body.setTabSettings(new TabSettings());
 		for (StudentZaElektrijaduDTO student : listaStudenata) {
 			final String studentString = student.getIndeks() + " " + student.getIme() + " " + student.getPrezime() + " "
-					+ student.getNapomena();
+					+ student.getKomentar();
 			body.add(new Chunk(studentString));
 			body.add("\n");
 			body.add("\n");
@@ -439,7 +470,7 @@ public class ElektrijadaController {
 		body.setTabSettings(new TabSettings());
 		for (StudentZaElektrijaduDTO student : listaStudenata) {
 			final String studentString = student.getIndeks() + " " + student.getIme() + " " + student.getPrezime() + " "
-					+ student.getNapomena();
+					+ student.getKomentar();
 			body.add(new Chunk(studentString));
 			body.add("\n");
 			body.add("\n");
@@ -470,7 +501,7 @@ public class ElektrijadaController {
 			StudentDAO stDAO = dao.getStudentDAO();
 
 			ArrayList<StudentZaElektrijaduDTO> listaStudentaZaElektrijaduIzBaze = (ArrayList<StudentZaElektrijaduDTO>) stDAO
-					.getStudentiZaElektrijadu(nalogDTO.getNalogId(), elektrijada.getId(), disciplinaDTO.getNaziv());
+					.getStudentiZaElektrijadu(disciplinaDTO.getNaziv(), elektrijada.getId());
 			ArrayList<DodatnaNastavaDTO> listaDodatnihNastavaIzBaze = (ArrayList<DodatnaNastavaDTO>) dnDAO
 					.getDodatneNastave(elektrijada.getId(), nalogDTO.getNalogId(), disciplinaDTO.getNaziv());
 
@@ -478,7 +509,7 @@ public class ElektrijadaController {
 				boolean prisutan = false;
 				for (StudentZaElektrijaduDTO studentIzBaze : listaStudentaZaElektrijaduIzBaze) {
 					if (student.getId() == studentIzBaze.getId()) {
-						if (!student.getNapomena().equals(studentIzBaze.getNapomena())) {
+						if (!student.getKomentar().equals(studentIzBaze.getKomentar())) {
 							stDAO.azurirajStudentaZaElektrijadu(student);
 						}
 						prisutan = true;
@@ -541,5 +572,27 @@ public class ElektrijadaController {
 				}
 			});
 		}
+	}
+
+	public void setStudentiZaElektrijadu() {
+		DAOFactory dao = new MySQLDAOFactory();
+		StudentDAO dsDAO = dao.getStudentDAO();
+		if(!this.listaStudenata.isEmpty())
+			this.listaStudenata.clear();
+		this.listaStudenata =new ArrayList<>( dsDAO.getStudentiZaElektrijadu(this.disciplinaDTO.getNaziv(), this.elektrijada.getId()));
+		
+	}
+
+	public void nazadOpcija() {
+		EventQueue.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				forma.setVisible(false);
+				forma.dispose();
+				mainForm.setVisible(true);
+			}
+		});
+		
 	}
 }

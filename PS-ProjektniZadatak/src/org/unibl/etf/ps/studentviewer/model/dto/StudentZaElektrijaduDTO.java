@@ -44,11 +44,13 @@ public class StudentZaElektrijaduDTO {
 		this.prezime = prezime;
 	}
 
-	public String getNapomena() {
+
+
+	public String getKomentar() {
 		return komentar;
 	}
 
-	public void setNapomena(String komentar) {
+	public void setKomentar(String komentar) {
 		this.komentar = komentar;
 	}
 
@@ -80,6 +82,12 @@ public class StudentZaElektrijaduDTO {
 		if (id != other.id)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "StudentZaElektrijaduDTO [id=" + id + ", indeks=" + indeks + ", ime=" + ime + ", prezime=" + prezime
+				+ ", komentar=" + komentar + "]";
 	}
 
 	

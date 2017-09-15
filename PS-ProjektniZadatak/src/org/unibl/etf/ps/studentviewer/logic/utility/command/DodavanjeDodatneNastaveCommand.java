@@ -5,20 +5,22 @@ import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 
 public class DodavanjeDodatneNastaveCommand implements Command {
 	private DodatnaNastavaDTO dodatnaNastava;
-
-	public DodavanjeDodatneNastaveCommand(DodatnaNastavaDTO dodatnaNastava) {
+	private ElektrijadaController kontroler;
+	
+	public DodavanjeDodatneNastaveCommand(DodatnaNastavaDTO dodatnaNastava,ElektrijadaController kontroler) {
 		this.dodatnaNastava = dodatnaNastava;
+		this.kontroler = kontroler;
 	}
 
 	@Override
 	public void execute() {
-		ElektrijadaController.listaDodatnihNastava.add(dodatnaNastava);
+		kontroler.getListaDodatnihNastava().add(dodatnaNastava);
 
 	}
 
 	@Override
 	public void unExecute() {
-		ElektrijadaController.listaDodatnihNastava.remove(dodatnaNastava);
+		kontroler.getListaDodatnihNastava().remove(dodatnaNastava);
 
 	}
 

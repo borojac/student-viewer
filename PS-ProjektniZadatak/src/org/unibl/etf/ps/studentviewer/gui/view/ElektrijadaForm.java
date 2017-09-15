@@ -40,6 +40,7 @@ import org.unibl.etf.ps.studentviewer.logic.controller.ElektrijadaController;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.DodatnaNastavaDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.StudentDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
@@ -67,51 +68,39 @@ public class ElektrijadaForm extends JFrame {
 	private StudentiZaElektrijaduTableModel studentiZaElektrijaduDataModel;
 	private ElektrijadaController elektrijadaController;
 	private Logger logger = Logger.getLogger(ElektrijadaForm.class);
-
+	private MainForm mainForm;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		System.setProperty("javax.net.ssl.trustStore", "StudentViewer.jks");
 		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
-		DAOFactory dao = new MySQLDAOFactory();
-		DodatnaNastavaDAO dnDAO = dao.getDodatnaNastavaDAO();
-		// EventQueue.invokeLater(new Runnable() {
-		// public void run() {
-		// try {
-		// ElektrijadaForm frame = new ElektrijadaForm(new ElektrijadaDTO(1,new
-		// Date(),"Banja Luka"),new NalogDTO(),new DisciplinaDTO());
-		// frame.setVisible(true);
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		// }
-		// });
+		
+//		 EventQueue.invokeLater(new Runnable() {
+//		 public void run() {
+//		 try {
+//		 ElektrijadaForm frame = new ElektrijadaForm(new ElektrijadaDTO(1,new
+//		 Date(),"Banja Luka"),new NalogDTO(),new DisciplinaDTO());
+//		 frame.setVisible(true);
+//		 } catch (Exception e) {
+//		 e.printStackTrace();
+//		 }
+//		 }
+//		 });
 	}
 
 	/**
 	 * Create the frame.
+	 * @param mainForm 
 	 */
-	public ElektrijadaForm(ElektrijadaDTO elektrijadaDTO, NalogDTO nalogDTO, DisciplinaDTO disciplinaDTO)
-			throws Exception {
+	public ElektrijadaForm(ElektrijadaDTO elektrijadaDTO, NalogDTO nalogDTO, DisciplinaDTO disciplinaDTO, MainForm mainForm) {
 		forma = this;
 		this.elektrijadaDTO = elektrijadaDTO;
 		this.disciplinaDTO = disciplinaDTO;
 		this.nalogDTO = nalogDTO;
+		this.mainForm = mainForm;
 		setTitle("Disciplina Naziv");
 		setResizable(false);
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent event) {
-				EventQueue.invokeLater(new Runnable() {
-
-					@Override
-					public void run() {
-						elektrijadaController.zatvoriProzor(forma);
-					}
-				});
-			}
-		});
 		try {
 			File logFolder = new File("./log");
 			if (!logFolder.exists())
@@ -145,20 +134,20 @@ public class ElektrijadaForm extends JFrame {
 		scrollPaneNastavneTeme.setBorder(UIManager.getBorder("Button.border"));
 		scrollPaneNastavneTeme.setBounds(10, 219, 558, 382);
 
-		elektrijadaController = new ElektrijadaController(forma, elektrijadaDTO, nalogDTO, disciplinaDTO);
+		elektrijadaController = new ElektrijadaController(forma, elektrijadaDTO, nalogDTO, disciplinaDTO,mainForm);
+		elektrijadaController.setStudentiZaElektrijadu();
+//		String date = "23/10/2012 08:15 AM";
+//
+//		DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+//		Date startDate = df.parse(date);
+//
+//		ElektrijadaController.listaDodatnihNastava
+//				.add(new DodatnaNastavaDTO(1, startDate, "Napomena", "Naziv teme", 1, disciplinaDTO.getNaziv(), 1));
+//
+//		ElektrijadaController.listaStudenata.add(new StudentZaElektrijaduDTO(2, "1111/11", "Marko", "Marković",
+//				"Prvo mjesto na Elektrijadi u Beogradu 2012. godine."));
 
-		String date = "23/10/2012 08:15 AM";
-
-		DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
-		Date startDate = df.parse(date);
-
-		ElektrijadaController.listaDodatnihNastava
-				.add(new DodatnaNastavaDTO(1, startDate, "Napomena", "Naziv teme", 1, disciplinaDTO.getNaziv(), 1));
-
-		ElektrijadaController.listaStudenata.add(new StudentZaElektrijaduDTO(2, "1111/11", "Marko", "Marković",
-				"Prvo mjesto na Elektrijadi u Beogradu 2012. godine."));
-
-		studentiZaElektrijaduDataModel = new StudentiZaElektrijaduTableModel(ElektrijadaController.listaStudenata);
+		studentiZaElektrijaduDataModel = new StudentiZaElektrijaduTableModel(elektrijadaController.getListaStudenata());
 		tableStudenti = new JTable(studentiZaElektrijaduDataModel) {
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
@@ -177,7 +166,7 @@ public class ElektrijadaForm extends JFrame {
 		tableStudenti.setForeground(new Color(0, 0, 139));
 		tableStudenti.setBackground(new Color(173, 216, 230));
 		scrollPaneStudenti.setViewportView(tableStudenti);
-		dodatnaNastavaDataModel = new DodatnaNastavaDataTableModel(ElektrijadaController.listaDodatnihNastava);
+		dodatnaNastavaDataModel = new DodatnaNastavaDataTableModel(elektrijadaController.getListaDodatnihNastava());
 		tableDodatneNastave = new JTable(dodatnaNastavaDataModel) {
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
@@ -191,14 +180,18 @@ public class ElektrijadaForm extends JFrame {
 			}
 		};
 
-		// contentPane.addKeyListener(new KeyAdapter() {
-		// @Override
-		// public void keyReleased(KeyEvent e) {
-		// elektrijadaController.undoRedoAkcija(dodatnaNastavaDataModel,
-		// tableDodatneNastave,
-		// studentiZaElektrijaduDataModel, tableStudenti, e);
-		// }
-		// });
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent event) {
+				EventQueue.invokeLater(new Runnable() {
+
+					@Override
+					public void run() {
+						elektrijadaController.zatvoriProzor(forma);
+					}
+				});
+			}
+		});
 
 		tableDodatneNastave.setFont(new Font("Century Gothic", Font.BOLD, 12));
 		tableDodatneNastave.setForeground(new Color(0, 0, 139));
@@ -327,8 +320,7 @@ public class ElektrijadaForm extends JFrame {
 		btnNazad.setToolTipText("Nazad");
 		btnNazad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				dispose();
+				elektrijadaController.nazadOpcija();
 			}
 		});
 

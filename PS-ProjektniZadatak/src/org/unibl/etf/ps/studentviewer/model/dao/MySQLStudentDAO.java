@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
+import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
@@ -38,11 +40,44 @@ public class MySQLStudentDAO extends StudentDAO {
 		return student;
 	}
 
+	@SuppressWarnings("resource")
 	@Override
-	public List<StudentZaElektrijaduDTO> getStudentiZaElektrijadu(int idNaloga, int idElektrijade,
-			String nazivDiscipline) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<StudentZaElektrijaduDTO> getIzborStudentaZaElektrijadu(int idNaloga, String disciplina, int idElektrijade) {
+		List<StudentZaElektrijaduDTO> retVal = new ArrayList<StudentZaElektrijaduDTO>();
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		String query = "SELECT DISTINCT s.StudentId, s.BrojIndeksa, s.Ime, s.Prezime FROM student s INNER JOIN slusa USING(StudentId) WHERE PredmetId IN (SELECT PredmetId FROM predaje WHERE NalogId=?)";
+		String query2 = "SELECT Komentar from ucestvuje WHERE Naziv=? AND ElektrijadaId=? AND StudentId=?";
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, idNaloga);
+			
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				retVal.add(new StudentZaElektrijaduDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), ""));
+			}
+
+			ps = conn.prepareStatement(query2);
+			for (int i=0; i<retVal.size(); i++){
+				ps.setString(1, disciplina);
+				ps.setInt(2, idElektrijade);
+				ps.setInt(3, retVal.get(i).getId());
+				rs = ps.executeQuery();
+				String odg = rs.getString(1);
+				if (!odg.isEmpty())
+					retVal.get(i).setKomentar(odg);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		return retVal;
 	}
 
 	@Override
@@ -62,7 +97,7 @@ public class MySQLStudentDAO extends StudentDAO {
 			ps.setString(1, nazivDiscipline);
 			ps.setInt(2, idElektrijade);
 			ps.setInt(3, student.getId());
-			ps.setString(4, student.getNapomena());
+			ps.setString(4, student.getKomentar());
 
 			retVal &= ps.executeUpdate() == 1;
 		} catch (SQLException ex) {
@@ -141,7 +176,7 @@ public class MySQLStudentDAO extends StudentDAO {
 			conn.setAutoCommit(false);
 			ps = conn.prepareStatement(updateTestQuery);
 
-			ps.setString(1, student.getNapomena());
+			ps.setString(1, student.getKomentar());
 			ps.setInt(2, student.getId());
 
 			retVal &= ps.executeUpdate() == 1;
@@ -166,8 +201,8 @@ public class MySQLStudentDAO extends StudentDAO {
 		}
 		return retVal;
 	}
-	
-	/*Stankovic*/
+
+	/* Stankovic */
 	@Override
 	public boolean dodajStudentaUListu(StudentMainTableDTO student) {
 		boolean retVal = true;
@@ -177,18 +212,14 @@ public class MySQLStudentDAO extends StudentDAO {
 		Connection conn = null;
 		PreparedStatement ps = null;
 
-		
 		try {
 			conn = DBUtility.open();
 			ps = conn.prepareStatement(addStudentQuery);
 
-			
 			ps.setInt(1, 0);
 			ps.setString(2, student.getBrojIndeksa());
 			ps.setString(3, student.getIme());
 			ps.setString(4, student.getPrezime());
-			
-
 
 			retVal &= ps.executeUpdate() == 1;
 		} catch (SQLException ex) {
@@ -196,7 +227,7 @@ public class MySQLStudentDAO extends StudentDAO {
 				retVal = false;
 				conn.rollback();
 			} catch (SQLException e) {
-				
+
 			}
 		} finally {
 			DBUtility.close(conn, ps);
@@ -204,7 +235,6 @@ public class MySQLStudentDAO extends StudentDAO {
 		}
 		return retVal;
 	}
-
 
 	@Override
 	public boolean obrisiStudentaSaPredmeta(int studentID, PredmetDTO predmet) {
@@ -220,7 +250,7 @@ public class MySQLStudentDAO extends StudentDAO {
 			ps = conn.prepareStatement(deleteStudentQuery);
 			ps.setInt(1, studentID);
 			ps.setInt(2, predmet.getPredmetId());
-			
+
 			retVal &= ps.executeUpdate() == 1;
 
 		} catch (SQLException e) {
@@ -286,7 +316,7 @@ public class MySQLStudentDAO extends StudentDAO {
 		}
 		return retVal;
 	}
-	/*Stankovic end*/
+	/* Stankovic end */
 
 	@Override
 	public boolean dodajStudentaNaPredmet(StudentMainTableDTO student, PredmetDTO predmet) {
@@ -297,16 +327,12 @@ public class MySQLStudentDAO extends StudentDAO {
 		Connection conn = null;
 		PreparedStatement ps = null;
 
-		
 		try {
 			conn = DBUtility.open();
 			ps = conn.prepareStatement(addStudentQuery);
 
-			
 			ps.setInt(1, getStudentBy(student.getBrojIndeksa()).getStudentId());
 			ps.setInt(2, predmet.getPredmetId());
-			
-
 
 			retVal &= ps.executeUpdate() == 1;
 		} catch (SQLException ex) {
@@ -314,11 +340,42 @@ public class MySQLStudentDAO extends StudentDAO {
 				retVal = false;
 				conn.rollback();
 			} catch (SQLException e) {
-				
+
 			}
 		} finally {
 			DBUtility.close(conn, ps);
 
+		}
+		return retVal;
+	}
+
+	@Override
+	public List<StudentZaElektrijaduDTO> getStudentiZaElektrijadu(String disciplina, int idElektrijade) {
+		List<StudentZaElektrijaduDTO> retVal = new ArrayList<StudentZaElektrijaduDTO>();
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		String query = "SELECT StudentId, BrojIndeksa, Ime, Prezime, Komentar FROM student INNER JOIN ucestvuje u USING(StudentId) WHERE u.ElektrijadaId=? AND u.Naziv=?";
+		try {
+
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			
+			ps.setInt(1, idElektrijade);
+			ps.setString(2, disciplina);
+			
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				retVal.add(new StudentZaElektrijaduDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(3), rs.getString(4)));
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();			
+		} finally {
+			DBUtility.close(conn, rs, ps);
 		}
 		return retVal;
 	}

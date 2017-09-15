@@ -32,4 +32,14 @@ public class MySQLDAOFactory implements DAOFactory {
 		return new MySQLZahtjevDAO();
 	}
 
+	@Override
+	public ElektrijadaDAO getElektrijadaDAO() {
+		return new MySQLElektrijadaDAO();
+	}
+
+	@Override
+	public DisciplinaDAO getDisciplinaDAO() {
+		return new MySQLDisciplinaDAO();
+	}
+
 }

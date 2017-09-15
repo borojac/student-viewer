@@ -9,13 +9,20 @@ import javax.swing.JTable;
 import org.unibl.etf.ps.studentviewer.gui.StudentiZaElektrijaduTableModel;
 import org.unibl.etf.ps.studentviewer.gui.view.DodavanjeStudentaZaElektrijaduForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ElektrijadaForm;
+import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.StudentDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
 
 public class DodavanjeStudentaZaElektrijaduController {
 
 	private DodavanjeStudentaZaElektrijaduForm dodavanjeForma;
+	private ArrayList<StudentZaElektrijaduDTO> listaStudenataIzbor;
+
 	public DodavanjeStudentaZaElektrijaduController(DodavanjeStudentaZaElektrijaduForm dodavanjeForma) {
 		this.dodavanjeForma = dodavanjeForma;
+		this.listaStudenataIzbor = new ArrayList<>();
+
 	}
 
 	public void zatvoriProzor(ElektrijadaForm forma, WindowEvent e) {
@@ -25,7 +32,7 @@ public class DodavanjeStudentaZaElektrijaduController {
 
 	public void dodajStudentaControl(
 			JTable tableStudenti, JTable tableStudentiPredmeti,
-			StudentiZaElektrijaduTableModel studentiZaElektrijaduDataModel, ElektrijadaController kontroler) {
+			StudentiZaElektrijaduTableModel studentiZaElektrijaduDataModel,ElektrijadaController kontroler ) {
 		int[] redovi = tableStudentiPredmeti.getSelectedRows();
 		if (redovi.length == 0) {
 			JOptionPane.showMessageDialog(dodavanjeForma, "Nije selektovan niti jedan student.");
@@ -56,4 +63,23 @@ public class DodavanjeStudentaZaElektrijaduController {
 		dodavanjeForma.dispose();
 		forma.setEnabled(true);
 	}
+
+	public void setIzborStudenta(ElektrijadaController kontroler) {
+		DAOFactory dao = new MySQLDAOFactory();
+		StudentDAO dsDAO = dao.getStudentDAO();
+		if(!this.listaStudenataIzbor.isEmpty())
+			this.listaStudenataIzbor.clear();
+		this.listaStudenataIzbor =new ArrayList<>( dsDAO.getIzborStudentaZaElektrijadu(kontroler.getNalogDTO().getNalogId(),kontroler.getDisciplinaDTO().getNaziv(),kontroler.getElektrijada().getId()));
+		
+	}
+
+	public ArrayList<StudentZaElektrijaduDTO> getListaStudenataIzbor() {
+		return listaStudenataIzbor;
+	}
+
+	public void setListaStudenataIzbor(ArrayList<StudentZaElektrijaduDTO> listaStudenataIzbor) {
+		this.listaStudenataIzbor = listaStudenataIzbor;
+	}
+	
+	
 }
