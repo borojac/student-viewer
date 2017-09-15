@@ -47,6 +47,8 @@ import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainForm extends JFrame {
 
@@ -101,7 +103,19 @@ public class MainForm extends JFrame {
 	 */
 	
 	
+	
+	@Override
+	public void dispose() {
+		UndoRedoData.saveState(getNalogDTO(), getSelectedPredmet());
+		super.dispose();
+	}
 	public MainForm(NalogDTO nalogDTO) throws IOException {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				UndoRedoData.saveState(getNalogDTO(), getSelectedPredmet());
+			}
+		});
 		this.nalogDTO = nalogDTO;
 		setResizable(false);
 		setTitle("StudentViewer_v1.0");
@@ -272,13 +286,10 @@ public class MainForm extends JFrame {
 		mainTable.setModel(model);
 
 		if (getSelectedPredmet() != null) {
-			StudentsForMainTable.initShowInMainTable(getSelectedPredmet(), getNalogDTO());
+			ArrayList<StudentMainTableDTO> temp = StudentsForMainTable.initShowInMainTable(getSelectedPredmet(), getNalogDTO());
 
 			model.setColumnIdentifiers(new Object[] { "Indeks", "Ime", "Prezime" });
-			ArrayList<StudentMainTableDTO> tempList = new ArrayList<>();
-			for (StudentMainTableDTO s : StudentsForMainTable.getAllStudents())
-				tempList.add(s);
-			mainTable.setStudents(tempList);
+			mainTable.setStudents(temp);
 			mainTable.changeView();
 		}
 		mainTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);

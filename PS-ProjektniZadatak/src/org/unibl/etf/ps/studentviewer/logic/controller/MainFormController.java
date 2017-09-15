@@ -270,43 +270,14 @@ public class MainFormController {
 		new DeleteStudentsController(this, selectedRows);
 	}
 
-//	public void choseExportType() {
-//		if (exporting)
-//			return;
-//		exporting = true;
-//		ExportStudentsForm esf = new ExportStudentsForm(this);
-//		esf.setVisible(true);
-//	}
+	public void choseExportType() {
+		if (exporting)
+			return;
+		exporting = true;
+		ExportStudentsForm esf = new ExportStudentsForm(this);
+		esf.setVisible(true);
+	}
 
-
-//		public void createChangeForm(int[] selectedRows) {
-//			if (changeFormOpened)
-//				return;
-//			if (selectedRows != null && selectedRows.length == 1) {
-//				changeFormOpened = true;
-//
-//				ChangeForm cf = new ChangeForm(this, getMainTable().getStudent(selectedRows[0]), selectedRows[0]);
-//				cf.setVisible(true);
-//			}else {
-//				final String message = "Odaberite samo jednog studenta za izmjenu!";
-//				JOptionPane.showMessageDialog(null, message);
-//			}
-//		}	
-//		public void deleteStudentsControler(int[] selectedRows) {
-//			if (deleting)
-//				return;
-//			deleting = true;
-//			new DeleteStudentsController(this, selectedRows);
-//		}
-		
-		public void choseExportType() {
-			if (exporting)
-				return;
-			exporting = true;
-			ExportStudentsForm esf = new ExportStudentsForm(this);
-			esf.setVisible(true);
-		}
-		
 	public void resetFilterFormOpened() {
 		filterFormOpened = false;
 	}
@@ -317,10 +288,9 @@ public class MainFormController {
 
 			((DefaultTableModel) mainForm.getMainTable().getModel())
 					.setColumnIdentifiers(new Object[] { "Indeks", "Ime", "Prezime" });
-			ArrayList<StudentMainTableDTO> tempList = new ArrayList<StudentMainTableDTO>();
-			for (StudentMainTableDTO s : StudentsForMainTable.getAllStudents())
-				tempList.add(s);
-			mainForm.getMainTable().setStudents(tempList);
+			ArrayList<StudentMainTableDTO> temp = StudentsForMainTable.initShowInMainTable(activePredmet, mainForm.getNalogDTO());
+
+			mainForm.getMainTable().setStudents(temp);
 			mainForm.getMainTable().changeView();
 			showForm = new ShowForm(this);
 		}

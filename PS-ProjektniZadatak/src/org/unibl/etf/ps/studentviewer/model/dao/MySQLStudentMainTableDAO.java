@@ -130,7 +130,7 @@ public class MySQLStudentMainTableDAO implements StudentMainTableDAO {
 
 	}
 	
-	public String getStateOfMaintable(PredmetDTO predmet, NalogDTO nalog) {
+	public String getStateOfMainTable(PredmetDTO predmet, NalogDTO nalog) {
 		String getStateOfMainTableQuerry = "SELECT StanjeGT FROM predaje WHERE NalogId=? AND PredmetId=?";
 
 		Connection conn = null;
@@ -155,6 +155,33 @@ public class MySQLStudentMainTableDAO implements StudentMainTableDAO {
 			DBUtility.close(conn, rs, ps);
 		}
 		return result;
+	}
+	
+	public boolean setStateOfMainTable(PredmetDTO predmet, NalogDTO nalog, String stanje) {
+		String setStateOfMainTableQuerry = "UPDATE predaje SET StanjeGT=? WHERE NalogId=? AND PredmetId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		boolean retVal = false;
+		
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(setStateOfMainTableQuerry);
+			ps.setString(1, stanje);
+			ps.setInt(2, nalog.getNalogId());
+			ps.setInt(3, predmet.getPredmetId());
+
+			retVal = retVal &= ps.executeUpdate() == 1;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		return retVal;
 	}
 
 }
