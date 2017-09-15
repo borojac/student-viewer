@@ -139,7 +139,7 @@ public class AdministratorForm extends JFrame {
 		dodajDisciplinuBtn.setBounds(15, 200, 180, 40);
 		componentsPane.add(dodajDisciplinuBtn);
 		
-		dodajStudProgBtn = new JButton("Dodaj studijske programe");
+		dodajStudProgBtn = new JButton("Dodaj studijski program");
 		dodajStudProgBtn.setBounds(15, 250, 180, 40);
 		componentsPane.add(dodajStudProgBtn);
 		

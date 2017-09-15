@@ -247,8 +247,7 @@ public class MySQLPredmetDAO implements PredmetDAO {
 			ps.setString(2, predmetDTO.getNazivPredmeta());
 			ps.setShort(3, predmetDTO.getEcts());
 			
-			int i = ps.executeUpdate();
-			retVal = i == 1;
+			retVal = ps.executeUpdate() == 1;
 			
 			ps = conn.prepareStatement(addToPNaSP);
 			ps.setString(1, predmetDTO.getSifraPredmeta());
@@ -256,16 +255,14 @@ public class MySQLPredmetDAO implements PredmetDAO {
 			ps.setShort(3, predmetDTO.getSemestar());
 			ps.setString(4, String.valueOf(predmetDTO.getTipPredmeta()));
 			
-			i = ps.executeUpdate();
-			retVal = i == 1;
+			retVal = ps.executeUpdate() == 1;
 			
 			ps = conn.prepareStatement(addToPredmet);
 			ps.setInt(1, sgId);
 			ps.setString(2, predmetDTO.getSifraPredmeta());
 			ps.setInt(3, spId);
 			
-			i = ps.executeUpdate();
-			retVal = i == 1;
+			retVal = ps.executeUpdate() == 1;
 			
 			if(retVal) {
 				conn.commit();
@@ -296,6 +293,78 @@ public class MySQLPredmetDAO implements PredmetDAO {
 				retVal = false;
 				break;
 			}
+		}
+		
+		return retVal;
+	}
+	
+	public boolean checkStudijskiProgram(String nazivSP, short ciklus) {
+		boolean retVal = false;
+		
+		String query = "SELECT SPId FROM studijski_program WHERE NazivSP = ? and Ciklus = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			ps.setString(1, nazivSP);
+			ps.setInt(2, ciklus);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				retVal = true;
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		
+		return retVal;
+	}
+	
+	public boolean addStudijskiProgram(String nazivSP, int ects, short ciklus, short trajanje, String zvanje) {
+		boolean retVal = false;
+		
+		String query = "INSERT INTO studijski_program VALUE (null, ?, ?, ?, ?, ?)";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			conn.setAutoCommit(false);
+			ps = conn.prepareStatement(query);
+			ps.setString(1, nazivSP);
+			ps.setInt(2, ects);
+			ps.setShort(3, ciklus);
+			ps.setShort(4, trajanje);
+			ps.setString(5, zvanje);
+			
+			retVal = ps.executeUpdate() == 1;
+			
+			if(retVal) {
+				conn.commit();
+			} else {
+				throw new SQLException("Rollback needed!");
+			}
+			
+		} catch(SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException ex) {}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {}
+			DBUtility.close(conn, ps);
 		}
 		
 		return retVal;
