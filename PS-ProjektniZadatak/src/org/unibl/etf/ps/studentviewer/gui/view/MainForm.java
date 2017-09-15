@@ -55,6 +55,7 @@ public class MainForm extends JFrame {
 	private JPanel contentPane;
 	private MainFormController mainFormController = new MainFormController(this);
 	private NalogDTO nalogDTO;
+	private PredmetDTO lastPredmet = null;
 
 	private ArrayList<PredmetDTO> predmetiList;
 
@@ -211,6 +212,7 @@ public class MainForm extends JFrame {
 		scrollPane.setBorder(UIManager.getBorder("Button.border"));
 		scrollPane.setBounds(10, 219, 556, 382);
 		contentPane.add(scrollPane);
+		lastPredmet = getSelectedPredmet();
 
 	}
 
@@ -570,7 +572,8 @@ public class MainForm extends JFrame {
 		predmetiCB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mainFormController.postaviMainForm(getSelectedPredmet());
+				mainFormController.postaviMainForm(getSelectedPredmet(), lastPredmet);
+				lastPredmet = getSelectedPredmet();
 			}
 		});
 	}

@@ -290,9 +290,9 @@ public class MainFormController {
 		filterFormOpened = false;
 	}
 
-	public void postaviMainForm(PredmetDTO activePredmet) {
+	public void postaviMainForm(PredmetDTO activePredmet, PredmetDTO lastPredmet) {
 		if (activePredmet != null) {
-//			UndoRedoData.saveState(mainForm.getNalogDTO(), activePredmet);
+			UndoRedoData.saveState(mainForm.getNalogDTO(), lastPredmet);
 			
 			StudentsForMainTable.initShowInMainTable(activePredmet, mainForm.getNalogDTO());
 
