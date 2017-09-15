@@ -131,11 +131,11 @@ public class ShowChooseForm extends JFrame {
 			btnNewButton_2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					new ShowChooseFormController(sf, ShowChooseForm.this).save();
-					ShowChooseForm.this.dispose();
 					if (ShowViewData.getValue(ShowViewData.D_TEST))
 						sf.setTestCheckBox();
 					else
 						sf.resetTestCheckBox();
+					ShowChooseForm.this.dispose();
 					sf.setVisible(true);
 				}
 			});

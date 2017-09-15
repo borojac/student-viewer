@@ -60,7 +60,6 @@ public class SortChooseFormController {
 			sfc.addTestToSortParams(rightListModel.getElementAt(i));
 			chosenExams.add(rightListModel.get(i));
 		}
-		
 		sf.setExamsToSort(chosenExams);
 		
 		for (int i = 0; i < leftListModel.size(); i++)

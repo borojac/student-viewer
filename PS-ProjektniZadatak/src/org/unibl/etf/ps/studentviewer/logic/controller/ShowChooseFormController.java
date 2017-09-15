@@ -47,7 +47,6 @@ public class ShowChooseFormController {
 	}
 
 	public void save() {
-
 		DefaultListModel<String> trueModel = (DefaultListModel<String>) showChooseForm.getChoosenList().getModel();
 		DefaultListModel<String> falseModel = (DefaultListModel<String>) showChooseForm.getChooseList().getModel();
 		
@@ -61,10 +60,10 @@ public class ShowChooseFormController {
 		for (int i = 0; i < falseModel.size(); i ++)
 			falseExams[i] = new String(falseModel.getElementAt(i));
 		
-		for (String s : trueExams) {
+		for (String s : trueExams) 
 			ShowViewData.setExam(s);
-		}
-		for (String s : falseExams)
+		
+		for (String s : falseExams) 
 			ShowViewData.resetExam(s);
 		showChooseForm.setVisible(true);
 		

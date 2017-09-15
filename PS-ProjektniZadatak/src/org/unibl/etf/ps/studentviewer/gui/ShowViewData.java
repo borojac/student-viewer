@@ -9,10 +9,14 @@ import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 
 public class ShowViewData {
 	static HashMap<String, Boolean> dataMap = new HashMap<String, Boolean>();
-
+	private static HashMap<String, Boolean> DD_TEST = new HashMap<String, Boolean>();
+	
+	public static void setNewTestHashMap(HashMap<String, Boolean> newHashMap) {
+		DD_TEST = newHashMap;
+	}
+	
 	public static void setNewHashMap(HashMap<String, Boolean> newHashMap) {
 		dataMap = newHashMap;
-		
 	}
 	
 	public static void setExam(String exam) {
@@ -36,8 +40,8 @@ public class ShowViewData {
 	public static boolean getValue(String s) {
 		if (s == null)
 			return false;
-		if (s.contains("."))
-			return DD_TEST.get(s);
+		if (s.contains(".")) {
+			return DD_TEST.get(s);}
 		else if (D_TEST.equals(s))
 			return checkTest();
 		return dataMap.get(s);
@@ -69,7 +73,6 @@ public class ShowViewData {
 	public static final String D_KOMENTAR = "D_KOMENTAR";
 	public static final String D_TEST = "D_TEST";
 	
-	private static final HashMap<String, Boolean> DD_TEST = new HashMap<String, Boolean>();
 	
 	
 	static {

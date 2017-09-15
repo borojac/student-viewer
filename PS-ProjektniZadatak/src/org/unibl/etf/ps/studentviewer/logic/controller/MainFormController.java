@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
@@ -56,7 +57,7 @@ public class MainFormController {
 	public void resetChangeFormOpened() {
 		changeFormOpened = false;
 	}
-	
+
 	public void resetDeleting() {
 		deleting = false;
 	}
@@ -65,16 +66,15 @@ public class MainFormController {
 		exporting = false;
 	}
 	/* Stankovic end */
-	
-	
-	public void resetSortFormOpened(){
+
+	public void resetSortFormOpened() {
 		sortFormOpened = false;
 	}
-	
+
 	public static void resetAccountFormOpened() {
 		accountFormOpened = false;
 	}
-	
+
 	public ExecScheduler getScheduler() {
 		return scheduler;
 	}
@@ -86,8 +86,7 @@ public class MainFormController {
 	public MainTable getMainTable() {
 		return mainForm.getMainTable();
 	}
-	
-	
+
 	public MainFormController() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -107,18 +106,18 @@ public class MainFormController {
 		sortForm.setVisible(true);
 		return true;
 	}
-	
+
 	public synchronized boolean createAccountForm() {
-		if(accountFormOpened)
+		if (accountFormOpened)
 			return false;
-		
+
 		accountFormOpened = true;
 		AccountForm accountForm = new AccountForm(this, mainForm.getNalogDTO());
 		accountForm.setVisible(true);
-		
+
 		return true;
 	}
-	
+
 	public void restoreTable() {
 		ArrayList<StudentMainTableDTO> tempList = new ArrayList<>();
 		for (StudentMainTableDTO s : StudentsForMainTable.getAllStudents())
@@ -126,7 +125,7 @@ public class MainFormController {
 		getMainTable().setStudents(tempList);
 		UndoRedoData.addState(tempList);
 	}
-	
+
 	public void search(MainForm mainForm) {
 		String params = mainForm.getSearchParams();
 		mainForm.setSearchParams("");
@@ -146,16 +145,16 @@ public class MainFormController {
 	public void createFilterForm() {
 		if (filterFormOpened)
 			return;
-		
+
 		filterFormOpened = true;
-		
+
 		FilterForm f = new FilterForm(this);
 		f.setVisible(true);
 	}
-	
+
 	public void addTestAction() {
 		EventQueue.invokeLater(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				TestForm tf = new TestForm(null, mainForm);
@@ -163,11 +162,12 @@ public class MainFormController {
 			}
 		});
 	}
-	
+
 	public void editTestAction(JTable testoviTable) {
-		final TestDTO selected = ((TestoviTableModel) testoviTable.getModel()).getData().get(testoviTable.getSelectedRow());
+		final TestDTO selected = ((TestoviTableModel) testoviTable.getModel()).getData()
+				.get(testoviTable.getSelectedRow());
 		EventQueue.invokeLater(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				TestForm tf = new TestForm(selected, mainForm);
@@ -175,32 +175,34 @@ public class MainFormController {
 			}
 		});
 	}
-	
+
 	public void initTestoviTable() {
 		PredmetDTO activePredmet = mainForm.getSelectedPredmet();
 		if (activePredmet != null) {
 			DAOFactory testFactory = new MySQLDAOFactory();
 			TestDAO testDAO = testFactory.getTestDAO();
 			List<TestDTO> data = testDAO.getAllTests(activePredmet.getPredmetId());
-	
+
 			mainForm.getTestoviTable().setModel(new TestoviTableModel(data));
 		}
 
 	}
-	
+
 	public void deleteTestAction() {
 		JTable testoviTable = mainForm.getTestoviTable();
 		DAOFactory factory = new MySQLDAOFactory();
 		TestDAO testDAO = factory.getTestDAO();
 		TestDTO test = ((TestoviTableModel) testoviTable.getModel()).getRowAt(testoviTable.getSelectedRow());
 		if (!testDAO.deleteTest(test))
-			JOptionPane.showMessageDialog(null, "Test ne može biti obrisan. Lista studenata na testu mora biti prazna da bi se test mogao brisati.", "Greška", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null,
+					"Test ne može biti obrisan. Lista studenata na testu mora biti prazna da bi se test mogao brisati.",
+					"Greška", JOptionPane.INFORMATION_MESSAGE);
 		else {
 			TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
 			List<TestDTO> data = model.getData();
 			data.remove(testoviTable.getSelectedRow());
 			EventQueue.invokeLater(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					model.fireTableDataChanged();
@@ -217,7 +219,7 @@ public class MainFormController {
 		});
 
 	}
-	
+
 	public void initMouseHoverAction(MouseEvent event, JTable testoviTable) {
 		if (testoviTable.contains(event.getPoint())) {
 			int row = testoviTable.rowAtPoint(event.getPoint());
@@ -226,70 +228,84 @@ public class MainFormController {
 		}
 	}
 	// Stankovic begin//
-	
-		public void createChooseAddTypeForm() {
-			if (chooseAddTypeFormOpened)
-				return;
 
-			chooseAddTypeFormOpened = true;
+	public void createChooseAddTypeForm() {
+		if (chooseAddTypeFormOpened)
+			return;
 
-			ChooseAddTypeForm catf = new ChooseAddTypeForm(this);
-			catf.setVisible(true);
+		chooseAddTypeFormOpened = true;
+
+		ChooseAddTypeForm catf = new ChooseAddTypeForm(this);
+		catf.setVisible(true);
+	}
+
+	public void createAddForm() {
+		if (addFormOpened)
+			return;
+
+		addFormOpened = true;
+
+		AddForm af = new AddForm(this);
+		af.setVisible(true);
+	}
+
+	public void createChangeForm(int[] selectedRow) {
+		if (changeFormOpened)
+			return;
+		if (selectedRow != null && selectedRow.length == 1) {
+			changeFormOpened = true;
+
+			ChangeForm cf = new ChangeForm(this, getMainTable().getStudent(selectedRow[0]), selectedRow[0]);
+			cf.setVisible(true);
+		} else {
+			final String message = "Odaberite samo jednog studenta za izmjenu!";
+			JOptionPane.showMessageDialog(null, message);
 		}
+	}
 
-		public void createAddForm() {
-			if (addFormOpened)
-				return;
+	public void deleteStudentsControler(int[] selectedRows) {
+		if (deleting)
+			return;
+		deleting = true;
+		new DeleteStudentsController(this, selectedRows);
+	}
 
-			addFormOpened = true;
+	public void choseExportType() {
+		if (exporting)
+			return;
+		exporting = true;
+		ExportStudentsForm esf = new ExportStudentsForm(this);
+		esf.setVisible(true);
+	}
 
-			AddForm af = new AddForm(this);
-			af.setVisible(true);
-		}
-
-		public void createChangeForm(int[] selectedRow) {
-			if (changeFormOpened)
-				return;
-			if (selectedRow != null && selectedRow.length == 1) {
-				changeFormOpened = true;
-
-				ChangeForm cf = new ChangeForm(this, getMainTable().getStudent(selectedRow[0]), selectedRow[0]);
-				cf.setVisible(true);
-			}else {
-				final String message = "Odaberite samo jednog studenta za izmjenu!";
-				JOptionPane.showMessageDialog(null, message);
-			}
-		}	
-		public void deleteStudentsControler(int[] selectedRows) {
-			if (deleting)
-				return;
-			deleting = true;
-			new DeleteStudentsController(this, selectedRows);
-		}
-		
-		public void choseExportType() {
-			if (exporting)
-				return;
-			exporting = true;
-			ExportStudentsForm esf = new ExportStudentsForm(this);
-			esf.setVisible(true);
-		}
-		
-		// Stankovic end//
+	// Stankovic end//
 	/*
-	 * TODO - ko vec radi sa predmetima, za testove mi treba predmet u kontroleru ili formi
+	 * TODO - ko vec radi sa predmetima, za testove mi treba predmet u kontroleru
+	 * ili formi
 	 */
-//	public PredmetDTO getPredmet() {
-//		return predmet;
-//	}
+	// public PredmetDTO getPredmet() {
+	// return predmet;
+	// }
 	public void resetFilterFormOpened() {
 		filterFormOpened = false;
 	}
-	
+
 	public void postaviMainForm(PredmetDTO activePredmet) {
 		if (activePredmet != null) {
+			StudentsForMainTable.initShowInMainTable(activePredmet, mainForm.getNalogDTO());
+
+			((DefaultTableModel) mainForm.getMainTable().getModel())
+					.setColumnIdentifiers(new Object[] { "Indeks", "Ime", "Prezime" });
+			ArrayList<StudentMainTableDTO> tempList = new ArrayList<StudentMainTableDTO>();
+			for (StudentMainTableDTO s : StudentsForMainTable.getAllStudents())
+				tempList.add(s);
+			mainForm.getMainTable().setStudents(tempList);
+			mainForm.getMainTable().changeView();
+			showForm = new ShowForm(this);
+		}
+		if (activePredmet != null) {
 			new Thread(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					initTestoviTable();
@@ -297,5 +313,5 @@ public class MainFormController {
 			}).start();
 		}
 	}
-	
+
 }

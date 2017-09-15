@@ -6,6 +6,8 @@ import java.util.HashMap;
 import org.unibl.etf.ps.studentviewer.gui.ShowViewData;
 import org.unibl.etf.ps.studentviewer.gui.view.ShowChooseForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ShowForm;
+import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class ShowFormController {
 	MainFormController mainFormController;
@@ -22,8 +24,11 @@ public class ShowFormController {
 		updatedHashMap.put(ShowViewData.D_ELEKTRIJADA, showViewList.get(3));
 		updatedHashMap.put(ShowViewData.D_KOMENTAR, showViewList.get(4));
 		updatedHashMap.put(ShowViewData.D_TEST, showViewList.get(5));
-		
 		ShowViewData.setNewHashMap(updatedHashMap);
+//		ArrayList<StudentMainTableDTO> tempList = new ArrayList<StudentMainTableDTO>();
+//		for (StudentMainTableDTO s : StudentsForMainTable.getAllStudents())
+//			tempList.add(s);
+//		mainFormController.getMainTable().setStudents(tempList);
 		mainFormController.getMainTable().changeView();
 	}
 	

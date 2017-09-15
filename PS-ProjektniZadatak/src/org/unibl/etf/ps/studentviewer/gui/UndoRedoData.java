@@ -8,8 +8,16 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 public class UndoRedoData {
 	static int position = 0;
 	static ArrayList<ArrayList<String>> stateList = new ArrayList<ArrayList<String>>();
-
-	public static void initAdd(ArrayList<String> state) {
+	
+	public static void initAddStudents(ArrayList<StudentMainTableDTO> students) {
+		ArrayList<String> state = new ArrayList<String>();
+		for (int ii = 0; ii < students.size(); ii++)
+			state.add(students.get(ii).getBrojIndeksa());
+		initAdd(state);
+	}
+	
+	private static void initAdd(ArrayList<String> state) {
+		stateList = new ArrayList<ArrayList<String>>();
 		stateList.add(state);
 	}
 	

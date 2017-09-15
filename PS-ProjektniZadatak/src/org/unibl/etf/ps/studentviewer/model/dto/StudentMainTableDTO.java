@@ -12,9 +12,21 @@ public class StudentMainTableDTO {
 	private String prezime;
 	private String komentar = ""; // Mozda lista komentara
 	private String elektrijada = "NE";
+	private int id ;
 	private HashMap<String, String> testovi = new HashMap<String, String>();
 	
+	public void setId(int id) {
+		this.id = id;
+	}
 	
+	public void addIspit(String a, String b) {
+		testovi.put(a, b);
+		
+	}
+	
+	public int getId() {
+		return id;
+	}
 	
 	public String getKomentar() {
 		return komentar;
