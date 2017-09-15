@@ -17,10 +17,8 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 public class MainTable extends JTable {
 
 	private ArrayList<StudentMainTableDTO> students = null;
-	private static String[] columnIdentifiers = null;// = { "Indeks", "Ime", "Prezime", "Elektrijada", "Komentar" };
-	private HashMap<String, String> map = new HashMap<String, String>();
-
-	private static String[] currentIdentifiers;
+	private static String[] columnIdentifiers = null;
+	private static HashMap<String, String> map = new HashMap<String, String>();
 
 	static {
 		ArrayList<String> identifiers = new ArrayList<String>();
@@ -37,12 +35,36 @@ public class MainTable extends JTable {
 			columnIdentifiers[i] = new String(identifiers.get(i));
 
 	}
+	
+
+	public static void setNewColumnIdentifiers(String[] identifiers) {
+		ArrayList<String> list = new ArrayList<String>();
+
+		list.add("Indeks");
+		list.add("Ime");
+		list.add("Prezime");
+		list.add("Elektrijada");
+		list.add("Komentar");
+		if (identifiers != null)
+			for (String s : identifiers)
+				list.add(s);
+		columnIdentifiers = list.toArray(new String[list.size()]);
+		
+		map.put("Indeks", ShowViewData.D_BROJINDEKSA);
+		map.put("Ime", ShowViewData.D_IME);
+		map.put("Prezime", ShowViewData.D_PREZIME);
+		map.put("Elektrijada", ShowViewData.D_ELEKTRIJADA);
+		map.put("Komentar", ShowViewData.D_KOMENTAR);
+		for (int i = 5; i < columnIdentifiers.length; i++)
+			map.put(columnIdentifiers[i], columnIdentifiers[i]);
+
+	}
 
 	public void setStudents(ArrayList<StudentMainTableDTO> students) {
 		this.students = students;
 		MainTableModel model = (MainTableModel) getModel();
 
-		model.setData(getStudentsForModel());
+		model.setData(getStudentsForShow());
 
 		setSizeOfColumns();
 		repaint();
@@ -54,14 +76,32 @@ public class MainTable extends JTable {
 		ArrayList<String> columnNames = new ArrayList<String>();
 		for (int i = 0; i < getColumnCount(); i++)
 			columnNames.add(getColumnName(i));
-
+		
+		
+		// BRISANJE VISKA KOLONA
 		int ii = 0;
+		ArrayList<String> toDelete = new ArrayList<String>();
+		for (String s : columnNames) {
+			ArrayList<String> tempList = new ArrayList<String>();
+			for (String ss : columnIdentifiers)
+				tempList.add(ss);
+			if (!tempList.contains(s)) {
+				toDelete.add(s);
+			}
+			ii++;
+		}
+		for (String s : toDelete) {
+			model.removeColumn(columnNames.indexOf(s));
+			columnNames.remove(s);
+		}
+
+		
+		ii = 0;
 		for (String s : columnIdentifiers) {
-			
+
 			if (columnNames.contains(s) && !ShowViewData.getValue(map.get(s))) {
 				model.removeColumn(columnNames.indexOf(s));
 				columnNames.remove(s);
-				model.setColumnIdentifiers(columnNames.toArray());
 			} else
 
 			if (columnNames.contains(s)) {
@@ -74,17 +114,17 @@ public class MainTable extends JTable {
 					String control = "";
 					if (s.contains("."))
 						control = ShowViewData.D_TEST + " ";
-					
+
 					property = student.getProperty(control + map.get(s));
 					values.add(property);
 				}
 				model.insertColumn(ii, values);
 				columnNames.add(ii, s);
-				model.setColumnIdentifiers(columnNames.toArray());
 				ii++;
 			}
 		}
-
+		model.setColumnIdentifiers(columnNames.toArray(new String[columnNames.size()]));
+		
 		model.fireTableStructureChanged();
 		setSizeOfColumns();
 	}
@@ -106,7 +146,7 @@ public class MainTable extends JTable {
 		return students;
 	}
 
-	private String[][] getStudentsForModel() {
+	private String[][] getStudentsForShow() {
 		int columnCount = (getColumnCount() != 0) ? getColumnCount() : 3;
 		String[][] forRet = new String[students.size()][columnCount];
 		int i = 0;
@@ -119,17 +159,17 @@ public class MainTable extends JTable {
 			if (ShowViewData.getValue(ShowViewData.D_IME))
 				forRet[i][j++] = student.getIme();
 
-			if (ShowViewData.getValue(ShowViewData.D_PREZIME))
+			if (ShowViewData.getValue(ShowViewData.D_PREZIME)) 
 				forRet[i][j++] = student.getPrezime();
-
-			if (ShowViewData.getValue(ShowViewData.D_ELEKTRIJADA))
+			
+			if (ShowViewData.getValue(ShowViewData.D_ELEKTRIJADA)) 
 				forRet[i][j++] = student.getElektrijada();
 
 			if (ShowViewData.getValue(ShowViewData.D_KOMENTAR))
 				forRet[i][j++] = student.getKomentar();
-			
+
 			for (String s : StudentsForMainTable.getAllIspiti())
-				if (ShowViewData.getValue(s)) {
+				if (s != null && ShowViewData.getValue(s)) {
 					forRet[i][j++] = student.getTestForShowView(s);
 				}
 			i++;
@@ -146,13 +186,6 @@ public class MainTable extends JTable {
 		map.put("Komentar", ShowViewData.D_KOMENTAR);
 		for (int i = 5; i < columnIdentifiers.length; i++)
 			map.put(columnIdentifiers[i], columnIdentifiers[i]);
-		initView();
-	}
-
-	// TO-DO sa studentima
-
-	private void initView() {
-		// Dovuci podatke i prikazati
 	}
 
 	public boolean addStudent(StudentMainTableDTO student) {

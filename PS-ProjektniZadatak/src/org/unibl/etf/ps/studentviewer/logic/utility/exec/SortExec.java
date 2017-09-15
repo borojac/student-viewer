@@ -10,11 +10,7 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class SortExec extends Exec {
 	
-	private Date thirdParam;
-	ArrayList<String> params = new ArrayList<String>();
-	
-	
-	public SortExec(MainFormController mainFormController, ArrayList<Object> params) {
+	public SortExec(MainFormController mainFormController, ArrayList<String> params) {
 		this.mainFormController = mainFormController;
 		for(Object o : params) {
 			this.params.add((String)o);
@@ -23,7 +19,7 @@ public class SortExec extends Exec {
 	}
 	
 	public void execute() {
-		Comparator<StudentMainTableDTO> comparator = SortUtil.getComparator(students, params);
+		Comparator<StudentMainTableDTO> comparator = SortUtil.getComparator(params);
 		students = mainFormController.getMainTable().getStudents();
 		students.sort(comparator);
 		mainFormController.getMainTable().setStudents(students);

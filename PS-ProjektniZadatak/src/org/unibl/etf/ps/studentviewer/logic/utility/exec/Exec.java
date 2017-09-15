@@ -6,13 +6,12 @@ import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
-public class Exec extends Thread {
+public class Exec {
 	protected MainFormController mainFormController;
+	protected ArrayList<StudentMainTableDTO> students = null; 
+	protected ArrayList<String> params = new ArrayList<String>();
 	
-
-	ArrayList<StudentMainTableDTO> students = null; 
-	protected String secondParam = null;
-	public void execute() {
+	protected void execute() {
 		UndoRedoData.addState(students);
 	}
 	

@@ -3,25 +3,14 @@ package org.unibl.etf.ps.studentviewer.logic.utility.exec;
 import java.util.PriorityQueue;
 
 public class ExecScheduler extends Thread {
-	PriorityQueue<Exec> execs = new PriorityQueue<Exec>();
-	Object lock = new Object();
-	boolean running;
+	private PriorityQueue<Exec> execs = new PriorityQueue<Exec>();
+	private Object lock = new Object();
 	
 	public ExecScheduler() {
 		start();
 	}
 	
-	
-	public void signal() {
-		/*
-		 * Signalizacija za oslobadjanje sledeceg exec-a u izvrsavanje
-		 */
-	}
-
 	public boolean add(Exec e) {
-		/*
-		 * TO-DO mozda moze odmah da se izvrsi
-		 */
 		execs.add(e);
 		synchronized (lock) {
 			lock.notify();

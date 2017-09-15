@@ -8,7 +8,7 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class SortUtil {
 
-	public static Comparator<StudentMainTableDTO> getComparator(ArrayList<StudentMainTableDTO> students, ArrayList<String> params) {
+	public static Comparator<StudentMainTableDTO> getComparator(ArrayList<String> params) {
 		Comparator<StudentMainTableDTO> comparator = new Comparator<StudentMainTableDTO>() {
 		
 			@Override

@@ -6,13 +6,14 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
@@ -25,34 +26,22 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.FilterFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class FilterForm extends JFrame {
 
 	private JPanel contentPane;
-	private JComboBox comboBox;
-	private ArrayList<Object> params = new ArrayList<Object>();
 
 	private JComboBox elektrijadaComboBox = null;
 	private JComboBox komentarComboBox = null;
 
 	JPanel panel = null;
 
-	private JTextArea textArea = null;
 
-	private JButton btnIspit = null;
-	private JButton btnKolokvijum = null;
-	private JButton btnPrakticniIspit = null;
-	private JButton btnFilter = null;
-	private JButton dodajButton = null;
-	
 	JList list = null;
 	
 	private MainFormController mainFormController = null;
@@ -236,27 +225,5 @@ public class FilterForm extends JFrame {
 		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnNewButton_2.setBounds(120, 313, 119, 31);
 		contentPane.add(btnNewButton_2);
-
-		initButtons();
-
-		initComboBoxes();
-	}
-
-	private void initButtons() {
-	}
-
-	public ArrayList<Object> getFilterParams() {
-		return params;
-	}
-
-	private void initComboBoxes() {
-		initExamTypeComboBox();
-		initExamStatusComboBox();
-	}
-
-	private void initExamStatusComboBox() {
-	}
-
-	private void initExamTypeComboBox() {
 	}
 }

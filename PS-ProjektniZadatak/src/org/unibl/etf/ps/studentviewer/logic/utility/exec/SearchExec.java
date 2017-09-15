@@ -12,7 +12,6 @@ import org.unibl.etf.ps.studentviewer.logic.utility.SearchUtil;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class SearchExec extends Exec {
-	ArrayList<String> params = new ArrayList<String>();
 
 	public SearchExec(MainFormController mainFormController, ArrayList<Object> params) {
 		this.mainFormController = mainFormController;

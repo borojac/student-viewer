@@ -30,7 +30,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
@@ -43,21 +42,20 @@ import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainForm extends JFrame {
-
-	private MainForm mainForm;
 
 	private JPanel contentPane;
 	private MainFormController mainFormController = new MainFormController(this);
 	private NalogDTO nalogDTO;
-	
+
 	private ArrayList<PredmetDTO> predmetiList;
 
 	// ------- Components!!! ------- //
@@ -92,43 +90,32 @@ public class MainForm extends JFrame {
 	private JButton btnBrisi;
 	private JLabel correct2Label;
 	private JTextField textField;
-	
+
 	private JComboBox<String> predmetiCB;
 	private JComboBox<String> disciplineCB;
 	private JButton prikaziDisciplinuBtn;
 
 	// ------- EndComponents!!! ------- //
 
-//	/**
-//	 * Launch the application.
-//	 * 
-//	 * @throws UnsupportedLookAndFeelException
-//	 * @throws IllegalAccessException
-//	 * @throws InstantiationException
-//	 * @throws ClassNotFoundException
-//	 */
-//	public static void main(String[] args) {
-//		System.setProperty("javax.net.ssl.trustStore", "StudentViewer.jks");
-//		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
-//		try {
-//			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-//		} catch (Exception ex) {}
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					MainForm frame = new MainForm();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
 	/**
-	 * @throws IOException Create the frame. @throws
+	 * @throws IOException
+	 *             Create the frame. @throws
 	 */
+	
+	
+	
+	@Override
+	public void dispose() {
+		UndoRedoData.saveState(getNalogDTO(), getSelectedPredmet());
+		super.dispose();
+	}
 	public MainForm(NalogDTO nalogDTO) throws IOException {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				UndoRedoData.saveState(getNalogDTO(), getSelectedPredmet());
+			}
+		});
 		this.nalogDTO = nalogDTO;
 		setResizable(false);
 		setTitle("StudentViewer_v1.0");
@@ -140,15 +127,11 @@ public class MainForm extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		
-
 		buttonPanel = new JPanel();
 		buttonPanel.setBackground(new Color(0, 0, 139));
 		buttonPanel.setBounds(578, 219, 147, 382);
 		contentPane.add(buttonPanel);
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 12));
-
-		mainForm = this;
 
 		BufferedImage img = ImageIO.read(new File("img\\BellTower-RGB(JPG).jpg"));
 		BufferedImage correctionImage = ImageIO.read(new File("img\\whiteCorrection.png"));
@@ -160,7 +143,6 @@ public class MainForm extends JFrame {
 		ImageIcon icon = new ImageIcon(img);
 		label.setIcon(icon);
 		contentPane.add(label);
-
 
 		JLabel correct1Label = new JLabel("STUDENT");
 		correct1Label.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 45));
@@ -199,13 +181,13 @@ public class MainForm extends JFrame {
 		textField.setBounds(97, 172, 263, 25);
 		contentPane.add(textField);
 		textField.setColumns(10);
-		
+
 		JLabel predmetiLbl = new JLabel("Moji predmeti:");
 		predmetiLbl.setForeground(Color.WHITE);
 		predmetiLbl.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		predmetiLbl.setBounds(745, 172, 200, 25);
 		contentPane.add(predmetiLbl);
-		
+
 		JLabel disciplineLbl = new JLabel("Moje discipline:");
 		disciplineLbl.setForeground(Color.WHITE);
 		disciplineLbl.setFont(new Font("Century Gothic", Font.BOLD, 15));
@@ -214,18 +196,22 @@ public class MainForm extends JFrame {
 
 		initButtons();
 		initButtonsListeners();
-		initTable();
 		initPredmetiComboBox();
 		initComboBoxListener();
 		initDisciplineComboBox();
-		scrollPane = new JScrollPane(mainTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		setButtonsSize();
+
+		initTestoviPanel();
+
+		initTable();
+		scrollPane = new JScrollPane(mainTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBackground(Color.WHITE);
 		scrollPane.setBorder(UIManager.getBorder("Button.border"));
 		scrollPane.setBounds(10, 219, 556, 382);
 		contentPane.add(scrollPane);
-		setButtonsSize();
-		
-		initTestoviPanel();
+
 	}
 
 	public String getSearchParams() {
@@ -298,21 +284,24 @@ public class MainForm extends JFrame {
 		mainTable.setBackground(new Color(173, 216, 230));
 		MainTableModel model = new MainTableModel();
 		mainTable.setModel(model);
-		ArrayList<StudentMainTableDTO> tempList = new ArrayList<>();
-		for (StudentMainTableDTO s : StudentsForMainTable.getAllStudents())
-			tempList.add(s);
 
-		model.setColumnIdentifiers(new Object[] {"Indeks", "Ime", "Prezime"});	
-		mainTable.setStudents(tempList);
+		if (getSelectedPredmet() != null) {
+			ArrayList<StudentMainTableDTO> temp = StudentsForMainTable.initShowInMainTable(getSelectedPredmet(), getNalogDTO());
+
+			model.setColumnIdentifiers(new Object[] { "Indeks", "Ime", "Prezime" });
+			mainTable.setStudents(temp);
+			mainTable.changeView();
+		}
 		mainTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		
+
 	}
+
 	private void setButtonsSize() {
 		for (JButton btn : buttons) {
 			btn.setPreferredSize(new Dimension(135, 35));
 		}
 	}
-	
+
 	private void initTestoviPanel() {
 
 		testoviPanel = new JPanel();
@@ -331,7 +320,7 @@ public class MainForm extends JFrame {
 						@Override
 						public void run() {
 
-							mainFormController.deleteTestAction();							
+							mainFormController.deleteTestAction();
 						}
 					}).start();
 			}
@@ -364,6 +353,7 @@ public class MainForm extends JFrame {
 					mainFormController.editTestAction(testoviTable);
 				}
 			}
+
 			@Override
 			public void mouseEntered(MouseEvent event) {
 				new Thread(new Runnable() {
@@ -414,7 +404,7 @@ public class MainForm extends JFrame {
 
 					@Override
 					public void run() {
-						mainFormController.deleteTestAction();					
+						mainFormController.deleteTestAction();
 					}
 				}).start();
 
@@ -433,9 +423,9 @@ public class MainForm extends JFrame {
 
 		searchButton.setBounds(370, 171, 42, 26);
 		try {
-			BufferedImage searchImg = ImageIO.read(new File("img" + File.separator +"searchIcon.png"));
-			searchImg = Scalr.resize(searchImg, Scalr.Mode.FIT_EXACT, searchButton.getWidth(),
-					searchButton.getHeight(), null);
+			BufferedImage searchImg = ImageIO.read(new File("img" + File.separator + "searchIcon.png"));
+			searchImg = Scalr.resize(searchImg, Scalr.Mode.FIT_EXACT, searchButton.getWidth(), searchButton.getHeight(),
+					null);
 			searchButton.setIcon(new ImageIcon(searchImg));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -462,7 +452,7 @@ public class MainForm extends JFrame {
 		addBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				/*Stankovic*/
+				/* Stankovic */
 				mainFormController.createChooseAddTypeForm();
 			}
 		});
@@ -473,7 +463,7 @@ public class MainForm extends JFrame {
 		deleteBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				/*Stankovic*/
+				/* Stankovic */
 				int[] selectedRows = mainTable.getSelectedRows();
 				mainFormController.deleteStudentsControler(selectedRows);
 			}
@@ -485,7 +475,7 @@ public class MainForm extends JFrame {
 		changeBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				/*Stankovic*/
+				/* Stankovic */
 				int[] selectedRow = mainTable.getSelectedRows();
 				mainFormController.createChangeForm(selectedRow);
 			}
@@ -496,7 +486,7 @@ public class MainForm extends JFrame {
 		exportBtn = new JButton("Eksportuj");
 		exportBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				/*Stankovic*/
+				/* Stankovic */
 				mainFormController.choseExportType();
 			}
 		});
@@ -507,15 +497,15 @@ public class MainForm extends JFrame {
 		buttonPanel.add(accountBtn);
 		buttons.add(accountBtn);
 
-
 		restoreButton = new JButton("");
 		restoreButton.setToolTipText("Ucitaj podatke o svim studentima");
 		restoreButton.setBounds(422, 171, 42, 26);
 		try {
 			BufferedImage restoreImg = ImageIO.read(new File("img" + File.separator + "restoreIcon.png"));
-			restoreImg = Scalr.resize(restoreImg, Scalr.Mode.FIT_EXACT, restoreButton.getWidth(), restoreButton.getHeight(), null);
+			restoreImg = Scalr.resize(restoreImg, Scalr.Mode.FIT_EXACT, restoreButton.getWidth(),
+					restoreButton.getHeight(), null);
 			restoreButton.setIcon(new ImageIcon(restoreImg));
-		}catch(IOException ex) {
+		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
 		contentPane.add(restoreButton);
@@ -527,23 +517,25 @@ public class MainForm extends JFrame {
 		contentPane.add(undoButton);
 
 		redoButton = new JButton(">");
-		redoButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				
-			}
-		});
+//		redoButton.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent arg0) {
+//<<<<<<< HEAD
+//				
+//=======
+//				ArrayList<StudentMainTableDTO> students = UndoRedoData.redo();
+//				if (students != null)
+//					mainTable.setStudents(students);
+//>>>>>>> 03f3f1d849922d5313348c6a940f5b6670dd4f4a
+//			}
+//		});
 		redoButton.setFont(new Font("Tahoma", Font.BOLD, 12));
 		redoButton.setToolTipText("Redo");
 		redoButton.setBounds(526, 171, 42, 26);
 		contentPane.add(redoButton);
 
-
-
-		
-		
 		/* Buttons by Mijic */
-		
+
 		prikaziDisciplinuBtn = new JButton("Prikazi disciplinu");
 		prikaziDisciplinuBtn.setBounds(1040, 350, 135, 35);
 		contentPane.add(prikaziDisciplinuBtn);
@@ -555,28 +547,29 @@ public class MainForm extends JFrame {
 		});
 
 	}
-	
+
 	private void initPredmetiComboBox() {
 		predmetiCB = new JComboBox<>();
 		predmetiCB.setBounds(745, 200, 430, 35);
 		contentPane.add(predmetiCB);
-		
+
 		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
 		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
-		
+
 		predmetiList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
-		
-		for(int i = 0; i < predmetiList.size(); i++) {
-			predmetiCB.addItem((predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
+
+		for (int i = 0; i < predmetiList.size(); i++) {
+			predmetiCB.addItem(
+					(predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
 		}
 	}
-	
+
 	private void initDisciplineComboBox() {
 		disciplineCB = new JComboBox<>();
 		disciplineCB.setBounds(745, 310, 430, 35);
 		contentPane.add(disciplineCB);
 	}
-	
+
 	private void initComboBoxListener() {
 		predmetiCB.addActionListener(new ActionListener() {
 			@Override
@@ -585,18 +578,19 @@ public class MainForm extends JFrame {
 			}
 		});
 	}
-	
+
 	public void resetPredmetiComboBox() {
 		predmetiCB.removeAllItems();
 		ArrayList<PredmetDTO> predmetiList = new ArrayList<>();
 		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
 		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
-		
+
 		predmetiList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
 		System.out.println(predmetiList.size());
-		
-		for(int i = 0; i < predmetiList.size(); i++) {
-			predmetiCB.addItem((predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
+
+		for (int i = 0; i < predmetiList.size(); i++) {
+			predmetiCB.addItem(
+					(predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
 		}
 	}
 
@@ -626,32 +620,31 @@ public class MainForm extends JFrame {
 		return mainTable;
 	}
 
-
 	public MainFormController getMainFormController() {
 		return mainFormController;
 	}
-	
+
 	public double getTableWidth() {
 		return scrollPane.getSize().getWidth();
 	}
-	
+
 	public NalogDTO getNalogDTO() {
 		return nalogDTO;
 	}
-	
+
 	public void setNalogDTO(NalogDTO nalogDTO) {
 		this.nalogDTO = nalogDTO;
 	}
-	
+
 	public PredmetDTO getSelectedPredmet() {
 		int i = predmetiCB.getSelectedIndex();
 		return (i == -1) ? null : predmetiList.get(i);
 	}
-	
+
 	public void testoviClearSelection() {
 		testoviTable.clearSelection();
 		btnBrisi.setEnabled(false);
 		btnIzmjeni.setEnabled(false);
 	}
-	
+
 }

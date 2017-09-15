@@ -8,8 +8,6 @@ public class MainTableModel extends DefaultTableModel {
 
 	private Vector<Vector<String>> data = new Vector<Vector<String>>();
 
-	// private String[][] data = {{"Example1", "Example2"}, {"Data1", "Data2"}};
-
 	public Vector<Vector<String>> convertData(String[][] data) {
 		Vector<Vector<String>> helpData = new Vector<Vector<String>>();
 		for (int i = 0; i < data.length; i++) {

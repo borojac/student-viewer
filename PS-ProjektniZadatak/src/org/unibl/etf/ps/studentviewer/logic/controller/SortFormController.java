@@ -11,17 +11,13 @@ public class SortFormController {
 	MainFormController mainFormController = null;
 	SortForm sortForm = null;
 
-	public SortFormController() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 	
-	public void createSortChooseForm(SortForm sf) {
-		new SortChooseForm(sf, mainFormController, SortFormController.this).setVisible(true);
+	public void createSortChooseForm() {
+		new SortChooseForm(sortForm, SortFormController.this).setVisible(true);
 	}
 	
 	public void sort() {
-		ArrayList<Object> paramsList = new ArrayList<Object>();
+		ArrayList<String> paramsList = new ArrayList<String>();
 		for (String x : sortForm.getSortParams().split(System.lineSeparator()))
 			paramsList.add(x);
 
@@ -33,7 +29,7 @@ public class SortFormController {
 		this.sortForm = sortForm;
 	}
 	
-	public void addTestToSortParams(String param, SortForm sortForm) {
+	public void addTestToSortParams(String param) {
 		param = Sort.TEST + " " + param;
 		String currentParamsString = sortForm.getSortParams();
 		if (!currentParamsString.contains(param)) {
@@ -45,7 +41,7 @@ public class SortFormController {
 		}
 	}
 	
-	public void removeTestFromSortParams(String param, SortForm sortForm) {
+	public void removeTestFromSortParams(String param) {
 		param = Sort.TEST + " " + param;
 		String currentParamsString = sortForm.getSortParams();
 		if (currentParamsString.contains(param)) {
@@ -56,7 +52,7 @@ public class SortFormController {
 		}
 	}
 	
-	public void addToSortParams(String param, SortForm sortForm) {
+	public void addToSortParams(String param) {
 		String currentParamsString = sortForm.getSortParams();
 		if (currentParamsString.contains(param)) {
 			if (sortForm.getStateOfCheckBox(param) == false) {
