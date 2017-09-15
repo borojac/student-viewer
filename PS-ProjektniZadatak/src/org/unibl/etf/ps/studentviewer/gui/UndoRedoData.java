@@ -78,7 +78,6 @@ public class UndoRedoData {
 	}
 
 	public static void saveState(NalogDTO nalogDTO, PredmetDTO selectedPredmet) {
-		System.out.println(stateList.size());
 		if (stateList.size() > 0) {
 			StringBuilder sb = new StringBuilder("");
 			for (ArrayList<String> helpList : stateList) {
@@ -102,6 +101,9 @@ public class UndoRedoData {
 					tempList.add(s);
 			stateList.add(tempList);
 		}
+		
+		position = lists.length - 1;
+		
 		ArrayList<String> temp = stateList.get(stateList.size() - 1);
 		ArrayList<StudentMainTableDTO> temp2 = new ArrayList<StudentMainTableDTO>();
 		for (String s : temp)

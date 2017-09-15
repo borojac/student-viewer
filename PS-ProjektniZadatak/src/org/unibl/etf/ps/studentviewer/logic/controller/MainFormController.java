@@ -292,6 +292,8 @@ public class MainFormController {
 
 	public void postaviMainForm(PredmetDTO activePredmet) {
 		if (activePredmet != null) {
+//			UndoRedoData.saveState(mainForm.getNalogDTO(), activePredmet);
+			
 			StudentsForMainTable.initShowInMainTable(activePredmet, mainForm.getNalogDTO());
 
 			((DefaultTableModel) mainForm.getMainTable().getModel())

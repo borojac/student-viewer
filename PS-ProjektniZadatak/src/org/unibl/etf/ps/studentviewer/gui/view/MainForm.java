@@ -517,18 +517,14 @@ public class MainForm extends JFrame {
 		contentPane.add(undoButton);
 
 		redoButton = new JButton(">");
-//		redoButton.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent arg0) {
-//<<<<<<< HEAD
-//				
-//=======
-//				ArrayList<StudentMainTableDTO> students = UndoRedoData.redo();
-//				if (students != null)
-//					mainTable.setStudents(students);
-//>>>>>>> 03f3f1d849922d5313348c6a940f5b6670dd4f4a
-//			}
-//		});
+		redoButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				ArrayList<StudentMainTableDTO> students = UndoRedoData.redo();
+				if (students != null)
+					mainTable.setStudents(students);
+			}
+		});
 		redoButton.setFont(new Font("Tahoma", Font.BOLD, 12));
 		redoButton.setToolTipText("Redo");
 		redoButton.setBounds(526, 171, 42, 26);
@@ -539,7 +535,7 @@ public class MainForm extends JFrame {
 		prikaziDisciplinuBtn = new JButton("Prikazi disciplinu");
 		prikaziDisciplinuBtn.setBounds(1040, 350, 135, 35);
 		contentPane.add(prikaziDisciplinuBtn);
-		redoButton.addMouseListener(new MouseAdapter() {
+		prikaziDisciplinuBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				mainFormController.prikaziDisciplinu(nalogDTO,disciplineCB);
