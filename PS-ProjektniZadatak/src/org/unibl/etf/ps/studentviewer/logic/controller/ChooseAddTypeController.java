@@ -25,62 +25,65 @@ public class ChooseAddTypeController {
 		} else if (one) {
 			this.mainFormController.createAddForm();
 		} else {
-			try {
-				ImporterExcel importerExcel = new ImporterExcel();
-				ArrayList<String[]> studenti = importerExcel.getData(3);
+			addListOfStudents();
+		}
+	}
+	
+	private void addListOfStudents() {
+		try {
+			ImporterExcel importerExcel = new ImporterExcel();
+			ArrayList<String[]> studenti = importerExcel.getData(3);
 
-				ArrayList<StudentMainTableDTO> listaZaTabelu = new ArrayList<>();
-				AddChangeStudentsHelpController help = new AddChangeStudentsHelpController();
-				int vrsteSGreskama = 0;
-				int i = 1;
-				StudentMainTableDTO newStudent = null;
-				int paramValid = 0;
-				for (String[] data : studenti) {
-					String indeks = data[0];
-					String ime = data[1];
-					String prezime = data[2];
-					newStudent = new StudentMainTableDTO(indeks, ime, prezime);
-					paramValid = help.checkParams(newStudent);
-					if (paramValid == 0)
-						listaZaTabelu.add(newStudent);
-					else {
-						vrsteSGreskama = i;
+			ArrayList<StudentMainTableDTO> listaZaTabelu = new ArrayList<>();
+			AddChangeStudentsHelpController help = new AddChangeStudentsHelpController();
+			int vrsteSGreskama = 0;
+			int i = 1;
+			StudentMainTableDTO newStudent = null;
+			int paramValid = 0;
+			for (String[] data : studenti) {
+				String indeks = data[0];
+				String ime = data[1];
+				String prezime = data[2];
+				newStudent = new StudentMainTableDTO(indeks, ime, prezime);
+				paramValid = help.checkParams(newStudent);
+				if (paramValid == 0)
+					listaZaTabelu.add(newStudent);
+				else {
+					vrsteSGreskama = i;
+					break;
+				}
+				i++;
+			}
+			MySQLStudentDAO insert = new MySQLStudentDAO();
+			boolean greska = false;
+			if (vrsteSGreskama == 0) {
+				for (StudentMainTableDTO student : listaZaTabelu) {
+					if (!mainFormController.getMainTable().addStudent(student)) {
+						final String message = "Greska pri unosu studenta!";
+						JOptionPane.showMessageDialog(null, message, "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+						greska = true;
 						break;
 					}
-					i++;
+					insert.dodajStudentaUListu(student); // dodavanje u bazu podataka
 				}
-				// TODO poziv metode koja cuva listu u bazi
-				MySQLStudentDAO insert = new MySQLStudentDAO();
-				boolean greska = false;
-				if (vrsteSGreskama == 0) {
-					for (StudentMainTableDTO student : listaZaTabelu) {
-						if (!mainFormController.getMainTable().addStudent(student)) {
-							final String message = "Greska pri unosu studenta!";
-							JOptionPane.showMessageDialog(null, message, "Upozorenje!", JOptionPane.WARNING_MESSAGE);
-							greska = true;
-							break;
-						}
-						insert.dodajStudentaUListu(student); // dodavanje u bazu podataka
-					}
-					if (!greska) {
-						final String message = "Uspjesno dodavanje!";
-						JOptionPane.showMessageDialog(null, message, "Obavjestenje!", JOptionPane.INFORMATION_MESSAGE);
-					}
-				} else {
-					StringBuilder message = new StringBuilder("Podaci nisu uneseni! Greska u ");
-					message.append(vrsteSGreskama).append(". vrsti dokumenta, kod podatka o ");
-					if (paramValid == 1)
-						message.append("imenu.");
-					else if (paramValid == 2)
-						message.append("prezimenu.");
-					else
-						message.append("broju indeksa.");
-					JOptionPane.showMessageDialog(null, message.toString(), "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+				if (!greska) {
+					final String message = "Uspjesno dodavanje!";
+					JOptionPane.showMessageDialog(null, message, "Obavjestenje!", JOptionPane.INFORMATION_MESSAGE);
 				}
-				mainFormController.resetChooseAddTypeFormOpened();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} else {
+				StringBuilder message = new StringBuilder("Podaci nisu uneseni! Greska u ");
+				message.append(vrsteSGreskama).append(". vrsti dokumenta, kod podatka o ");
+				if (paramValid == 1)
+					message.append("imenu.");
+				else if (paramValid == 2)
+					message.append("prezimenu.");
+				else
+					message.append("broju indeksa.");
+				JOptionPane.showMessageDialog(null, message.toString(), "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 			}
+			mainFormController.resetChooseAddTypeFormOpened();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

@@ -17,12 +17,13 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
-import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorDodavanjeStudijskogCiklusaFormController;
+import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorDodavanjeStudijskogProgramaFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
@@ -31,7 +32,6 @@ import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 public class AdministratorDodavanjeStudijskogProgramaForm extends JFrame {
 
 	private JPanel contentPane;
-	private AdministratorFormController administratorFormController;
 	private JLabel nazivLbl;
 	private JTextField nazivTf;
 	private JLabel ectsLbl;
@@ -45,10 +45,9 @@ public class AdministratorDodavanjeStudijskogProgramaForm extends JFrame {
 	private ArrayList<Short> ciklusiList;
 	private ArrayList<PredmetDTO> predmetiList;
 	private JButton button;
-	private AdministratorDodavanjeStudijskogCiklusaFormController administratorDodavanjeStudijskogCiklusaFormController;
+	private AdministratorDodavanjeStudijskogProgramaFormController administratorDodavanjeStudijskogProgramaFormController;
 	
-	public AdministratorDodavanjeStudijskogProgramaForm()
-	{
+	public AdministratorDodavanjeStudijskogProgramaForm() {
 		
 	}
 
@@ -56,16 +55,17 @@ public class AdministratorDodavanjeStudijskogProgramaForm extends JFrame {
 	 * Create the frame.
 	 */
 	public AdministratorDodavanjeStudijskogProgramaForm(AdministratorFormController administratorFormController) {
-setResizable(false);
+		administratorDodavanjeStudijskogProgramaFormController = new AdministratorDodavanjeStudijskogProgramaFormController(this);
 		
-		this.administratorFormController = administratorFormController;
 		addWindowListener(new WindowAdapter() {
-			   public void windowClosing(WindowEvent evt) {
-				   administratorFormController.resetDodajStudProgOpened();
-			   }
-			  });
+			public void windowClosing(WindowEvent evt) {
+				AdministratorFormController.resetDodajStudProgOpened();
+			}
+		});
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 360, 440);
+		setResizable(false);
+		setBounds(100, 100, 450, 450);
 		contentPane =new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -74,13 +74,12 @@ setResizable(false);
 		
 		
 		JLabel label = new JLabel("");
-		label.setBounds(90, 0, 171, 120);
+		label.setBounds(140, 0, 170, 120);
 		try {
 			BufferedImage headerImage = ImageIO.read(new File("img\\BellTower-RGB(JPG).jpg"));
 			headerImage = Scalr.resize(headerImage, Scalr.Mode.FIT_EXACT, label.getWidth(), label.getHeight(), null);
 			label.setIcon(new ImageIcon(headerImage));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		contentPane.add(label);
@@ -88,38 +87,39 @@ setResizable(false);
 		JLabel label_1 = new JLabel("");
 		label_1.setBackground(Color.WHITE);
 		label_1.setOpaque(true);
-		label_1.setBounds(0, 0, 95, 120);
+		label_1.setBounds(0, 0, 140, 120);
 		contentPane.add(label_1);
 		
 		JLabel label_2 = new JLabel("");
 		label_2.setBackground(Color.WHITE);
 		label_2.setOpaque(true);
-		label_2.setBounds(241, 0, 117, 120);
+		label_2.setBounds(310, 0, 140, 120);
 		contentPane.add(label_2);
 		
 		initComponents();
+		initButtonsListeners();
 	}
-	public void initComponents()
-	{
-		nazivLbl = new JLabel("Naziv predmeta");
+	
+	public void initComponents() {
+		nazivLbl = new JLabel("Naziv studijskog programa");
  		nazivLbl.setBounds(15, 130, 250, 45);
  		nazivLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
  		nazivLbl.setForeground(Color.WHITE);
  		contentPane.add(nazivLbl);
  		
  		nazivTf = new JTextField();
-		nazivTf.setBounds(175, 140, 160, 25);
+		nazivTf.setBounds(265, 140, 160, 25);
 		nazivTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
 		contentPane.add(nazivTf);
 		
-		ectsLbl = new JLabel("ECTS bodovi");
+		ectsLbl = new JLabel("Ukupno ECTS bodova");
 		ectsLbl.setBounds(15, 180, 250, 45);
 		ectsLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
 		ectsLbl.setForeground(Color.WHITE);
 		contentPane.add(ectsLbl);
 		
 		ectsTf = new JTextField();
-		ectsTf.setBounds(175, 190, 160, 25);
+		ectsTf.setBounds(265, 190, 160, 25);
 		ectsTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
 		contentPane.add(ectsTf);
 		
@@ -141,13 +141,13 @@ setResizable(false);
 		
 		ciklusCB.setSelectedIndex(0);
 		
-		ciklusLbl = new JLabel("Studijski ciklus");
+		ciklusLbl = new JLabel("Ciklus");
  		ciklusLbl.setBounds(15, 230, 250, 45);
  		ciklusLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
  		ciklusLbl.setForeground(Color.WHITE);
  		contentPane.add(ciklusLbl);
  		
- 		ciklusCB.setBounds(175, 240, 160, 25);
+ 		ciklusCB.setBounds(265, 240, 160, 25);
 		contentPane.add(ciklusCB);
 		
 		trajanjeLbl = new JLabel("Trajanje");
@@ -157,7 +157,7 @@ setResizable(false);
  		contentPane.add(trajanjeLbl);
  		
  		trajanjeTf = new JTextField();
-		trajanjeTf.setBounds(175, 290, 160, 25);
+		trajanjeTf.setBounds(265, 290, 160, 25);
 		trajanjeTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
 		contentPane.add(trajanjeTf);
 		
@@ -168,24 +168,61 @@ setResizable(false);
  		contentPane.add(zvanjeLbl);
  		
  		zvanjeTf = new JTextField();
-		zvanjeTf.setBounds(175, 340, 160, 25);
+		zvanjeTf.setBounds(265, 340, 160, 25);
 		zvanjeTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
 		contentPane.add(zvanjeTf);
 		
 		button = new JButton("Potvrdi");
-		button.setBounds(100,380,160,25);
+		button.setBounds(145, 380, 160, 25);
 		contentPane.add(button);
 		
 	}
-private void initButtonsListeners() {
+	
+	private void initButtonsListeners() {
 		
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				administratorDodavanjeStudijskogCiklusaFormController.dodajStudProg();
+				administratorDodavanjeStudijskogProgramaFormController.dodajStudProg();
 			}
 		});
 		
+	}
+	
+	public String getNazivSP() {
+		return nazivTf.getText();
+	}
+	
+	public int getEcts() {
+		if("".equals(ectsTf.getText())) {
+			return -1;
+		}
+		try {
+			return Integer.parseInt(ectsTf.getText());
+		} catch(NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Nekorektan unos ECTS bodova.");
+		}
+		return 0;
+	}
+	
+	public short getCiklus() {
+		return ciklusiList.get(ciklusCB.getSelectedIndex());
+	}
+	
+	public short getTrajanje() {
+		if("".equals(trajanjeTf.getText())) {
+			return -1;
+		}
+		try {
+			return Short.parseShort(trajanjeTf.getText());
+		} catch(NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Nekorektan unos trajanja.");
+		}
+		return 0;
+	}
+	
+	public String getZvanje() {
+		return zvanjeTf.getText();
 	}
 
 }

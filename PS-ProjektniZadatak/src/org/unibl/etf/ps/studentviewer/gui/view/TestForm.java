@@ -449,23 +449,29 @@ public class TestForm extends JFrame {
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				try {
-					testController.print(test);
-				} catch (Exception e) {
-					EventQueue.invokeLater(new Runnable() {
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						try {
+							testController.print();
+						} catch (Exception e) {
+							EventQueue.invokeLater(new Runnable() {
 
-						@Override
-						public void run() {
-							JOptionPane.showMessageDialog(testForm,
-									"Štampanje nije uspjelo. Pogledajte log za detalje:\n" + new File("log" + "/" + TestForm.class.getSimpleName() + ".log").getAbsolutePath(), 
-									"Greška", 
-									JOptionPane.ERROR_MESSAGE);
+								@Override
+								public void run() {
+									JOptionPane.showMessageDialog(testForm,
+											"Štampanje nije uspjelo. Pogledajte log za detalje:\n" + new File("log" + "/" + TestForm.class.getSimpleName() + ".log").getAbsolutePath(), 
+											"Greška", 
+											JOptionPane.ERROR_MESSAGE);
+								}
+							});
+
+							logger.error("Štampanje nije uspjelo", e);
+
 						}
-					});
-
-					logger.error("Štampanje nije uspjelo", e);
-
-				}
+					}
+				}).start();
 
 			}
 		});
@@ -477,22 +483,29 @@ public class TestForm extends JFrame {
 		btnEksport.setBackground(new Color(0, 0, 139));
 		btnEksport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try {
-					testController.export(test);
-				} catch (Exception e) {
-					EventQueue.invokeLater(new Runnable() {
+				
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						try {
+							testController.export();
+						} catch (Exception e) {
+							EventQueue.invokeLater(new Runnable() {
 
-						@Override
-						public void run() {
-							JOptionPane.showMessageDialog(testForm,
-									"Eksportovanje nije uspjelo. Pogledajte log za detalje:\n" + new File("log" + "/" + TestForm.class.getSimpleName() + ".log").getAbsolutePath(), 
-									"Greška", 
-									JOptionPane.ERROR_MESSAGE);
+								@Override
+								public void run() {
+									JOptionPane.showMessageDialog(testForm,
+											"Eksportovanje nije uspjelo. Pogledajte log za detalje:\n" + new File("log" + "/" + TestForm.class.getSimpleName() + ".log").getAbsolutePath(), 
+											"Greška", 
+											JOptionPane.ERROR_MESSAGE);
+								}
+							});
+
+							logger.error("Eksportovanje nije uspjelo", e);
 						}
-					});
-
-					logger.error("Eksportovanje nije uspjelo", e);
-				}
+					}
+				}).start();
 			}
 		});
 		btnEksport.setBounds(90, 627, 70, 23);
@@ -581,10 +594,6 @@ public class TestForm extends JFrame {
 		return studentiTable;
 	}
 
-	public TestDTO getModel() {
-		return test;
-	}
-
 	public void refreshStatistics() {
 		EventQueue.invokeLater(new Runnable() {
 
@@ -632,12 +641,6 @@ public class TestForm extends JFrame {
 		});
 
 
-	}
-
-	public void resetSearch() {
-		StudentTableModel model = (StudentTableModel) studentiTable.getModel();
-		model.setData(test.getStudenti());
-		searchTextField.setText("");
 	}
 
 	private void initProcenatComboBox() {
