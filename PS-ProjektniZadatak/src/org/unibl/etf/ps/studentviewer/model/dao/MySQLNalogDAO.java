@@ -113,7 +113,7 @@ public class MySQLNalogDAO implements NalogDAO {
 	public boolean addNalog(NalogDTO nalog) {
 		boolean retVal = false;
 		
-		String query = "INSERT INTO nalog VALUE (null, ?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO nalog VALUE (null, ?, ?, ?, ?, ?)";
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -129,7 +129,6 @@ public class MySQLNalogDAO implements NalogDAO {
 			ps.setString(3, nalog.getKorisnickoIme());
 			ps.setString(4, nalog.getLozinka());
 			ps.setString(5, String.valueOf(nalog.getTipNaloga()));
-			ps.setObject(6, null, java.sql.Types.BLOB);
 			
 			retVal = ps.executeUpdate() == 1;
 			
@@ -158,7 +157,7 @@ public class MySQLNalogDAO implements NalogDAO {
 	public boolean updateNalog(NalogDTO nalog) {
 		boolean retVal = false;
 		
-		String query = "UPDATE nalog SET Ime = ?, Prezime = ?, KorisnickoIme = ?, Lozinka = ?, TipNaloga = ?, StanjeGT = ? WHERE NalogId = ?";
+		String query = "UPDATE nalog SET Ime = ?, Prezime = ?, KorisnickoIme = ?, Lozinka = ?, TipNaloga = ? WHERE NalogId = ?";
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -174,7 +173,6 @@ public class MySQLNalogDAO implements NalogDAO {
 			ps.setString(3, nalog.getKorisnickoIme());
 			ps.setString(4, nalog.getLozinka());
 			ps.setString(5, String.valueOf(nalog.getTipNaloga()));
-			ps.setObject(6, null, java.sql.Types.BLOB);
 			ps.setInt(7, nalog.getNalogId());
 			
 			retVal = ps.executeUpdate() == 1;
@@ -204,7 +202,7 @@ public class MySQLNalogDAO implements NalogDAO {
 	public boolean addPredmet(PredmetDTO predmet, NalogDTO nalog) {
 		boolean retVal = false;
 		
-		String query = "INSERT INTO predaje VALUE (?, ?, ?)";
+		String query = "INSERT INTO predaje VALUE (?, ?, ?, ?)";
 		
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -218,6 +216,7 @@ public class MySQLNalogDAO implements NalogDAO {
 			ps.setInt(1, nalog.getNalogId());
 			ps.setInt(2, predmet.getPredmetId());
 			ps.setDate(3, new java.sql.Date(System.currentTimeMillis()));
+			ps.setObject(4, null, java.sql.Types.BLOB);
 			
 			retVal = ps.executeUpdate() == 1;
 			
