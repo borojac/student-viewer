@@ -270,40 +270,34 @@ public class MainFormController {
 		new DeleteStudentsController(this, selectedRows);
 	}
 
-	public void choseExportType() {
-		if (exporting)
-			return;
-		exporting = true;
-		ExportStudentsForm esf = new ExportStudentsForm(this);
-		esf.setVisible(true);
-	}
+//	public void choseExportType() {
+//		if (exporting)
+//			return;
+//		exporting = true;
+//		ExportStudentsForm esf = new ExportStudentsForm(this);
+//		esf.setVisible(true);
+//	}
 
-<<<<<<< HEAD
-	// Stankovic end//
-=======
-			AddForm af = new AddForm(this);
-			af.setVisible(true);
-		}
 
-		public void createChangeForm(int[] selectedRows) {
-			if (changeFormOpened)
-				return;
-			if (selectedRows != null && selectedRows.length == 1) {
-				changeFormOpened = true;
-
-				ChangeForm cf = new ChangeForm(this, getMainTable().getStudent(selectedRows[0]), selectedRows[0]);
-				cf.setVisible(true);
-			}else {
-				final String message = "Odaberite samo jednog studenta za izmjenu!";
-				JOptionPane.showMessageDialog(null, message);
-			}
-		}	
-		public void deleteStudentsControler(int[] selectedRows) {
-			if (deleting)
-				return;
-			deleting = true;
-			new DeleteStudentsController(this, selectedRows);
-		}
+//		public void createChangeForm(int[] selectedRows) {
+//			if (changeFormOpened)
+//				return;
+//			if (selectedRows != null && selectedRows.length == 1) {
+//				changeFormOpened = true;
+//
+//				ChangeForm cf = new ChangeForm(this, getMainTable().getStudent(selectedRows[0]), selectedRows[0]);
+//				cf.setVisible(true);
+//			}else {
+//				final String message = "Odaberite samo jednog studenta za izmjenu!";
+//				JOptionPane.showMessageDialog(null, message);
+//			}
+//		}	
+//		public void deleteStudentsControler(int[] selectedRows) {
+//			if (deleting)
+//				return;
+//			deleting = true;
+//			new DeleteStudentsController(this, selectedRows);
+//		}
 		
 		public void choseExportType() {
 			if (exporting)
@@ -313,15 +307,6 @@ public class MainFormController {
 			esf.setVisible(true);
 		}
 		
-		// Stankovic end//
->>>>>>> branch 'master' of https://github.com/borojac/student-viewer.git
-	/*
-	 * TODO - ko vec radi sa predmetima, za testove mi treba predmet u kontroleru
-	 * ili formi
-	 */
-	// public PredmetDTO getPredmet() {
-	// return predmet;
-	// }
 	public void resetFilterFormOpened() {
 		filterFormOpened = false;
 	}
