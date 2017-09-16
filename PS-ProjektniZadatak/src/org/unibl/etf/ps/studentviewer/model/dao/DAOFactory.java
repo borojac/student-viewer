@@ -12,4 +12,5 @@ public interface DAOFactory {
 	public ZahtjevDAO getZahtjevDAO();
 	public ElektrijadaDAO getElektrijadaDAO();
 	public DisciplinaDAO getDisciplinaDAO();
+	public StudentMainTableDAO getStudentMainTableDAO();
 }

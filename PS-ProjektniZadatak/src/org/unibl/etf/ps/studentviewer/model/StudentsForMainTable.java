@@ -2,16 +2,15 @@ package org.unibl.etf.ps.studentviewer.model;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.ShowViewData;
 import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentMainTableDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLTestDAO;
+import org.unibl.etf.ps.studentviewer.model.dao.StudentMainTableDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
@@ -37,9 +36,10 @@ public class StudentsForMainTable {
 	/* ADDING INITIAL SHOW IN MAIN TABLE */
 	public static ArrayList<StudentMainTableDTO> initShowInMainTable(PredmetDTO predmetDTO, NalogDTO nalog) {
 		// Preuzimanje svih studenata koji slusaju trenutni ispit
-		allStudents = new MySQLStudentMainTableDAO().getAllStudentsOnPredmet(predmetDTO);
+		StudentMainTableDAO dao = (MySQLStudentMainTableDAO) new MySQLDAOFactory().getStudentMainTableDAO();
+		allStudents = dao.getAllStudentsOnPredmet(predmetDTO);
 		// Preuzimanje svih testova sa trenutnog predmeta
-		List<TestDTO> list = new MySQLTestDAO().getAllTests(predmetDTO.getPredmetId());
+		List<TestDTO> list = new MySQLDAOFactory().getTestDAO().getAllTests(predmetDTO.getPredmetId());
 
 		for (TestDTO t : list) {
 			List<StudentNaTestuDTO> listOfStudents = t.getStudenti();
@@ -76,7 +76,7 @@ public class StudentsForMainTable {
 
 		MainTable.setNewColumnIdentifiers(ispiti);
 
-		String stanjeTabele = new MySQLStudentMainTableDAO().getStateOfMainTable(predmetDTO, nalog);
+		String stanjeTabele = dao.getStateOfMainTable(predmetDTO, nalog);
 
 		if (stanjeTabele == null) {
 			ArrayList<StudentMainTableDTO> tempList = new ArrayList<>();
