@@ -67,7 +67,7 @@ public class ChooseAddTypeController {
 					insert.dodajStudentaUListu(student); // dodavanje u bazu podataka
 					insert.dodajStudentaNaPredmet(student, mainFormController.getMainForm().getSelectedPredmet());
 				}
-				mainFormController.getMainTable().tableChanged();
+//				mainFormController.getMainTable().tableChanged();
 				if (!greska) {
 					final String message = "Uspjesno dodavanje!";
 					JOptionPane.showMessageDialog(null, message, "Obavjestenje!", JOptionPane.INFORMATION_MESSAGE);

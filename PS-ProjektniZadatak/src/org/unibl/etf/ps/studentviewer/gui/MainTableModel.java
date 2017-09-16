@@ -30,6 +30,7 @@ public class MainTableModel extends DefaultTableModel {
 
 	public void setData(String[][] data) {
 		this.data = convertData(data);
+		if (data.length > 0)
 		setColumnCount(data[0].length);
 		setRowCount(data.length);
 	}

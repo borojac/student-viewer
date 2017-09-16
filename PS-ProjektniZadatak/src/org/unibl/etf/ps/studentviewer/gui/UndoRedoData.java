@@ -53,7 +53,9 @@ public class UndoRedoData {
 		ArrayList<String> state = stateList.get(position);
 
 		for (String s : state) { // instead of i -> jmbg
-			students.add(StudentsForMainTable.getByBrojIndeksa(s));
+			StudentMainTableDTO student = StudentsForMainTable.getByBrojIndeksa(s);
+			if (student!=null)
+			students.add(student);
 		}
 
 		return students;
@@ -70,7 +72,9 @@ public class UndoRedoData {
 		ArrayList<String> state = stateList.get(position);
 
 		for (String s : state) { // instead of i -> jmbg
-			students.add(StudentsForMainTable.getByBrojIndeksa(s));
+			StudentMainTableDTO student = StudentsForMainTable.getByBrojIndeksa(s);
+			if (student!=null)
+			students.add(student);
 		}
 
 		return students;

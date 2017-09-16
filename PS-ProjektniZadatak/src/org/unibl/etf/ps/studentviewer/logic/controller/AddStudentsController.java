@@ -37,7 +37,7 @@ public class AddStudentsController {
 			if (st.dodajStudentaUListu(student)) {
 				st.dodajStudentaNaPredmet(student, mainFormController.getMainForm().getSelectedPredmet());
 				mainFormController.getMainTable().addStudent(student);
-				mainFormController.getMainTable().tableChanged();
+//				mainFormController.getMainTable().tableChanged();
 				final String message = "Uspjesno cuvanje!";
 				JOptionPane.showMessageDialog(null, message, "Obavjestenje!", JOptionPane.INFORMATION_MESSAGE);
 			}else {
