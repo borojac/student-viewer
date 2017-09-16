@@ -1,5 +1,6 @@
 package org.unibl.etf.ps.studentviewer.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,17 +31,13 @@ public class StudentsForMainTable {
 	}
 
 	private static String getDateFormat(TestDTO t) {
-		Calendar calendar = Calendar.getInstance();
-		Date d = t.getDatum();
-		calendar.setTime(d);
-		return calendar.get(Calendar.DATE) + "." + calendar.get(Calendar.MONTH) + "." + calendar.get(Calendar.YEAR)
-				+ ".";
+		return new SimpleDateFormat("dd.MM.yyyy.").format(t.getDatum());
 	}
 
 	/* ADDING INITIAL SHOW IN MAIN TABLE */
 	public static ArrayList<StudentMainTableDTO> initShowInMainTable(PredmetDTO predmetDTO, NalogDTO nalog) {
 		// Preuzimanje svih studenata koji slusaju trenutni ispit
-		allStudents = new MySQLStudentMainTableDAO().getAllStudents(predmetDTO);
+		allStudents = new MySQLStudentMainTableDAO().getAllStudentsOnPredmet(predmetDTO);
 		// Preuzimanje svih testova sa trenutnog predmeta
 		List<TestDTO> list = new MySQLTestDAO().getAllTests(predmetDTO.getPredmetId());
 

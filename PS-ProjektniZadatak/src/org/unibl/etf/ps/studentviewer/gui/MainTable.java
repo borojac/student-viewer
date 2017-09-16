@@ -217,6 +217,15 @@ public class MainTable extends JTable {
 		student.setIme(ime);
 		student.setPrezime(prezime);
 		setStudents(students);
+		changeView();
 	}
-
+	
+	public void tableChanged() {
+		ArrayList<StudentMainTableDTO> tempList = new ArrayList<>();
+		for (StudentMainTableDTO s : StudentsForMainTable.getAllStudents())
+			tempList.add(s);
+		UndoRedoData.addState(tempList);
+		setStudents(tempList);
+		changeView();
+	}
 }

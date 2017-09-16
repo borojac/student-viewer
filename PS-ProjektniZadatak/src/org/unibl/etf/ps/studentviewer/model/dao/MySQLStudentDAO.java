@@ -279,7 +279,7 @@ public class MySQLStudentDAO extends StudentDAO {
 	public boolean azurirajStudentaUListi(StudentMainTableDTO student, String stariIndeks) {
 		boolean retVal = true;
 
-		String updateTestQuery = "UPDATE student SET BrojIndeksa=? SET Ime=? SET Prezime=? WHERE BrojIndeksa=?";
+		String updateTestQuery = "UPDATE student SET BrojIndeksa=?, Ime=?, Prezime=? WHERE BrojIndeksa=?";
 
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -316,13 +316,12 @@ public class MySQLStudentDAO extends StudentDAO {
 		}
 		return retVal;
 	}
-	/* Stankovic end */
 
 	@Override
 	public boolean dodajStudentaNaPredmet(StudentMainTableDTO student, PredmetDTO predmet) {
 		boolean retVal = true;
 
-		String addStudentQuery = "INSERT INTO slusa VALUE (?, ?)";
+		String addStudentQuery = "INSERT INTO slusa VALUE (?, ?, ?, ?, ?)";
 
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -333,6 +332,9 @@ public class MySQLStudentDAO extends StudentDAO {
 
 			ps.setInt(1, getStudentBy(student.getBrojIndeksa()).getStudentId());
 			ps.setInt(2, predmet.getPredmetId());
+			ps.setNull(3, 0);
+			ps.setNull(4, 0);
+			ps.setNull(5, 0);
 
 			retVal &= ps.executeUpdate() == 1;
 		} catch (SQLException ex) {
@@ -348,6 +350,7 @@ public class MySQLStudentDAO extends StudentDAO {
 		}
 		return retVal;
 	}
+	/* Stankovic end */
 
 	@Override
 	public List<StudentZaElektrijaduDTO> getStudentiZaElektrijadu(String disciplina, int idElektrijade) {

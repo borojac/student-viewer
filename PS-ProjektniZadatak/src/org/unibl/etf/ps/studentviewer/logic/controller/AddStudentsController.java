@@ -7,7 +7,9 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
 import org.unibl.etf.ps.studentviewer.gui.view.AddForm;
+import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
@@ -30,10 +32,12 @@ public class AddStudentsController {
 		int valid = help.checkParams(params);
 		if (valid == 0) {
 			StudentMainTableDTO student = new StudentMainTableDTO(params.get(2), params.get(0), params.get(1));
-			////////////
+
 			MySQLStudentDAO st = new MySQLStudentDAO();
 			if (st.dodajStudentaUListu(student)) {
+				st.dodajStudentaNaPredmet(student, mainFormController.getMainForm().getSelectedPredmet());
 				mainFormController.getMainTable().addStudent(student);
+				mainFormController.getMainTable().tableChanged();
 				final String message = "Uspjesno cuvanje!";
 				JOptionPane.showMessageDialog(null, message, "Obavjestenje!", JOptionPane.INFORMATION_MESSAGE);
 			}else {
