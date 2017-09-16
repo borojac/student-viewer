@@ -49,7 +49,7 @@ public class MySQLStudentDAO extends StudentDAO {
 		ResultSet rs = null;
 
 		String query = "SELECT DISTINCT s.StudentId, s.BrojIndeksa, s.Ime, s.Prezime FROM student s INNER JOIN slusa USING(StudentId) WHERE PredmetId IN (SELECT PredmetId FROM predaje WHERE NalogId=?)";
-		String query2 = "SELECT Komentar from ucestvuje WHERE Naziv=? AND ElektrijadaId=? AND StudentId=?";
+		String query2 = "SELECT Komentar FROM ucestvuje WHERE Naziv=? AND ElektrijadaId=? AND StudentId=?";
 		try {
 
 			conn = DBUtility.open();
@@ -60,7 +60,7 @@ public class MySQLStudentDAO extends StudentDAO {
 			while (rs.next()) {
 				retVal.add(new StudentZaElektrijaduDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), ""));
 			}
-
+			System.out.println(retVal);
 			ps = conn.prepareStatement(query2);
 			for (int i=0; i<retVal.size(); i++){
 				ps.setString(1, disciplina);

@@ -38,14 +38,12 @@ public class DodavanjeStudentaZaElektrijaduController {
 			JOptionPane.showMessageDialog(dodavanjeForma, "Nije selektovan niti jedan student.");
 		} else {
 			ArrayList<StudentZaElektrijaduDTO> studentiZaUndoRedo = new ArrayList<>();
-			for (int i : redovi) {
-				StudentZaElektrijaduDTO st = new StudentZaElektrijaduDTO(i,
-						(String) tableStudentiPredmeti.getValueAt(i, 0),
-						(String) tableStudentiPredmeti.getValueAt(i, 1),
-						(String) tableStudentiPredmeti.getValueAt(i, 2),
-						(String) tableStudentiPredmeti.getValueAt(i, 3));
-				if (kontroler.ubaciStudentaUListu(st)) {
-					studentiZaUndoRedo.add(st);
+			for (StudentZaElektrijaduDTO student : listaStudenataIzbor){
+				for (int i : redovi){
+					if (student.getIndeks().equals((String)tableStudentiPredmeti.getValueAt(i, 0))){
+						if (kontroler.ubaciStudentaUListu(student))
+							studentiZaUndoRedo.add(student);
+					}
 				}
 			}
 			kontroler.dodavanjeStudenta(studentiZaUndoRedo);
@@ -70,7 +68,7 @@ public class DodavanjeStudentaZaElektrijaduController {
 		if(!this.listaStudenataIzbor.isEmpty())
 			this.listaStudenataIzbor.clear();
 		this.listaStudenataIzbor =new ArrayList<>( dsDAO.getIzborStudentaZaElektrijadu(kontroler.getNalogDTO().getNalogId(),kontroler.getDisciplinaDTO().getNaziv(),kontroler.getElektrijada().getId()));
-		System.out.println(listaStudenataIzbor);
+		
 	}
 
 	public ArrayList<StudentZaElektrijaduDTO> getListaStudenataIzbor() {
