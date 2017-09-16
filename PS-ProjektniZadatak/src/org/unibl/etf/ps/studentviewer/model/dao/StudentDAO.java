@@ -27,6 +27,8 @@ public abstract class StudentDAO {
 	public abstract boolean obrisiStudentaSaPredmeta(int studentID, PredmetDTO predmet);
 
 	public abstract boolean azurirajStudentaUListi(StudentMainTableDTO student, String stariIndeks);
+	
+	public abstract boolean azurirajStudentaNaPredmetu(StudentMainTableDTO student, PredmetDTO predmet);
 
 	public abstract boolean dodajStudentaNaPredmet(StudentMainTableDTO student, PredmetDTO predmet);
 	/* Stankovic end */

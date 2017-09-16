@@ -60,6 +60,7 @@ public class AddChangeStudentsHelpController {
 		params.add(student.getIme());
 		params.add(student.getPrezime());
 		params.add(student.getBrojIndeksa());
+		//params.add(student.getKomentar());
 		int retVal = checkParams(params);
 		student.setIme(params.get(0));
 		student.setPrezime(params.get(1));
