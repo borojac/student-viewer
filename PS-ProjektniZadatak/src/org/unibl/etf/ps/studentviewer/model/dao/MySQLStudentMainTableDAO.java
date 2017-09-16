@@ -12,7 +12,8 @@ import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class MySQLStudentMainTableDAO implements StudentMainTableDAO {
-
+	
+	@Override
 	public ArrayList<StudentMainTableDTO> getAllStudentsOnPredmet(PredmetDTO predmet) {
 		String getAllStudentsIdsQuerry = "SELECT StudentId FROM slusa WHERE PredmetId=?";
 
@@ -70,37 +71,6 @@ public class MySQLStudentMainTableDAO implements StudentMainTableDAO {
 	}
 
 	@Override
-	public ArrayList<StudentMainTableDTO> getAllStudents(PredmetDTO predmet) {
-		ArrayList<StudentMainTableDTO> list = new ArrayList<StudentMainTableDTO>();
-
-		String getAllStudentsQuerry = "SELECT * FROM student";
-
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-
-			conn = DBUtility.open();
-			ps = conn.prepareStatement(getAllStudentsQuerry);
-			rs = ps.executeQuery();
-
-			while (rs.next()) {
-				StudentMainTableDTO student = new StudentMainTableDTO(rs.getString(2), rs.getString(3),
-						rs.getString(4));
-				student.setId(rs.getInt(1));
-				setCommentForStudent(student, rs.getInt(1));
-				list.add(student);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DBUtility.close(conn, rs, ps);
-		}
-		return list;
-	}
-
 	public void setCommentForStudent(StudentMainTableDTO student, int id) {
 		String getCommentQuerry = "SELECT Komentar FROM slusa WHERE StudentId=?";
 
@@ -131,6 +101,7 @@ public class MySQLStudentMainTableDAO implements StudentMainTableDAO {
 
 	}
 	
+	@Override
 	public String getStateOfMainTable(PredmetDTO predmet, NalogDTO nalog) {
 		String getStateOfMainTableQuerry = "SELECT StanjeGT FROM predaje WHERE NalogId=? AND PredmetId=?";
 
@@ -158,6 +129,7 @@ public class MySQLStudentMainTableDAO implements StudentMainTableDAO {
 		return result;
 	}
 	
+	@Override
 	public boolean setStateOfMainTable(PredmetDTO predmet, NalogDTO nalog, String stanje) {
 		String setStateOfMainTableQuerry = "UPDATE predaje SET StanjeGT=? WHERE NalogId=? AND PredmetId=?";
 
