@@ -63,7 +63,7 @@ public class FilterUtil {
 					}
 
 				if (polozen)
-					if (s.getTest(test) != null && new Integer(s.getTest(test)) <= 50) {
+					if ((s.getTest(test) != null && new Integer(s.getTest(test)) <= 50) || s.getTest(test) == null) {
 						breakControl = true;
 						break;
 					}

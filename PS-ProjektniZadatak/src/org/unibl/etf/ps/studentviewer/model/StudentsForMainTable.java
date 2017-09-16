@@ -103,5 +103,17 @@ public class StudentsForMainTable {
 	public static ArrayList<StudentMainTableDTO> getAllStudents() {
 		return allStudents;
 	}
-
+	
+	public static void setTest(TestDTO test, MainTable mainTable) {
+		List<StudentNaTestuDTO> listOfStudents = test.getStudenti();
+		for (StudentNaTestuDTO student : listOfStudents) {
+			int id = student.getStudentId();
+			int brojBodova = student.getBrojBodova();
+			addTestToStudent(id, getDateFormat(test), brojBodova);
+		}
+		mainTable.setStudents(mainTable.getStudents());
+		mainTable.changeView();
+	}
+	
+	
 }

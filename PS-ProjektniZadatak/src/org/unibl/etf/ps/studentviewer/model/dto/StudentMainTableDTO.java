@@ -20,7 +20,12 @@ public class StudentMainTableDTO {
 	}
 	
 	public void addIspit(String a, String b) {
-		testovi.put(a, b);
+		if (testovi.get(a) == null)
+			testovi.put(a, b);
+		else {
+			testovi.remove(a);
+			testovi.put(a, b);
+		}
 		
 	}
 	
