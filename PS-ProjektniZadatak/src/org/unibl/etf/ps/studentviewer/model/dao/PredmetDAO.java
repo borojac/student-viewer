@@ -1,7 +1,9 @@
 package org.unibl.etf.ps.studentviewer.model.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.unibl.etf.ps.studentviewer.model.dto.GradingInfoDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
@@ -16,5 +18,6 @@ public interface PredmetDAO {
 	public boolean addPredmete(ArrayList<PredmetDTO> predmeti);
 	public boolean checkStudijskiProgram(String nazivSP, short ciklus);
 	public boolean addStudijskiProgram(String nazivSP, int ects, short ciklus, short trajanje, String zvanje);
-
+	public List<StudentNaPredmetuDTO> getStudentsForGrading(int predmetId);
+	public List<GradingInfoDTO> getGradingInfo(int studentId, int predmetId);
 }

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
@@ -334,8 +335,13 @@ public class MySQLStudentDAO extends StudentDAO {
 			ps.setInt(2, predmet.getPredmetId());
 			ps.setNull(3, 0);
 			ps.setNull(4, 0);
-			ps.setNull(5, 0);
-
+			String komentar = student.getKomentar().trim();
+			if(!"".equals(komentar)) {
+				ps.setString(5, komentar);
+			}
+			else {
+				ps.setNull(5, 0);
+			}
 			retVal &= ps.executeUpdate() == 1;
 		} catch (SQLException ex) {
 			try {
@@ -347,6 +353,51 @@ public class MySQLStudentDAO extends StudentDAO {
 		} finally {
 			DBUtility.close(conn, ps);
 
+		}
+		return retVal;
+	}
+
+	@Override
+	public boolean azurirajStudentaNaPredmetu(StudentMainTableDTO student, PredmetDTO predmet) {
+		boolean retVal = true;
+
+		String updateTestQuery = "UPDATE slusa SET Komentar=? WHERE StudentId=? AND PredmetId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try {
+			conn = DBUtility.open();
+			conn.setAutoCommit(false);
+			ps = conn.prepareStatement(updateTestQuery);
+
+			String komentar = student.getKomentar().trim();
+			if("".equals(komentar))
+				ps.setNull(1, 0);
+			else
+				ps.setString(1,komentar);
+			ps.setInt(2, student.getId());
+			ps.setInt(3, predmet.getPredmetId());
+
+			retVal &= ps.executeUpdate() == 1;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DBUtility.close(conn, ps);
+
+			retVal = true;
 		}
 		return retVal;
 	}
@@ -379,6 +430,30 @@ public class MySQLStudentDAO extends StudentDAO {
 			e.printStackTrace();			
 		} finally {
 			DBUtility.close(conn, rs, ps);
+		}
+		return retVal;
+	}
+
+	@Override
+	public boolean gradeStudent(int studentId, int predmetId, int grade) {
+		boolean retVal = true;
+		String query = "UPDATE slusa SET Ocjena=?, DatumPolaganja=? "
+				+ "WHERE StudentId=? AND PredmetId=?";
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			ps.setInt(3, studentId);
+			ps.setInt(4, predmetId);
+			ps.setInt(1, grade);
+			ps.setDate(2, new java.sql.Date(new Date().getTime()));
+			retVal &= ps.executeUpdate() == 1;
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(ps, conn);
 		}
 		return retVal;
 	}

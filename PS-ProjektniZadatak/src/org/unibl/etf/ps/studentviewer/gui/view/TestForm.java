@@ -677,11 +677,7 @@ public class TestForm extends JFrame {
 		contentPane.add(procenatComboBox);
 	}
 	
-	public void refreshTestoviTable() {
-		parentForm.refreshTestoviTable();
-	}
-	
-	public void testoviClearSelection() {
-		parentForm.testoviClearSelection();
+	public MainForm getMainForm() {
+		return parentForm;
 	}
 }

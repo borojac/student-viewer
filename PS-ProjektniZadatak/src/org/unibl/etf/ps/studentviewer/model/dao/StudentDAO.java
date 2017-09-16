@@ -32,4 +32,7 @@ public abstract class StudentDAO {
 
 	public abstract boolean dodajStudentaNaPredmet(StudentMainTableDTO student, PredmetDTO predmet);
 	/* Stankovic end */
+	
+	
+	public abstract boolean gradeStudent(int studentId, int predmetId, int grade);
 }
