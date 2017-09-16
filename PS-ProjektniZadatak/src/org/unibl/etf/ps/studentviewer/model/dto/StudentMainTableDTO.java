@@ -1,6 +1,5 @@
 package org.unibl.etf.ps.studentviewer.model.dto;
 
-import java.util.Date;
 import java.util.HashMap;
 
 import org.unibl.etf.ps.studentviewer.gui.ShowViewData;
@@ -116,7 +115,7 @@ public class StudentMainTableDTO {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((brojIndeksa == null) ? 0 : brojIndeksa.hashCode());
+		result = prime * result + id;
 		return result;
 	}
 

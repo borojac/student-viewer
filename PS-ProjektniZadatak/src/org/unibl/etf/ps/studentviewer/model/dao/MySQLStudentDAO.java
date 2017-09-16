@@ -100,7 +100,7 @@ public class MySQLStudentDAO extends StudentDAO {
 			ps.setInt(3, student.getId());
 			ps.setString(4, student.getKomentar());
 
-			retVal &= ps.executeUpdate() == 1;
+			retVal = ps.executeUpdate() == 1;
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			try {
@@ -137,7 +137,7 @@ public class MySQLStudentDAO extends StudentDAO {
 			ps = conn.prepareStatement(query);
 			ps.setInt(1, idStudenta);
 
-			retVal &= ps.executeUpdate() == 1;
+			retVal = ps.executeUpdate() == 1;
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -180,7 +180,7 @@ public class MySQLStudentDAO extends StudentDAO {
 			ps.setString(1, student.getKomentar());
 			ps.setInt(2, student.getId());
 
-			retVal &= ps.executeUpdate() == 1;
+			retVal = ps.executeUpdate() == 1;
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			try {
@@ -335,8 +335,13 @@ public class MySQLStudentDAO extends StudentDAO {
 			ps.setInt(2, predmet.getPredmetId());
 			ps.setNull(3, 0);
 			ps.setNull(4, 0);
-			ps.setNull(5, 0);
-
+			String komentar = student.getKomentar().trim();
+			if(!"".equals(komentar)) {
+				ps.setString(5, komentar);
+			}
+			else {
+				ps.setNull(5, 0);
+			}
 			retVal &= ps.executeUpdate() == 1;
 		} catch (SQLException ex) {
 			try {
@@ -348,6 +353,51 @@ public class MySQLStudentDAO extends StudentDAO {
 		} finally {
 			DBUtility.close(conn, ps);
 
+		}
+		return retVal;
+	}
+
+	@Override
+	public boolean azurirajStudentaNaPredmetu(StudentMainTableDTO student, PredmetDTO predmet) {
+		boolean retVal = true;
+
+		String updateTestQuery = "UPDATE slusa SET Komentar=? WHERE StudentId=? AND PredmetId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try {
+			conn = DBUtility.open();
+			conn.setAutoCommit(false);
+			ps = conn.prepareStatement(updateTestQuery);
+
+			String komentar = student.getKomentar().trim();
+			if("".equals(komentar))
+				ps.setNull(1, 0);
+			else
+				ps.setString(1,komentar);
+			ps.setInt(2, student.getId());
+			ps.setInt(3, predmet.getPredmetId());
+
+			retVal &= ps.executeUpdate() == 1;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DBUtility.close(conn, ps);
+
+			retVal = true;
 		}
 		return retVal;
 	}
@@ -384,6 +434,7 @@ public class MySQLStudentDAO extends StudentDAO {
 		return retVal;
 	}
 
+<<<<<<< HEAD
 	@Override
 	public boolean gradeStudent(int studentId, int predmetId, int grade) {
 		boolean retVal = true;
@@ -407,5 +458,8 @@ public class MySQLStudentDAO extends StudentDAO {
 		}
 		return false;
 	}
+=======
+	
+>>>>>>> branch 'master' of https://github.com/borojac/student-viewer.git
 
 }

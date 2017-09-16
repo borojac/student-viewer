@@ -506,6 +506,7 @@ public class ElektrijadaController {
 					.getDodatneNastave(elektrijada.getId(), nalogDTO.getNalogId(), disciplinaDTO.getNaziv());
 
 			for (StudentZaElektrijaduDTO student : listaStudenata) {
+				System.out.println(student);
 				boolean prisutan = false;
 				for (StudentZaElektrijaduDTO studentIzBaze : listaStudentaZaElektrijaduIzBaze) {
 					if (student.getId() == studentIzBaze.getId()) {

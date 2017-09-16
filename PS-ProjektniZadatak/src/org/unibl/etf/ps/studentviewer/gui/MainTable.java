@@ -205,6 +205,7 @@ public class MainTable extends JTable {
 		for (StudentMainTableDTO s : helpList)
 			students.remove(s);
 		setStudents(students);
+		changeView();
 	}
 
 	public StudentMainTableDTO getStudent(int row) {

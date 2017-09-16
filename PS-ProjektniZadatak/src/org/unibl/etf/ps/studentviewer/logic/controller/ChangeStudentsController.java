@@ -35,6 +35,7 @@ public class ChangeStudentsController {
 				MySQLStudentDAO dao = new MySQLStudentDAO();
 				StudentMainTableDTO newStudent = new StudentMainTableDTO(params.get(2), params.get(0), params.get(1));
 				dao.azurirajStudentaUListi(newStudent, student.getBrojIndeksa());
+				dao.azurirajStudentaNaPredmetu(newStudent, mainFormController.getMainForm().getSelectedPredmet());
 				mainFormController.getMainTable().setStudent(number, params.get(2), params.get(0), params.get(1));
 
 				final String message = "Uspjesno azuriranje!";

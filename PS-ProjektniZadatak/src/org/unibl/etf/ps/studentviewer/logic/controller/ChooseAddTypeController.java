@@ -54,20 +54,22 @@ public class ChooseAddTypeController {
 				}
 				i++;
 			}
-			MySQLStudentDAO insert = new MySQLStudentDAO();
+			MySQLStudentDAO dao = new MySQLStudentDAO();
 			boolean greska = false;
 			if (vrsteSGreskama == 0) {
 				for (StudentMainTableDTO student : listaZaTabelu) {
+					dao.dodajStudentaUListu(student); // dodavanje u bazu podataka
+					int studetnID = dao.getStudentBy(student.getBrojIndeksa()).getStudentId();
+					student.setId(studetnID);
+					dao.dodajStudentaNaPredmet(student, mainFormController.getMainForm().getSelectedPredmet());
 					if (!mainFormController.getMainTable().addStudent(student)) {
 						final String message = "Greska pri unosu studenta!";
 						JOptionPane.showMessageDialog(null, message, "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 						greska = true;
 						break;
 					}
-					insert.dodajStudentaUListu(student); // dodavanje u bazu podataka
-					insert.dodajStudentaNaPredmet(student, mainFormController.getMainForm().getSelectedPredmet());
 				}
-				mainFormController.getMainTable().tableChanged();
+//				mainFormController.getMainTable().tableChanged();
 				if (!greska) {
 					final String message = "Uspjesno dodavanje!";
 					JOptionPane.showMessageDialog(null, message, "Obavjestenje!", JOptionPane.INFORMATION_MESSAGE);
