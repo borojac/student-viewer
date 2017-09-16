@@ -32,7 +32,7 @@ public class AddStudentsController {
 		int valid = help.checkParams(params);
 		if (valid == 0) {
 			StudentMainTableDTO student = new StudentMainTableDTO(params.get(2), params.get(0), params.get(1));
-
+			student.setKomentar(params.get(3)); //dodatno setovanje komentara;
 			MySQLStudentDAO st = new MySQLStudentDAO();
 			if (st.dodajStudentaUListu(student)) {
 				int studetnID = st.getStudentBy(student.getBrojIndeksa()).getStudentId();
