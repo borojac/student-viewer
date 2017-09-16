@@ -44,11 +44,13 @@ import org.unibl.etf.ps.studentviewer.gui.view.TestForm;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.Command;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.CommandStack;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.UkloniStudenteTestCommand;
+import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.StudentDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
@@ -128,7 +130,8 @@ public class TestController {
 					@Override
 					public void run() {
 						testForm.dispose();
-						testForm.refreshTestoviTable();
+						testForm.getMainForm().refreshTestoviTable();
+						StudentsForMainTable.setTest(test, testForm.getMainForm().getMainTable());
 					}
 				});
 			}
@@ -144,7 +147,7 @@ public class TestController {
 
 			@Override
 			public void run() {
-				testForm.testoviClearSelection();
+				testForm.getMainForm().testoviClearSelection();
 
 			}
 		});
@@ -317,8 +320,10 @@ public class TestController {
 			title.add("\n\n");
 			title.add("Datum: " + new SimpleDateFormat("dd.MM.yyyy").format(test.getDatum()));
 			title.add("\n\n");
-			title.add("Napomena:\t" + test.getNapomena());
-			title.add("\n\n");
+			if (!"".equals(test.getNapomena())) {
+				title.add("Napomena:\t" + test.getNapomena());
+				title.add("\n\n");
+			}
 
 			Paragraph spacing = new Paragraph("\n\n");
 			spacing.add("Studenti na testu:");
@@ -366,8 +371,10 @@ public class TestController {
 		title.add("\n\n");
 		title.add("Datum: " + new SimpleDateFormat("dd.MM.yyyy").format(test.getDatum()));
 		title.add("\n\n");
-		title.add("Napomena:\t" + test.getNapomena());
-		title.add("\n\n");
+		if (!"".equals(test.getNapomena())) {
+			title.add("Napomena:\t" + test.getNapomena());
+			title.add("\n\n");
+		}
 
 		Paragraph spacing = new Paragraph("\n\n");
 		spacing.add("Studenti na testu:");
@@ -540,11 +547,11 @@ public class TestController {
 
 							@Override
 							public void run() {
-								testForm.refreshTestoviTable();
+								testForm.getMainForm().refreshTestoviTable();
 							}
 						}).start();
 						testForm.dispose();
-						testForm.testoviClearSelection();
+						testForm.getMainForm().testoviClearSelection();
 					}
 				});
 		} else
@@ -571,7 +578,7 @@ public class TestController {
 				@Override
 				public void run() {
 					testForm.dispose();
-					testForm.testoviClearSelection();
+					testForm.getMainForm().testoviClearSelection();
 				}
 			});
 	}

@@ -5,13 +5,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
+import org.unibl.etf.ps.studentviewer.model.dto.GradingInfoDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
+
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 public class MySQLPredmetDAO implements PredmetDAO {
 
@@ -368,6 +373,65 @@ public class MySQLPredmetDAO implements PredmetDAO {
 		}
 		
 		return retVal;
+	}
+
+	@Override
+	public List<StudentNaPredmetuDTO> getStudentsForGrading(int predmetId) {
+		List<StudentNaPredmetuDTO> retVals = new LinkedList<>();
+		String query = "SELECT StudentId, BrojIndeksa, Ime, Prezime "
+				+ "FROM student INNER JOIN slusa USING(StudentId) "
+				+ "WHERE PredmetId=? AND Ocjena IS null";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, predmetId);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				retVals.add(new StudentNaPredmetuDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)));
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		
+		return retVals;
+	}
+
+	@Override
+	public List<GradingInfoDTO> getGradingInfo(int studentId, int predmetId) {
+		List<GradingInfoDTO> retVals = new ArrayList<>();
+		
+		String dbquery = "SELECT test.*, BrojBodova, Komentar "
+				+ "FROM test INNER JOIN izlazi_na USING(TestId) "
+				+ "WHERE StudentId=? AND PredmetId=? AND BrojBodova > 50";
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(dbquery);
+			ps.setInt(1, studentId);
+			ps.setInt(2, predmetId);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				TestDTO tmp = new TestDTO(rs.getInt(1), rs.getString(2), rs.getDate(3),
+						rs.getString(4), rs.getInt(5), rs.getInt(6));
+				retVals.add(new GradingInfoDTO(tmp, rs.getInt(7), rs.getString(8)));
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(rs, ps, conn);
+		}
+		return retVals;
 	}
 
 }

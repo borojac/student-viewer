@@ -28,11 +28,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
+import org.jdesktop.swingx.search.TableSearchable;
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
 import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
@@ -214,6 +216,11 @@ public class MainForm extends JFrame {
 		contentPane.add(scrollPane);
 		
 		JButton konacnaOcjenaButton = new JButton("STOKUCA");
+		konacnaOcjenaButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new GradeGenerationForm(getSelectedPredmet()).setVisible(true);
+			}
+		});
 		konacnaOcjenaButton.setBounds(628, 131, 89, 23);
 		contentPane.add(konacnaOcjenaButton);
 		lastPredmet = getSelectedPredmet();
@@ -332,6 +339,7 @@ public class MainForm extends JFrame {
 			}
 		});
 		testoviTable.setFont(new Font("Century Gothic", Font.BOLD, 12));
+		testoviTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		testoviTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		testoviTable.setForeground(new Color(0, 0, 139));
 		testoviTable.setBackground(new Color(173, 216, 230));
@@ -649,4 +657,6 @@ public class MainForm extends JFrame {
 		btnBrisi.setEnabled(false);
 		btnIzmjeni.setEnabled(false);
 	}
+	
+	
 }
