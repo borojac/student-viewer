@@ -434,7 +434,6 @@ public class MySQLStudentDAO extends StudentDAO {
 		return retVal;
 	}
 
-<<<<<<< HEAD
 	@Override
 	public boolean gradeStudent(int studentId, int predmetId, int grade) {
 		boolean retVal = true;
@@ -456,10 +455,7 @@ public class MySQLStudentDAO extends StudentDAO {
 		} finally {
 			DBUtility.close(ps, conn);
 		}
-		return false;
+		return retVal;
 	}
-=======
-	
->>>>>>> branch 'master' of https://github.com/borojac/student-viewer.git
 
 }
