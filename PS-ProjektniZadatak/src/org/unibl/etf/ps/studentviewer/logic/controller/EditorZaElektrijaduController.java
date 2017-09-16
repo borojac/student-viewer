@@ -12,6 +12,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.poi.util.SystemOutLogger;
 import org.unibl.etf.ps.studentviewer.gui.view.EditorZaElektrijaduForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ElektrijadaForm;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
@@ -50,6 +51,7 @@ public class EditorZaElektrijaduController {
 					DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
 					Date startDate = null;
 					try {
+						
 						startDate = df.parse(procitano);
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block

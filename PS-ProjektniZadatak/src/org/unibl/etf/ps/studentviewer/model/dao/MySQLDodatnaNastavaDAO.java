@@ -31,7 +31,7 @@ public class MySQLDodatnaNastavaDAO implements DodatnaNastavaDAO {
 
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				retVal.add(new DodatnaNastavaDTO(rs.getInt(1), rs.getDate(2), rs.getString(3), rs.getString(4),
+				retVal.add(new DodatnaNastavaDTO(rs.getInt(1), rs.getTimestamp(2), rs.getString(3), rs.getString(4),
 						rs.getInt(5), rs.getString(6), rs.getInt(7)));
 			}
 

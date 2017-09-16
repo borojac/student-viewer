@@ -60,7 +60,7 @@ public class MySQLStudentDAO extends StudentDAO {
 			while (rs.next()) {
 				retVal.add(new StudentZaElektrijaduDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), ""));
 			}
-			System.out.println(retVal);
+			
 			ps = conn.prepareStatement(query2);
 			for (int i=0; i<retVal.size(); i++){
 				ps.setString(1, disciplina);
@@ -371,7 +371,7 @@ public class MySQLStudentDAO extends StudentDAO {
 			
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				retVal.add(new StudentZaElektrijaduDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(3), rs.getString(4)));
+				retVal.add(new StudentZaElektrijaduDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
 			}
 
 		} catch (SQLException e) {

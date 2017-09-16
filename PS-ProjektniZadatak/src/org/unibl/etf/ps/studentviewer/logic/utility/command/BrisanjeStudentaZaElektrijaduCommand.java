@@ -12,6 +12,7 @@ public class BrisanjeStudentaZaElektrijaduCommand implements Command {
 	
 	public BrisanjeStudentaZaElektrijaduCommand(ArrayList<StudentZaElektrijaduDTO> st, ElektrijadaController kontroler) {
 		this.st = st;
+		this.kontroler = kontroler;
 	}
 
 	@Override

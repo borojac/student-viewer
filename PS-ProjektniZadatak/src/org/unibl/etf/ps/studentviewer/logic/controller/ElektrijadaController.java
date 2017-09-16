@@ -564,7 +564,7 @@ public class ElektrijadaController {
 					JOptionPane.showMessageDialog(forma, "Izmjene su uspješno sačuvane.");
 				}
 			});
-
+			undoKomande.clear();
 		} else {
 			EventQueue.invokeLater(new Runnable() {
 				@Override
@@ -594,6 +594,15 @@ public class ElektrijadaController {
 				mainForm.setVisible(true);
 			}
 		});
+		
+	}
+
+	public void setDodatneNastave() {
+		DAOFactory dao = new MySQLDAOFactory();
+		DodatnaNastavaDAO dnDAO = dao.getDodatnaNastavaDAO();
+		if(!this.listaDodatnihNastava.isEmpty())
+			this.listaDodatnihNastava.clear();
+		this.listaDodatnihNastava =new ArrayList<>( dnDAO.getDodatneNastave(elektrijada.getId(), nalogDTO.getNalogId(), disciplinaDTO.getNaziv()));
 		
 	}
 }

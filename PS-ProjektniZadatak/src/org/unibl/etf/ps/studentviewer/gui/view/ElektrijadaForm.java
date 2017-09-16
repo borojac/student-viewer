@@ -152,6 +152,7 @@ public class ElektrijadaForm extends JFrame {
 
 		elektrijadaController = new ElektrijadaController(forma, elektrijadaDTO, nalogDTO, disciplinaDTO, mainForm);
 		elektrijadaController.setStudentiZaElektrijadu();
+		elektrijadaController.setDodatneNastave();
 		// String date = "23/10/2012 08:15 AM";
 		//
 		// DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm a");

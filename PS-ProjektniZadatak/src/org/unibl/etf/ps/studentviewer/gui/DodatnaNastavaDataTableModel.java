@@ -62,10 +62,12 @@ public class DodatnaNastavaDataTableModel extends AbstractTableModel {
 			value = nastava.getNazivTeme();
 			break;
 		case 1:{
-			DateFormat df = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy");
+			System.out.println(nastava.getDatum().toString());
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 			DateFormat newDf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
 			Date date = null;
 			try {
+				
 				 date = df.parse(nastava.getDatum().toString());
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
