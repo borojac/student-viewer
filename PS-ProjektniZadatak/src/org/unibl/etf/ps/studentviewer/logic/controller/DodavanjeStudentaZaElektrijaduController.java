@@ -70,7 +70,7 @@ public class DodavanjeStudentaZaElektrijaduController {
 		if(!this.listaStudenataIzbor.isEmpty())
 			this.listaStudenataIzbor.clear();
 		this.listaStudenataIzbor =new ArrayList<>( dsDAO.getIzborStudentaZaElektrijadu(kontroler.getNalogDTO().getNalogId(),kontroler.getDisciplinaDTO().getNaziv(),kontroler.getElektrijada().getId()));
-		
+		System.out.println(listaStudenataIzbor);
 	}
 
 	public ArrayList<StudentZaElektrijaduDTO> getListaStudenataIzbor() {
