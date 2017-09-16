@@ -42,4 +42,9 @@ public class MySQLDAOFactory implements DAOFactory {
 		return new MySQLDisciplinaDAO();
 	}
 
+	@Override
+	public StudentMainTableDAO getStudentMainTableDAO() {
+		return new MySQLStudentMainTableDAO();
+	}
+
 }
