@@ -14,7 +14,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -38,8 +40,11 @@ import org.unibl.etf.ps.studentviewer.gui.DodatnaNastavaDataTableModel;
 import org.unibl.etf.ps.studentviewer.gui.StudentiZaElektrijaduTableModel;
 import org.unibl.etf.ps.studentviewer.logic.controller.ElektrijadaController;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.DisciplinaDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.DodatnaNastavaDAO;
+import org.unibl.etf.ps.studentviewer.model.dao.ElektrijadaDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.StudentDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
@@ -69,38 +74,49 @@ public class ElektrijadaForm extends JFrame {
 	private ElektrijadaController elektrijadaController;
 	private Logger logger = Logger.getLogger(ElektrijadaForm.class);
 	private MainForm mainForm;
+
 	/**
 	 * Launch the application.
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		System.setProperty("javax.net.ssl.trustStore", "StudentViewer.jks");
 		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
-		
-//		 EventQueue.invokeLater(new Runnable() {
-//		 public void run() {
-//		 try {
-//		 ElektrijadaForm frame = new ElektrijadaForm(new ElektrijadaDTO(1,new
-//		 Date(),"Banja Luka"),new NalogDTO(),new DisciplinaDTO());
-//		 frame.setVisible(true);
-//		 } catch (Exception e) {
-//		 e.printStackTrace();
-//		 }
-//		 }
-//		 });
+
+		DAOFactory dao = new MySQLDAOFactory();
+		ElektrijadaDAO deDAO = dao.getElektrijadaDAO();
+		ElektrijadaDTO elektrijadaDTO = deDAO.getElektrijadaDTO(2, "Programiranje");
+		NalogDAO naDAO = dao.getNalogDAO();
+		NalogDTO nalogDTO = naDAO.getNalog(2);
+		DisciplinaDAO diDAO = dao.getDisciplinaDAO();
+		DisciplinaDTO disciplinaDTO = diDAO.getDisciplina(nalogDTO.getNalogId(), elektrijadaDTO.getId());
+		MainForm mainForm = new MainForm(nalogDTO);
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ElektrijadaForm frame = new ElektrijadaForm(elektrijadaDTO,nalogDTO,disciplinaDTO,mainForm);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	/**
 	 * Create the frame.
-	 * @param mainForm 
+	 * 
+	 * @param mainForm
 	 */
-	public ElektrijadaForm(ElektrijadaDTO elektrijadaDTO, NalogDTO nalogDTO, DisciplinaDTO disciplinaDTO, MainForm mainForm) {
+	public ElektrijadaForm(ElektrijadaDTO elektrijadaDTO, NalogDTO nalogDTO, DisciplinaDTO disciplinaDTO,
+			MainForm mainForm) {
+		setResizable(false);
 		forma = this;
 		this.elektrijadaDTO = elektrijadaDTO;
 		this.disciplinaDTO = disciplinaDTO;
 		this.nalogDTO = nalogDTO;
 		this.mainForm = mainForm;
 		setTitle("Disciplina Naziv");
-		setResizable(false);
 		try {
 			File logFolder = new File("./log");
 			if (!logFolder.exists())
@@ -110,7 +126,7 @@ public class ElektrijadaForm extends JFrame {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		setBounds(100, 100, 810, 553);
+		setBounds(100, 100, 832, 553);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setBackground(new Color(0, 0, 139));
@@ -134,18 +150,20 @@ public class ElektrijadaForm extends JFrame {
 		scrollPaneNastavneTeme.setBorder(UIManager.getBorder("Button.border"));
 		scrollPaneNastavneTeme.setBounds(10, 219, 558, 382);
 
-		elektrijadaController = new ElektrijadaController(forma, elektrijadaDTO, nalogDTO, disciplinaDTO,mainForm);
+		elektrijadaController = new ElektrijadaController(forma, elektrijadaDTO, nalogDTO, disciplinaDTO, mainForm);
 		elektrijadaController.setStudentiZaElektrijadu();
-//		String date = "23/10/2012 08:15 AM";
-//
-//		DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
-//		Date startDate = df.parse(date);
-//
-//		ElektrijadaController.listaDodatnihNastava
-//				.add(new DodatnaNastavaDTO(1, startDate, "Napomena", "Naziv teme", 1, disciplinaDTO.getNaziv(), 1));
-//
-//		ElektrijadaController.listaStudenata.add(new StudentZaElektrijaduDTO(2, "1111/11", "Marko", "Marković",
-//				"Prvo mjesto na Elektrijadi u Beogradu 2012. godine."));
+		// String date = "23/10/2012 08:15 AM";
+		//
+		// DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+		// Date startDate = df.parse(date);
+		//
+		// ElektrijadaController.listaDodatnihNastava
+		// .add(new DodatnaNastavaDTO(1, startDate, "Napomena", "Naziv teme", 1,
+		// disciplinaDTO.getNaziv(), 1));
+		//
+		// ElektrijadaController.listaStudenata.add(new
+		// StudentZaElektrijaduDTO(2, "1111/11", "Marko", "Marković",
+		// "Prvo mjesto na Elektrijadi u Beogradu 2012. godine."));
 
 		studentiZaElektrijaduDataModel = new StudentiZaElektrijaduTableModel(elektrijadaController.getListaStudenata());
 		tableStudenti = new JTable(studentiZaElektrijaduDataModel) {

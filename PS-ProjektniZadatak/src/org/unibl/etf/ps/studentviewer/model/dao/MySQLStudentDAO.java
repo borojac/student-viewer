@@ -99,7 +99,7 @@ public class MySQLStudentDAO extends StudentDAO {
 			ps.setInt(3, student.getId());
 			ps.setString(4, student.getKomentar());
 
-			retVal &= ps.executeUpdate() == 1;
+			retVal = ps.executeUpdate() == 1;
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			try {
@@ -136,7 +136,7 @@ public class MySQLStudentDAO extends StudentDAO {
 			ps = conn.prepareStatement(query);
 			ps.setInt(1, idStudenta);
 
-			retVal &= ps.executeUpdate() == 1;
+			retVal = ps.executeUpdate() == 1;
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -179,7 +179,7 @@ public class MySQLStudentDAO extends StudentDAO {
 			ps.setString(1, student.getKomentar());
 			ps.setInt(2, student.getId());
 
-			retVal &= ps.executeUpdate() == 1;
+			retVal = ps.executeUpdate() == 1;
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			try {
