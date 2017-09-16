@@ -212,6 +212,10 @@ public class MainForm extends JFrame {
 		scrollPane.setBorder(UIManager.getBorder("Button.border"));
 		scrollPane.setBounds(10, 219, 556, 382);
 		contentPane.add(scrollPane);
+		
+		JButton konacnaOcjenaButton = new JButton("STOKUCA");
+		konacnaOcjenaButton.setBounds(628, 131, 89, 23);
+		contentPane.add(konacnaOcjenaButton);
 		lastPredmet = getSelectedPredmet();
 
 	}
@@ -645,5 +649,4 @@ public class MainForm extends JFrame {
 		btnBrisi.setEnabled(false);
 		btnIzmjeni.setEnabled(false);
 	}
-
 }
