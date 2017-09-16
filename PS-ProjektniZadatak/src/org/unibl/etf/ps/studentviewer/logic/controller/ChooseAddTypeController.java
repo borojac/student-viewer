@@ -54,7 +54,7 @@ public class ChooseAddTypeController {
 				}
 				i++;
 			}
-			MySQLStudentDAO insert = new MySQLStudentDAO();
+			MySQLStudentDAO dao = new MySQLStudentDAO();
 			boolean greska = false;
 			if (vrsteSGreskama == 0) {
 				for (StudentMainTableDTO student : listaZaTabelu) {
@@ -64,8 +64,10 @@ public class ChooseAddTypeController {
 						greska = true;
 						break;
 					}
-					insert.dodajStudentaUListu(student); // dodavanje u bazu podataka
-					insert.dodajStudentaNaPredmet(student, mainFormController.getMainForm().getSelectedPredmet());
+					dao.dodajStudentaUListu(student); // dodavanje u bazu podataka
+					int studetnID = dao.getStudentBy(student.getBrojIndeksa()).getStudentId();
+					student.setId(studetnID);
+					dao.dodajStudentaNaPredmet(student, mainFormController.getMainForm().getSelectedPredmet());
 				}
 //				mainFormController.getMainTable().tableChanged();
 				if (!greska) {

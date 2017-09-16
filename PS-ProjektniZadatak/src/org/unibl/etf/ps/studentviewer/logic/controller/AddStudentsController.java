@@ -35,6 +35,8 @@ public class AddStudentsController {
 
 			MySQLStudentDAO st = new MySQLStudentDAO();
 			if (st.dodajStudentaUListu(student)) {
+				int studetnID = st.getStudentBy(student.getBrojIndeksa()).getStudentId();
+				student.setId(studetnID);
 				st.dodajStudentaNaPredmet(student, mainFormController.getMainForm().getSelectedPredmet());
 				mainFormController.getMainTable().addStudent(student);
 //				mainFormController.getMainTable().tableChanged();
