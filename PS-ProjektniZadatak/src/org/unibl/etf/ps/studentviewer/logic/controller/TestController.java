@@ -465,7 +465,7 @@ public class TestController {
 		}
 		List<StudentNaTestuDTO> searchedList = null;
 
-		Matcher matcher = Pattern.compile("[<,>,=]+").matcher(searchText);
+		Matcher matcher = Pattern.compile("[<,>,=,!]+").matcher(searchText);
 		Matcher numberMatcher = Pattern.compile("\\d+").matcher(searchText);
 		int count = 0;
 		while (matcher.find()) 
@@ -500,7 +500,7 @@ public class TestController {
 				retList.add(student);
 			else if ("<=".equals(diskriminator) && student.getBrojBodova() <= brojBodova)
 				retList.add(student);
-			else if (("=".equals(diskriminator) || "".equals(diskriminator)) && student.getBrojBodova() == brojBodova)
+			else if (("=".equals(diskriminator) || "".equals(diskriminator) || "==".equals(diskriminator) ) && student.getBrojBodova() == brojBodova)
 				retList.add(student);
 			else if ("<=".equals(diskriminator) && student.getBrojBodova() <= brojBodova)
 				retList.add(student);
