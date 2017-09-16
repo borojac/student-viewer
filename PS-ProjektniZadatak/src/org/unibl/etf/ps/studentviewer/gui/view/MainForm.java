@@ -95,6 +95,7 @@ public class MainForm extends JFrame {
 	private JTextField textField;
 
 	private JComboBox<String> predmetiCB;
+	private JComboBox<String> elektrijadaCB;
 	private JComboBox<String> disciplineCB;
 	private JButton prikaziDisciplinuBtn;
 
@@ -188,19 +189,26 @@ public class MainForm extends JFrame {
 		JLabel predmetiLbl = new JLabel("Moji predmeti:");
 		predmetiLbl.setForeground(Color.WHITE);
 		predmetiLbl.setFont(new Font("Century Gothic", Font.BOLD, 15));
-		predmetiLbl.setBounds(745, 172, 200, 25);
+		predmetiLbl.setBounds(745, 145, 200, 25);
 		contentPane.add(predmetiLbl);
 
 		JLabel disciplineLbl = new JLabel("Moje discipline:");
 		disciplineLbl.setForeground(Color.WHITE);
 		disciplineLbl.setFont(new Font("Century Gothic", Font.BOLD, 15));
-		disciplineLbl.setBounds(745, 280, 200, 25);
+		disciplineLbl.setBounds(745, 288, 200, 25);
 		contentPane.add(disciplineLbl);
+		
+		JLabel elektrijadaLbl = new JLabel("Elektrijada:");
+		elektrijadaLbl.setForeground(Color.WHITE);
+		elektrijadaLbl.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		elektrijadaLbl.setBounds(745, 225, 200, 25);
+		contentPane.add(elektrijadaLbl);
 
 		initButtons();
 		initButtonsListeners();
 		initPredmetiComboBox();
 		initComboBoxListener();
+		initElektrijadaComboBox();
 		initDisciplineComboBox();
 
 		setButtonsSize();
@@ -547,7 +555,7 @@ public class MainForm extends JFrame {
 		/* Buttons by Mijic */
 
 		prikaziDisciplinuBtn = new JButton("Prikazi disciplinu");
-		prikaziDisciplinuBtn.setBounds(1040, 350, 135, 35);
+		prikaziDisciplinuBtn.setBounds(1040, 355, 135, 35);
 		contentPane.add(prikaziDisciplinuBtn);
 		prikaziDisciplinuBtn.addMouseListener(new MouseAdapter() {
 			@Override
@@ -560,7 +568,7 @@ public class MainForm extends JFrame {
 
 	private void initPredmetiComboBox() {
 		predmetiCB = new JComboBox<>();
-		predmetiCB.setBounds(745, 200, 430, 35);
+		predmetiCB.setBounds(745, 172, 430, 35);
 		contentPane.add(predmetiCB);
 
 		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
@@ -573,10 +581,16 @@ public class MainForm extends JFrame {
 					(predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
 		}
 	}
+	
+	private void initElektrijadaComboBox() {
+		elektrijadaCB = new JComboBox<>();
+		elektrijadaCB.setBounds(745, 252, 430, 35);
+		contentPane.add(elektrijadaCB);
+	}
 
 	private void initDisciplineComboBox() {
 		disciplineCB = new JComboBox<>();
-		disciplineCB.setBounds(745, 310, 430, 35);
+		disciplineCB.setBounds(745, 315, 430, 35);
 		contentPane.add(disciplineCB);
 	}
 
