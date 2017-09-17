@@ -47,7 +47,8 @@ public class DodavanjeDodatneNastaveController {
 			e.printStackTrace();
 		}
 		if (kontroler.validnostDatuma(datum)) {
-			DodatnaNastavaDTO nastava = new DodatnaNastavaDTO(2,startDate,napomena,naziv,kontroler.getNalogDTO().getNalogId(),kontroler.getDisciplinaDTO().getNaziv(),kontroler.getElektrijada().getId());
+			//dodatnaNastavaDataModel.setDateFormat(new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy"));
+			DodatnaNastavaDTO nastava = new DodatnaNastavaDTO(0,startDate,napomena,naziv,kontroler.getNalogDTO().getNalogId(),kontroler.getDisciplinaDTO().getNaziv(),kontroler.getElektrijada().getId());
 			if (kontroler.getListaDodatnihNastava().add(nastava)) {
 				dodatnaNastavaDataModel.fireTableDataChanged();
 				tableNastavneTeme.setModel(dodatnaNastavaDataModel);
