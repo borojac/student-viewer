@@ -100,7 +100,7 @@ public class AdministratorFormController {
 			MySQLStudentDAO dao = new MySQLStudentDAO();
 			StudentNaPredmetuDTO tmp = dao.getStudentBy((String)table.getValueAt(selectedRow[0], 0));
 			StudentMainTableDTO student = new StudentMainTableDTO(tmp.getBrojIndeksa(), tmp.getIme(), tmp.getPrezime());
-			student.setId(tmp.getStudentId());
+			student.setStudentId(tmp.getStudentId());
 			ChangeForm cf = new ChangeForm(null, this, student , selectedRow[0]);
 			cf.setVisible(true);
 			

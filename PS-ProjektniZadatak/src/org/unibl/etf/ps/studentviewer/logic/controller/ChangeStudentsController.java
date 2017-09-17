@@ -37,7 +37,7 @@ public class ChangeStudentsController {
 				StudentMainTableDTO newStudent = new StudentMainTableDTO(params.get(2), params.get(0), params.get(1));
 				if(!isAdmin)
 					newStudent.setKomentar(params.get(3));
-				newStudent.setId(student.getId());
+				newStudent.setStudentId(student.getStudentId());
 				if(!isAdmin) {
 					dao.azurirajStudentaNaPredmetu(newStudent, mainFormController.getMainForm().getSelectedPredmet());
 				//mainFormController.getMainTable().setStudent(number, params.get(2), params.get(0), params.get(1), params.get(3)); //4 parametar je komentar
