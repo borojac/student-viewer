@@ -48,6 +48,7 @@ import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -226,7 +227,14 @@ public class MainForm extends JFrame {
 		JButton konacnaOcjenaButton = new JButton("STOKUCA");
 		konacnaOcjenaButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new GradeGenerationForm(getSelectedPredmet()).setVisible(true);
+				List<StudentNaPredmetuDTO> students = new ArrayList<>();
+				for (StudentMainTableDTO s : mainTable.getStudents()) {
+					students.add(
+							new StudentNaPredmetuDTO(s.getId(), s.getBrojIndeksa(), 
+									s.getIme(), s.getPrezime())
+							);
+				}
+				new GradeGenerationForm(getSelectedPredmet(), students).setVisible(true);
 			}
 		});
 		konacnaOcjenaButton.setBounds(628, 131, 89, 23);

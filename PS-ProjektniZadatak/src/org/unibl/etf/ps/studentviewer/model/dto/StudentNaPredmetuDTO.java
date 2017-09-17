@@ -2,10 +2,10 @@ package org.unibl.etf.ps.studentviewer.model.dto;
 
 public class StudentNaPredmetuDTO {
 	
-	private int studentId;
-	private String brojIndeksa;
-	private String ime;
-	private String prezime;
+	protected int studentId;
+	protected String brojIndeksa;
+	protected String ime;
+	protected String prezime;
 	
 	public StudentNaPredmetuDTO() {
 		studentId = 0;

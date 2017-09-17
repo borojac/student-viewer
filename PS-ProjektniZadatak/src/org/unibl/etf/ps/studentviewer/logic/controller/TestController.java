@@ -475,6 +475,7 @@ public class TestController {
 			matcher = matcher.reset();
 			matcher.find();
 			String diskriminator = matcher.group();
+			if (Pattern.matches("", searchText));
 			while (numberMatcher.find()) 
 				++count;
 			if (count == 1) {
