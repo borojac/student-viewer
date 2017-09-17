@@ -483,7 +483,7 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				/* Stankovic */
-				mainFormController.createChooseAddTypeForm();
+				mainFormController.createAddForm();
 			}
 		});
 		buttonPanel.add(addBtn);

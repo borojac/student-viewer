@@ -14,7 +14,8 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class ChooseAddTypeController {
 	MainFormController mainFormController = null;
-
+	AdministratorFormController administratorFormController = null;
+			
 	public ChooseAddTypeController(MainFormController mainFormController, boolean one, boolean more,
 			ChooseAddTypeForm form) {
 		this.mainFormController = mainFormController;
