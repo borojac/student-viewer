@@ -60,7 +60,7 @@ public class ChooseAddTypeController {
 				for (StudentMainTableDTO student : listaZaTabelu) {
 					dao.dodajStudentaUListu(student); // dodavanje u bazu podataka
 					int studetnID = dao.getStudentBy(student.getBrojIndeksa()).getStudentId();
-					student.setId(studetnID);
+					student.setStudentId(studetnID);
 					dao.dodajStudentaNaPredmet(student, mainFormController.getMainForm().getSelectedPredmet());
 					if (!mainFormController.getMainTable().addStudent(student)) {
 						final String message = "Greska pri unosu studenta!";

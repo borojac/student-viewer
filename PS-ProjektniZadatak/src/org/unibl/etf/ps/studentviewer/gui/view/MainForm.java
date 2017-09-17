@@ -230,7 +230,7 @@ public class MainForm extends JFrame {
 				List<StudentNaPredmetuDTO> students = new ArrayList<>();
 				for (StudentMainTableDTO s : mainTable.getStudents()) {
 					students.add(
-							new StudentNaPredmetuDTO(s.getId(), s.getBrojIndeksa(), 
+							new StudentNaPredmetuDTO(s.getStudentId(), s.getBrojIndeksa(), 
 									s.getIme(), s.getPrezime())
 							);
 				}

@@ -5,18 +5,10 @@ import java.util.HashMap;
 import org.unibl.etf.ps.studentviewer.gui.ShowViewData;
 import org.unibl.etf.ps.studentviewer.logic.utility.Sort;
 
-public class StudentMainTableDTO {
-	private String brojIndeksa;
-	private String ime;
-	private String prezime;
+public class StudentMainTableDTO extends StudentNaPredmetuDTO{
 	private String komentar = ""; // Mozda lista komentara
 	private String elektrijada = "NE";
-	private int id ;
 	private HashMap<String, String> testovi = new HashMap<String, String>();
-	
-	public void setId(int id) {
-		this.id = id;
-	}
 	
 	public void addIspit(String a, String b) {
 		if (testovi.get(a) == null)
@@ -26,10 +18,6 @@ public class StudentMainTableDTO {
 			testovi.put(a, b);
 		}
 		
-	}
-	
-	public int getId() {
-		return id;
 	}
 	
 	public String getKomentar() {
@@ -48,29 +36,6 @@ public class StudentMainTableDTO {
 		this.testovi = testovi;
 	}
 	
-	public String getBrojIndeksa() {
-		return brojIndeksa;
-	}
-
-	public void setBrojIndeksa(String brojIndeksa) {
-		this.brojIndeksa = brojIndeksa;
-	}
-
-	public String getIme() {
-		return ime;
-	}
-
-	public void setIme(String ime) {
-		this.ime = ime;
-	}
-
-	public String getPrezime() {
-		return prezime;
-	}
-
-	public void setPrezime(String prezime) {
-		this.prezime = prezime;
-	}
 
 	public StudentMainTableDTO(String brojIndeksa, String ime, String prezime) {
 		super();
@@ -115,7 +80,7 @@ public class StudentMainTableDTO {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + studentId;
 		return result;
 	}
 
