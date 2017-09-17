@@ -52,7 +52,6 @@ public class GradeGenerationForm extends JDialog {
 
 	private GradeGenerationController controller;
 
-
 	private JTextField brojIndeksaTextField;
 	private JTextField imeTextField;
 	private JTextField prezimeTextField;
@@ -61,10 +60,10 @@ public class GradeGenerationForm extends JDialog {
 	private JButton okButton;
 	private JButton cancelButton;
 
-	public GradeGenerationForm(PredmetDTO predmet) {
+	public GradeGenerationForm(PredmetDTO predmet, List<StudentNaPredmetuDTO> students) {
 
 		controller = new GradeGenerationController(this, predmet);
-		controller.loadStudentsForGrading();
+		controller.loadStudentsForGrading(students);
 
 		setBounds(100, 100, 350, 400);
 		getContentPane().setLayout(new BorderLayout());

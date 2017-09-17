@@ -376,7 +376,7 @@ public class MySQLStudentDAO extends StudentDAO {
 				ps.setNull(1, 0);
 			else
 				ps.setString(1,komentar);
-			ps.setInt(2, student.getId());
+			ps.setInt(2, student.getStudentId());
 			ps.setInt(3, predmet.getPredmetId());
 
 			retVal &= ps.executeUpdate() == 1;

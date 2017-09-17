@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
 import org.unibl.etf.ps.studentviewer.gui.GradingTableModel;
+import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.view.GradeGenerationForm;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
@@ -32,12 +33,8 @@ public class GradeGenerationController {
 		this.gradeForm = gradeForm;
 	}
 	
-	public void loadStudentsForGrading() {
-		DAOFactory factory = new MySQLDAOFactory();
-		PredmetDAO predmetDAO = factory.getPredmetDAO();
-		
-		studentsForGrading = predmetDAO.getStudentsForGrading(predmet.getPredmetId());
-		
+	public void loadStudentsForGrading(List<StudentNaPredmetuDTO> studentsOnMainTable) {
+		studentsForGrading = studentsOnMainTable;
 	}
 	
 	public void calculateGrade() {

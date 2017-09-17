@@ -1,7 +1,7 @@
 package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.Color;
-import java.awt.EventQueue;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -15,15 +15,18 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
@@ -116,7 +119,27 @@ public class AdministratorForm extends JFrame {
 		ZahtjevDAO zahtjevDAO = factory.getZahtjevDAO();
 		list = zahtjevDAO.getAllZahtjev();
 		
-		adminZahtjeviJt = new JTable();
+		adminZahtjeviJt = new JTable() {
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+				Component c = super.prepareRenderer(renderer, row, column);
+				if (c instanceof JComponent) {
+					if(column == 0) {
+						JComponent jc = (JComponent) c;
+						jc.setToolTipText(getValueAt(row, column).toString());
+					} else if(column == 1) {
+						JComponent jc = (JComponent) c;
+						jc.setToolTipText(getValueAt(row, column).toString());
+					} else if(column == 2) {
+						JComponent jc = (JComponent) c;
+						jc.setToolTipText(getValueAt(row, column).toString());
+					} else {
+						JComponent jc = (JComponent) c;
+						jc.setToolTipText(getValueAt(row, column).toString());
+					}
+				}
+				return c;
+			}
+		};
 		scrollPane = new JScrollPane(adminZahtjeviJt);
 		scrollPane.setBounds(20, 150, 400, 350);
 		contentPane.add(scrollPane);
@@ -161,6 +184,10 @@ public class AdministratorForm extends JFrame {
 			dtm.addRow(rowData);
 		}
 		adminZahtjeviJt.setModel(dtm);
+		adminZahtjeviJt.setFont(new Font("Century Gothic", Font.BOLD, 12));
+		adminZahtjeviJt.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		adminZahtjeviJt.setForeground(new Color(0, 0, 139));
+		adminZahtjeviJt.setBackground(new Color(173, 216, 230));
 		  
 	}
 	

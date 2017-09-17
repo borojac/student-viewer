@@ -75,7 +75,6 @@ public class FilterUtil {
 					}
 
 				if (!nijeIzasao && s.getTest(test) != null) {
-					
 					Integer poeni = new Integer(s.getTest(test));
 					if (viseOd > poeni) {
 						breakControl = true;

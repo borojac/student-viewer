@@ -23,7 +23,7 @@ public class StudentsForMainTable {
 
 	private static void addTestToStudent(int id, String termin, int brojBodova) {
 		for (StudentMainTableDTO s : allStudents) {
-			if (s.getId() == id) {
+			if (s.getStudentId() == id) {
 				s.addIspit(termin, new Integer(brojBodova).toString());
 			}
 		}
