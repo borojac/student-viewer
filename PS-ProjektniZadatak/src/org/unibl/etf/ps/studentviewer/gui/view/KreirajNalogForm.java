@@ -1,45 +1,28 @@
 package org.unibl.etf.ps.studentviewer.gui.view;
 
-
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color; 
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.SystemColor;
-import java.awt.Toolkit;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
 import org.imgscalr.Scalr;
 import javax.swing.JPasswordField;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.KreirajNalogFormController;;
 
 @SuppressWarnings("serial")
-
 public class KreirajNalogForm extends JFrame{   
 	
 	private JPanel contentPane;
@@ -58,9 +41,10 @@ public class KreirajNalogForm extends JFrame{
 	
 	
       
-      public KreirajNalogForm() {
-    	  kreirajNalogFormController = new KreirajNalogFormController(this);
-    	  setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public KreirajNalogForm() {
+    	
+    	kreirajNalogFormController = new KreirajNalogFormController(this);
+    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   		setBounds(100, 10, 650, 550);
   		setTitle("Kreiranje naloga");
   		setResizable(false);
@@ -107,101 +91,81 @@ public class KreirajNalogForm extends JFrame{
   		componentsPane.setBounds(100, 120, 600, 430);
   		contentPane.add(componentsPane);
     	  
-    	  initComponent();
-      }
-      private void initComponent(){
-    	  
-            
-            imeLbl = new JLabel("Ime");
-    		imeLbl.setBounds(0, 40, 250, 35);
-    		imeLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
-    		imeLbl.setForeground(Color.WHITE);
-    		componentsPane.add(imeLbl);
-    		
-    		imeTf = new JTextField();
-    		imeTf.setBounds(200, 40, 250, 35);
-    		imeTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
-    		componentsPane.add(imeTf);
-    		
-    		prezimeLbl = new JLabel("Prezime");
-    		prezimeLbl.setBounds(0, 100, 250, 35);
-    		prezimeLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
-    		prezimeLbl.setForeground(Color.WHITE);
-    		componentsPane.add(prezimeLbl);
-    		
-    		prezimeTf = new JTextField();
-    		prezimeTf.setBounds(200, 100, 250, 35);
-    		prezimeTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
-    		componentsPane.add(prezimeTf);
-    		
-    		korImeLbl = new JLabel("Korisnicko ime");
-    		korImeLbl.setBounds(0, 160, 250, 35);
-    		korImeLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
-    		korImeLbl.setForeground(Color.WHITE);
-    		componentsPane.add(korImeLbl);
-    		
-    		korImeTf = new JTextField();
-    		korImeTf.setBounds(200, 160, 250, 35);
-    		korImeTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
-    		componentsPane.add(korImeTf);
-    		
-    		lozinkaLbl = new JLabel("Lozinka");
-    		lozinkaLbl.setBounds(0, 220, 250, 35);
-    		lozinkaLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
-    		lozinkaLbl.setForeground(Color.WHITE);
-    		componentsPane.add(lozinkaLbl);
-    		
-    		lozinkaTf = new JPasswordField();
-    		lozinkaTf.setBounds(200, 220, 250, 35);
-    		lozinkaTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
-    		lozinkaTf.setEchoChar('*');
-    		componentsPane.add(lozinkaTf);
-    		
-    		lozinkaPotLbl = new JLabel("Potvrda lozinke");
-    		lozinkaPotLbl.setBounds(0, 280, 250, 35);
-    		lozinkaPotLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
-    		lozinkaPotLbl.setForeground(Color.WHITE);
-    		componentsPane.add(lozinkaPotLbl);
-    		
-    		lozinkaPotTf = new JPasswordField();
-    		lozinkaPotTf.setBounds(200, 280, 250, 35);
-    		lozinkaPotTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
-    		lozinkaPotTf.setEchoChar('*');
-    		componentsPane.add(lozinkaPotTf);
-            
-            kreirajBtn = new JButton("Kreiraj");
-    		kreirajBtn.setBounds(100, 350, 250, 35);
-    		componentsPane.add(kreirajBtn);
-    		
-    		
-    		kreirajBtn.addMouseListener(new MouseAdapter() {
-    			@Override
-    			public void mouseClicked(MouseEvent arg0) {
-    				kreirajNalogFormController.createKreirajNalog();
-    			}
-    		});
-
-      }
+    	initComponent();
+    	getRootPane().setDefaultButton(kreirajBtn);
+    }
       
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					KreirajNalogForm frame = new KreirajNalogForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    private void initComponent() {
+    	
+    	imeLbl = new JLabel("Ime");
+    	imeLbl.setBounds(0, 40, 250, 35);
+    	imeLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
+    	imeLbl.setForeground(Color.WHITE);
+    	componentsPane.add(imeLbl);
+    		
+    	imeTf = new JTextField();
+    	imeTf.setBounds(200, 40, 250, 35);
+    	imeTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
+    	componentsPane.add(imeTf);
+    		
+    	prezimeLbl = new JLabel("Prezime");
+    	prezimeLbl.setBounds(0, 100, 250, 35);
+    	prezimeLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
+    	prezimeLbl.setForeground(Color.WHITE);
+    	componentsPane.add(prezimeLbl);
+    		
+    	prezimeTf = new JTextField();
+    	prezimeTf.setBounds(200, 100, 250, 35);
+    	prezimeTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
+    	componentsPane.add(prezimeTf);
+    		
+    	korImeLbl = new JLabel("Korisnicko ime");
+    	korImeLbl.setBounds(0, 160, 250, 35);
+    	korImeLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
+    	korImeLbl.setForeground(Color.WHITE);
+    	componentsPane.add(korImeLbl);
+    		
+    	korImeTf = new JTextField();
+    	korImeTf.setBounds(200, 160, 250, 35);
+    	korImeTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
+    	componentsPane.add(korImeTf);
+    		
+    	lozinkaLbl = new JLabel("Lozinka");
+    	lozinkaLbl.setBounds(0, 220, 250, 35);
+    	lozinkaLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
+    	lozinkaLbl.setForeground(Color.WHITE);
+    	componentsPane.add(lozinkaLbl);
+    		
+    	lozinkaTf = new JPasswordField();
+    	lozinkaTf.setBounds(200, 220, 250, 35);
+    	lozinkaTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
+    	lozinkaTf.setEchoChar('*');
+    	componentsPane.add(lozinkaTf);
+    		
+    	lozinkaPotLbl = new JLabel("Potvrda lozinke");
+    	lozinkaPotLbl.setBounds(0, 280, 250, 35);
+    	lozinkaPotLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
+    	lozinkaPotLbl.setForeground(Color.WHITE);
+    	componentsPane.add(lozinkaPotLbl);
+    		
+    	lozinkaPotTf = new JPasswordField();
+    	lozinkaPotTf.setBounds(200, 280, 250, 35);
+    	lozinkaPotTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
+    	lozinkaPotTf.setEchoChar('*');
+    	componentsPane.add(lozinkaPotTf);
+            
+        kreirajBtn = new JButton("Kreiraj");
+    	kreirajBtn.setBounds(100, 350, 250, 35);
+    	componentsPane.add(kreirajBtn);
+    		
+    		
+    	kreirajBtn.addActionListener(new ActionListener() {
+    		@Override
+    		public void actionPerformed(ActionEvent arg0) {
+    			kreirajNalogFormController.createKreirajNalog();
+    		}
+    	});
 
-	/**
-	 * Create the frame.
-	 */
-	
+    }	
 
 }
