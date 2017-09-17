@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
@@ -446,7 +447,7 @@ public class MySQLStudentDAO extends StudentDAO {
 			ps.setInt(3, studentId);
 			ps.setInt(4, predmetId);
 			ps.setInt(1, grade);
-			ps.setDate(2, new java.sql.Date(new Date().getTime()));
+		//	ps.setDate(2, new java.sql.Date(new Date().getTime()));
 			retVal &= ps.executeUpdate() == 1;
 		} catch (SQLException e) {
 			// TODO: handle exception
@@ -455,6 +456,30 @@ public class MySQLStudentDAO extends StudentDAO {
 			DBUtility.close(ps, conn);
 		}
 		return retVal;
+	}
+
+	@Override
+	public boolean obrisiStudentaIzListe(String brojIndeksa) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String[][] getDataOfAllStudentsFromStudentDatabaseTable() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int[] listaPredmetIDNaKojimaJeStudent(int studentId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<StudentMainTableDTO> studentiKojiNisuNaPredmetu(int predmetID) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -51,7 +51,7 @@ public class DeleteStudentsController {
 				for(int i = 0; i < selectedRows.length; i++) {
 					String indeks = mainFormController.getMainTable().getStudent(selectedRows[i]).getBrojIndeksa();
 					PredmetDTO predmet = mainFormController.getMainForm().getSelectedPredmet();
-					dao.obrisiStudentaSaPredmeta(dao.getStudentBy(indeks).getStudentId(), predmet.getPredmetId());
+				//	dao.obrisiStudentaSaPredmeta(dao.getStudentBy(indeks).getStudentId(), predmet.getPredmetId());
 				}
 				mainFormController.getMainTable().deleteStudents(selectedRows);
 				final String message = "Uspjesno brisanje!";
@@ -74,7 +74,7 @@ public class DeleteStudentsController {
 				int studentID = dao.getStudentBy(listaIndeksa[i]).getStudentId();
 				int[] listaPredmetID = dao.listaPredmetIDNaKojimaJeStudent(studentID);
 				for(int idPredmeta : listaPredmetID) {
-					dao.obrisiStudentaSaPredmeta(studentID, idPredmeta);
+				//	dao.obrisiStudentaSaPredmeta(studentID, idPredmeta);
 				}
 				dao.obrisiStudentaIzListe(listaIndeksa[i]);
 			}
