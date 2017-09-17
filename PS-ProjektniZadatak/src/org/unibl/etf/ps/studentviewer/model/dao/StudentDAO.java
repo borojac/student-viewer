@@ -1,5 +1,6 @@
 package org.unibl.etf.ps.studentviewer.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
@@ -24,12 +25,20 @@ public abstract class StudentDAO {
 	/* Stankovic */
 	public abstract boolean dodajStudentaUListu(StudentMainTableDTO student);
 
-	public abstract boolean obrisiStudentaSaPredmeta(int studentID, PredmetDTO predmet);
-
+	public abstract boolean obrisiStudentaSaPredmeta(int studentID, int predmetID);
+	
+	public abstract boolean obrisiStudentaIzListe(String brojIndeksa);
+	
 	public abstract boolean azurirajStudentaUListi(StudentMainTableDTO student, String stariIndeks);
 	
 	public abstract boolean azurirajStudentaNaPredmetu(StudentMainTableDTO student, PredmetDTO predmet);
 
 	public abstract boolean dodajStudentaNaPredmet(StudentMainTableDTO student, PredmetDTO predmet);
+	
+	public abstract String[][] getDataOfAllStudentsFromStudentDatabaseTable();
+	
+	public abstract int[] listaPredmetIDNaKojimaJeStudent(int studentId);
+	
+	public abstract ArrayList<StudentMainTableDTO> studentiKojiNisuNaPredmetu(int predmetID);
 	/* Stankovic end */
 }

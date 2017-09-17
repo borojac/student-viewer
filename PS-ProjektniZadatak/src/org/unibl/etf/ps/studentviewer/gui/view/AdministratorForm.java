@@ -100,7 +100,7 @@ public class AdministratorForm extends JFrame {
 		componentsPane = new JPanel();
 		componentsPane.setBackground(new Color(0, 0, 139));
 		componentsPane.setLayout(null);
-		componentsPane.setBounds(430, 130, 600, 430);
+		componentsPane.setBounds(432, 138, 600, 430);
 		contentPane.add(componentsPane);
 		
 		initComponents();
@@ -122,30 +122,41 @@ public class AdministratorForm extends JFrame {
 		contentPane.add(scrollPane);
 		  
 		odobriBtn = new JButton("Odobri");
-		odobriBtn.setBounds(15, 50, 180, 40);
+		odobriBtn.setBounds(15, 11, 180, 40);
 		odobriBtn.setEnabled(false);
 		componentsPane.add(odobriBtn);
 		  
 		odbijBtn = new JButton("Odbij");
-		odbijBtn.setBounds(15, 100, 180, 40);
+		odbijBtn.setBounds(15, 62, 180, 40);
 		odbijBtn.setEnabled(false);
 		componentsPane.add(odbijBtn);
 		
 		dodajPredmeteBtn = new JButton("Dodaj predmete");
-		dodajPredmeteBtn.setBounds(15, 150, 180, 40);
+		dodajPredmeteBtn.setBounds(15, 164, 180, 40);
 		componentsPane.add(dodajPredmeteBtn);
 		
 		dodajDisciplinuBtn = new JButton("Dodaj disciplinu");
-		dodajDisciplinuBtn.setBounds(15, 200, 180, 40);
+		dodajDisciplinuBtn.setBounds(15, 215, 180, 40);
 		componentsPane.add(dodajDisciplinuBtn);
 		
 		dodajStudProgBtn = new JButton("Dodaj studijski program");
-		dodajStudProgBtn.setBounds(15, 250, 180, 40);
+		dodajStudProgBtn.setBounds(15, 266, 180, 40);
 		componentsPane.add(dodajStudProgBtn);
 		
 		odjavaBtn = new JButton("Odjava");
-		odjavaBtn.setBounds(15, 300, 180, 40);
+		odjavaBtn.setBounds(15, 317, 180, 40);
 		componentsPane.add(odjavaBtn);
+		/*Stankovic*/
+		JButton upravljanjeStudentimaBtn = new JButton("Upravljanje studentima");
+		upravljanjeStudentimaBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				administratorFormController.createAdminStudentForm();
+			}
+		});
+		upravljanjeStudentimaBtn.setBounds(15, 113, 180, 40);
+		componentsPane.add(upravljanjeStudentimaBtn);
+		/*Stankovic end*/
 		    
 		dtm = new DefaultTableModel();
 		dtm.addColumn("Ime");
@@ -241,5 +252,4 @@ public class AdministratorForm extends JFrame {
 		dtm.removeRow(adminZahtjeviJt.getSelectedRow());
 		adminZahtjeviJt.setModel(dtm);
 	}
-	
 }

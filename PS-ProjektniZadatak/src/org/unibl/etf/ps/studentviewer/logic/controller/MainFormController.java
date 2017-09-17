@@ -237,16 +237,6 @@ public class MainFormController {
 	}
 	// Stankovic begin//
 
-	public void createChooseAddTypeForm() {
-		if (chooseAddTypeFormOpened)
-			return;
-
-		chooseAddTypeFormOpened = true;
-
-		ChooseAddTypeForm catf = new ChooseAddTypeForm(this);
-		catf.setVisible(true);
-	}
-
 	public void createAddForm() {
 		if (addFormOpened)
 			return;
@@ -262,9 +252,9 @@ public class MainFormController {
 			return;
 		if (selectedRow != null && selectedRow.length == 1) {
 			changeFormOpened = true;
-
-			ChangeForm cf = new ChangeForm(this, getMainTable().getStudent(selectedRow[0]), selectedRow[0]);
+			ChangeForm cf = new ChangeForm(this, null, getMainTable().getStudent(selectedRow[0]), selectedRow[0]);
 			cf.setVisible(true);
+			
 		} else {
 			final String message = "Odaberite samo jednog studenta za izmjenu!";
 			JOptionPane.showMessageDialog(null, message);
