@@ -3,9 +3,8 @@ package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.SystemColor;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -18,10 +17,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import org.imgscalr.Scalr;
-//import org.unibl.etf.ps.studentviewer.logic.controller.ChangePasswordFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.AccountFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.ChangePasswordFormController;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
@@ -33,8 +30,12 @@ public class ChangePasswordForm extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel componentsPane;
-	private JLabel novaLozinkaLbl, staraLozinkaLbl;
-	private JPasswordField novaLozinkaTf, staraLozinkaTf;
+	private JLabel staraLozinkaLbl;
+	private JLabel novaLozinkaLbl;
+	private JLabel novaLozinkaPotvrdaLbl;
+	private JPasswordField staraLozinkaPf;
+	private JPasswordField novaLozinkaPf;
+	private JPasswordField novaLozinkaPotvrdaPf;
 	private JButton potvrdiBtn;
 	
 	/**
@@ -51,7 +52,7 @@ public class ChangePasswordForm extends JFrame {
 		});
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 10, 650, 400);
+		setBounds(100, 10, 350, 432);
 		setTitle("Promjena lozinke");
 		setResizable(false);
 		contentPane = new JPanel();
@@ -61,7 +62,7 @@ public class ChangePasswordForm extends JFrame {
 		setContentPane(contentPane);
 		
 		JLabel headerPictureLabel = new JLabel("");
-		headerPictureLabel.setBounds(240, 0, 170, 120);
+		headerPictureLabel.setBounds(90, 0, 170, 120);
 		contentPane.add(headerPictureLabel);
 
 		try {
@@ -73,68 +74,76 @@ public class ChangePasswordForm extends JFrame {
 			e.printStackTrace();
 		}
 		
-		JLabel correct1Label = new JLabel("STUDENT");
-		correct1Label.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 45));
-		correct1Label.setHorizontalAlignment(SwingConstants.CENTER);
-		correct1Label.setOpaque(true);
-		correct1Label.setForeground(new Color(0, 0, 139));
-		correct1Label.setBackground(new Color(255, 255, 255));
-		correct1Label.setBounds(0, 0, 240, 120);
-		contentPane.add(correct1Label);
+		JLabel whiteCorrectionLabel = new JLabel("");
+		whiteCorrectionLabel.setOpaque(true);
+		whiteCorrectionLabel.setBackground(Color.WHITE);
+		whiteCorrectionLabel.setBounds(0, 0, 90, 120);
+		contentPane.add(whiteCorrectionLabel);
 
-		JLabel correct2Label = new JLabel("VIEWER");
-		correct2Label.setBackground(SystemColor.text);
-		correct2Label.setForeground(new Color(0, 0, 139));
-		correct2Label.setHorizontalAlignment(SwingConstants.CENTER);
-		correct2Label.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 45));
-		correct2Label.setOpaque(true);
-		correct2Label.setBounds(410, 0, 240, 120);
-		contentPane.add(correct2Label);
+		JLabel whiteCorrectionLabel2 = new JLabel("");
+		whiteCorrectionLabel2.setBackground(Color.WHITE);
+		whiteCorrectionLabel2.setOpaque(true);
+		whiteCorrectionLabel2.setBounds(260, 0, 90, 120);
+		contentPane.add(whiteCorrectionLabel2);
 		
 		componentsPane = new JPanel();
 		componentsPane.setBackground(new Color(0, 0, 139));
 		componentsPane.setLayout(null);
-		componentsPane.setBounds(200, 120, 250, 430);
+		componentsPane.setBounds(50, 120, 250, 430);
 		contentPane.add(componentsPane);
 		
 		initComponents();
 		initButtonsListeners();
+		
+		getRootPane().setDefaultButton(potvrdiBtn);
 	}
 	private void initComponents() {
 		staraLozinkaLbl = new JLabel("Stara lozinka");
-		staraLozinkaLbl.setBounds(70, 10, 250, 35);
+		staraLozinkaLbl.setBounds(0, 10, 250, 25);
 		staraLozinkaLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
 		staraLozinkaLbl.setForeground(Color.WHITE);
 		componentsPane.add(staraLozinkaLbl);
 		
-		staraLozinkaTf = new JPasswordField();
-		staraLozinkaTf.setEchoChar('*');
-		staraLozinkaTf.setBounds(0, 45, 250, 35);
-		staraLozinkaTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
-		componentsPane.add(staraLozinkaTf);
+		staraLozinkaPf = new JPasswordField();
+		staraLozinkaPf.setEchoChar('*');
+		staraLozinkaPf.setBounds(0, 35, 250, 35);
+		staraLozinkaPf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
+		componentsPane.add(staraLozinkaPf);
 		
 		novaLozinkaLbl = new JLabel("Nova lozinka");
-		novaLozinkaLbl.setBounds(70, 80, 250, 35);
+		novaLozinkaLbl.setBounds(0, 80, 250, 25);
 		novaLozinkaLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
 		novaLozinkaLbl.setForeground(Color.WHITE);
 		componentsPane.add(novaLozinkaLbl);
 		
-		novaLozinkaTf = new JPasswordField();
-		novaLozinkaTf.setEchoChar('*');
-		novaLozinkaTf.setBounds(0, 115, 250, 35);
-		novaLozinkaTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
-		componentsPane.add(novaLozinkaTf);
+		novaLozinkaPf = new JPasswordField();
+		novaLozinkaPf.setEchoChar('*');
+		novaLozinkaPf.setBounds(0, 105, 250, 35);
+		novaLozinkaPf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
+		componentsPane.add(novaLozinkaPf);
+		
+		novaLozinkaPotvrdaLbl = new JLabel("Potvrda nove lozinke");
+		novaLozinkaPotvrdaLbl.setBounds(0, 150, 250, 25);
+		novaLozinkaPotvrdaLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
+		novaLozinkaPotvrdaLbl.setForeground(Color.WHITE);
+		componentsPane.add(novaLozinkaPotvrdaLbl);
+		
+		novaLozinkaPotvrdaPf = new JPasswordField();
+		novaLozinkaPotvrdaPf.setEchoChar('*');
+		novaLozinkaPotvrdaPf.setBounds(0, 175, 250, 35);
+		novaLozinkaPotvrdaPf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
+		componentsPane.add(novaLozinkaPotvrdaPf);
 		
 		potvrdiBtn = new JButton("Potvrdi");
-		potvrdiBtn.setBounds(50, 180, 150, 35);
+		potvrdiBtn.setBounds(50, 225, 150, 35);
 		componentsPane.add(potvrdiBtn);
 	}
 	
 	private void initButtonsListeners() {
 		
-		potvrdiBtn.addMouseListener(new MouseAdapter() {
+		potvrdiBtn.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				changePasswordFormController.promjenaLozinke();
 			}
 		});
@@ -149,11 +158,27 @@ public class ChangePasswordForm extends JFrame {
 	}
 	
 	public String getStaraLozinka() {
-		return String.valueOf(staraLozinkaTf.getPassword());
+		return String.valueOf(staraLozinkaPf.getPassword());
 	}
 	
 	public String getNovaLozinka() {
-		return String.valueOf(novaLozinkaTf.getPassword());
+		return String.valueOf(novaLozinkaPf.getPassword());
+	}
+	
+	public String getNovaLozinkaPotvrda() {
+		return String.valueOf(novaLozinkaPotvrdaPf.getPassword());
+	}
+	
+	public void setEmptyStaraLozinka() {
+		staraLozinkaPf.setText("");
+	}
+	
+	public void setEmptyNovaLozinka() {
+		novaLozinkaPf.setText("");
+	}
+	
+	public void setEmptyNovaLozinkaPotvrda() {
+		novaLozinkaPotvrdaPf.setText("");
 	}
 
 }
