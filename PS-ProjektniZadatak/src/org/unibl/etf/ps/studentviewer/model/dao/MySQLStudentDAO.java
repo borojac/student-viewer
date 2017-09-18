@@ -464,6 +464,33 @@ public class MySQLStudentDAO extends StudentDAO {
 	}
 
 	@Override
+	public boolean hasGrade(int studentId, int predmetId) {
+		boolean retVal = true;
+		String query = "SELECT Ocjena IS NOT NULL "
+				+ "FROM slusa "
+				+ "WHERE StudentId=? AND PredmetId=?";
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, studentId);
+			ps.setInt(2, predmetId);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				retVal = rs.getBoolean(1);
+			}
+		} catch (SQLException e) {
+			retVal = false;
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		return retVal;
+	}
+
+	@Override
 	public boolean obrisiStudentaIzListe(String brojIndeksa) {
 		// TODO Auto-generated method stub
 		return false;

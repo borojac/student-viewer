@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
 import org.unibl.etf.ps.studentviewer.gui.GradingTableModel;
@@ -33,22 +34,22 @@ public class GradeGenerationController {
 	private ListIterator<? extends StudentNaPredmetuDTO> studentsForGradingIterator;
 	private StudentNaPredmetuDTO currentStudent;
 	private GradeGenerationForm gradeForm;
-	
+
 	public GradeGenerationController(GradeGenerationForm gradeForm, PredmetDTO predmet) {
 		this.predmet = predmet;
 		this.gradeForm = gradeForm;
 	}
-	
+
 	public void loadStudentsForGrading(List<? extends StudentNaPredmetuDTO> studentsOnMainTable) {
 		studentsForGrading =  studentsOnMainTable;
 		studentsForGradingIterator = studentsForGrading.listIterator();
 	}
-	
+
 	public void calculateGrade() {
 		double totalPoints = 0.0;
 		int grade = 5;
 		int[] selectedIndexes = gradeForm.getGradesTable().getSelectedRows();
-		
+
 		GradingTableModel model = gradeForm.getGradesTableModel();
 		for (int index : selectedIndexes) {
 			GradingInfoDTO info = model.getDataAt(index);
@@ -70,8 +71,8 @@ public class GradeGenerationController {
 		gradeForm.setBodovi(totalPoints);
 		gradeForm.setOcjena(grade);
 	}
-	
-	
+
+
 	public void loadStudentInfoNext(JButton btnDalje) {
 		if (studentsForGradingIterator.hasNext()) {
 			StudentNaPredmetuDTO student = studentsForGradingIterator.next();
@@ -80,21 +81,21 @@ public class GradeGenerationController {
 			else
 				currentStudent = student;
 			gradeForm.printStudent(currentStudent);
-//			new Thread(new Runnable() {
-//				
-//				@Override
-//				public void run() {
-					DAOFactory factory = new MySQLDAOFactory();
-					PredmetDAO predmetDAO = factory.getPredmetDAO();
-					List<GradingInfoDTO> data = predmetDAO.getGradingInfo(
-							currentStudent.getStudentId(), 
-							predmet.getPredmetId()
-							);
-					gradeForm.getGradesTableModel().setData(data);
-//				}
-//			}).start();
+			//			new Thread(new Runnable() {
+			//				
+			//				@Override
+			//				public void run() {
+			DAOFactory factory = new MySQLDAOFactory();
+			PredmetDAO predmetDAO = factory.getPredmetDAO();
+			List<GradingInfoDTO> data = predmetDAO.getGradingInfo(
+					currentStudent.getStudentId(), 
+					predmet.getPredmetId()
+					);
+			gradeForm.getGradesTableModel().setData(data);
+			//				}
+			//			}).start();
 			EventQueue.invokeLater(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					if (!studentsForGradingIterator.hasNext())
@@ -105,7 +106,7 @@ public class GradeGenerationController {
 			});
 		}
 	}
-	
+
 	public void loadStudentInfoPrev(JButton btnNazad) {
 		if (studentsForGradingIterator.hasPrevious()) {
 			StudentNaPredmetuDTO student = studentsForGradingIterator.previous();
@@ -122,7 +123,7 @@ public class GradeGenerationController {
 					);
 			gradeForm.getGradesTableModel().setData(data);
 			EventQueue.invokeLater(new Runnable() {
-				
+
 				@Override
 				public void run() {
 
@@ -134,20 +135,34 @@ public class GradeGenerationController {
 			});
 		}
 	}
-	
+
 	public void gradeBtnAction(ActionEvent e) {
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				DAOFactory factory = new MySQLDAOFactory();
-				StudentDAO studentDAO = factory.getStudentDAO();
-				studentDAO.gradeStudent(currentStudent.getStudentId(),
-						predmet.getPredmetId(), 
-						gradeForm.getOcjena());
-				
-			}
-		}).start();
-		loadStudentInfoNext((JButton) e.getSource());
+		DAOFactory factory = new MySQLDAOFactory();
+		StudentDAO studentDAO = factory.getStudentDAO();
+		int proceed = JOptionPane.YES_OPTION;
+		if (studentDAO.hasGrade(currentStudent.getStudentId(),
+				predmet.getPredmetId())) {
+			String[] options = {"	Da	", "	Ne	"};
+			proceed = JOptionPane.showOptionDialog(gradeForm, 
+					"Dati student je već ocijenjen. Da li ste sigurni da želite da promjenite ocjenu?", 
+					"Potvrdite ocijenjivanje",
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+					null, options, options[1]);
+		}
+		if (proceed == JOptionPane.YES_OPTION) {
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+
+
+					studentDAO.gradeStudent(currentStudent.getStudentId(),
+							predmet.getPredmetId(), 
+							gradeForm.getOcjena());
+
+				}
+			}).start();
+			loadStudentInfoNext((JButton) e.getSource());
+		}
 	}
 }
