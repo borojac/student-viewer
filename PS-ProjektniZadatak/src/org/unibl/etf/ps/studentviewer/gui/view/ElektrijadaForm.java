@@ -89,7 +89,7 @@ public class ElektrijadaForm extends JFrame {
 		NalogDAO naDAO = dao.getNalogDAO();
 		NalogDTO nalogDTO = naDAO.getNalog(2);
 		DisciplinaDAO diDAO = dao.getDisciplinaDAO();
-		DisciplinaDTO disciplinaDTO = diDAO.getDisciplina(nalogDTO.getNalogId(), elektrijadaDTO.getId());
+		DisciplinaDTO disciplinaDTO = new DisciplinaDTO("Programiranje", 1);
 		MainForm mainForm = new MainForm(nalogDTO);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

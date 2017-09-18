@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
@@ -54,7 +55,7 @@ public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 	@Override
 	public List<ElektrijadaDTO> getListuElektrijada(int idNaloga) {
 		List<ElektrijadaDTO> retVal = new ArrayList<ElektrijadaDTO>();
-		List<Integer> idElektrijade = new ArrayList<Integer>();
+		HashSet<Integer> idElektrijade = new HashSet<Integer>();
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;

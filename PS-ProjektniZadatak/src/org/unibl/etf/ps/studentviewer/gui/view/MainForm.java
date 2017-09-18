@@ -114,14 +114,13 @@ public class MainForm extends JFrame {
 	 * @throws IOException
 	 *             Create the frame. @throws
 	 */
-	
-	
-	
+
 	@Override
 	public void dispose() {
 		UndoRedoData.saveState(getNalogDTO(), getSelectedPredmet());
 		super.dispose();
 	}
+
 	public MainForm(NalogDTO nalogDTO) throws IOException {
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -206,7 +205,7 @@ public class MainForm extends JFrame {
 		disciplineLbl.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		disciplineLbl.setBounds(745, 288, 200, 25);
 		contentPane.add(disciplineLbl);
-		
+
 		JLabel elektrijadaLbl = new JLabel("Elektrijada:");
 		elektrijadaLbl.setForeground(Color.WHITE);
 		elektrijadaLbl.setFont(new Font("Century Gothic", Font.BOLD, 15));
@@ -218,7 +217,6 @@ public class MainForm extends JFrame {
 		initPredmetiComboBox();
 		initComboBoxListener();
 		initElektrijadaComboBox();
-		initDisciplineComboBox();
 
 		setButtonsSize();
 
@@ -231,16 +229,14 @@ public class MainForm extends JFrame {
 		scrollPane.setBorder(UIManager.getBorder("Button.border"));
 		scrollPane.setBounds(10, 219, 556, 382);
 		contentPane.add(scrollPane);
-		
+
 		JButton konacnaOcjenaButton = new JButton("STOKUCA");
 		konacnaOcjenaButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List<StudentNaPredmetuDTO> students = new ArrayList<>();
 				for (StudentMainTableDTO s : mainTable.getStudents()) {
 					students.add(
-							new StudentNaPredmetuDTO(s.getStudentId(), s.getBrojIndeksa(), 
-									s.getIme(), s.getPrezime())
-							);
+							new StudentNaPredmetuDTO(s.getStudentId(), s.getBrojIndeksa(), s.getIme(), s.getPrezime()));
 				}
 				new GradeGenerationForm(getSelectedPredmet(), students).setVisible(true);
 			}
@@ -323,7 +319,8 @@ public class MainForm extends JFrame {
 		mainTable.setModel(model);
 
 		if (getSelectedPredmet() != null) {
-			ArrayList<StudentMainTableDTO> temp = StudentsForMainTable.initShowInMainTable(getSelectedPredmet(), getNalogDTO());
+			ArrayList<StudentMainTableDTO> temp = StudentsForMainTable.initShowInMainTable(getSelectedPredmet(),
+					getNalogDTO());
 
 			model.setColumnIdentifiers(new Object[] { "Indeks", "Ime", "Prezime" });
 			mainTable.setStudents(temp);
@@ -576,7 +573,7 @@ public class MainForm extends JFrame {
 		prikaziDisciplinuBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				mainFormController.prikaziDisciplinu(nalogDTO,disciplineCB);
+				mainFormController.prikaziDisciplinu(nalogDTO, disciplineCB);
 			}
 		});
 
@@ -597,38 +594,53 @@ public class MainForm extends JFrame {
 					(predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
 		}
 	}
-	
+
 	private void initElektrijadaComboBox() {
 		elektrijadaCB = new JComboBox<>();
 		elektrijadaCB.setBounds(745, 252, 430, 35);
-		
+
 		MySQLDAOFactory dao = new MySQLDAOFactory();
 		ElektrijadaDAO eleDAO = dao.getElektrijadaDAO();
-		ArrayList<ElektrijadaDTO> elektrijade = (ArrayList<ElektrijadaDTO>) eleDAO.getListuElektrijada(2);
-		for (ElektrijadaDTO el : elektrijade){
+		ArrayList<ElektrijadaDTO> elektrijade = (ArrayList<ElektrijadaDTO>) eleDAO.getListuElektrijada(2); // nalogDTO
+																											// umjesto
+																											// 2
+		for (ElektrijadaDTO el : elektrijade) {
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			DateFormat newDf = new SimpleDateFormat("dd.MM.yyyy");
 			java.util.Date datum = null;
 			try {
-				 datum = df.parse(el.getDatum().toString());
+				datum = df.parse(el.getDatum().toString());
 			} catch (ParseException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			elektrijadaCB.addItem(el.getLokacija()+", "+newDf.format(datum));
+			elektrijadaCB.addItem(el.getLokacija() + ", " + newDf.format(datum));
 		}
-		elektrijadaCB.setSelectedItem("");
-		elektrijadaCB.addActionListener (new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
-		      disciplineCB.removeAllItems();
-		      int indeks = elektrijadaCB.getSelectedIndex();
-		      ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
-		      DisciplinaDAO discDAO = dao.getDisciplinaDAO();
-		      ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO.getDiscipline(selektovanaElektrijada.getId());
-		      for (DisciplinaDTO di : discipline){
-		    	 disciplineCB.addItem(di.getNaziv());
-		      }
-		    }
+		initDisciplineComboBox();
+		int indeks = elektrijadaCB.getSelectedIndex();
+		ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
+		DisciplinaDAO discDAO = dao.getDisciplinaDAO();
+		ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
+				.getDiscipline(selektovanaElektrijada.getId(), 2);// nalogDTO
+																	// umjesto 2
+		for (DisciplinaDTO di : discipline) {
+			disciplineCB.addItem(di.getNaziv());
+		}
+
+		elektrijadaCB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				disciplineCB.removeAllItems();
+				int indeks = elektrijadaCB.getSelectedIndex();
+				ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
+				DisciplinaDAO discDAO = dao.getDisciplinaDAO();
+				ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
+						.getDiscipline(selektovanaElektrijada.getId(), 2);// nalogDTO
+																			// umjesto
+																			// 2
+				for (DisciplinaDTO di : discipline) {
+					disciplineCB.addItem(di.getNaziv());
+				}
+			}
 		});
 		contentPane.add(elektrijadaCB);
 	}
@@ -716,6 +728,5 @@ public class MainForm extends JFrame {
 		btnBrisi.setEnabled(false);
 		btnIzmjeni.setEnabled(false);
 	}
-	
-	
+
 }
