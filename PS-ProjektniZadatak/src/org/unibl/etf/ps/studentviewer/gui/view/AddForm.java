@@ -35,6 +35,7 @@ import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormControll
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
 
 public class AddForm extends JFrame {
 
@@ -125,7 +126,15 @@ public class AddForm extends JFrame {
 		dodajStudenteBtn = new JButton("Dodaj");
 		dodajStudenteBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//mainFormController.
+				ArrayList<String> paramList = new ArrayList();
+				int[] selectedRows = table.getSelectedRows();
+				for(int rb : selectedRows) {
+					paramList.add((String)table.getValueAt(rb, 1));
+					paramList.add((String)table.getValueAt(rb, 2));					
+					paramList.add((String)table.getValueAt(rb, 0));
+					new AddStudentsController(AddForm.this.mainFormController, paramList);
+				}
+				
 			}
 		});
 		dodajStudenteBtn.setBounds(302, 223, 122, 46);

@@ -26,11 +26,25 @@ public class ChooseAddTypeController {
 		} else if (one) {
 			this.mainFormController.createAddForm();
 		} else {
-			addListOfStudents();
+			addListOfStudents(false);
 		}
 	}
 	
-	private void addListOfStudents() {
+	public ChooseAddTypeController(AdministratorFormController adminFormController, boolean one, boolean more,
+			ChooseAddTypeForm form) {
+		this.administratorFormController = adminFormController;
+		if (!(one || more)) {
+			final String message = "Morate izabrati jednu opciju!";
+			JOptionPane.showMessageDialog(null, message, "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
+			form.setVisible(true);
+		} else if (one) {
+			adminFormController.createAddStudentsForm();
+		} else {
+			addListOfStudents(true);
+		}
+	}
+
+	private void addListOfStudents(boolean isAdmin) {
 		try {
 			ImporterExcel importerExcel = new ImporterExcel();
 			ArrayList<String[]> studenti = importerExcel.getData(3);
@@ -59,18 +73,22 @@ public class ChooseAddTypeController {
 			boolean greska = false;
 			if (vrsteSGreskama == 0) {
 				for (StudentMainTableDTO student : listaZaTabelu) {
-					dao.dodajStudentaUListu(student); // dodavanje u bazu podataka
-					int studetnID = dao.getStudentBy(student.getBrojIndeksa()).getStudentId();
-					student.setStudentId(studetnID);
-					dao.dodajStudentaNaPredmet(student, mainFormController.getMainForm().getSelectedPredmet());
-					if (!mainFormController.getMainTable().addStudent(student)) {
-						final String message = "Greska pri unosu studenta!";
-						JOptionPane.showMessageDialog(null, message, "Upozorenje!", JOptionPane.WARNING_MESSAGE);
-						greska = true;
-						break;
+
+					if (isAdmin)
+						dao.dodajStudentaUListu(student); // dodavanje u bazu podataka
+					else {
+						int studetnID = dao.getStudentBy(student.getBrojIndeksa()).getStudentId();
+						student.setStudentId(studetnID);
+						dao.dodajStudentaNaPredmet(student, mainFormController.getMainForm().getSelectedPredmet());
+						if (!mainFormController.getMainTable().addStudent(student)) {
+							final String message = "Greska pri unosu studenta!";
+							JOptionPane.showMessageDialog(null, message, "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+							greska = true;
+							break;
+						}
 					}
 				}
-//				mainFormController.getMainTable().tableChanged();
+				// mainFormController.getMainTable().tableChanged();
 				if (!greska) {
 					final String message = "Uspjesno dodavanje!";
 					JOptionPane.showMessageDialog(null, message, "Obavjestenje!", JOptionPane.INFORMATION_MESSAGE);
@@ -86,7 +104,10 @@ public class ChooseAddTypeController {
 					message.append("broju indeksa.");
 				JOptionPane.showMessageDialog(null, message.toString(), "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 			}
-			mainFormController.resetChooseAddTypeFormOpened();
+			if(isAdmin)
+				administratorFormController.resetChooseAddStudentsTypeFormOpened();
+			else
+				mainFormController.resetChooseAddTypeFormOpened();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
