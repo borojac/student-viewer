@@ -721,8 +721,6 @@ String getAllStudentsQuerry = "select * from student where StudentId not in (sel
 		return retVal;
 	}
 
-<<<<<<< HEAD
-=======
 	@Override
 	public boolean hasGrade(int studentId, int predmetId) {
 		boolean retVal = true;
@@ -750,12 +748,6 @@ String getAllStudentsQuerry = "select * from student where StudentId not in (sel
 		return retVal;
 	}
 
-	@Override
-	public boolean obrisiStudentaIzListe(String brojIndeksa) {
-		// TODO Auto-generated method stub
-		return false;
-	}
->>>>>>> branch 'master' of https://github.com/borojac/student-viewer
 
 
 	
