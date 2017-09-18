@@ -58,11 +58,11 @@ public class GradeGenerationForm extends JDialog {
 	private JTextField imeTextField;
 	private JTextField prezimeTextField;
 	private JTextField ocjenaTextField;
+	private JTextField bodoviTextField;
 	private JTable table;
 	private JButton btnOcijeni;
 	private JButton btnDalje;
 	private JButton btnNazad;
-	private JTextField bodoviTextField;
 	private JPanel buttonPane;
 
 	public GradeGenerationForm(PredmetDTO predmet, List<? extends StudentNaPredmetuDTO> students) {

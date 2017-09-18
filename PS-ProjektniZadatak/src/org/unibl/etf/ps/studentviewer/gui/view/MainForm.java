@@ -235,14 +235,6 @@ public class MainForm extends JFrame {
 		JButton konacnaOcjenaButton = new JButton("STOKUCA");
 		konacnaOcjenaButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				List<StudentNaPredmetuDTO> students = new ArrayList<>();
-				for (StudentMainTableDTO s : mainTable.getStudents()) {
-					students.add(
-							new StudentNaPredmetuDTO(s.getStudentId(), s.getBrojIndeksa(), s.getIme(), s.getPrezime()));
-				}
-				new GradeGenerationForm(getSelectedPredmet(), students).setVisible(true);
-
 				EventQueue.invokeLater(new Runnable() {
 					
 					@Override
