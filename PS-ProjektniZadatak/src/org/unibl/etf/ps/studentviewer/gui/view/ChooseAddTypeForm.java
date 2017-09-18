@@ -6,6 +6,7 @@ package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -27,9 +28,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.imgscalr.Scalr;
+import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.ChooseAddTypeController;
-import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
-import java.awt.Font;
 
 
 public class ChooseAddTypeForm extends JFrame {
@@ -38,12 +38,12 @@ public class ChooseAddTypeForm extends JFrame {
 	JCheckBox chckbxNewCheckBoxJedan = new JCheckBox("");
 	JCheckBox chckbxNewCheckBoxVise = new JCheckBox("");
 
-	public ChooseAddTypeForm(MainFormController mainFormController) {
+	public ChooseAddTypeForm(AdministratorFormController adminFormController) {
 		setTitle("Nacin dodavanja");
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
-				   mainFormController.resetChooseAddTypeFormOpened();
+				   adminFormController.resetChooseAddTypeFormOpened();
 			   }
 			  });
 		
@@ -87,7 +87,7 @@ public class ChooseAddTypeForm extends JFrame {
 				boolean jedan = chckbxNewCheckBoxJedan.isSelected();
 				boolean vise = chckbxNewCheckBoxVise.isSelected();
 				ChooseAddTypeForm.this.dispose();
-				new ChooseAddTypeController(mainFormController, jedan, vise, ChooseAddTypeForm.this);	
+				//new ChooseAddTypeController(adminFormController, jedan, vise, ChooseAddTypeForm.this);	
 			}
 		});
 		chooseButton.setBounds(96, 217, 89, 29);

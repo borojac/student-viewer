@@ -5,6 +5,7 @@ package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -29,6 +30,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.AddStudentsController;
+import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.ChangeStudentsController;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
@@ -38,6 +40,7 @@ public class ChangeForm extends JFrame {
 
 	private JPanel contentPane;
 	private MainFormController mainFormController = null;
+	private AdministratorFormController administratorFormController = null;
 	private JPanel panel = null;
 	private JPanel panel2 = null;
 	private JTextField textFieldIme;
@@ -82,20 +85,23 @@ public class ChangeForm extends JFrame {
 		textFieldBrIndeksa.requestFocusInWindow();
 	}
 
-	public ChangeForm(MainFormController mainFormController,StudentMainTableDTO student, int numInList) {
+	public ChangeForm(MainFormController mainFormController, AdministratorFormController administratorFormController,StudentMainTableDTO student, int numInList) {
 		setTitle("Izmjena");
 		setResizable(false);
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
-				mainFormController.resetAddFormOpened();
-				mainFormController.resetChooseAddTypeFormOpened();
+				if(mainFormController != null)
+					mainFormController.resetChangeFormOpened();
+				else
+					administratorFormController.resetChanging();
 			}
 		});
 
 		this.mainFormController = mainFormController;
+		this.administratorFormController = administratorFormController;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 250, 354);
+		setBounds(100, 100, 250, 293);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -104,7 +110,7 @@ public class ChangeForm extends JFrame {
 
 		panel = new JPanel();
 		panel.setBackground(new Color(0, 0, 139));
-		panel.setBounds(10, 131, 93, 132);
+		panel.setBounds(10, 131, 93, 88);
 		contentPane.add(panel);
 
 		JLabel lblImeStudenta = new JLabel("Ime:");
@@ -114,9 +120,11 @@ public class ChangeForm extends JFrame {
 		panel.add(lblImeStudenta);
 		panel.add(lblPrezime);
 		panel.add(lblBrojIndeksa);
-
+		
+		if(mainFormController != null) {
 		JLabel lblKomentar = new JLabel("Komentar:");
 		panel.add(lblKomentar);
+		}
 
 		JLabel label = new JLabel("");
 		label.setBounds(30, 0, 171, 120);
@@ -151,30 +159,43 @@ public class ChangeForm extends JFrame {
 				paramList.add(ChangeForm.this.textFieldIme.getText());
 				paramList.add(ChangeForm.this.textFieldPrezime.getText());
 				paramList.add(ChangeForm.this.textFieldBrIndeksa.getText());
-				paramList.add(ChangeForm.this.textArea.getText());
+				if(mainFormController != null)
+					paramList.add(ChangeForm.this.textArea.getText());
+				boolean isAdmin = true;
+				if(mainFormController != null)
+					isAdmin = false;
+				new ChangeStudentsController(ChangeForm.this.mainFormController,ChangeForm.this.administratorFormController, paramList, student, numInList, ChangeForm.this, isAdmin);
 				
-				new ChangeStudentsController(ChangeForm.this.mainFormController, paramList, student, numInList, ChangeForm.this);
 			}
 		});
-		addButton.setBounds(80, 285, 89, 29);
+		addButton.setBounds(69, 224, 89, 29);
 		contentPane.add(addButton);
 
 		panel2 = new JPanel();
 		panel2.setBackground(new Color(0, 0, 139));
-		panel2.setBounds(114, 131, 120, 153);
+		panel2.setBounds(114, 131, 120, 88);
 		contentPane.add(panel2);
 		panel2.setLayout(new FlowLayout(FlowLayout.LEFT, 6, 6));
 
 		textFieldIme = new JTextField(student.getIme());
+		textFieldIme.setColumns(12);
+		if(mainFormController != null)
+			textFieldIme.setEditable(false);
 		panel2.add(textFieldIme);
 
 		textFieldPrezime = new JTextField(student.getPrezime());
+		textFieldPrezime.setColumns(12);
+		if(mainFormController != null)
+			textFieldPrezime.setEditable(false);
 		panel2.add(textFieldPrezime);
 
 		textFieldBrIndeksa = new JTextField(student.getBrojIndeksa());
-		textFieldBrIndeksa.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		textFieldBrIndeksa.setColumns(12);
+		if(mainFormController != null)
+			textFieldBrIndeksa.setEditable(false);
 		panel2.add(textFieldBrIndeksa);
 		
+		if(mainFormController != null) {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setPreferredSize(new Dimension(100, 50));
 		panel2.add(scrollPane);
@@ -183,9 +204,14 @@ public class ChangeForm extends JFrame {
 		textArea.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		scrollPane.setViewportView(textArea);
 		
+		setBounds(100, 100, 250, 354);
+		panel.setBounds(10, 131, 93, 132);
+		panel2.setBounds(114, 131, 120, 153);
+		addButton.setBounds(80, 285, 89, 29);
+		}
 
 		initLabels();
-		initTextFields();
+		//initTextFields();
 	}
 
 	private void initLabels() {
@@ -197,29 +223,5 @@ public class ChangeForm extends JFrame {
 		}
 	}
 
-	private void initTextFields() {
-		JTextField tmp = null;
-		for (Component box : panel2.getComponents()) {
-			if (box instanceof JTextField) {
-				JTextField field = (JTextField) box;
-				field.setColumns(12);
-				if (tmp != null) {
-					tmp.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							addButton.doClick();
-						}
-					});
-				}
-				tmp = field;
-			}
-		}
-		tmp.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				addButton.doClick();
-			}
-		});
-	}
 }
 

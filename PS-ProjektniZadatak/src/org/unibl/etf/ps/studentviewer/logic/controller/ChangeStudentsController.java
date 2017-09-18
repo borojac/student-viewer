@@ -14,52 +14,41 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 public class ChangeStudentsController {
 		ArrayList<String> params = new ArrayList<String>();
 		MainFormController mainFormController = null;
+		AdministratorFormController administratorFormController = null;
 		ChangeForm form = null;
 		int number;
+		boolean isAdmin;
 		StudentMainTableDTO student = null;
-		public ChangeStudentsController(MainFormController mainFormController, ArrayList<String> params, StudentMainTableDTO student, int number, ChangeForm form) {
+		public ChangeStudentsController(MainFormController mainFormController, AdministratorFormController administratorFormController, ArrayList<String> params, StudentMainTableDTO student, int number, ChangeForm form, boolean isAdmin) {
 			this.mainFormController = mainFormController;
+			this.administratorFormController = administratorFormController;
 			this.form = form;
 			this.number = number;
 			this.student = student;
+			this.isAdmin = isAdmin;
 			for (String ob : params) {
 				this.params.add(ob.trim());
 			}
-			changeStudent();
+			changeStudent(isAdmin);
 			
 	}
-		private void changeStudent() {
-			AddChangeStudentsHelpController help = new AddChangeStudentsHelpController(); //pomocna klasa da se izbjegne dupliciranje koda
-			int valid = help.checkParams(params);
-			if(valid == 0) {
+		private void changeStudent(boolean isAdmin) {
 				MySQLStudentDAO dao = new MySQLStudentDAO();
 				StudentMainTableDTO newStudent = new StudentMainTableDTO(params.get(2), params.get(0), params.get(1));
-				dao.azurirajStudentaUListi(newStudent, student.getBrojIndeksa());
-				dao.azurirajStudentaNaPredmetu(newStudent, mainFormController.getMainForm().getSelectedPredmet());
-				mainFormController.getMainTable().setStudent(number, params.get(2), params.get(0), params.get(1));
-
+				if(!isAdmin)
+					newStudent.setKomentar(params.get(3));
+				newStudent.setStudentId(student.getStudentId());
+				if(!isAdmin) {
+					dao.azurirajStudentaNaPredmetu(newStudent, mainFormController.getMainForm().getSelectedPredmet());
+				//mainFormController.getMainTable().setStudent(number, params.get(2), params.get(0), params.get(1), params.get(3)); //4 parametar je komentar
+				}else
+					dao.azurirajStudentaUListi(newStudent, student.getBrojIndeksa());
 				final String message = "Uspjesno azuriranje!";
 				JOptionPane.showMessageDialog(null, message,"Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 				form.dispose();
-				mainFormController.resetChangeFormOpened();
+				if(!isAdmin)
+					mainFormController.resetChangeFormOpened();
+				else
+					administratorFormController.resetChanging();
 				}
-			else if(valid == 1) {
-				final String message = "Pogresan unos za ime studenta!";
-				JOptionPane.showMessageDialog(null, message,"Upozorenje!", JOptionPane.WARNING_MESSAGE);
-				form.setIme(student.getIme());
-				form.setVisible(true);
-			}else if(valid == 2) {
-				final String message = "Pogresan unos za prezime studenta!";
-				JOptionPane.showMessageDialog(null, message,"Upozorenje!", JOptionPane.WARNING_MESSAGE);
-				form.setPrezime(student.getPrezime());
-				form.setVisible(true);
-			}else if(valid == 3) {
-				final String message = "Pogresan unos za broj indeksa! "
-						+ "Ocekivani format je: broj/godina";
-				JOptionPane.showMessageDialog(null, message,"Upozorenje!", JOptionPane.WARNING_MESSAGE);
-				form.setBrojIndeksa(student.getBrojIndeksa());
-				form.setVisible(true);
-			}
-		}
-
 }

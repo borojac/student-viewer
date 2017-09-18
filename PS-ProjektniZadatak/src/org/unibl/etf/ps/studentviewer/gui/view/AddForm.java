@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -23,18 +24,23 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.AddStudentsController;
+import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentDAO;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class AddForm extends JFrame {
 
 	private JPanel contentPane;
 	private MainFormController mainFormController = null;
+	private AdministratorFormController adminFormController = null;
 	private JPanel panel = null;
 	private JPanel panel2 = null;
 	private JTextField textFieldIme;
@@ -42,6 +48,8 @@ public class AddForm extends JFrame {
 	private JTextField textFieldBrIndeksa;
 	private JButton addButton;
 	private JTextArea textArea;
+	private JTable table;
+	private JButton dodajStudenteBtn;
 	
 	public void setIme(String ime) {
 		textFieldIme.setText(ime);
@@ -78,21 +86,67 @@ public class AddForm extends JFrame {
 	public void setFocusBrIndeksa() {
 		textFieldBrIndeksa.requestFocusInWindow();
 	}
-
+	
 	public AddForm(MainFormController mainFormController) {
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				mainFormController.resetAddFormOpened();
+			}
+		});
+		
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 450, 319);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 0, 434, 212);
+		contentPane.add(scrollPane);
+		MySQLStudentDAO dao = new MySQLStudentDAO();
+		String [] header = {"Indeks", "Ime", "Prezime"};
+		ArrayList<StudentMainTableDTO> studenti = dao.studentiKojiNisuNaPredmetu(mainFormController.getMainForm().getSelectedPredmet().getPredmetId());
+		String[][] data = new String[studenti.size()][3];
+		int i = 0;
+		for(StudentMainTableDTO student : studenti) {
+			String[] tmp = new String[3];
+			tmp[0] = student.getBrojIndeksa();
+			tmp[1] = student.getIme();
+			tmp[2] = student.getPrezime();
+			data[i++] = tmp;
+		}
+		table = new JTable(data, header);
+		table.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		table.setForeground(new Color(0, 0, 139));
+		table.setBackground(new Color(173, 216, 230));
+		scrollPane.setViewportView(table);
+		
+		dodajStudenteBtn = new JButton("Dodaj");
+		dodajStudenteBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//mainFormController.
+			}
+		});
+		dodajStudenteBtn.setBounds(302, 223, 122, 46);
+		contentPane.add(dodajStudenteBtn);
+		
+	}
+
+	public AddForm(AdministratorFormController adminFormController) {
+		this.adminFormController = adminFormController;
 		setTitle("Dodavanje");
 		setResizable(false);
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
-				mainFormController.resetAddFormOpened();
-				mainFormController.resetChooseAddTypeFormOpened();
+				AddForm.this.adminFormController.resetAddStudentFormOpened();
+				AddForm.this.adminFormController.resetChooseAddStudentsTypeFormOpened();
 			}
 		});
 
-		this.mainFormController = mainFormController;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 250, 354);
+		setBounds(100, 100, 250, 299);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -101,7 +155,7 @@ public class AddForm extends JFrame {
 
 		panel = new JPanel();
 		panel.setBackground(new Color(0, 0, 139));
-		panel.setBounds(10, 131, 93, 132);
+		panel.setBounds(10, 131, 93, 95);
 		contentPane.add(panel);
 
 		JLabel lblImeStudenta = new JLabel("Ime:");
@@ -148,17 +202,17 @@ public class AddForm extends JFrame {
 				paramList.add(AddForm.this.textFieldIme.getText());
 				paramList.add(AddForm.this.textFieldPrezime.getText());
 				paramList.add(AddForm.this.textFieldBrIndeksa.getText());
-				paramList.add(AddForm.this.textArea.getText());
+			//	paramList.add(AddForm.this.textArea.getText());
 
-				new AddStudentsController(AddForm.this.mainFormController, paramList, AddForm.this);
+				new AddStudentsController(AddForm.this.adminFormController, paramList, AddForm.this);
 			}
 		});
-		addButton.setBounds(80, 285, 89, 29);
+		addButton.setBounds(79, 237, 89, 29);
 		contentPane.add(addButton);
 
 		panel2 = new JPanel();
 		panel2.setBackground(new Color(0, 0, 139));
-		panel2.setBounds(114, 131, 120, 153);
+		panel2.setBounds(114, 131, 120, 95);
 		contentPane.add(panel2);
 		panel2.setLayout(new FlowLayout(FlowLayout.LEFT, 6, 6));
 
@@ -216,4 +270,6 @@ public class AddForm extends JFrame {
 			}
 		});
 	}
+
+
 }
