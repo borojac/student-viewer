@@ -42,6 +42,6 @@ public abstract class StudentDAO {
 	public abstract ArrayList<StudentMainTableDTO> studentiKojiNisuNaPredmetu(int predmetID);
 	/* Stankovic end */
 	
-	
+	public abstract boolean hasGrade(int studentId, int predmetId);
 	public abstract boolean gradeStudent(int studentId, int predmetId, int grade);
 }

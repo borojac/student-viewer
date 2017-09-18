@@ -233,12 +233,23 @@ public class MainForm extends JFrame {
 		JButton konacnaOcjenaButton = new JButton("STOKUCA");
 		konacnaOcjenaButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+<<<<<<< HEAD
 				List<StudentNaPredmetuDTO> students = new ArrayList<>();
 				for (StudentMainTableDTO s : mainTable.getStudents()) {
 					students.add(
 							new StudentNaPredmetuDTO(s.getStudentId(), s.getBrojIndeksa(), s.getIme(), s.getPrezime()));
 				}
 				new GradeGenerationForm(getSelectedPredmet(), students).setVisible(true);
+=======
+				EventQueue.invokeLater(new Runnable() {
+					
+					@Override
+					public void run() {
+						new GradeGenerationForm(getSelectedPredmet(),
+								mainTable.getStudents()).setVisible(true);
+					}
+				});
+>>>>>>> e8e77c7659c00a833345c2af0270d169542924f4
 			}
 		});
 		konacnaOcjenaButton.setBounds(628, 131, 89, 23);
