@@ -21,30 +21,42 @@ public class ChangePasswordFormController {
 	public void promjenaLozinke() {
 		String staraLozinka = changePasswordForm.getStaraLozinka();
 		String novaLozinka = changePasswordForm.getNovaLozinka();
+		String novaLozinkaPotvrda = changePasswordForm.getNovaLozinkaPotvrda();
 		String staraLozinkaHash = sha256(staraLozinka);
 		String novaLozinkaHash = sha256(novaLozinka);
 		
 		NalogDTO nalogDTO = changePasswordForm.getNalogDTO();
 		
-		if("".equals(staraLozinka) || "".equals(novaLozinka)) {
-			JOptionPane.showMessageDialog(changePasswordForm, "Morate popuniti oba polja.");
+		if("".equals(staraLozinka) || "".equals(novaLozinka) || "".equals(novaLozinkaPotvrda)) {
+			JOptionPane.showMessageDialog(changePasswordForm, "Morate popuniti sva polja.", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 		} else if(!staraLozinkaHash.equals(nalogDTO.getLozinka())) {
-			JOptionPane.showMessageDialog(changePasswordForm, "Nekorektan unos trenutne lozinke.");
+			JOptionPane.showMessageDialog(changePasswordForm, "Nekorektan unos trenutne lozinke.", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+			changePasswordForm.setEmptyStaraLozinka();
+			changePasswordForm.setEmptyNovaLozinka();
+			changePasswordForm.setEmptyNovaLozinkaPotvrda();
 		} else if(staraLozinka.equals(novaLozinka)) {
-			JOptionPane.showMessageDialog(changePasswordForm, "Nova lozinka mora da se razlikuje od stare.");
+			JOptionPane.showMessageDialog(changePasswordForm, "Nova lozinka mora da se razlikuje od stare.", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+			changePasswordForm.setEmptyNovaLozinka();
+			changePasswordForm.setEmptyNovaLozinkaPotvrda();
 		} else if(novaLozinka.length() < 8) {
-			JOptionPane.showMessageDialog(changePasswordForm, "Nova lozinka mora imati bar 8 karaktera.");
+			JOptionPane.showMessageDialog(changePasswordForm, "Nova lozinka mora imati bar 8 karaktera.", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+			changePasswordForm.setEmptyNovaLozinka();
+			changePasswordForm.setEmptyNovaLozinkaPotvrda();
+		} else if(!novaLozinka.equals(novaLozinkaPotvrda)) {
+			JOptionPane.showMessageDialog(changePasswordForm, "Unosi nove lozinke se ne podudaraju.", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+			changePasswordForm.setEmptyNovaLozinka();
+			changePasswordForm.setEmptyNovaLozinkaPotvrda();
 		} else {
 			MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
 			NalogDAO nalogDAO = nalogFactory.getNalogDAO();
 			nalogDTO.setLozinka(novaLozinkaHash);
 			
 			if(nalogDAO.updateNalog(nalogDTO)) {
-				JOptionPane.showMessageDialog(changePasswordForm, "Lozinka uspjesno promjenjena.");
+				JOptionPane.showMessageDialog(changePasswordForm, "Lozinka uspjesno promjenjena.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 				changePasswordForm.dispose();;
 				AccountFormController.resetChangePasswordFormOpened();
 			} else {
-				JOptionPane.showMessageDialog(changePasswordForm, "Lozinka nije promjenjena.");
+				JOptionPane.showMessageDialog(changePasswordForm, "Lozinka nije promjenjena.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}

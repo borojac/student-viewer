@@ -173,7 +173,7 @@ public class MySQLNalogDAO implements NalogDAO {
 			ps.setString(3, nalog.getKorisnickoIme());
 			ps.setString(4, nalog.getLozinka());
 			ps.setString(5, String.valueOf(nalog.getTipNaloga()));
-			ps.setInt(7, nalog.getNalogId());
+			ps.setInt(6, nalog.getNalogId());
 			
 			retVal = ps.executeUpdate() == 1;
 			
