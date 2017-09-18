@@ -51,6 +51,8 @@ public class AdminStudentForm extends JFrame {
 	 * Create the frame.
 	 */
 	public AdminStudentForm(AdministratorFormController administratorFormController) {
+		setResizable(false);
+		setTitle("Upisani studenti");
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 				administratorFormController.resetStudentFormOpened();
@@ -106,7 +108,7 @@ public class AdminStudentForm extends JFrame {
 	public void setTable() {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBackground(Color.WHITE);
-		scrollPane.setBounds(0, 0, 434, 212);
+		scrollPane.setBounds(0, 0, 444, 212);
 		contentPane.add(scrollPane);
 		MySQLStudentDAO dao = new MySQLStudentDAO();
 		String [] header = {"Indeks", "Ime", "Prezime"};

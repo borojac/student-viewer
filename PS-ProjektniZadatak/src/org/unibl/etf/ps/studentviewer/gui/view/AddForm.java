@@ -49,10 +49,9 @@ public class AddForm extends JFrame {
 	private JTextField textFieldPrezime;
 	private JTextField textFieldBrIndeksa;
 	private JButton addButton;
-	private JTextArea textArea;
 	private JTable table;
 	private JButton dodajStudenteBtn;
-	
+
 	public void setIme(String ime) {
 		textFieldIme.setText(ime);
 	}
@@ -88,63 +87,54 @@ public class AddForm extends JFrame {
 	public void setFocusBrIndeksa() {
 		textFieldBrIndeksa.requestFocusInWindow();
 	}
-	
-	public AddForm(MainFormController mainFormController) {		
+
+	public AddForm(MainFormController mainFormController) {
+		setResizable(false);
 		this.mainFormController = mainFormController;
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 				mainFormController.resetAddFormOpened();
 			}
 		});
-		
+
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 319);
+		setTitle("Dodavanje studenata na predmet");
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 434, 212);
-		contentPane.add(scrollPane);
-		MySQLStudentDAO dao = new MySQLStudentDAO();
-		String [] header = {"Indeks", "Ime", "Prezime"};
-		ArrayList<StudentMainTableDTO> studenti = dao.studentiKojiNisuNaPredmetu(mainFormController.getMainForm().getSelectedPredmet().getPredmetId());
-		String[][] data = new String[studenti.size()][3];
-		int i = 0;
-		for(StudentMainTableDTO student : studenti) {
-			String[] tmp = new String[3];
-			tmp[0] = student.getBrojIndeksa();
-			tmp[1] = student.getIme();
-			tmp[2] = student.getPrezime();
-			data[i++] = tmp;
-		}
-		table = new JTable(data, header);
-		table.setFont(new Font("Century Gothic", Font.BOLD, 15));
-		table.setForeground(new Color(0, 0, 139));
-		table.setBackground(new Color(173, 216, 230));
-		scrollPane.setViewportView(table);
-		
+		setTable();
+
 		dodajStudenteBtn = new JButton("Dodaj");
 		dodajStudenteBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//ArrayList<String> paramList = new ArrayList();
+				// ArrayList<String> paramList = new ArrayList();
 				ArrayList<ArrayList<String>> paramList = new ArrayList<>();
 				int[] selectedRows = table.getSelectedRows();
 				int i = 0;
-				for(int rb : selectedRows) {
+				for (int rb : selectedRows) {
 					ArrayList<String> tmp = new ArrayList<String>();
-					tmp.add((String)table.getValueAt(rb, 1));
-					tmp.add((String)table.getValueAt(rb, 2));					
-					tmp.add((String)table.getValueAt(rb, 0));
+					tmp.add((String) table.getValueAt(rb, 1));
+					tmp.add((String) table.getValueAt(rb, 2));
+					tmp.add((String) table.getValueAt(rb, 0));
 					paramList.add(tmp);
 				}
-				new AddStudentsController(AddForm.this.mainFormController, paramList);
+				if (paramList.size() > 0) {
+					new AddStudentsController(AddForm.this.mainFormController, paramList);
+					AddForm.this.setTable();
+				}else {
+					final String message = "Niste odabrali nijednog studenta!";
+					JOptionPane.showMessageDialog(null, message, "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 				}
+			}
+
 		});
 		dodajStudenteBtn.setBounds(302, 223, 122, 46);
 		contentPane.add(dodajStudenteBtn);
-		
+
 	}
 
 	public AddForm(AdministratorFormController adminFormController) {
@@ -180,9 +170,6 @@ public class AddForm extends JFrame {
 		panel.add(lblPrezime);
 		panel.add(lblBrojIndeksa);
 
-		JLabel lblKomentar = new JLabel("Komentar:");
-		panel.add(lblKomentar);
-
 		JLabel label = new JLabel("");
 		label.setBounds(30, 0, 171, 120);
 		try {
@@ -216,8 +203,7 @@ public class AddForm extends JFrame {
 				paramList.add(AddForm.this.textFieldIme.getText());
 				paramList.add(AddForm.this.textFieldPrezime.getText());
 				paramList.add(AddForm.this.textFieldBrIndeksa.getText());
-			//	paramList.add(AddForm.this.textArea.getText());
-
+				// paramList.add(AddForm.this.textArea.getText());
 				new AddStudentsController(AddForm.this.adminFormController, paramList, AddForm.this);
 			}
 		});
@@ -238,14 +224,6 @@ public class AddForm extends JFrame {
 
 		textFieldBrIndeksa = new JTextField();
 		panel2.add(textFieldBrIndeksa);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setPreferredSize(new Dimension(100, 50));
-		panel2.add(scrollPane);
-
-		textArea = new JTextArea();
-		scrollPane.setViewportView(textArea);
-		
 
 		initLabels();
 		initTextFields();
@@ -255,7 +233,8 @@ public class AddForm extends JFrame {
 		for (Component labela : panel.getComponents()) {
 			labela.setForeground(Color.WHITE);
 			labela.setFont(labela.getFont().deriveFont(1, 12));
-			labela.setPreferredSize(new Dimension(90, 15));;
+			labela.setPreferredSize(new Dimension(90, 15));
+			;
 			labela.setVisible(true);
 		}
 	}
@@ -285,5 +264,35 @@ public class AddForm extends JFrame {
 		});
 	}
 
+	public void setTable() {
 
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 0, 444, 212);
+		contentPane.add(scrollPane);
+		MySQLStudentDAO dao = new MySQLStudentDAO();
+		String[] header = { "Indeks", "Ime", "Prezime" };
+		ArrayList<StudentMainTableDTO> studenti = dao
+				.studentiKojiNisuNaPredmetu(mainFormController.getMainForm().getSelectedPredmet().getPredmetId());
+		String[][] data = new String[studenti.size()][3];
+		int i = 0;
+		for (StudentMainTableDTO student : studenti) {
+			String[] tmp = new String[3];
+			tmp[0] = student.getBrojIndeksa();
+			tmp[1] = student.getIme();
+			tmp[2] = student.getPrezime();
+			data[i++] = tmp;
+		}
+		table = new JTable(data, header);
+		table.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		table.setForeground(new Color(0, 0, 139));
+		table.setBackground(new Color(173, 216, 230));
+		scrollPane.setViewportView(table);
+
+		if (data.length == 0) {
+			final String message = "Svi upisani studenti su vec na ovom predmetu!";
+			JOptionPane.showMessageDialog(null, message, "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
+			this.dispose();
+			mainFormController.resetAddFormOpened();
+		}
+	}
 }

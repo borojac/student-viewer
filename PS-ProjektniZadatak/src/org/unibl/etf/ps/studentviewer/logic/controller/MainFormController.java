@@ -250,7 +250,7 @@ public class MainFormController {
 			
 		} else {
 			final String message = "Odaberite samo jednog studenta za izmjenu!";
-			JOptionPane.showMessageDialog(null, message);
+			JOptionPane.showMessageDialog(null, message, "Upozorenje", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
