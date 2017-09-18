@@ -217,19 +217,11 @@ public class MainFormController {
 				}
 			});
 		}
-
-//		EventQueue.invokeLater(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				mainForm.testoviClearSelection();
-//			}
-//		});
-
 	}
 
 	public void initMouseHoverAction(MouseEvent event, JTable testoviTable) {
-		if (testoviTable.contains(event.getPoint())) {
+		if (testoviTable.contains(event.getPoint())
+				&& testoviTable.getModel().getRowCount() > 0) {
 			int row = testoviTable.rowAtPoint(event.getPoint());
 			TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
 			testoviTable.setToolTipText(model.getRowAt(row).getNapomena());

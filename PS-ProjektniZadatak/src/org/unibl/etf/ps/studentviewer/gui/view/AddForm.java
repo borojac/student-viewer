@@ -88,7 +88,7 @@ public class AddForm extends JFrame {
 		textFieldBrIndeksa.requestFocusInWindow();
 	}
 	
-	public AddForm(MainFormController mainFormController) {
+	public AddForm(MainFormController mainFormController) {		
 		this.mainFormController = mainFormController;
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {

@@ -36,6 +36,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.imgscalr.Scalr;
 import org.jdesktop.swingx.search.TableSearchable;
@@ -384,17 +386,22 @@ public class MainForm extends JFrame {
 			}
 		}).start();
 
-		testoviTable.addMouseListener(new MouseAdapter() {
+		testoviTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (testoviTable.getSelectedRow() != -1) {
+			public void valueChanged(ListSelectionEvent e) {
+				if (testoviTable.getSelectedRowCount() == 1) {
 					btnIzmjeni.setEnabled(true);
 					btnBrisi.setEnabled(true);
 				} else {
-
 					btnIzmjeni.setEnabled(false);
 					btnBrisi.setEnabled(false);
-				}
+				}				
+			}
+		});
+		testoviTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					mainFormController.editTestAction(testoviTable);
 				}
