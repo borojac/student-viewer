@@ -180,6 +180,20 @@ public class AccountForm extends JFrame {
 			}
 		});
 		
+		dodavanjeDisciplineBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				accountFormController.createDodavanjeDisciplineForm();
+			}
+		});
+		
+		brisanjeDisciplineBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+			}
+		});
+		
 	}
 
 	public NalogDTO getNalogDTO() {
