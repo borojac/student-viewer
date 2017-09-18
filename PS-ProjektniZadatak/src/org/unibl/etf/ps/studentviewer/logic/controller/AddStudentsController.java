@@ -15,6 +15,7 @@ import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
 public class AddStudentsController {
 	ArrayList<String> params = new ArrayList<String>();
+	ArrayList<ArrayList<String>> params2 = new ArrayList<>();
 	MainFormController mainFormController = null;
 	AdministratorFormController adminFormController = null;
 	AddForm form = null;
@@ -26,14 +27,13 @@ public class AddStudentsController {
 		for (String ob : params) {
 			this.params.add(ob.trim());
 		}
+		
 		addOneStudentAdmin();
 	}
 
-	public AddStudentsController(MainFormController mainFormController, ArrayList<String> params) {
+	public AddStudentsController(MainFormController mainFormController,ArrayList<ArrayList<String>> params) {
 		this.mainFormController = mainFormController;
-		for (String ob : params) {
-			this.params.add(ob.trim());
-		}
+		this.params2 = params;
 		addOneStudentUser();
 	}
 
@@ -86,21 +86,22 @@ public class AddStudentsController {
 
 	private void addOneStudentUser() {
 		try {
-			StudentMainTableDTO student = new StudentMainTableDTO(params.get(2), params.get(0), params.get(1));
-			MySQLStudentDAO st = new MySQLStudentDAO();
-			int studetnID = st.getStudentBy(student.getBrojIndeksa()).getStudentId();
-			student.setStudentId(studetnID);
-			st.dodajStudentaNaPredmet(student, mainFormController.getMainForm().getSelectedPredmet());
-			mainFormController.getMainTable().addStudent(student);
-			
+			for (ArrayList<String> list : params2) {
+				StudentMainTableDTO student = new StudentMainTableDTO(list.get(2), list.get(0), list.get(1));
+				MySQLStudentDAO st = new MySQLStudentDAO();
+				int studetnID = st.getStudentBy(student.getBrojIndeksa()).getStudentId();
+				student.setStudentId(studetnID);
+				st.dodajStudentaNaPredmet(student, mainFormController.getMainForm().getSelectedPredmet());
+				mainFormController.getMainTable().addStudent(student);
+			}
 			final String message = "Uspjesno cuvanje!";
 			JOptionPane.showMessageDialog(null, message, "Obavjestenje!", JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception e) {
-			/*final String message = "Greska!";
+			final String message = "Greska!";
 			JOptionPane.showMessageDialog(null, message, "Upozorenje!", JOptionPane.WARNING_MESSAGE);
-		*/
-			e.printStackTrace();
-			}
+
+			// e.printStackTrace();
+		}
 	}
 
 }

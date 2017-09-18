@@ -22,6 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -127,16 +128,19 @@ public class AddForm extends JFrame {
 		dodajStudenteBtn = new JButton("Dodaj");
 		dodajStudenteBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ArrayList<String> paramList = new ArrayList();
+				//ArrayList<String> paramList = new ArrayList();
+				ArrayList<ArrayList<String>> paramList = new ArrayList<>();
 				int[] selectedRows = table.getSelectedRows();
+				int i = 0;
 				for(int rb : selectedRows) {
-					paramList.add((String)table.getValueAt(rb, 1));
-					paramList.add((String)table.getValueAt(rb, 2));					
-					paramList.add((String)table.getValueAt(rb, 0));
-					new AddStudentsController(AddForm.this.mainFormController, paramList);
+					ArrayList<String> tmp = new ArrayList<String>();
+					tmp.add((String)table.getValueAt(rb, 1));
+					tmp.add((String)table.getValueAt(rb, 2));					
+					tmp.add((String)table.getValueAt(rb, 0));
+					paramList.add(tmp);
 				}
-				
-			}
+				new AddStudentsController(AddForm.this.mainFormController, paramList);
+				}
 		});
 		dodajStudenteBtn.setBounds(302, 223, 122, 46);
 		contentPane.add(dodajStudenteBtn);
