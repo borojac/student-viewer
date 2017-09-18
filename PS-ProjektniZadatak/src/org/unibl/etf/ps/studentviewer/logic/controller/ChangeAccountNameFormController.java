@@ -16,28 +16,29 @@ public class ChangeAccountNameFormController {
 	}
 	
 	public void promjenaKorisnickogImena() {
-		String staroKorIme = changeAccountNameForm.getStaroKorIme();
-		String novoKorIme = changeAccountNameForm.getNovoKorIme();
+		String korisnickoIme = changeAccountNameForm.getKorisnickoIme();
 		
 		NalogDTO nalogDTO = changeAccountNameForm.getNalogDTO();
 		
-		if("".equals(staroKorIme) || "".equals(novoKorIme)) {
-			JOptionPane.showMessageDialog(changeAccountNameForm, "Oba polja moraju biti popunjena.");
-		} else if(!staroKorIme.equals(nalogDTO.getKorisnickoIme())) {
-			JOptionPane.showMessageDialog(changeAccountNameForm, "Nekorektan unos starog korisnickog imena");
-		} else if(staroKorIme.equals(novoKorIme)) {
-			JOptionPane.showMessageDialog(changeAccountNameForm, "Novo korisnicko ime se mora razlikovati od starog.");
+		if("".equals(korisnickoIme)) {
+			JOptionPane.showMessageDialog(changeAccountNameForm, "Morate unijeti novo korisnicko ime.", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+		} else if(korisnickoIme.length() < 4) {
+			JOptionPane.showMessageDialog(changeAccountNameForm, "Korisnicko ime mora sadrzati bar 4 karaktera.", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+		} else if(korisnickoIme.equals(nalogDTO.getKorisnickoIme())) {
+			JOptionPane.showMessageDialog(changeAccountNameForm, "Korisnicko ime nije promjenjeno.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
+			changeAccountNameForm.dispose();
+			AccountFormController.resetChangeAccountNameFormOpened();
 		} else {
 			MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
 			NalogDAO nalogDAO = nalogFactory.getNalogDAO();
-			nalogDTO.setKorisnickoIme(novoKorIme);
+			nalogDTO.setKorisnickoIme(korisnickoIme);
 			
 			if(nalogDAO.updateNalog(nalogDTO)) {
-				JOptionPane.showMessageDialog(changeAccountNameForm, "Korisnicko ime uspjesno promjenjeno.");
+				JOptionPane.showMessageDialog(changeAccountNameForm, "Korisnicko ime uspjesno promjenjeno.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 				changeAccountNameForm.dispose();
 				AccountFormController.resetChangeAccountNameFormOpened();
 			} else {
-				JOptionPane.showMessageDialog(changeAccountNameForm, "Korisnicko ime nije promjenjeno");
+				JOptionPane.showMessageDialog(changeAccountNameForm, "Korisnicko ime nije promjenjeno.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}
