@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
@@ -192,6 +193,8 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 				ciklusiList.add(predmetiList.get(i).getCiklus());
 			}
 		}
+		
+		Collections.sort(ciklusiList);
 		
 		for(int i = 0; i < ciklusiList.size(); i++) {
 			ciklusiCB.addItem(ciklusiList.get(i));
