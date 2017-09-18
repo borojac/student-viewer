@@ -40,6 +40,8 @@ public class AccountForm extends JFrame {
 	private JButton promjenaKorImenaBtn;
 	private JButton dodavanjePredmetaBtn;
 	private JButton brisanjePredmetaBtn;
+	private JButton dodavanjeDisciplineBtn;
+	private JButton brisanjeDisciplineBtn;
 	private JButton odjavaBtn;
 
 	/**
@@ -59,7 +61,7 @@ public class AccountForm extends JFrame {
 		setTitle("Nalog");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 250, 460);
+		setBounds(100, 100, 260, 550);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 205));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -69,7 +71,7 @@ public class AccountForm extends JFrame {
 		
 		
 		JLabel headerPictureLabel = new JLabel("");
-		headerPictureLabel.setBounds(40, 0, 170, 120);
+		headerPictureLabel.setBounds(45, 0, 170, 120);
 		contentPane.add(headerPictureLabel);
 
 		try {
@@ -83,19 +85,19 @@ public class AccountForm extends JFrame {
 		JLabel whiteCorrectionLabel = new JLabel("");
 		whiteCorrectionLabel.setOpaque(true);
 		whiteCorrectionLabel.setBackground(Color.WHITE);
-		whiteCorrectionLabel.setBounds(0, 0, 40, 120);
+		whiteCorrectionLabel.setBounds(0, 0, 45, 120);
 		contentPane.add(whiteCorrectionLabel);
 
 		JLabel whiteCorrectionLabel2 = new JLabel("");
 		whiteCorrectionLabel2.setBackground(Color.WHITE);
 		whiteCorrectionLabel2.setOpaque(true);
-		whiteCorrectionLabel2.setBounds(210, 0, 40, 120);
+		whiteCorrectionLabel2.setBounds(215, 0, 45, 120);
 		contentPane.add(whiteCorrectionLabel2);
 		
 		buttonPane = new JPanel();
 		buttonPane.setBackground(new Color(0, 0, 139));
 		buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 20));
-		buttonPane.setBounds(0, 120, 250, 340);
+		buttonPane.setBounds(0, 120, 260, 400);
 		contentPane.add(buttonPane);
 		
 		initButtons();
@@ -126,6 +128,14 @@ public class AccountForm extends JFrame {
 		brisanjePredmetaBtn = new JButton("Ukloni predmet");
 		buttons.add(brisanjePredmetaBtn);
 		buttonPane.add(brisanjePredmetaBtn);
+		
+		dodavanjeDisciplineBtn = new JButton("Dodaj disciplinu");
+		buttons.add(dodavanjeDisciplineBtn);
+		buttonPane.add(dodavanjeDisciplineBtn);
+		
+		brisanjeDisciplineBtn = new JButton("Ukloni disciplinu");
+		buttons.add(brisanjeDisciplineBtn);
+		buttonPane.add(brisanjeDisciplineBtn);
 		
 		odjavaBtn = new JButton("Odjavi se");
 		buttons.add(odjavaBtn);
@@ -167,6 +177,20 @@ public class AccountForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				accountFormController.odjava();
+			}
+		});
+		
+		dodavanjeDisciplineBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				accountFormController.createDodavanjeDisciplineForm();
+			}
+		});
+		
+		brisanjeDisciplineBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
 			}
 		});
 		

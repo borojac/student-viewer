@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
@@ -54,7 +55,7 @@ public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 	@Override
 	public List<ElektrijadaDTO> getListuElektrijada(int idNaloga) {
 		List<ElektrijadaDTO> retVal = new ArrayList<ElektrijadaDTO>();
-		List<Integer> idElektrijade = new ArrayList<Integer>();
+		HashSet<Integer> idElektrijade = new HashSet<Integer>();
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -78,6 +79,37 @@ public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 				if (rs.next())
 					retVal.add(new ElektrijadaDTO(rs.getInt(1), rs.getDate(2), rs.getString(3)));
 			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();			
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		return retVal;
+	}
+
+	@Override
+	public List<ElektrijadaDTO> getSveElektrijade() {
+		List<ElektrijadaDTO> retVal = new ArrayList<ElektrijadaDTO>();
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		String query = "SELECT  ElektrijadaId, Datum, Lokacija FROM elektrijada";
+		
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			
+			
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				retVal.add(new ElektrijadaDTO(rs.getInt(1), rs.getDate(2), rs.getString(3)));
+			}
+		
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

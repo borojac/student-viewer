@@ -25,7 +25,7 @@ public abstract class StudentDAO {
 	/* Stankovic */
 	public abstract boolean dodajStudentaUListu(StudentMainTableDTO student);
 
-	public abstract boolean obrisiStudentaSaPredmeta(int studentID, PredmetDTO predmet);
+	public abstract boolean obrisiStudentaSaPredmeta(int studentID, int predmetID);
 	
 	public abstract boolean obrisiStudentaIzListe(String brojIndeksa);
 	
@@ -40,6 +40,12 @@ public abstract class StudentDAO {
 	public abstract int[] listaPredmetIDNaKojimaJeStudent(int studentId);
 	
 	public abstract ArrayList<StudentMainTableDTO> studentiKojiNisuNaPredmetu(int predmetID);
+	
+	public abstract boolean obrisiStudentaSaSvihTestova(int studentId);
+	
+	public abstract boolean obrisiStudentaSaElektrijade(int studentId);
+	
+	public abstract boolean obrisiStudentaSaSvihPredmeta(int studentId);
 	/* Stankovic end */
 	
 	public abstract boolean hasGrade(int studentId, int predmetId);

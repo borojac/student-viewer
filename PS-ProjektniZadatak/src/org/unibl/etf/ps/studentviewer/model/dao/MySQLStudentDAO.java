@@ -240,7 +240,7 @@ public class MySQLStudentDAO extends StudentDAO {
 	}
 
 	@Override
-	public boolean obrisiStudentaSaPredmeta(int studentID, PredmetDTO predmet) {
+	public boolean obrisiStudentaSaPredmeta(int studentID, int predmetID) {
 		boolean retVal = true;
 
 		String deleteStudentQuery = "DELETE FROM slusa WHERE StudentId=? AND PredmetId=?";
@@ -252,7 +252,7 @@ public class MySQLStudentDAO extends StudentDAO {
 
 			ps = conn.prepareStatement(deleteStudentQuery);
 			ps.setInt(1, studentID);
-			ps.setInt(2, predmet.getPredmetId());
+			ps.setInt(2, predmetID);
 
 			retVal &= ps.executeUpdate() == 1;
 
@@ -403,6 +403,264 @@ public class MySQLStudentDAO extends StudentDAO {
 		}
 		return retVal;
 	}
+	
+	@Override
+	public boolean obrisiStudentaIzListe(String brojIndeksa) {
+		boolean retVal = true;
+
+		String deleteStudentQuery = "DELETE FROM student WHERE BrojIndeksa=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DBUtility.open();
+
+			ps = conn.prepareStatement(deleteStudentQuery);
+			ps.setString(1, brojIndeksa.trim());
+
+
+			retVal &= ps.executeUpdate() == 1;
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+				retVal = true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DBUtility.close(conn, ps);
+
+		}
+
+
+		return retVal;
+	}
+
+	@Override
+	public String[][] getDataOfAllStudentsFromStudentDatabaseTable() {
+		String getAllStudentsQuerry = "SELECT * FROM student";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		ArrayList <String[]> studenti = new ArrayList<>();
+
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getAllStudentsQuerry);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				String[] tmp = new String[3];
+				tmp[0] = rs.getString(2);
+				tmp[1] = rs.getString(3);
+				tmp[2] = rs.getString(4);
+				studenti.add(tmp);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		
+		String[][] retValue = new String[studenti.size()][3];
+		for(int i = 0; i < studenti.size(); i++)
+			retValue[i] = studenti.get(i);
+		return retValue;
+	}
+
+	@Override
+	public int[] listaPredmetIDNaKojimaJeStudent(int studentId) {
+		String getAllStudentsQuerry = "SELECT PredmetId FROM slusa WHERE StudentId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		ArrayList <Integer> predmetIds = new ArrayList<>();
+
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getAllStudentsQuerry);
+			ps.setInt(1, studentId);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				predmetIds.add(rs.getInt(1));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		
+		int[] retValue = new int[predmetIds.size()];
+		for(int i = 0; i < predmetIds.size(); i++)
+			retValue[i] = predmetIds.get(i);
+		return retValue;
+	}
+
+	@Override
+	public ArrayList<StudentMainTableDTO> studentiKojiNisuNaPredmetu(int predmetID) {
+String getAllStudentsQuerry = "select * from student where StudentId not in (select StudentId from slusa where PredmetId=?)";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		ArrayList <StudentMainTableDTO> studenti = new ArrayList<>();
+
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getAllStudentsQuerry);
+			ps.setInt(1, predmetID);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				StudentMainTableDTO student = new StudentMainTableDTO(rs.getString(2), rs.getString(3), rs.getString(4));
+				student.setStudentId(rs.getInt(1));
+				studenti.add(student);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+
+		return studenti;
+	}
+
+	@Override
+	public boolean obrisiStudentaSaSvihTestova(int studentId) {
+		boolean retVal = true;
+
+		String deleteStudentQuery = "DELETE FROM izlazi_na WHERE studentId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DBUtility.open();
+
+			ps = conn.prepareStatement(deleteStudentQuery);
+			ps.setInt(1, studentId);
+
+
+			retVal &= ps.executeUpdate() == 1;
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+				retVal = true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DBUtility.close(conn, ps);
+
+		}
+
+
+		return retVal;
+	}
+
+	@Override
+	public boolean obrisiStudentaSaElektrijade(int studentId) {
+		boolean retVal = true;
+
+		String deleteStudentQuery = "DELETE FROM slusa WHERE studentId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DBUtility.open();
+
+			ps = conn.prepareStatement(deleteStudentQuery);
+			ps.setInt(1, studentId);
+
+
+			retVal &= ps.executeUpdate() == 1;
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+				retVal = true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DBUtility.close(conn, ps);
+
+		}
+
+
+		return retVal;
+	}
+
+	@Override
+	public boolean obrisiStudentaSaSvihPredmeta(int studentId) {
+		boolean retVal = true;
+
+		String deleteStudentQuery = "DELETE FROM ucestvuje WHERE studentId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DBUtility.open();
+
+			ps = conn.prepareStatement(deleteStudentQuery);
+			ps.setInt(1, studentId);
+
+
+			retVal &= ps.executeUpdate() == 1;
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+				retVal = true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DBUtility.close(conn, ps);
+
+		}
+
+
+		return retVal;
+	}
+	
 	/* Stankovic end */
 
 	@Override
@@ -490,28 +748,6 @@ public class MySQLStudentDAO extends StudentDAO {
 		return retVal;
 	}
 
-	@Override
-	public boolean obrisiStudentaIzListe(String brojIndeksa) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public String[][] getDataOfAllStudentsFromStudentDatabaseTable() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int[] listaPredmetIDNaKojimaJeStudent(int studentId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<StudentMainTableDTO> studentiKojiNisuNaPredmetu(int predmetID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
+	
 }

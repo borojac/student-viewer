@@ -87,7 +87,7 @@ public class ChooseAddTypeForm extends JFrame {
 				boolean jedan = chckbxNewCheckBoxJedan.isSelected();
 				boolean vise = chckbxNewCheckBoxVise.isSelected();
 				ChooseAddTypeForm.this.dispose();
-				//new ChooseAddTypeController(adminFormController, jedan, vise, ChooseAddTypeForm.this);	
+				new ChooseAddTypeController(adminFormController, jedan, vise, ChooseAddTypeForm.this);	
 			}
 		});
 		chooseButton.setBounds(96, 217, 89, 29);

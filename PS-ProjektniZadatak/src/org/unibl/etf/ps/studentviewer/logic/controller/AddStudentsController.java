@@ -19,7 +19,8 @@ public class AddStudentsController {
 	AdministratorFormController adminFormController = null;
 	AddForm form = null;
 
-	public AddStudentsController(AdministratorFormController adminFormController, ArrayList<String> params, AddForm form) {
+	public AddStudentsController(AdministratorFormController adminFormController, ArrayList<String> params,
+			AddForm form) {
 		this.adminFormController = adminFormController;
 		this.form = form;
 		for (String ob : params) {
@@ -27,9 +28,13 @@ public class AddStudentsController {
 		}
 		addOneStudentAdmin();
 	}
-	
+
 	public AddStudentsController(MainFormController mainFormController, ArrayList<String> params) {
-		
+		this.mainFormController = mainFormController;
+		for (String ob : params) {
+			this.params.add(ob.trim());
+		}
+		addOneStudentUser();
 	}
 
 	private void addOneStudentAdmin() {
@@ -37,17 +42,18 @@ public class AddStudentsController {
 		int valid = help.checkParams(params);
 		if (valid == 0) {
 			StudentMainTableDTO student = new StudentMainTableDTO(params.get(2), params.get(0), params.get(1));
-			//student.setKomentar(params.get(3)); //dodatno setovanje komentara;
+			// student.setKomentar(params.get(3)); //dodatno setovanje komentara;
 			MySQLStudentDAO st = new MySQLStudentDAO();
 			if (st.dodajStudentaUListu(student)) {
-				int studetnID = st.getStudentBy(student.getBrojIndeksa()).getStudentId();
-				student.setStudentId(studetnID);
-				st.dodajStudentaNaPredmet(student, mainFormController.getMainForm().getSelectedPredmet());
-				mainFormController.getMainTable().addStudent(student);
-//				mainFormController.getMainTable().tableChanged();
+				// int studetnID = st.getStudentBy(student.getBrojIndeksa()).getStudentId();
+				// student.setStudentId(studetnID);
+				// st.dodajStudentaNaPredmet(student,
+				// mainFormController.getMainForm().getSelectedPredmet());
+				// mainFormController.getMainTable().addStudent(student);
+				// mainFormController.getMainTable().tableChanged();
 				final String message = "Uspjesno cuvanje!";
 				JOptionPane.showMessageDialog(null, message, "Obavjestenje!", JOptionPane.INFORMATION_MESSAGE);
-			}else {
+			} else {
 				final String message = "Vec postoji studen sa istim brojem indeksa!";
 				JOptionPane.showMessageDialog(null, message, "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 			}
@@ -78,5 +84,23 @@ public class AddStudentsController {
 		}
 	}
 
-	
+	private void addOneStudentUser() {
+		try {
+			StudentMainTableDTO student = new StudentMainTableDTO(params.get(2), params.get(0), params.get(1));
+			MySQLStudentDAO st = new MySQLStudentDAO();
+			int studetnID = st.getStudentBy(student.getBrojIndeksa()).getStudentId();
+			student.setStudentId(studetnID);
+			st.dodajStudentaNaPredmet(student, mainFormController.getMainForm().getSelectedPredmet());
+			mainFormController.getMainTable().addStudent(student);
+			
+			final String message = "Uspjesno cuvanje!";
+			JOptionPane.showMessageDialog(null, message, "Obavjestenje!", JOptionPane.INFORMATION_MESSAGE);
+		} catch (Exception e) {
+			/*final String message = "Greska!";
+			JOptionPane.showMessageDialog(null, message, "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+		*/
+			e.printStackTrace();
+			}
+	}
+
 }
