@@ -81,19 +81,19 @@ public class GradeGenerationController {
 			else
 				currentStudent = student;
 			gradeForm.printStudent(currentStudent);
-			//			new Thread(new Runnable() {
-			//				
-			//				@Override
-			//				public void run() {
-			DAOFactory factory = new MySQLDAOFactory();
-			PredmetDAO predmetDAO = factory.getPredmetDAO();
-			List<GradingInfoDTO> data = predmetDAO.getGradingInfo(
-					currentStudent.getStudentId(), 
-					predmet.getPredmetId()
-					);
-			gradeForm.getGradesTableModel().setData(data);
-			//				}
-			//			}).start();
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					DAOFactory factory = new MySQLDAOFactory();
+					PredmetDAO predmetDAO = factory.getPredmetDAO();
+					List<GradingInfoDTO> data = predmetDAO.getGradingInfo(
+							currentStudent.getStudentId(), 
+							predmet.getPredmetId()
+							);
+					gradeForm.getGradesTableModel().setData(data);
+				}
+			}).start();
 			EventQueue.invokeLater(new Runnable() {
 
 				@Override
@@ -115,13 +115,19 @@ public class GradeGenerationController {
 			else
 				currentStudent = student;
 			gradeForm.printStudent(currentStudent);
-			DAOFactory factory = new MySQLDAOFactory();
-			PredmetDAO predmetDAO = factory.getPredmetDAO();
-			List<GradingInfoDTO> data = predmetDAO.getGradingInfo(
-					currentStudent.getStudentId(), 
-					predmet.getPredmetId()
-					);
-			gradeForm.getGradesTableModel().setData(data);
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					DAOFactory factory = new MySQLDAOFactory();
+					PredmetDAO predmetDAO = factory.getPredmetDAO();
+					List<GradingInfoDTO> data = predmetDAO.getGradingInfo(
+							currentStudent.getStudentId(), 
+							predmet.getPredmetId()
+							);
+					gradeForm.getGradesTableModel().setData(data);
+				}
+			}).start();
 			EventQueue.invokeLater(new Runnable() {
 
 				@Override
