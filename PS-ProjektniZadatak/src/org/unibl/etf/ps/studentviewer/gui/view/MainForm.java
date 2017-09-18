@@ -15,6 +15,10 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,9 +46,13 @@ import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.DisciplinaDAO;
+import org.unibl.etf.ps.studentviewer.model.dao.ElektrijadaDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
+import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
@@ -593,6 +601,35 @@ public class MainForm extends JFrame {
 	private void initElektrijadaComboBox() {
 		elektrijadaCB = new JComboBox<>();
 		elektrijadaCB.setBounds(745, 252, 430, 35);
+		
+		MySQLDAOFactory dao = new MySQLDAOFactory();
+		ElektrijadaDAO eleDAO = dao.getElektrijadaDAO();
+		ArrayList<ElektrijadaDTO> elektrijade = (ArrayList<ElektrijadaDTO>) eleDAO.getListuElektrijada(2);
+		for (ElektrijadaDTO el : elektrijade){
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			DateFormat newDf = new SimpleDateFormat("dd.MM.yyyy");
+			java.util.Date datum = null;
+			try {
+				 datum = df.parse(el.getDatum().toString());
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			elektrijadaCB.addItem(el.getLokacija()+", "+newDf.format(datum));
+		}
+		elektrijadaCB.setSelectedItem("");
+		elektrijadaCB.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		      disciplineCB.removeAllItems();
+		      int indeks = elektrijadaCB.getSelectedIndex();
+		      ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
+		      DisciplinaDAO discDAO = dao.getDisciplinaDAO();
+		      ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO.getDiscipline(selektovanaElektrijada.getId());
+		      for (DisciplinaDTO di : discipline){
+		    	 disciplineCB.addItem(di.getNaziv());
+		      }
+		    }
+		});
 		contentPane.add(elektrijadaCB);
 	}
 

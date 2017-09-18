@@ -554,8 +554,9 @@ public class ElektrijadaController {
 						break;
 					}
 				}
-				if (!prisutna)
+				if (!prisutna){
 					dnDAO.obrisiDodatnuNastavu(nastavaIzBaza.getNastavaId());
+				}
 			}
 
 			EventQueue.invokeLater(new Runnable() {

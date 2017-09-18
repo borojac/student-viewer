@@ -64,7 +64,7 @@ public class MySQLDodatnaNastavaDAO implements DodatnaNastavaDAO {
 			ps.setString(3, dodatnaNastava.getNazivTeme());
 			ps.setInt(4, dodatnaNastava.getNastavaId());
 
-			retVal &= ps.executeUpdate() == 1;
+			retVal = ps.executeUpdate() == 1;
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			try {
@@ -110,7 +110,7 @@ public class MySQLDodatnaNastavaDAO implements DodatnaNastavaDAO {
 			ps.setString(6, dodatnaNastava.getNaziv());
 			ps.setInt(7, dodatnaNastava.getElektrijadaId());
 
-			retVal &= ps.executeUpdate() == 1;
+			retVal = ps.executeUpdate() == 1;
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			try {
@@ -147,7 +147,7 @@ public class MySQLDodatnaNastavaDAO implements DodatnaNastavaDAO {
 			ps = conn.prepareStatement(query);
 			ps.setInt(1, idDodatneNastave);
 
-			retVal &= ps.executeUpdate() == 1;
+			retVal = ps.executeUpdate() == 1;
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
