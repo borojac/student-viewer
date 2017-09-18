@@ -2,9 +2,8 @@ package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.SystemColor;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -17,7 +16,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.AccountFormController;
@@ -28,9 +26,10 @@ public class ChangeAccountNameForm extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel componentsPane;
-	private JLabel novoKorImeLbl, staroKorImeLbl;
-	private JTextField novoKorImeTf, staroKorImeTf;
+	private JLabel korisnickoImeLbl;
+	private JTextField korisnickoImeTf;
 	private JButton potvrdiBtn;
+	
 	private ChangeAccountNameFormController changeAccountNameFormController;
 	private NalogDTO nalogDTO;
 
@@ -48,7 +47,7 @@ public class ChangeAccountNameForm extends JFrame {
 		});
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 10, 650, 400);
+		setBounds(100, 10, 530, 260);
 		setTitle("Promjena korisnickog imena");
 		setResizable(false);
 		contentPane = new JPanel();
@@ -58,7 +57,7 @@ public class ChangeAccountNameForm extends JFrame {
 		setContentPane(contentPane);
 		
 		JLabel headerPictureLabel = new JLabel("");
-		headerPictureLabel.setBounds(240, 0, 170, 120);
+		headerPictureLabel.setBounds(180, 0, 170, 120);
 		contentPane.add(headerPictureLabel);
 
 		try {
@@ -70,66 +69,52 @@ public class ChangeAccountNameForm extends JFrame {
 			e.printStackTrace();
 		}
 		
-		JLabel correct1Label = new JLabel("STUDENT");
-		correct1Label.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 45));
-		correct1Label.setHorizontalAlignment(SwingConstants.CENTER);
-		correct1Label.setOpaque(true);
-		correct1Label.setForeground(new Color(0, 0, 139));
-		correct1Label.setBackground(new Color(255, 255, 255));
-		correct1Label.setBounds(0, 0, 240, 120);
-		contentPane.add(correct1Label);
+		JLabel whiteCorrectionLabel = new JLabel("");
+		whiteCorrectionLabel.setOpaque(true);
+		whiteCorrectionLabel.setBackground(Color.WHITE);
+		whiteCorrectionLabel.setBounds(0, 0, 180, 120);
+		contentPane.add(whiteCorrectionLabel);
 
-		JLabel correct2Label = new JLabel("VIEWER");
-		correct2Label.setBackground(SystemColor.text);
-		correct2Label.setForeground(new Color(0, 0, 139));
-		correct2Label.setHorizontalAlignment(SwingConstants.CENTER);
-		correct2Label.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 45));
-		correct2Label.setOpaque(true);
-		correct2Label.setBounds(410, 0, 240, 120);
-		contentPane.add(correct2Label);
+		JLabel whiteCorrectionLabel2 = new JLabel("");
+		whiteCorrectionLabel2.setBackground(Color.WHITE);
+		whiteCorrectionLabel2.setOpaque(true);
+		whiteCorrectionLabel2.setBounds(350, 0, 180, 120);
+		contentPane.add(whiteCorrectionLabel2);
 		
 		componentsPane = new JPanel();
 		componentsPane.setBackground(new Color(0, 0, 139));
 		componentsPane.setLayout(null);
-		componentsPane.setBounds(200, 120, 250, 430);
+		componentsPane.setBounds(50, 120, 430, 430);
 		contentPane.add(componentsPane);
 		
 		initComponents();
 		initButtonsListeners();
+		
+		getRootPane().setDefaultButton(potvrdiBtn);
 	}
 	private void initComponents() {
-		staroKorImeLbl = new JLabel("Staro korisnicko ime");
-		staroKorImeLbl.setBounds(30, 10, 250, 35);
-		staroKorImeLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
-		staroKorImeLbl.setForeground(Color.WHITE);
-		componentsPane.add(staroKorImeLbl);
+		korisnickoImeLbl = new JLabel("Korisnicko ime");
+		korisnickoImeLbl.setBounds(0, 10, 250, 25);
+		korisnickoImeLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
+		korisnickoImeLbl.setForeground(Color.WHITE);
+		componentsPane.add(korisnickoImeLbl);
 		
-		staroKorImeTf = new JTextField();
-		staroKorImeTf.setBounds(0, 45, 250, 35);
-		staroKorImeTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
-		componentsPane.add(staroKorImeTf);
-		
-		novoKorImeLbl = new JLabel("Novo korisnicko ime");
-		novoKorImeLbl.setBounds(30, 80, 250, 35);
-		novoKorImeLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
-		novoKorImeLbl.setForeground(Color.WHITE);
-		componentsPane.add(novoKorImeLbl);
-		
-		novoKorImeTf = new JTextField();
-		novoKorImeTf.setBounds(0, 115, 250, 35);
-		novoKorImeTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
-		componentsPane.add(novoKorImeTf);
+		korisnickoImeTf = new JTextField();
+		korisnickoImeTf.setBounds(0, 35, 260, 35);
+		korisnickoImeTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
+		korisnickoImeTf.setText(nalogDTO.getKorisnickoIme());
+		componentsPane.add(korisnickoImeTf);
 		
 		potvrdiBtn = new JButton("Potvrdi");
-		potvrdiBtn.setBounds(50, 180, 150, 35);
+		potvrdiBtn.setBounds(275, 35, 150, 35);
 		componentsPane.add(potvrdiBtn);
 	}
 	
 	private void initButtonsListeners() {
 		
-		potvrdiBtn.addMouseListener(new MouseAdapter() {
+		potvrdiBtn.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				changeAccountNameFormController.promjenaKorisnickogImena();
 			}
 		});
@@ -144,12 +129,8 @@ public class ChangeAccountNameForm extends JFrame {
 		this.nalogDTO = nalogDTO;
 	}
 	
-	public String getStaroKorIme() {
-		return staroKorImeTf.getText();
-	}
-	
-	public String getNovoKorIme() {
-		return novoKorImeTf.getText();
+	public String getKorisnickoIme() {
+		return korisnickoImeTf.getText();
 	}
 
 }
