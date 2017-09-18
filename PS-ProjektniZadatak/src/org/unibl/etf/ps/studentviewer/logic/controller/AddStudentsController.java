@@ -100,7 +100,6 @@ public class AddStudentsController {
 			final String message = "Greska!";
 			JOptionPane.showMessageDialog(null, message, "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 
-			// e.printStackTrace();
 		}
 	}
 

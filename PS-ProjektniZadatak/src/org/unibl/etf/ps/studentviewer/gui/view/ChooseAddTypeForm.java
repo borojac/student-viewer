@@ -44,6 +44,7 @@ public class ChooseAddTypeForm extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
 				   adminFormController.resetChooseAddTypeFormOpened();
+
 			   }
 			  });
 		

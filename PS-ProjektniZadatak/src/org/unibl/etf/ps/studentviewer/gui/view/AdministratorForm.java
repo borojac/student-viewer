@@ -174,7 +174,7 @@ public class AdministratorForm extends JFrame {
 		upravljanjeStudentimaBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				administratorFormController.createAdminStudentForm();
+				administratorFormController.createAdminStudentForm(AdministratorForm.this);
 			}
 		});
 		upravljanjeStudentimaBtn.setBounds(15, 113, 180, 40);

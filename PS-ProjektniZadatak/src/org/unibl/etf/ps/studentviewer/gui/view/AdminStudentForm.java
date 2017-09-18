@@ -51,7 +51,6 @@ public class AdminStudentForm extends JFrame {
 	 * Create the frame.
 	 */
 	public AdminStudentForm(AdministratorFormController administratorFormController) {
-		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 				administratorFormController.resetStudentFormOpened();
@@ -61,21 +60,12 @@ public class AdminStudentForm extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 319);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 434, 212);
-		contentPane.add(scrollPane);
-		MySQLStudentDAO dao = new MySQLStudentDAO();
-		String [] header = {"Indeks", "Ime", "Prezime"};
-		String [][] data = dao.getDataOfAllStudentsFromStudentDatabaseTable();
-		table = new JTable(data, header);
-		table.setFont(new Font("Century Gothic", Font.BOLD, 15));
-		table.setForeground(new Color(0, 0, 139));
-		table.setBackground(new Color(173, 216, 230));
-		scrollPane.setViewportView(table);
+		setTable();
 		
 		dodajStudenteBtn = new JButton("Dodaj");
 		dodajStudenteBtn.addActionListener(new ActionListener() {
@@ -106,10 +96,25 @@ public class AdminStudentForm extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int[] selectedRow = table.getSelectedRows();
 				administratorFormController.createChangeForm(selectedRow, table);
+
 			}
 		});
 		izmijeniBtn.setBounds(159, 223, 122, 46);
 		contentPane.add(izmijeniBtn);
 	}
 	
+	public void setTable() {
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBackground(Color.WHITE);
+		scrollPane.setBounds(0, 0, 434, 212);
+		contentPane.add(scrollPane);
+		MySQLStudentDAO dao = new MySQLStudentDAO();
+		String [] header = {"Indeks", "Ime", "Prezime"};
+		String [][] data = dao.getDataOfAllStudentsFromStudentDatabaseTable();
+		table = new JTable(data, header);
+		table.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		table.setForeground(new Color(0, 0, 139));
+		table.setBackground(new Color(173, 216, 230));
+		scrollPane.setViewportView(table);
+	}
 }

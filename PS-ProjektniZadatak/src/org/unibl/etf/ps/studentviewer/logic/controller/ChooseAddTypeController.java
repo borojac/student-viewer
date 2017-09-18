@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import org.unibl.etf.ps.studentviewer.gui.view.AdminStudentForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChooseAddTypeForm;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
@@ -27,6 +28,7 @@ public class ChooseAddTypeController {
 			this.mainFormController.createAddForm();
 		} else {
 			addListOfStudents(false);
+
 		}
 	}
 	

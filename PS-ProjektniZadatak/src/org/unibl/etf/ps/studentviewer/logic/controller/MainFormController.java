@@ -15,6 +15,7 @@ import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
 import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
 import org.unibl.etf.ps.studentviewer.gui.view.AccountForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AddForm;
+import org.unibl.etf.ps.studentviewer.gui.view.AdminStudentForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChangeForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChooseAddTypeForm;
 import org.unibl.etf.ps.studentviewer.gui.view.DodavanjeStudentaZaElektrijaduForm;

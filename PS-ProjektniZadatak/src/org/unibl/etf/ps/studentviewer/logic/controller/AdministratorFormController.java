@@ -56,7 +56,7 @@ public class AdministratorFormController {
 		studentFormOpened = false;
 	}
 	
-	public void createAdminStudentForm() {
+	public void createAdminStudentForm(AdministratorForm adminForm) {
 		if(studentFormOpened)
 			return;
 		studentFormOpened = true;
@@ -107,6 +107,7 @@ public class AdministratorFormController {
 		} else {
 			final String message = "Odaberite samo jednog studenta za izmjenu!";
 			JOptionPane.showMessageDialog(null, message);
+			resetChanging();
 		}
 		
 	}
