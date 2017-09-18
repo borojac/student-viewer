@@ -1,12 +1,17 @@
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+
+import javax.swing.JButton;
 
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
 import org.unibl.etf.ps.studentviewer.gui.GradingTableModel;
@@ -24,7 +29,8 @@ import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 public class GradeGenerationController {
 
 	private PredmetDTO predmet;
-	private List<StudentNaPredmetuDTO> studentsForGrading;
+	private List<? extends StudentNaPredmetuDTO> studentsForGrading;
+	private ListIterator<? extends StudentNaPredmetuDTO> studentsForGradingIterator;
 	private StudentNaPredmetuDTO currentStudent;
 	private GradeGenerationForm gradeForm;
 	
@@ -33,8 +39,9 @@ public class GradeGenerationController {
 		this.gradeForm = gradeForm;
 	}
 	
-	public void loadStudentsForGrading(List<StudentNaPredmetuDTO> studentsOnMainTable) {
-		studentsForGrading = studentsOnMainTable;
+	public void loadStudentsForGrading(List<? extends StudentNaPredmetuDTO> studentsOnMainTable) {
+		studentsForGrading =  studentsOnMainTable;
+		studentsForGradingIterator = studentsForGrading.listIterator();
 	}
 	
 	public void calculateGrade() {
@@ -60,30 +67,87 @@ public class GradeGenerationController {
 			grade = 6;
 		else
 			grade = 5;
+		gradeForm.setBodovi(totalPoints);
 		gradeForm.setOcjena(grade);
 	}
 	
 	
+	public void loadStudentInfoNext(JButton btnDalje) {
+		if (studentsForGradingIterator.hasNext()) {
+			StudentNaPredmetuDTO student = studentsForGradingIterator.next();
+			if (student == currentStudent)
+				currentStudent = studentsForGradingIterator.next();
+			else
+				currentStudent = student;
+			gradeForm.printStudent(currentStudent);
+//			new Thread(new Runnable() {
+//				
+//				@Override
+//				public void run() {
+					DAOFactory factory = new MySQLDAOFactory();
+					PredmetDAO predmetDAO = factory.getPredmetDAO();
+					List<GradingInfoDTO> data = predmetDAO.getGradingInfo(
+							currentStudent.getStudentId(), 
+							predmet.getPredmetId()
+							);
+					gradeForm.getGradesTableModel().setData(data);
+//				}
+//			}).start();
+			EventQueue.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					if (!studentsForGradingIterator.hasNext())
+						btnDalje.setEnabled(false);
+					else if (!btnDalje.isEnabled())
+						btnDalje.setEnabled(true);
+				}
+			});
+		}
+	}
 	
-	public void loadStudentInfo() {
-		currentStudent = studentsForGrading.remove(0);
-		gradeForm.printStudent(currentStudent);
-		DAOFactory factory = new MySQLDAOFactory();
-		PredmetDAO predmetDAO = factory.getPredmetDAO();
-		List<GradingInfoDTO> data = predmetDAO.getGradingInfo(
-				currentStudent.getStudentId(), 
-				predmet.getPredmetId()
-				);
-		gradeForm.getGradesTableModel().setData(data);
+	public void loadStudentInfoPrev(JButton btnNazad) {
+		if (studentsForGradingIterator.hasPrevious()) {
+			StudentNaPredmetuDTO student = studentsForGradingIterator.previous();
+			if (student == currentStudent)
+				currentStudent = studentsForGradingIterator.previous();
+			else
+				currentStudent = student;
+			gradeForm.printStudent(currentStudent);
+			DAOFactory factory = new MySQLDAOFactory();
+			PredmetDAO predmetDAO = factory.getPredmetDAO();
+			List<GradingInfoDTO> data = predmetDAO.getGradingInfo(
+					currentStudent.getStudentId(), 
+					predmet.getPredmetId()
+					);
+			gradeForm.getGradesTableModel().setData(data);
+			EventQueue.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+
+					if (!studentsForGradingIterator.hasPrevious())
+						btnNazad.setEnabled(false);
+					else if (!btnNazad.isEnabled())
+						btnNazad.setEnabled(true);					
+				}
+			});
+		}
 	}
 	
 	public void gradeBtnAction(ActionEvent e) {
-		DAOFactory factory = new MySQLDAOFactory();
-		StudentDAO studentDAO = factory.getStudentDAO();
-		studentDAO.gradeStudent(currentStudent.getStudentId(),
-				predmet.getPredmetId(), 
-				gradeForm.getOcjena());
-		
-		loadStudentInfo();
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				DAOFactory factory = new MySQLDAOFactory();
+				StudentDAO studentDAO = factory.getStudentDAO();
+				studentDAO.gradeStudent(currentStudent.getStudentId(),
+						predmet.getPredmetId(), 
+						gradeForm.getOcjena());
+				
+			}
+		}).start();
+		loadStudentInfoNext((JButton) e.getSource());
 	}
 }

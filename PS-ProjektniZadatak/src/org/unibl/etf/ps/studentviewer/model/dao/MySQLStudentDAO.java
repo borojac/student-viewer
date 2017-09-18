@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
@@ -444,13 +446,16 @@ public class MySQLStudentDAO extends StudentDAO {
 		try {
 			conn = DBUtility.open();
 			ps = conn.prepareStatement(query);
+			ps.setInt(1, grade);
+			ps.setDate(2, new java.sql.Date(new Date().getTime()));
 			ps.setInt(3, studentId);
 			ps.setInt(4, predmetId);
-			ps.setInt(1, grade);
-		//	ps.setDate(2, new java.sql.Date(new Date().getTime()));
 			retVal &= ps.executeUpdate() == 1;
+			if (!retVal)
+				throw new SQLException();
 		} catch (SQLException e) {
-			// TODO: handle exception
+			JOptionPane.showInternalMessageDialog(null, "Greška sa serverom. Student nije ocjenjen.", "Greška",
+					JOptionPane.ERROR_MESSAGE, null);
 			e.printStackTrace();
 		} finally {
 			DBUtility.close(ps, conn);
