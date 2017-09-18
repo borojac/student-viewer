@@ -14,6 +14,7 @@ public class AccountFormController {
 	private static boolean brisanjePredmetaFormOpened = false;
 	private static boolean changeAccountNameFormOpened = false;
 	private static boolean changePasswordFormOpened = false;
+	private static boolean dodavanjeDisciplineFormOpened = false;
 	
 	public AccountFormController() {
 		super();
@@ -86,6 +87,17 @@ public class AccountFormController {
 	
 	public static void resetChangePasswordFormOpened(){
 		changePasswordFormOpened = false;
+	}
+
+	public synchronized boolean createDodavanjeDisciplineForm() {
+		if(dodavanjeDisciplineFormOpened)
+			return false;
+		
+		dodavanjeDisciplineFormOpened = true;
+		DodavanjePredmetaForm dodavanjePredmetaForm = new DodavanjePredmetaForm(accountForm.getNalogDTO());
+		dodavanjePredmetaForm.setVisible(true);
+		return true;
+		
 	}
 
 }

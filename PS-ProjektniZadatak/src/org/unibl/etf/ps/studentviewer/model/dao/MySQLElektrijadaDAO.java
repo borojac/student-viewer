@@ -89,4 +89,35 @@ public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 		return retVal;
 	}
 
+	@Override
+	public List<ElektrijadaDTO> getSveElektrijade() {
+		List<ElektrijadaDTO> retVal = new ArrayList<ElektrijadaDTO>();
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		String query = "SELECT  ElektrijadaId, Datum, Lokacija FROM elektrijada";
+		
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			
+			
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				retVal.add(new ElektrijadaDTO(rs.getInt(1), rs.getDate(2), rs.getString(3)));
+			}
+		
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();			
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		return retVal;
+	}
+
 }
