@@ -3,8 +3,8 @@ package org.unibl.etf.ps.studentviewer.gui.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -145,51 +145,51 @@ public class AccountForm extends JFrame {
 	
 	private void initButtonsListeners() {
 		
-		promjenaLozinkeBtn.addMouseListener(new MouseAdapter() {
+		promjenaLozinkeBtn.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				accountFormController.createChangePasswordForm();
 			}
 		});
 		
-		promjenaKorImenaBtn.addMouseListener(new MouseAdapter() {
+		promjenaKorImenaBtn.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				accountFormController.createChangeAccountNameForm();
 			}
 		});
 		
-		dodavanjePredmetaBtn.addMouseListener(new MouseAdapter() {
+		dodavanjePredmetaBtn.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				accountFormController.createDodavanjePredmetaForm();
 			}
 		});
 		
-		brisanjePredmetaBtn.addMouseListener(new MouseAdapter() {
+		brisanjePredmetaBtn.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				accountFormController.createBrisanjePredmetaForm();
 			}
 		});
 		
-		odjavaBtn.addMouseListener(new MouseAdapter() {
+		odjavaBtn.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				accountFormController.odjava();
 			}
 		});
 		
-		dodavanjeDisciplineBtn.addMouseListener(new MouseAdapter() {
+		dodavanjeDisciplineBtn.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				accountFormController.createDodavanjeDisciplineForm();
 			}
 		});
 		
-		brisanjeDisciplineBtn.addMouseListener(new MouseAdapter() {
+		brisanjeDisciplineBtn.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				
 			}
 		});

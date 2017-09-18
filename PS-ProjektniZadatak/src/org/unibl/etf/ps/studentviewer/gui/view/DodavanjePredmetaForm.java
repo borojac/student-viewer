@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -129,6 +130,8 @@ public class DodavanjePredmetaForm extends JFrame {
 			}
 		}
 		
+		Collections.sort(ciklusiList);
+		
 		for(int i = 0; i < ciklusiList.size(); i++) {
 			ciklusiCB.addItem(ciklusiList.get(i));
 		}
@@ -240,6 +243,9 @@ public class DodavanjePredmetaForm extends JFrame {
 	}
 	
 	public PredmetDTO getSelectedPredmet() {
+		if(predmetiCB.getSelectedIndex() == -1) {
+			return null;
+		}
 		String s = (String)predmetiCB.getSelectedItem();
 		PredmetDTO predmetDTO = null;
 		for(int i = 0; i < predmetiList.size(); i++) {

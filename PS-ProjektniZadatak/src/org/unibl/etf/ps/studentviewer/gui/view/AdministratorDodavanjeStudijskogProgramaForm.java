@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -129,11 +130,14 @@ public class AdministratorDodavanjeStudijskogProgramaForm extends JFrame {
 		ciklusCB = new JComboBox<>();
 		ciklusiList = new ArrayList<>();
 		predmetiList = predmetDAO.getAllPredmet();
+		
 		for(int i = 0; i < predmetiList.size(); i++) {
 			if(!ciklusiList.contains(predmetiList.get(i).getCiklus())) {
 				ciklusiList.add(predmetiList.get(i).getCiklus());
 			}
 		}
+		
+		Collections.sort(ciklusiList);
 		
 		for(int i = 0; i < ciklusiList.size(); i++) {
 			ciklusCB.addItem(ciklusiList.get(i));
