@@ -216,7 +216,7 @@ public class MainForm extends JFrame {
 		initButtonsListeners();
 		initPredmetiComboBox();
 		initComboBoxListener();
-		initElektrijadaComboBox();
+		//initElektrijadaComboBox();
 
 		setButtonsSize();
 
@@ -606,7 +606,7 @@ public class MainForm extends JFrame {
 		}
 	}
 
-	private void initElektrijadaComboBox() {
+	/*private void initElektrijadaComboBox() {
 		elektrijadaCB = new JComboBox<>();
 		elektrijadaCB.setBounds(745, 252, 430, 35);
 
@@ -655,7 +655,7 @@ public class MainForm extends JFrame {
 		});
 		contentPane.add(elektrijadaCB);
 	}
-
+*/
 	private void initDisciplineComboBox() {
 		disciplineCB = new JComboBox<>();
 		disciplineCB.setBounds(745, 315, 430, 35);

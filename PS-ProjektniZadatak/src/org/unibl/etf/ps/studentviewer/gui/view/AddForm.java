@@ -89,6 +89,7 @@ public class AddForm extends JFrame {
 	}
 	
 	public AddForm(MainFormController mainFormController) {
+		this.mainFormController = mainFormController;
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 				mainFormController.resetAddFormOpened();
