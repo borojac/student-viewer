@@ -17,7 +17,7 @@ public class PredmetChooseAddTypeFormController {
 		
 		if (!(one || more)) {
 			final String message = "Morate izabrati jednu opciju!";
-			JOptionPane.showMessageDialog(null, message);
+			JOptionPane.showMessageDialog(predmetChoseAddTypeForm, message, "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 			predmetChoseAddTypeForm.setVisible(true);
 		} else if (one) {
 			administratorFormController.createAddPredmetForm();
@@ -60,10 +60,10 @@ public class PredmetChooseAddTypeFormController {
 					MySQLDAOFactory factory = new MySQLDAOFactory();
 					PredmetDAO predmetDAO = factory.getPredmetDAO();
 					if (predmetDAO.addPredmete(lista)) {
-						JOptionPane.showMessageDialog(predmetChoseAddTypeForm, "Uspjesno dodati predmeti!");
+						JOptionPane.showMessageDialog(predmetChoseAddTypeForm, "Uspjesno dodati predmeti!", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 					}
 					else {
-						JOptionPane.showMessageDialog(predmetChoseAddTypeForm, "Neuspjesno dodavanje predmeta!");
+						JOptionPane.showMessageDialog(predmetChoseAddTypeForm, "Neuspjesno dodavanje predmeta!", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 					}
 				} else {
 					StringBuilder message = new StringBuilder("Podaci nisu uneseni! Greska u ");
@@ -85,7 +85,7 @@ public class PredmetChooseAddTypeFormController {
 					} else {
 						message.append("ciklusu.");
 					}
-					JOptionPane.showMessageDialog(predmetChoseAddTypeForm, message.toString());
+					JOptionPane.showMessageDialog(predmetChoseAddTypeForm, message.toString(), "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 				}
 				AdministratorFormController.resetChooseAddTypeFormOpened();
 			} catch (IOException e) {

@@ -35,9 +35,9 @@ public class PredmetChooseAddTypeForm extends JFrame {
 
 	public PredmetChooseAddTypeForm(AdministratorFormController administratorFormController) {
 		addWindowListener(new WindowAdapter() {
-			   public void windowClosing(WindowEvent evt) {
-				   AdministratorFormController.resetChooseAddTypeFormOpened();
-			   }
+			public void windowClosing(WindowEvent e) {
+				AdministratorFormController.resetChooseAddTypeFormOpened();
+			}
 		});
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -131,6 +131,8 @@ public class PredmetChooseAddTypeForm extends JFrame {
 		
 		chckbxNewCheckBoxVise.setBackground(new Color(0,0,139));
 		panel2.add(chckbxNewCheckBoxVise);
+		
+		getRootPane().setDefaultButton(chooseButton);
 	}
 	
 }	

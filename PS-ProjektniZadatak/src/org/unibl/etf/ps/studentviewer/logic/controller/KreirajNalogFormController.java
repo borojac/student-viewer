@@ -19,8 +19,7 @@ public class KreirajNalogFormController {
 	private NalogDAO nalogDAO;
 	private KreirajNalogForm kreirajNalogForm;
 	
-	public KreirajNalogFormController(KreirajNalogForm kreirajNalogForm)
-	{
+	public KreirajNalogFormController(KreirajNalogForm kreirajNalogForm) {
 		this.kreirajNalogForm = kreirajNalogForm;
 		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
 		nalogDAO = nalogFactory.getNalogDAO();
@@ -34,37 +33,37 @@ public class KreirajNalogFormController {
 		String sPrezime = kreirajNalogForm.getPrezimeTf();
 		
 		if (sIme.equals("")) {
-			JOptionPane.showMessageDialog(kreirajNalogForm, "Popunite ime!");
+			JOptionPane.showMessageDialog(kreirajNalogForm, "Popunite ime!", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 		}
 		else if (sPrezime.equals("")) {
-			JOptionPane.showMessageDialog(kreirajNalogForm, "Popunite prezime!");
+			JOptionPane.showMessageDialog(kreirajNalogForm, "Popunite prezime!", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 		}
 		else if (sKorIme.equals("")) {
-			JOptionPane.showMessageDialog(kreirajNalogForm, "Popunite korisnicko ime!");
+			JOptionPane.showMessageDialog(kreirajNalogForm, "Popunite korisnicko ime!", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 		}
 		else if (sKorIme.length() < 4) {
-			JOptionPane.showMessageDialog(kreirajNalogForm, "Korisnicko ime sadrzi manje od 4 karaktera!");
+			JOptionPane.showMessageDialog(kreirajNalogForm, "Korisnicko ime sadrzi manje od 4 karaktera!", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 		}
 		else if (nalogDAO.checkNalog(sKorIme)) {
-			JOptionPane.showMessageDialog(kreirajNalogForm, "Korisnicko ime vec postoji!");
+			JOptionPane.showMessageDialog(kreirajNalogForm, "Korisnicko ime vec postoji!", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 		}
 		else if (sLozinka.equals("")) {
-			JOptionPane.showMessageDialog(kreirajNalogForm, "Popunite lozinku!");
+			JOptionPane.showMessageDialog(kreirajNalogForm, "Popunite lozinku!", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 		}
 		else if (sLozinka.length() < 8) {
-			JOptionPane.showMessageDialog(kreirajNalogForm, "Lozinka sadrzi manje od 8 karaktera!");
+			JOptionPane.showMessageDialog(kreirajNalogForm, "Lozinka sadrzi manje od 8 karaktera!", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 		}
 		else if (sLozinkaPot.equals("")) {
-			JOptionPane.showMessageDialog(kreirajNalogForm, "Popunite lozinku za potvrdu!");
+			JOptionPane.showMessageDialog(kreirajNalogForm, "Popunite lozinku za potvrdu!", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 		}
 		else if (!sLozinkaPot.equals(sLozinka)) {
-			JOptionPane.showMessageDialog(kreirajNalogForm, "Lozinke se ne podudaraju!");
+			JOptionPane.showMessageDialog(kreirajNalogForm, "Lozinke se ne podudaraju!", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 		}
 		else {
 			String sLozinkaHash = sha256(sLozinka);
 			NalogDTO nalogDTO = new NalogDTO(sIme, sPrezime, sKorIme, sLozinkaHash, 'K');
 			if(nalogDAO.addNalog(nalogDTO)) {
-				JOptionPane.showMessageDialog(kreirajNalogForm, "Nalog ispravno kreiran!");
+				JOptionPane.showMessageDialog(kreirajNalogForm, "Nalog ispravno kreiran!", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 				try {
 					
 					MainForm mainForm = new MainForm(nalogDAO.getNalog(nalogDTO.getKorisnickoIme(), nalogDTO.getLozinka()));
