@@ -51,7 +51,7 @@ public class DeleteStudentsController {
 				for(int i = 0; i < selectedRows.length; i++) {
 					String indeks = mainFormController.getMainTable().getStudent(selectedRows[i]).getBrojIndeksa();
 					PredmetDTO predmet = mainFormController.getMainForm().getSelectedPredmet();
-				//	dao.obrisiStudentaSaPredmeta(dao.getStudentBy(indeks).getStudentId(), predmet.getPredmetId());
+					dao.obrisiStudentaSaPredmeta(dao.getStudentBy(indeks).getStudentId(), predmet.getPredmetId());
 				}
 				mainFormController.getMainTable().deleteStudents(selectedRows);
 				final String message = "Uspjesno brisanje!";
@@ -72,10 +72,10 @@ public class DeleteStudentsController {
 			MySQLStudentDAO dao = new MySQLStudentDAO();
 			for(int i = 0; i < listaIndeksa.length; i++) {
 				int studentID = dao.getStudentBy(listaIndeksa[i]).getStudentId();
-				int[] listaPredmetID = dao.listaPredmetIDNaKojimaJeStudent(studentID);
-				for(int idPredmeta : listaPredmetID) {
-				//	dao.obrisiStudentaSaPredmeta(studentID, idPredmeta);
-				}
+				dao.obrisiStudentaSaSvihPredmeta(studentID);
+				dao.obrisiStudentaSaElektrijade(studentID);
+				dao.obrisiStudentaSaSvihTestova(studentID);
+				//nakon brisanja iz veznih tabela, moze see brisati iz tabele student
 				dao.obrisiStudentaIzListe(listaIndeksa[i]);
 			}
 			final String message = "Uspjesno brisanje!";

@@ -188,5 +188,9 @@ public class LoginForm extends JFrame {
 	public String getLozinka() {
 		return String.valueOf(lozinkaTf.getPassword());
 	}
+	
+	public void setEmptyLozinka() {
+		lozinkaTf.setText("");
+	}
 
 }

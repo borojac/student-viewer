@@ -211,7 +211,6 @@ public class ChangeForm extends JFrame {
 		}
 
 		initLabels();
-		//initTextFields();
 	}
 
 	private void initLabels() {
