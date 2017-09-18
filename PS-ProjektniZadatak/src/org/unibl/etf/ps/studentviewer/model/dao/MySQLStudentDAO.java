@@ -748,8 +748,6 @@ String getAllStudentsQuerry = "select * from student where StudentId not in (sel
 		return retVal;
 	}
 
-
-
 	
 	
 }
