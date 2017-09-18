@@ -49,7 +49,7 @@ public class LoginFormController {
 		String lozinkaHash = sha256(loginForm.getLozinka());
 		
 		if("".equals(korisnickoIme) || "".equals(loginForm.getLozinka())) {
-			JOptionPane.showMessageDialog(loginForm, "Niste unijeli korisnicko ime ili lozinku.");
+			JOptionPane.showMessageDialog(loginForm, "Niste unijeli korisnicko ime ili lozinku.", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 			loginForm.setEmptyLozinka();
 			resetAdminFormOpened();
 			resetMainFormOpened();
@@ -58,7 +58,7 @@ public class LoginFormController {
 			NalogDAO nalogDAO = nalogFactory.getNalogDAO();
 			NalogDTO nalogDTO = nalogDAO.getNalog(korisnickoIme, lozinkaHash);
 			if(nalogDTO == null) {
-				JOptionPane.showMessageDialog(loginForm, "Korisnicko ime ili lozinka nisu korektno uneseni.");
+				JOptionPane.showMessageDialog(loginForm, "Korisnicko ime ili lozinka nisu korektno uneseni.", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 				resetAdminFormOpened();
 				resetMainFormOpened();
 				loginForm.setEmptyLozinka();
