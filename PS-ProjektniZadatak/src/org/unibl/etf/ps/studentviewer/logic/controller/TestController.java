@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -531,12 +532,65 @@ public class TestController {
 		if (test.getNaziv() != null && !"".equals(test.getNaziv())) {
 			DAOFactory factory = new MySQLDAOFactory();
 			TestDAO testDAO = factory.getTestDAO();
-			if (!testDAO.addTest(test))
+			try {
+				if (!testDAO.addTest(test))
+					EventQueue.invokeLater(new Runnable() {
+
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(testForm, "Dodavanje nije uspjelo. Pokušajte ponovo.", "Greška", JOptionPane.ERROR_MESSAGE);
+						}
+					});
+				else 
+					EventQueue.invokeLater(new Runnable() {
+
+						@Override
+						public void run() {
+							new Thread(new Runnable() {
+
+								@Override
+								public void run() {
+									testForm.getMainForm().refreshTestoviTable();
+								}
+							}).start();
+							testForm.dispose();
+							testForm.getMainForm().testoviClearSelection();
+						}
+					});
+			} catch (SQLException e) {
+				EventQueue.invokeLater(new Runnable() {
+					
+					@Override
+					public void run() {
+						JOptionPane.showMessageDialog(testForm, e.getMessage(), 
+								"Greška", JOptionPane.ERROR_MESSAGE, null);
+					}
+				});
+			}
+
+		} else
+			EventQueue.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					JOptionPane.showMessageDialog(testForm, 
+							"Morate unijeti naziv testa");
+				}
+			});
+	}
+
+	public void updateTestAction() {
+		DAOFactory factory = new MySQLDAOFactory();
+		TestDAO testDAO = factory.getTestDAO();
+		try {
+			if (!testDAO.updateTest(test))
 				EventQueue.invokeLater(new Runnable() {
 
 					@Override
 					public void run() {
-						JOptionPane.showMessageDialog(testForm, "Dodavanje nije uspjelo. Pokušajte ponovo.", "Greška", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(testForm,
+								"Ažuriranje nije uspjelo. Pokušajte ponovo.",
+								"Greška", JOptionPane.ERROR_MESSAGE);
 					}
 				});
 			else
@@ -544,44 +598,21 @@ public class TestController {
 
 					@Override
 					public void run() {
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-								testForm.getMainForm().refreshTestoviTable();
-							}
-						}).start();
 						testForm.dispose();
 						testForm.getMainForm().testoviClearSelection();
 					}
 				});
-		} else
-			JOptionPane.showMessageDialog(testForm, "Morate unijeti naziv testa");
-
-
-	}
-
-	public void updateTestAction() {
-		DAOFactory factory = new MySQLDAOFactory();
-		TestDAO testDAO = factory.getTestDAO();
-
-		if (!testDAO.updateTest(test))
+		} catch (SQLException e) {
 			EventQueue.invokeLater(new Runnable() {
-
+				
 				@Override
 				public void run() {
-					JOptionPane.showMessageDialog(testForm, "Ažuriranje nije uspjelo. Pokušajte ponovo.", "Greška", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(testForm, e.getMessage(), "Greška",
+							JOptionPane.ERROR_MESSAGE, null);
 				}
 			});
-		else
-			EventQueue.invokeLater(new Runnable() {
+		}
 
-				@Override
-				public void run() {
-					testForm.dispose();
-					testForm.getMainForm().testoviClearSelection();
-				}
-			});
 	}
 
 	public void addStudents() {

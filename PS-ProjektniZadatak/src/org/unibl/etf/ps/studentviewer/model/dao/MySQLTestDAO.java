@@ -72,7 +72,7 @@ public class MySQLTestDAO implements TestDAO {
 	}
 
 	@Override
-	public boolean updateTest(TestDTO test) {
+	public boolean updateTest(TestDTO test) throws SQLException {
 		boolean retVal = true;
 
 		String updateTestQuery = "UPDATE test SET Naziv=?, Datum=?, Napomena=?, Procenat=?, PredmetId=? WHERE TestId=?";
@@ -118,13 +118,14 @@ public class MySQLTestDAO implements TestDAO {
 			if (retVal) 
 				conn.commit();
 			else
-				throw new SQLException("Rollback needed!");
+				throw new SQLException("Ažuriranje nije uspjelo. Pokušajte ponovo.");
 			
 		} catch (SQLException e) {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {}
 			e.printStackTrace();
+			throw e;
 		} finally {
 			try {
 				conn.setAutoCommit(true);
@@ -136,7 +137,7 @@ public class MySQLTestDAO implements TestDAO {
 	}
 
 	@Override
-	public boolean addTest(TestDTO test) {
+	public boolean addTest(TestDTO test) throws SQLException {
 		String addTestQuery = "{CALL dodaj_test(?, ?, ?, ?, ?, ?)}";
 		String updateStudentsQuery = "INSERT INTO izlazi_na VALUE (?, ?, ?, ?)";
 
@@ -177,13 +178,14 @@ public class MySQLTestDAO implements TestDAO {
 			if (retVal)
 				conn.commit();
 			else
-				throw new SQLException("Rollback needed!");
+				throw new SQLException("Dodavanje testa nije uspjelo. Pokušajte ponovo!");
 
 		} catch (SQLException ex) {
 			try {
 				conn.rollback();
 			} catch (SQLException e) {}
 			ex.printStackTrace();
+			throw ex;
 		} finally {
 			try {
 				conn.setAutoCommit(true);
@@ -317,7 +319,6 @@ public class MySQLTestDAO implements TestDAO {
 				retVals.add(tmp);
 			}
 		} catch (SQLException e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		} finally {
 			DBUtility.close(rs, ps, conn);
