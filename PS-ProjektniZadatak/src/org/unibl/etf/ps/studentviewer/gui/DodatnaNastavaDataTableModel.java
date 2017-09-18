@@ -17,12 +17,14 @@ public class DodatnaNastavaDataTableModel extends AbstractTableModel {
 		 */
 	private static final long serialVersionUID = -190084636559831076L;
 	private ArrayList<DodatnaNastavaDTO> listaDodatnihNastava;
-
+	//"EEE MMM dd HH:mm:ss zzzz yyyy"
 	public DodatnaNastavaDataTableModel(ArrayList<DodatnaNastavaDTO> listaDodatnihNastava) {
 		super();
 		this.listaDodatnihNastava = listaDodatnihNastava;
 	}
 
+
+	
 	@Override
 	public int getRowCount() {
 		// TODO Auto-generated method stub
@@ -62,18 +64,23 @@ public class DodatnaNastavaDataTableModel extends AbstractTableModel {
 			value = nastava.getNazivTeme();
 			break;
 		case 1:{
-			System.out.println(nastava.getDatum().toString());
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+			
 			DateFormat newDf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
 			Date date = null;
 			try {
-				
+				DateFormat df = null;
+				if (nastava.getDatum().toString().contains("CEST")){
+					 df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
+				}else{
+					 df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+				}
 				 date = df.parse(nastava.getDatum().toString());
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			value = newDf.format(date);
+			//setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm"));
 			break;
 		}
 		case 2:

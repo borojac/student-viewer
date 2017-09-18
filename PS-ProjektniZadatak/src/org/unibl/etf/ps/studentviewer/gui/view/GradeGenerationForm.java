@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
 import org.apache.log4j.lf5.viewer.LogFactor5LoadingDialog;
@@ -57,10 +59,13 @@ public class GradeGenerationForm extends JDialog {
 	private JTextField prezimeTextField;
 	private JTextField ocjenaTextField;
 	private JTable table;
-	private JButton okButton;
-	private JButton cancelButton;
+	private JButton btnOcijeni;
+	private JButton btnDalje;
+	private JButton btnNazad;
+	private JTextField bodoviTextField;
+	private JPanel buttonPane;
 
-	public GradeGenerationForm(PredmetDTO predmet, List<StudentNaPredmetuDTO> students) {
+	public GradeGenerationForm(PredmetDTO predmet, List<? extends StudentNaPredmetuDTO> students) {
 
 		controller = new GradeGenerationController(this, predmet);
 		controller.loadStudentsForGrading(students);
@@ -92,16 +97,19 @@ public class GradeGenerationForm extends JDialog {
 		contentPanel.add(lblPrezime);
 
 		brojIndeksaTextField = new JTextField();
-		brojIndeksaTextField.setBounds(120, 12, 86, 20);
+		brojIndeksaTextField.setEditable(false);
+		brojIndeksaTextField.setBounds(120, 12, 84, 20);
 		contentPanel.add(brojIndeksaTextField);
 		brojIndeksaTextField.setColumns(10);
 
 		imeTextField = new JTextField();
+		imeTextField.setEditable(false);
 		imeTextField.setBounds(120, 43, 204, 20);
 		contentPanel.add(imeTextField);
 		imeTextField.setColumns(10);
 
 		prezimeTextField = new JTextField();
+		prezimeTextField.setEditable(false);
 		prezimeTextField.setBounds(120, 74, 204, 20);
 		contentPanel.add(prezimeTextField);
 		prezimeTextField.setColumns(10);
@@ -113,58 +121,71 @@ public class GradeGenerationForm extends JDialog {
 		contentPanel.add(lblOcjena);
 
 		ocjenaTextField = new JTextField();
-		ocjenaTextField.setBounds(120, 105, 86, 20);
+		ocjenaTextField.setEditable(false);
+		ocjenaTextField.setBounds(120, 105, 40, 20);
 		contentPanel.add(ocjenaTextField);
 		ocjenaTextField.setColumns(10);
 
 		initTable();
 
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
-			okButton = new JButton("Ocijeni");
-			okButton.setEnabled(false);
-			okButton.addActionListener(new ActionListener() {
+		buttonPane = new JPanel();
+		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					new Thread(new Runnable() {
-						
-						@Override
-						public void run() {
-							controller.gradeBtnAction(e);
-							
-						}
-					}).start();
-					EventQueue.invokeLater(new Runnable() {
+		btnOcijeni = new JButton("Ocijeni");
+		btnOcijeni.setEnabled(false);
+		btnOcijeni.addActionListener(new ActionListener() {
 
-						@Override
-						public void run() {
-							okButton.setEnabled(false);
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new Thread(new Runnable() {
 
-						}
-					});
-				}
-			});
-			buttonPane.add(okButton);
-			getRootPane().setDefaultButton(okButton);
+					@Override
+					public void run() {
+						controller.gradeBtnAction(e);
+					}
+				}).start();
+				EventQueue.invokeLater(new Runnable() {
 
-			cancelButton = new JButton("Dalje");
-			cancelButton.addActionListener(new ActionListener() {
+					@Override
+					public void run() {
+						btnOcijeni.setEnabled(false);
+					}
+				});
+			}
+		});
+		buttonPane.add(btnOcijeni);
+		getRootPane().setDefaultButton(btnOcijeni);
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					controller.loadStudentInfo();
-				}
-			});
-			buttonPane.add(cancelButton);
-			buttonPane.add(okButton);
-
+		btnDalje = new JButton("Dalje");
+		if (students.size() == 1) {
+			btnDalje.setEnabled(false);
 		}
+		btnDalje.addActionListener(new ActionListener() {
 
-		controller.loadStudentInfo();
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.loadStudentInfoNext(btnDalje);
+				btnNazad.setEnabled(true);
+			}
+		});
+
+		btnNazad = new JButton("Nazad");
+		btnNazad.setEnabled(false);
+		btnNazad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				controller.loadStudentInfoPrev(btnNazad);
+				btnDalje.setEnabled(true);
+			}
+		});
+		buttonPane.add(btnNazad);
+		buttonPane.add(btnDalje);
+		buttonPane.add(btnOcijeni);
+
+
+
+		controller.loadStudentInfoNext(btnOcijeni);
 	}
 
 	public void printStudent(StudentNaPredmetuDTO student) {
@@ -187,9 +208,10 @@ public class GradeGenerationForm extends JDialog {
 		contentPanel.add(scrollPane);
 
 		table = new JTable();
-		table.addMouseListener(new MouseAdapter() {
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void valueChanged(ListSelectionEvent e) {
 				new Thread(new Runnable() {
 
 					@Override
@@ -199,12 +221,12 @@ public class GradeGenerationForm extends JDialog {
 
 								@Override
 								public void run() {
-									okButton.setEnabled(true);
+									btnOcijeni.setEnabled(true);
 
 								}
 							});
 							new Thread(new Runnable() {
-								
+
 								@Override
 								public void run() {
 									controller.calculateGrade();
@@ -215,8 +237,9 @@ public class GradeGenerationForm extends JDialog {
 
 								@Override
 								public void run() {
-									okButton.setEnabled(false);
-
+									btnOcijeni.setEnabled(false);
+									ocjenaTextField.setText("-");
+									bodoviTextField.setText("");
 								}
 							});
 						}
@@ -227,6 +250,18 @@ public class GradeGenerationForm extends JDialog {
 		scrollPane.setViewportView(table);
 
 		table.setModel(new GradingTableModel());
+
+		bodoviTextField = new JTextField();
+		bodoviTextField.setEditable(false);
+		bodoviTextField.setBounds(240, 105, 84, 20);
+		contentPanel.add(bodoviTextField);
+		bodoviTextField.setColumns(10);
+
+		JLabel lblBodovi = new JLabel("Bodovi:");
+		lblBodovi.setForeground(Color.WHITE);
+		lblBodovi.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblBodovi.setBounds(170, 105, 60, 20);
+		contentPanel.add(lblBodovi);
 	}
 
 	public JTable getGradesTable() {
@@ -243,6 +278,16 @@ public class GradeGenerationForm extends JDialog {
 			@Override
 			public void run() {
 				ocjenaTextField.setText("" + ocjena);
+			}
+		});
+	}
+
+	public void setBodovi(double totalPoints) {
+		EventQueue.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				bodoviTextField.setText(String.format("%.2f", totalPoints));
 			}
 		});
 	}

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
@@ -702,13 +704,16 @@ String getAllStudentsQuerry = "select * from student where StudentId not in (sel
 		try {
 			conn = DBUtility.open();
 			ps = conn.prepareStatement(query);
+			ps.setInt(1, grade);
+			ps.setDate(2, new java.sql.Date(new Date().getTime()));
 			ps.setInt(3, studentId);
 			ps.setInt(4, predmetId);
-			ps.setInt(1, grade);
-		//	ps.setDate(2, new java.sql.Date(new Date().getTime()));
 			retVal &= ps.executeUpdate() == 1;
+			if (!retVal)
+				throw new SQLException();
 		} catch (SQLException e) {
-			// TODO: handle exception
+			JOptionPane.showInternalMessageDialog(null, "Greška sa serverom. Student nije ocjenjen.", "Greška",
+					JOptionPane.ERROR_MESSAGE, null);
 			e.printStackTrace();
 		} finally {
 			DBUtility.close(ps, conn);
@@ -716,6 +721,41 @@ String getAllStudentsQuerry = "select * from student where StudentId not in (sel
 		return retVal;
 	}
 
+<<<<<<< HEAD
+=======
+	@Override
+	public boolean hasGrade(int studentId, int predmetId) {
+		boolean retVal = true;
+		String query = "SELECT Ocjena IS NOT NULL "
+				+ "FROM slusa "
+				+ "WHERE StudentId=? AND PredmetId=?";
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, studentId);
+			ps.setInt(2, predmetId);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				retVal = rs.getBoolean(1);
+			}
+		} catch (SQLException e) {
+			retVal = false;
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		return retVal;
+	}
+
+	@Override
+	public boolean obrisiStudentaIzListe(String brojIndeksa) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+>>>>>>> branch 'master' of https://github.com/borojac/student-viewer
 
 
 	

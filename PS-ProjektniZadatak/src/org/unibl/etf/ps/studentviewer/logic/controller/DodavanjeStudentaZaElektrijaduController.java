@@ -46,7 +46,8 @@ public class DodavanjeStudentaZaElektrijaduController {
 					}
 				}
 			}
-			kontroler.dodavanjeStudenta(studentiZaUndoRedo);
+			if (!studentiZaUndoRedo.isEmpty())
+				kontroler.dodavanjeStudenta(studentiZaUndoRedo);
 			studentiZaElektrijaduDataModel.fireTableDataChanged();
 			tableStudenti.setModel(studentiZaElektrijaduDataModel);
 			tableStudenti.repaint();
