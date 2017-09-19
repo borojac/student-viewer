@@ -212,11 +212,12 @@ public class MainTable extends JTable {
 		return students.get(row);
 	}
 
-	public void setStudent(int row, String indeks, String ime, String prezime) {
+	public void setStudent(int row, String indeks, String ime, String prezime, String komentar) {
 		StudentMainTableDTO student = students.get(row);
 		student.setBrojIndeksa(indeks);
 		student.setIme(ime);
 		student.setPrezime(prezime);
+		student.setKomentar(komentar);
 		setStudents(students);
 		changeView();
 	}
