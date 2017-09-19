@@ -30,7 +30,7 @@ public class AdministratorDodavanjePredmetaFormController {
 		String skolskaGodina = administratorDodavanjePredmetaForm.getSkolskaGodina();
 		short ciklus = administratorDodavanjePredmetaForm.getCiklus();
 		if("".equals(sifra) || "".equals(nazivPredmeta) || ects == -1 || semestar == -1) {
-			JOptionPane.showMessageDialog(administratorDodavanjePredmetaForm, "Niste popunili sva polja.");
+			JOptionPane.showMessageDialog(administratorDodavanjePredmetaForm, "Niste popunili sva polja.", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 		} else if(ects == 0 || semestar == 0) {
 			
 		} else {
@@ -39,12 +39,12 @@ public class AdministratorDodavanjePredmetaFormController {
 			PredmetDAO predmetDAO = factory.getPredmetDAO();
 			
 			if(predmetDAO.addPredmet(predmet)) {
-				JOptionPane.showMessageDialog(administratorDodavanjePredmetaForm, "Predmet uspjesno dodan.");
+				JOptionPane.showMessageDialog(administratorDodavanjePredmetaForm, "Predmet uspjesno dodan.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 				administratorDodavanjePredmetaForm.dispose();
 				AdministratorFormController.resetChooseAddTypeFormOpened();
 				AdministratorFormController.resetAddFormOpened();
 			} else {
-				JOptionPane.showMessageDialog(administratorDodavanjePredmetaForm, "Predmet nije dodan.");
+				JOptionPane.showMessageDialog(administratorDodavanjePredmetaForm, "Predmet nije dodan.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}
@@ -54,12 +54,7 @@ public class AdministratorDodavanjePredmetaFormController {
 		ArrayList<String> studijskiProgramiList = new ArrayList<>();
 		MySQLDAOFactory factory = new MySQLDAOFactory();
 		PredmetDAO predmetDAO = factory.getPredmetDAO();
-		ArrayList<PredmetDTO> predmeti = predmetDAO.getAllPredmet();
-		for(int i = 0; i < predmeti.size(); i++) {
-			if(predmeti.get(i).getCiklus() == ciklus && !studijskiProgramiList.contains(predmeti.get(i).getNazivSP())) {
-				studijskiProgramiList.add(predmeti.get(i).getNazivSP());
-			}
-		}
+		studijskiProgramiList = predmetDAO.getAllStudijskiProgramAtCiklus(ciklus);
 		for(int i = 0; i < studijskiProgramiList.size(); i++) {
 			studijskiProgramiCB.addItem(studijskiProgramiList.get(i));
 		}

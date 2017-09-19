@@ -16,8 +16,6 @@ import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
-import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
-
 public class MySQLPredmetDAO implements PredmetDAO {
 
 	@Override
@@ -373,6 +371,39 @@ public class MySQLPredmetDAO implements PredmetDAO {
 		}
 		
 		return retVal;
+	}
+	
+	public ArrayList<String> getAllStudijskiProgramAtCiklus(short ciklus) {
+		ArrayList<String> retVals = new ArrayList<>();
+		
+		String query = "SELECT NazivSP FROM studijski_program WHERE Ciklus = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			ps.setShort(1, ciklus);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				retVals.add(rs.getString(1));
+			}
+			
+			if(retVals.size() == 0) {
+				retVals = null;
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		
+		return retVals;
 	}
 
 	@Override

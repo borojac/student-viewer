@@ -23,7 +23,7 @@ public class AdministratorDodavanjeStudijskogProgramaFormController {
 		String zvanje = administratorDodavanjeStudijskogProgramaForm.getZvanje();
 		
 		if("".equals(nazivSP) || ects == -1 || ciklus == -1 || trajanje == -1 || "".equals(zvanje)) {
-			JOptionPane.showMessageDialog(administratorDodavanjeStudijskogProgramaForm, "Niste popunili sva polja.");
+			JOptionPane.showMessageDialog(administratorDodavanjeStudijskogProgramaForm, "Niste popunili sva polja.", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 		} else if(ects == 0 || trajanje == 0) {
 			
 		} else {
@@ -31,16 +31,16 @@ public class AdministratorDodavanjeStudijskogProgramaFormController {
 			PredmetDAO predmetDAO = factory.getPredmetDAO();
 			
 			if(predmetDAO.checkStudijskiProgram(nazivSP, ciklus)) {
-				JOptionPane.showMessageDialog(administratorDodavanjeStudijskogProgramaForm, "Na trazenom ciklusu vec postoji studijski program sa unesenim imenom");
+				JOptionPane.showMessageDialog(administratorDodavanjeStudijskogProgramaForm, "Na trazenom ciklusu vec postoji studijski program sa unesenim imenom", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 			} else {
 				if(predmetDAO.addStudijskiProgram(nazivSP, ects, ciklus, trajanje, zvanje)) {
-					JOptionPane.showMessageDialog(administratorDodavanjeStudijskogProgramaForm, "Studijski program uspjesno dodan.");
+					JOptionPane.showMessageDialog(administratorDodavanjeStudijskogProgramaForm, "Studijski program uspjesno dodan.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 					AdministratorDodavanjePredmetaForm adpf = administratorDodavanjeStudijskogProgramaForm.getAdministratorDodavanjePredmetaForm();
-					adpf.getAdministratorDodavanjePredmetaFormController().postaviStudijskePrograme(adpf.getStudijskiProgramiCB(), ciklus);
+					adpf.getAdministratorDodavanjePredmetaFormController().postaviStudijskePrograme(adpf.getStudijskiProgramiCB(), adpf.getCiklus());
 					administratorDodavanjeStudijskogProgramaForm.dispose();
 					AdministratorDodavanjePredmetaFormController.resetDodajSPOpened();
 				} else {
-					JOptionPane.showMessageDialog(administratorDodavanjeStudijskogProgramaForm, "Studijski program nije dodan.");
+					JOptionPane.showMessageDialog(administratorDodavanjeStudijskogProgramaForm, "Studijski program nije dodan.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		}
