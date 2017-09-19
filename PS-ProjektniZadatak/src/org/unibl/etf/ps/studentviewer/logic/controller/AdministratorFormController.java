@@ -150,7 +150,7 @@ public class AdministratorFormController {
 		ZahtjevDAO zahtjevDAO = zahtjevFactory.getZahtjevDAO();
 		
 		if(zahtjevDAO.deleteZahtjev(zahtjevDTO)) {
-			JOptionPane.showMessageDialog(administratorForm, "Zahtjev odbijen.");
+			JOptionPane.showMessageDialog(administratorForm, "Zahtjev odbijen.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 			administratorForm.removeSelectedRow();
 		}
 	}
@@ -167,7 +167,7 @@ public class AdministratorFormController {
 		PredmetDTO predmetDTO = predmetDAO.getPredmet(zahtjevDTO.getPredmetId());
 		
 		if(zahtjevDAO.updateZahtjev(zahtjevDTO) && nalogDAO.addPredmet(predmetDTO, nalogDTO)) {
-			JOptionPane.showMessageDialog(administratorForm, "Zahtjev odobren.");
+			JOptionPane.showMessageDialog(administratorForm, "Zahtjev odobren.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 			administratorForm.removeSelectedRow();
 		}
 	}

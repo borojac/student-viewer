@@ -229,7 +229,7 @@ public class MySQLPredmetDAO implements PredmetDAO {
 			if(rs.next()) {
 				sgId = rs.getInt(1);
 			} else {
-				JOptionPane.showMessageDialog(null, "Nekorektno unesena skolska godina.");
+				JOptionPane.showMessageDialog(null, "Nekorektno unesena skolska godina.", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
 			
@@ -241,7 +241,7 @@ public class MySQLPredmetDAO implements PredmetDAO {
 			if(rs.next()) {
 				spId = rs.getInt(1);
 			} else {
-				JOptionPane.showMessageDialog(null, "Nekorektno unesen naziv studijskog programa.");
+				JOptionPane.showMessageDialog(null, "Nekorektno unesen naziv studijskog programa.", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
 			
