@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -167,7 +168,8 @@ public class TestDodajStudenteForm extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				JButton okButton = new JButton("");
+				okButton.setIcon(new ImageIcon("img/Check_14.png"));
 				okButton.setBackground(new Color(0, 0, 139));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -181,11 +183,18 @@ public class TestDodajStudenteForm extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				JButton cancelButton = new JButton("");
+				cancelButton.setIcon(new ImageIcon("img/Cancel_14.png"));
 				cancelButton.setBackground(new Color(0, 0, 139));
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						thisDialog.dispose();
+						EventQueue.invokeLater(new Runnable() {
+							
+							@Override
+							public void run() {
+								thisDialog.dispose();
+							}
+						});
 					}
 				});
 				cancelButton.setActionCommand("Cancel");

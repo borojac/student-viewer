@@ -66,6 +66,8 @@ public class GradeGenerationForm extends JDialog {
 	private JPanel buttonPane;
 
 	public GradeGenerationForm(PredmetDTO predmet, List<? extends StudentNaPredmetuDTO> students) {
+		setModal(true);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
 		controller = new GradeGenerationController(this, predmet);
 		controller.loadStudentsForGrading(students);

@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.event.UndoableEditEvent;
@@ -70,6 +72,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComboBox;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.Window.Type;
+import java.awt.Dialog.ModalExclusionType;
 
 public class TestForm extends JFrame {
 
@@ -101,6 +105,9 @@ public class TestForm extends JFrame {
 
 
 	public TestForm(TestDTO testParam, MainForm mainForm) {
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setType(Type.UTILITY);
 		if (testParam != null) {
 			test = new TestDTO(testParam.getTestId(), testParam.getNaziv(), testParam.getDatum(),
 					testParam.getNapomena(), testParam.getProcenat(), testParam.getPredmetId());
@@ -184,21 +191,21 @@ public class TestForm extends JFrame {
 	private void initMainArea() {
 		JLabel lblNaziv = new JLabel("Naziv:");
 		lblNaziv.setForeground(Color.WHITE);
-		lblNaziv.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNaziv.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNaziv.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblNaziv.setBounds(41, 11, 70, 20);
 		contentPane.add(lblNaziv);
 
 		JLabel lblDatum = new JLabel("Datum:");
 		lblDatum.setForeground(Color.WHITE);
-		lblDatum.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDatum.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblDatum.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblDatum.setBounds(41, 55, 70, 20);
 		contentPane.add(lblDatum);
 
 		JLabel lblNapomena = new JLabel("Napomena:");
 		lblNapomena.setForeground(Color.WHITE);
-		lblNapomena.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNapomena.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNapomena.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblNapomena.setBounds(41, 104, 70, 20);
 		contentPane.add(lblNapomena);
@@ -233,44 +240,9 @@ public class TestForm extends JFrame {
 				}).start();
 			}
 		});
-		nazivTextField.setBounds(144, 12, 280, 20);
+		nazivTextField.setBounds(121, 12, 280, 20);
 		contentPane.add(nazivTextField);
 		nazivTextField.setColumns(10);
-
-		JScrollPane napomenaScrollPane = new JScrollPane();
-		napomenaScrollPane.setBounds(144, 103, 280, 100);
-		contentPane.add(napomenaScrollPane);
-
-		napomenaTextArea = new JTextArea();
-		napomenaTextArea.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (e.isControlDown() && (e.getKeyCode() == KeyEvent.VK_Z || e.getKeyCode() == KeyEvent.VK_Y))
-					testController.undoRedoAction((TestForm) testForm, e);
-			}
-			@Override
-			public void keyTyped(KeyEvent e) {
-				new Thread(new Runnable() {
-					
-					@Override
-					public void run() {
-						String text = napomenaTextArea.getText();
-						try {
-							TimeUnit.MILLISECONDS.sleep(500);
-						} catch (InterruptedException e) {}
-						if (napomenaTextArea.getText().equals(text) 
-								&& !napomenaTextArea.getText().equals(test.getNapomena())) {
-							
-							Command command = new DodajNapomenuTestCommand(test, napomenaTextArea);
-							testController.executeCommand(command);
-							
-						}
-					}
-				}).start();
-				
-			}
-		});
-		napomenaScrollPane.setViewportView(napomenaTextArea);
 		
 		studentiScrollPane = new JScrollPane();
 		studentiScrollPane.setBackground(new Color(0, 0, 139));
@@ -295,16 +267,14 @@ public class TestForm extends JFrame {
 		studentiTable.setBackground(new Color(173, 216, 230));
 		studentiTable.setFont(new Font("Century Gothic", Font.BOLD, 11));
 		studentiTable.setFillsViewportHeight(true);
-		studentiTable.addMouseListener(new MouseAdapter() {
+		studentiTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				if (studentiTable.getSelectedRow() != -1)
+			public void valueChanged(ListSelectionEvent e) {
+				if (studentiTable.getSelectedRowCount() > 0)
 					btnUkloni.setEnabled(true);
-				else {
+				else
 					btnUkloni.setEnabled(false);
-					studentiTable.clearSelection();
-					refreshStatistics();
-				}
 			}
 		});
 		studentiTable.getModel().addTableModelListener(new TableModelListener() {
@@ -341,7 +311,7 @@ public class TestForm extends JFrame {
 			}
 		});
 		searchTextField.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		searchTextField.setBounds(10, 389, 414, 20);
+		searchTextField.setBounds(90, 389, 311, 20);
 		contentPane.add(searchTextField);
 		searchTextField.setColumns(10);
 
@@ -353,7 +323,7 @@ public class TestForm extends JFrame {
 		});
 
 		btnPretrazi = new JButton("");
-		btnPretrazi.setIcon(new ImageIcon("img/Lookup_14.png"));
+		btnPretrazi.setIcon(new ImageIcon("img/Search_14.png"));
 		btnPretrazi.setBackground(new Color(0, 0, 139));
 		btnPretrazi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -363,12 +333,12 @@ public class TestForm extends JFrame {
 						searchText);
 			}
 		});
-		btnPretrazi.setBounds(434, 389, 90, 22);
+		btnPretrazi.setBounds(411, 389, 113, 22);
 		contentPane.add(btnPretrazi);
 
 		dateChooserCombo = new DateChooserCombo();
 		dateChooserCombo.setBehavior(MultyModelBehavior.SELECT_SINGLE);
-		dateChooserCombo.setBounds(144, 55, 280, 20);
+		dateChooserCombo.setBounds(121, 55, 280, 20);
 		dateChooserCombo.setCalendarBackground(Color.WHITE);
 		dateChooserCombo.setDateFormat(new SimpleDateFormat("dd.MM.yyyy"));
 
@@ -398,6 +368,7 @@ public class TestForm extends JFrame {
 		
 
 		JLabel lblStatistika = new JLabel("Statistika:");
+		lblStatistika.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblStatistika.setForeground(Color.WHITE);
 		lblStatistika.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblStatistika.setBounds(41, 233, 70, 20);
@@ -411,15 +382,15 @@ public class TestForm extends JFrame {
 			}
 		});
 		statistikaTextArea.setEditable(false);
-		statistikaTextArea.setBounds(144, 231, 280, 147);
+		statistikaTextArea.setBounds(121, 231, 280, 147);
 		statistikaTextArea.setText(testController.getTestStatistics());
 		contentPane.add(statistikaTextArea);
 
 		JLabel lblProcenat = new JLabel("Procenat:");
-		lblProcenat.setHorizontalAlignment(SwingConstants.CENTER);
+		lblProcenat.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblProcenat.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblProcenat.setForeground(Color.WHITE);
-		lblProcenat.setBounds(434, 24, 90, 20);
+		lblProcenat.setBounds(410, 11, 55, 20);
 		contentPane.add(lblProcenat);
 
 		
@@ -595,11 +566,12 @@ public class TestForm extends JFrame {
 	}
 
 	public void refreshStatistics() {
+		final String statistics = testController.getTestStatistics();
 		EventQueue.invokeLater(new Runnable() {
-
+			
 			@Override
 			public void run() {
-				statistikaTextArea.setText(testController.getTestStatistics());
+				statistikaTextArea.setText(statistics);
 			}
 		});
 	}
@@ -673,8 +645,47 @@ public class TestForm extends JFrame {
 				}
 			}
 		});
-		procenatComboBox.setBounds(434, 55, 90, 20);
+		procenatComboBox.setBounds(475, 12, 49, 20);
 		contentPane.add(procenatComboBox);
+		
+				napomenaTextArea = new JTextArea();
+				napomenaTextArea.setBounds(121, 103, 280, 98);
+				contentPane.add(napomenaTextArea);
+				
+				JLabel lblPretraga = new JLabel("Pretraga:");
+				lblPretraga.setHorizontalAlignment(SwingConstants.RIGHT);
+				lblPretraga.setForeground(Color.WHITE);
+				lblPretraga.setFont(new Font("Tahoma", Font.PLAIN, 13));
+				lblPretraga.setBounds(10, 389, 70, 20);
+				contentPane.add(lblPretraga);
+				napomenaTextArea.addKeyListener(new KeyAdapter() {
+					@Override
+					public void keyReleased(KeyEvent e) {
+						if (e.isControlDown() && (e.getKeyCode() == KeyEvent.VK_Z || e.getKeyCode() == KeyEvent.VK_Y))
+							testController.undoRedoAction((TestForm) testForm, e);
+					}
+					@Override
+					public void keyTyped(KeyEvent e) {
+						new Thread(new Runnable() {
+							
+							@Override
+							public void run() {
+								String text = napomenaTextArea.getText();
+								try {
+									TimeUnit.MILLISECONDS.sleep(500);
+								} catch (InterruptedException e) {}
+								if (napomenaTextArea.getText().equals(text) 
+										&& !napomenaTextArea.getText().equals(test.getNapomena())) {
+									
+									Command command = new DodajNapomenuTestCommand(test, napomenaTextArea);
+									testController.executeCommand(command);
+									
+								}
+							}
+						}).start();
+						
+					}
+				});
 	}
 	
 	public MainForm getMainForm() {

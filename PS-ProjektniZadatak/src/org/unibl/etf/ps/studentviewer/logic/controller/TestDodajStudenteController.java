@@ -84,13 +84,19 @@ public class TestDodajStudenteController {
 				new ArrayList<>(studentsSet));
 		
 		testController.executeCommand(dodajStudente);
-		
-		EventQueue.invokeLater(new Runnable() {
+		new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
 				testForm.refreshStatistics();
-				testForm.refreshStudentiTable();
+				testForm.refreshStudentiTable();				
+			}
+		}).start();
+
+		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
 				testDodajStudenteForm.dispose();
 			}
 		});

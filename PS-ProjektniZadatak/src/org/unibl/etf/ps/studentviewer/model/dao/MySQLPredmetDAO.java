@@ -409,7 +409,7 @@ public class MySQLPredmetDAO implements PredmetDAO {
 		
 		String dbquery = "SELECT test.*, BrojBodova, Komentar "
 				+ "FROM test INNER JOIN izlazi_na USING(TestId) "
-				+ "WHERE StudentId=? AND PredmetId=? AND BrojBodova > 50";
+				+ "WHERE StudentId=? AND PredmetId=?";
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;

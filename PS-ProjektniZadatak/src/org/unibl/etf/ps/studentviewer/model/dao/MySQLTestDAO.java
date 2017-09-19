@@ -149,8 +149,8 @@ public class MySQLTestDAO implements TestDAO {
 
 		try {
 			conn = DBUtility.open();
-			cs = conn.prepareCall(addTestQuery);
 			conn.setAutoCommit(false);
+			cs = conn.prepareCall(addTestQuery);
 			cs.setString(1, test.getNaziv());
 			Date datum = test.getDatum();
 			cs.setDate(2, new java.sql.Date(datum.getTime()));
@@ -158,14 +158,12 @@ public class MySQLTestDAO implements TestDAO {
 			cs.setInt(4, test.getProcenat());
 			cs.setInt(5, test.getPredmetId());
 			cs.registerOutParameter(6, Types.INTEGER);
+			
+			cs.executeUpdate();
+			int testId = cs.getInt(6);
+			test.setTestId(testId);
+			retVal &= testId > 0;
 
-			if (cs.executeUpdate() == 1) {
-				int testId = cs.getInt(6);
-				test.setTestId(testId);
-				retVal &= testId > 0;
-			} else {
-				throw new SQLException("Dodavanje testa nije uspjelo. Pokušajte ponovo!");
-			}
 			for (StudentNaTestuDTO student : test.getStudenti()) {
 				ps = conn.prepareStatement(updateStudentsQuery);
 				ps.setInt(1, test.getTestId());
