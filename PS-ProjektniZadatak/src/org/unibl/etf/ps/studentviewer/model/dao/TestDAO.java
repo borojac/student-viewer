@@ -11,9 +11,9 @@ public interface TestDAO {
 	public TestDTO getTest(int idTesta);
 	public boolean updateTest(TestDTO test) throws SQLException;
 	public boolean addTest(TestDTO test) throws SQLException;
-	public boolean deleteTest(TestDTO test);
+	public boolean deleteTest(TestDTO test) throws SQLException;
 	public List<StudentNaTestuDTO> getStudentsOnTest(int idTesta);
 	public List<TestDTO> getAllTests(int predmetId);
 	public List<StudentNaTestuDTO> getStudentsOnPredmet(TestDTO test);
-	public boolean verifyStudent(String brojIndeksa, int idTesta);
+	public boolean verifyStudent(String brojIndeksa, int idTesta) throws SQLException;
 }

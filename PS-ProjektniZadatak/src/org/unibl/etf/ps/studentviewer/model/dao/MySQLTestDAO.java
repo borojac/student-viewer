@@ -199,7 +199,7 @@ public class MySQLTestDAO implements TestDAO {
 	 * Ako ima unesenih studenata na testu, potrebno ih je prvo otvoriti test i 
 	 * ukloniti ih prije brisanja samog testa
 	 */
-	public boolean deleteTest(TestDTO test) {
+	public boolean deleteTest(TestDTO test) throws SQLException {
 		boolean retVal = false;
 
 		String query = "DELETE FROM test WHERE TestId=?";
@@ -213,11 +213,15 @@ public class MySQLTestDAO implements TestDAO {
 			ps.setInt(1, test.getTestId());
 
 			retVal = ps.executeUpdate() == 1;
+			if (!retVal) {
+				throw new SQLException("Test ne može biti obrisan. Lista studenata na testu mora biti prazna da bi se test mogao brisati.");
+			}
 
 		} catch (SQLException e) {
 			// Ima studenata na ispitu pa se ne moze obrisati
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw e;
 		} finally {
 			DBUtility.close(conn, ps);
 		}
@@ -326,7 +330,7 @@ public class MySQLTestDAO implements TestDAO {
 	}
 
 	@Override
-	public boolean verifyStudent(String brojIndeksa, int idTesta) {
+	public boolean verifyStudent(String brojIndeksa, int idTesta) throws SQLException {
 		boolean retVal = false;
 		String call = "{CALL verify_student(?, ?, ?)}";
 		
@@ -338,11 +342,12 @@ public class MySQLTestDAO implements TestDAO {
 			cs.setString(1, brojIndeksa);
 			cs.setInt(2, idTesta);
 			cs.registerOutParameter(3, Types.BOOLEAN);
-			if (cs.executeUpdate() > 0)
-				retVal = cs.getBoolean(3);
+			cs.executeUpdate();
+			retVal = cs.getBoolean(3);
 		} catch (SQLException e) {
-			// TODO: handle exception
+			retVal = false;
 			e.printStackTrace();
+			throw e;
 		} finally {
 			DBUtility.close(cs, conn);
 		}

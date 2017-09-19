@@ -12,6 +12,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -36,6 +39,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -390,24 +395,35 @@ public class MainForm extends JFrame {
 				}
 			}
 		});
-		testoviTable.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
-					mainFormController.editTestAction(testoviTable);
-				}
-			}
+		testoviTable.addMouseMotionListener(new MouseMotionAdapter() {
 
 			@Override
-			public void mouseEntered(MouseEvent event) {
+			public void mouseMoved(MouseEvent e) {
 				new Thread(new Runnable() {
 
 					@Override
 					public void run() {
-						mainFormController.initMouseHoverAction(event, testoviTable);
+						mainFormController.initMouseHoverAction(e, testoviTable);						
 					}
 				}).start();
 			}
+
+		});
+		testoviTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+							mainFormController.editTestAction(testoviTable);							
+						}
+					}).start();
+				}
+			}
+
+
 		});
 
 		testoviScrollPane = new JScrollPane();
@@ -637,7 +653,7 @@ public class MainForm extends JFrame {
 			for (DisciplinaDTO di : discipline) {
 				disciplineCB.addItem(di.getNaziv());
 			}
-			
+
 			elektrijadaCB.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (disciplineCB.getItemCount() > 0)

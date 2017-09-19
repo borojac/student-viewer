@@ -1,9 +1,12 @@
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import java.awt.EventQueue;
+import java.awt.Robot;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -202,11 +205,8 @@ public class MainFormController {
 		DAOFactory factory = new MySQLDAOFactory();
 		TestDAO testDAO = factory.getTestDAO();
 		TestDTO test = ((TestoviTableModel) testoviTable.getModel()).getRowAt(testoviTable.getSelectedRow());
-		if (!testDAO.deleteTest(test))
-			JOptionPane.showMessageDialog(null,
-					"Test ne može biti obrisan. Lista studenata na testu mora biti prazna da bi se test mogao brisati.",
-					"Greška", JOptionPane.INFORMATION_MESSAGE);
-		else {
+		try {
+			testDAO.deleteTest(test);
 			TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
 			List<TestDTO> data = model.getData();
 			data.remove(testoviTable.getSelectedRow());
@@ -215,6 +215,16 @@ public class MainFormController {
 				@Override
 				public void run() {
 					model.fireTableDataChanged();
+				}
+			});
+		} catch (SQLException e) {
+			EventQueue.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					JOptionPane.showMessageDialog(null,
+							e.getMessage(),
+							"Greška", JOptionPane.INFORMATION_MESSAGE);					
 				}
 			});
 		}
@@ -279,7 +289,7 @@ public class MainFormController {
 			StudentsForMainTable.initShowInMainTable(activePredmet, mainForm.getNalogDTO());
 
 			((DefaultTableModel) mainForm.getMainTable().getModel())
-					.setColumnIdentifiers(new Object[] { "Indeks", "Ime", "Prezime" });
+			.setColumnIdentifiers(new Object[] { "Indeks", "Ime", "Prezime" });
 			ArrayList<StudentMainTableDTO> temp = StudentsForMainTable.initShowInMainTable(activePredmet,
 					mainForm.getNalogDTO());
 

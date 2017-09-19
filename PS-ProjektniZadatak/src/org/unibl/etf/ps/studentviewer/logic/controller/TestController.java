@@ -30,6 +30,9 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.Logger;
+import org.apache.log4j.SimpleLayout;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -211,14 +214,19 @@ public class TestController {
 					} catch (NumberFormatException ex) {}
 					komentar = row.getCell(5).getStringCellValue().trim();
 				}
-				boolean verified = testDAO.verifyStudent(brojIndeksa, test.getTestId());
+				try {
+					boolean verified = testDAO.verifyStudent(brojIndeksa, test.getTestId());
 
-				if (verified) {
-					StudentNaPredmetuDTO tmp = studentDAO.getStudentBy(brojIndeksa);
-					data.add(new StudentNaTestuDTO(tmp.getStudentId(), brojIndeksa, 
-							tmp.getIme(), tmp.getPrezime(), brojBodova, komentar));
+					if (verified) {
+						StudentNaPredmetuDTO tmp = studentDAO.getStudentBy(brojIndeksa);
+						data.add(new StudentNaTestuDTO(tmp.getStudentId(), brojIndeksa, 
+								tmp.getIme(), tmp.getPrezime(), brojBodova, komentar));
+					}
+				} catch (SQLException e) {
+					Logger logger = Logger.getLogger(TestController.class.getSimpleName());
+					logger.addAppender(new FileAppender(new SimpleLayout(), "log/" + logger.getName()));
+					logger.error("Ucitavanje iz excel fajla", e);
 				}
-
 			}
 
 			workbook.close();
@@ -264,14 +272,18 @@ public class TestController {
 					} catch (NumberFormatException ex) {}
 					komentar = row.getCell(5).getStringCellValue().trim();
 				}
-				boolean verified = testDAO.verifyStudent(brojIndeksa, test.getTestId());
-				if (verified) {
-					StudentNaPredmetuDTO tmp = studentDAO.getStudentBy(brojIndeksa);
-					data.add(new StudentNaTestuDTO(tmp.getStudentId(), brojIndeksa, 
-							tmp.getIme(), tmp.getPrezime(), brojBodova, komentar));
+				try {
+					boolean verified = testDAO.verifyStudent(brojIndeksa, test.getTestId());
+					if (verified) {
+						StudentNaPredmetuDTO tmp = studentDAO.getStudentBy(brojIndeksa);
+						data.add(new StudentNaTestuDTO(tmp.getStudentId(), brojIndeksa, 
+								tmp.getIme(), tmp.getPrezime(), brojBodova, komentar));
+					}
+				} catch (SQLException e) {
+					Logger logger = Logger.getLogger(TestController.class.getSimpleName());
+					logger.addAppender(new FileAppender(new SimpleLayout(), "log/" + logger.getName()));
+					logger.error("Ucitavanje iz excel fajla", e);
 				}
-
-
 
 			}
 
@@ -559,7 +571,7 @@ public class TestController {
 					});
 			} catch (SQLException e) {
 				EventQueue.invokeLater(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						JOptionPane.showMessageDialog(testForm, e.getMessage(), 
@@ -570,7 +582,7 @@ public class TestController {
 
 		} else
 			EventQueue.invokeLater(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					JOptionPane.showMessageDialog(testForm, 
@@ -604,7 +616,7 @@ public class TestController {
 				});
 		} catch (SQLException e) {
 			EventQueue.invokeLater(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					JOptionPane.showMessageDialog(testForm, e.getMessage(), "Greška",
