@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -37,17 +35,24 @@ import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 public class AdministratorDodavanjePredmetaForm extends JFrame {
 
 	private JPanel contentPane;
-	private JLabel sifraLbl, ectsLbl, tipPredmetaLbl, nazivSPLbl;
-	private JLabel nazivLbl, semestarLbl, skolskaGodinaLbl, ciklusLbl;
+	private JLabel sifraLbl;
+	private JLabel ectsLbl;
+	private JLabel tipPredmetaLbl;
+	private JLabel nazivSPLbl;
+	private JLabel nazivLbl;
+	private JLabel semestarLbl;
+	private JLabel skolskaGodinaLbl;
+	private JLabel ciklusLbl;
 	private JTextField sifraTf;
 	private JTextField nazivTf;
 	private JTextField ectsTf;
 	private JTextField semestarTf;
-	private JRadioButton obavezan, izborni;
+	private JRadioButton obavezan;
+	private JRadioButton izborni;
 	private ButtonGroup bg;
-	AdministratorFormController administratorFormController;
 	private JButton potvrdiBtn;
-	AdministratorDodavanjePredmetaFormController administratorDodavanjePredmetaFormController;
+	private JButton dodajSPBtn;
+	private AdministratorDodavanjePredmetaFormController administratorDodavanjePredmetaFormController;
 	
 	private JComboBox<Short> ciklusiCB;
 	private JComboBox<String> studijskiProgramiCB;
@@ -71,7 +76,7 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 360, 650);
+		setBounds(100, 100, 360, 700);
 		contentPane =new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -79,28 +84,30 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 		contentPane.setLayout(null);
 		
 		
-		JLabel label = new JLabel("");
-		label.setBounds(90, 0, 171, 120);
+		JLabel headerPictureLabel = new JLabel("");
+		headerPictureLabel.setBounds(95, 0, 170, 120);
+		contentPane.add(headerPictureLabel);
+
 		try {
-			BufferedImage headerImage = ImageIO.read(new File("img\\BellTower-RGB(JPG).jpg"));
-			headerImage = Scalr.resize(headerImage, Scalr.Mode.FIT_EXACT, label.getWidth(), label.getHeight(), null);
-			label.setIcon(new ImageIcon(headerImage));
+			BufferedImage headerImg = ImageIO.read(new File("img" + File.separator + "BellTower-RGB(JPG).jpg"));
+			headerImg = Scalr.resize(headerImg, Scalr.Mode.FIT_EXACT, headerPictureLabel.getWidth(),
+					headerPictureLabel.getHeight(), null);
+			headerPictureLabel.setIcon(new ImageIcon(headerImg));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		contentPane.add(label);
 		
-		JLabel label_1 = new JLabel("");
-		label_1.setBackground(Color.WHITE);
-		label_1.setOpaque(true);
-		label_1.setBounds(0, 0, 95, 120);
-		contentPane.add(label_1);
-		
-		JLabel label_2 = new JLabel("");
-		label_2.setBackground(Color.WHITE);
-		label_2.setOpaque(true);
-		label_2.setBounds(241, 0, 117, 120);
-		contentPane.add(label_2);
+		JLabel whiteCorrectionLabel = new JLabel("");
+		whiteCorrectionLabel.setOpaque(true);
+		whiteCorrectionLabel.setBackground(Color.WHITE);
+		whiteCorrectionLabel.setBounds(0, 0, 95, 120);
+		contentPane.add(whiteCorrectionLabel);
+
+		JLabel whiteCorrectionLabel2 = new JLabel("");
+		whiteCorrectionLabel2.setBackground(Color.WHITE);
+		whiteCorrectionLabel2.setOpaque(true);
+		whiteCorrectionLabel2.setBounds(265, 0, 95, 120);
+		contentPane.add(whiteCorrectionLabel2);
 		
 		initComponents();
 		initButtonsListeners();
@@ -237,17 +244,28 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 		contentPane.add(ciklusiCB);
 		
 		potvrdiBtn = new JButton("Potvrdi");
-		potvrdiBtn.setBounds(100,580,160,25);
+		potvrdiBtn.setBounds(95, 580, 170, 25);
 		contentPane.add(potvrdiBtn);
+		
+		dodajSPBtn = new JButton("Dodaj studijski program");
+		dodajSPBtn.setBounds(95, 620, 170, 25);
+		contentPane.add(dodajSPBtn);
  		
 	}
 	
 	private void initButtonsListeners() {
 		
-		potvrdiBtn.addMouseListener(new MouseAdapter() {
+		potvrdiBtn.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				administratorDodavanjePredmetaFormController.dodajPredmet();
+			}
+		});
+		
+		dodajSPBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				administratorDodavanjePredmetaFormController.dodajSP();
 			}
 		});
 		
@@ -317,6 +335,14 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 			return 'O';
 		}
 		return 'I';
+	}
+	
+	public AdministratorDodavanjePredmetaFormController getAdministratorDodavanjePredmetaFormController() {
+		return administratorDodavanjePredmetaFormController;
+	}
+	
+	public JComboBox<String> getStudijskiProgramiCB() {
+		return studijskiProgramiCB;
 	}
 
 }

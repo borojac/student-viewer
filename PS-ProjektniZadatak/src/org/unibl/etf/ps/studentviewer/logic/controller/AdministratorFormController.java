@@ -6,7 +6,6 @@ import javax.swing.JTable;
 import org.unibl.etf.ps.studentviewer.gui.view.AddForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdminStudentForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdministratorDodavanjePredmetaForm;
-import org.unibl.etf.ps.studentviewer.gui.view.AdministratorDodavanjeStudijskogProgramaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdministratorForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChangeForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChooseAddTypeForm;
@@ -28,7 +27,6 @@ public class AdministratorFormController {
 	private AdministratorForm administratorForm;
 	private static boolean predmetChooseAddTypeFormOpened = false;
 	private static boolean addFormOpened = false;
-	private static boolean dodajStudProgOpened = false;
 	//Stankovic
 	private static boolean studentFormOpened = false;
 	private static boolean chooseAddStudentsTypeFormOpened = false;
@@ -117,7 +115,7 @@ public class AdministratorFormController {
 		this.administratorForm = administratorForm;
 	}
 	
-	public void createPredmetChooseAddTypeForm(){
+	public void createPredmetChooseAddTypeForm() {
 		if (predmetChooseAddTypeFormOpened)
 			return;
 
@@ -125,16 +123,6 @@ public class AdministratorFormController {
 
 		PredmetChooseAddTypeForm catf = new PredmetChooseAddTypeForm(this);
 		catf.setVisible(true);
-	}
-	
-	public void dodajStudProg()
-	{
-		if(dodajStudProgOpened)
-		return;
-		
-		dodajStudProgOpened = true;
-		AdministratorDodavanjeStudijskogProgramaForm ad = new AdministratorDodavanjeStudijskogProgramaForm(this);
-		ad.setVisible(true);
 	}
 	
 	public void createAddPredmetForm() {
@@ -149,10 +137,6 @@ public class AdministratorFormController {
 	
 	public static void resetChooseAddTypeFormOpened() {
 		predmetChooseAddTypeFormOpened = false;
-	}
-	
-	public static void resetDodajStudProgOpened() {
-		dodajStudProgOpened = false;
 	}
 	
 	public static void resetAddFormOpened() {

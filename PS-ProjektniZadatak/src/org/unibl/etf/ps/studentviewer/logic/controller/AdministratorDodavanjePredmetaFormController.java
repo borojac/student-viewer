@@ -6,6 +6,7 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.view.AdministratorDodavanjePredmetaForm;
+import org.unibl.etf.ps.studentviewer.gui.view.AdministratorDodavanjeStudijskogProgramaForm;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
@@ -13,6 +14,7 @@ import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 public class AdministratorDodavanjePredmetaFormController {
 	
 	private AdministratorDodavanjePredmetaForm administratorDodavanjePredmetaForm;
+	private static boolean dodajSPOpened = false;
 	
 	public AdministratorDodavanjePredmetaFormController(AdministratorDodavanjePredmetaForm administratorDodavanjePredmetaForm) {
 		this.administratorDodavanjePredmetaForm = administratorDodavanjePredmetaForm;
@@ -62,6 +64,19 @@ public class AdministratorDodavanjePredmetaFormController {
 			studijskiProgramiCB.addItem(studijskiProgramiList.get(i));
 		}
 		administratorDodavanjePredmetaForm.setStudijskiProgramiList(studijskiProgramiList);
+	}
+	
+	public void dodajSP() {
+		if(dodajSPOpened)
+			return;
+		
+		dodajSPOpened = true;
+		AdministratorDodavanjeStudijskogProgramaForm ad = new AdministratorDodavanjeStudijskogProgramaForm(administratorDodavanjePredmetaForm);
+		ad.setVisible(true);
+	}
+	
+	public static void resetDodajSPOpened() {
+		dodajSPOpened = false;
 	}
 
 }
