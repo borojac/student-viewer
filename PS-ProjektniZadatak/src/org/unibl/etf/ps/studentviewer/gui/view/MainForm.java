@@ -218,7 +218,7 @@ public class MainForm extends JFrame {
 		initButtonsListeners();
 		initPredmetiComboBox();
 		initComboBoxListener();
-		//initElektrijadaComboBox();
+		initElektrijadaComboBox();
 
 		setButtonsSize();
 
@@ -236,11 +236,10 @@ public class MainForm extends JFrame {
 		konacnaOcjenaButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				EventQueue.invokeLater(new Runnable() {
-					
+
 					@Override
 					public void run() {
-						new GradeGenerationForm(getSelectedPredmet(),
-								mainTable.getStudents()).setVisible(true);
+						new GradeGenerationForm(getSelectedPredmet(), mainTable.getStudents()).setVisible(true);
 					}
 				});
 
@@ -379,7 +378,7 @@ public class MainForm extends JFrame {
 		}).start();
 
 		testoviTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			
+
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (testoviTable.getSelectedRowCount() == 1) {
@@ -388,7 +387,7 @@ public class MainForm extends JFrame {
 				} else {
 					btnIzmjeni.setEnabled(false);
 					btnBrisi.setEnabled(false);
-				}				
+				}
 			}
 		});
 		testoviTable.addMouseListener(new MouseAdapter() {
@@ -605,56 +604,62 @@ public class MainForm extends JFrame {
 		}
 	}
 
-	/*private void initElektrijadaComboBox() {
+	private void initElektrijadaComboBox() {
 		elektrijadaCB = new JComboBox<>();
 		elektrijadaCB.setBounds(745, 252, 430, 35);
 
 		MySQLDAOFactory dao = new MySQLDAOFactory();
 		ElektrijadaDAO eleDAO = dao.getElektrijadaDAO();
-		ArrayList<ElektrijadaDTO> elektrijade = (ArrayList<ElektrijadaDTO>) eleDAO.getListuElektrijada(2); // nalogDTO
-																											// umjesto
-																											// 2
-		for (ElektrijadaDTO el : elektrijade) {
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			DateFormat newDf = new SimpleDateFormat("dd.MM.yyyy");
-			java.util.Date datum = null;
-			try {
-				datum = df.parse(el.getDatum().toString());
-			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			elektrijadaCB.addItem(el.getLokacija() + ", " + newDf.format(datum));
-		}
-		initDisciplineComboBox();
-		int indeks = elektrijadaCB.getSelectedIndex();
-		ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
-		DisciplinaDAO discDAO = dao.getDisciplinaDAO();
-		ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
-				.getDiscipline(selektovanaElektrijada.getId(), 2);// nalogDTO
-																	// umjesto 2
-		for (DisciplinaDTO di : discipline) {
-			disciplineCB.addItem(di.getNaziv());
-		}
-
-		elektrijadaCB.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				disciplineCB.removeAllItems();
-				int indeks = elektrijadaCB.getSelectedIndex();
-				ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
-				DisciplinaDAO discDAO = dao.getDisciplinaDAO();
-				ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
-						.getDiscipline(selektovanaElektrijada.getId(), 2);// nalogDTO
-																			// umjesto
-																			// 2
-				for (DisciplinaDTO di : discipline) {
-					disciplineCB.addItem(di.getNaziv());
+		ArrayList<ElektrijadaDTO> elektrijade = (ArrayList<ElektrijadaDTO>) eleDAO
+				.getListuElektrijada(nalogDTO.getNalogId()); // nalogDTO
+		// umjesto
+		// 2
+		if (elektrijade.size() > 0){
+			for (ElektrijadaDTO el : elektrijade) {
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				DateFormat newDf = new SimpleDateFormat("dd.MM.yyyy");
+				java.util.Date datum = null;
+				try {
+					datum = df.parse(el.getDatum().toString());
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+				elektrijadaCB.addItem(el.getLokacija() + ", " + newDf.format(datum));
 			}
-		});
+			initDisciplineComboBox();
+			int indeks = elektrijadaCB.getSelectedIndex();
+			ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
+			DisciplinaDAO discDAO = dao.getDisciplinaDAO();
+			ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
+					.getDiscipline(selektovanaElektrijada.getId(), nalogDTO.getNalogId());// nalogDTO
+			// umjesto 2
+			for (DisciplinaDTO di : discipline) {
+				disciplineCB.addItem(di.getNaziv());
+			}
+			
+			elektrijadaCB.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (disciplineCB.getItemCount() > 0)
+						disciplineCB.removeAllItems();
+					int indeks = elektrijadaCB.getSelectedIndex();
+					if (indeks != -1) {
+						ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
+						DisciplinaDAO discDAO = dao.getDisciplinaDAO();
+						ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
+								.getDiscipline(selektovanaElektrijada.getId(), nalogDTO.getNalogId());// nalogDTO
+						// umjesto
+						// 2
+						for (DisciplinaDTO di : discipline) {
+							disciplineCB.addItem(di.getNaziv());
+						}
+					}
+				}
+			});
+		}
 		contentPane.add(elektrijadaCB);
 	}
-*/
+
 	private void initDisciplineComboBox() {
 		disciplineCB = new JComboBox<>();
 		disciplineCB.setBounds(745, 315, 430, 35);
@@ -683,6 +688,30 @@ public class MainForm extends JFrame {
 		for (int i = 0; i < predmetiList.size(); i++) {
 			predmetiCB.addItem(
 					(predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
+		}
+	}
+
+	public void resetElektrijadaComboBox() {
+		MySQLDAOFactory dao = new MySQLDAOFactory();
+		ElektrijadaDAO eleDAO = dao.getElektrijadaDAO();
+		ArrayList<ElektrijadaDTO> elektrijade = (ArrayList<ElektrijadaDTO>) eleDAO
+				.getListuElektrijada(nalogDTO.getNalogId()); 
+		if (elektrijadaCB.getItemCount() > 0)
+			elektrijadaCB.removeAllItems();
+		if (elektrijade.size() > 0 ){
+			int indeks = elektrijadaCB.getSelectedIndex();
+			if (disciplineCB.getItemCount() > 0)
+				disciplineCB.removeAllItems();
+			if (indeks != -1) {			
+				ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
+				DisciplinaDAO discDAO = dao.getDisciplinaDAO();
+				ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
+						.getDiscipline(selektovanaElektrijada.getId(), nalogDTO.getNalogId());// nalogDTO
+				// umjesto 2
+				for (DisciplinaDTO di : discipline) {
+					disciplineCB.addItem(di.getNaziv());
+				}
+			}
 		}
 	}
 

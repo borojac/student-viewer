@@ -12,11 +12,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import org.unibl.etf.ps.studentviewer.logic.controller.AccountFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.DodavanjeDisciplineController;
 import org.unibl.etf.ps.studentviewer.model.dao.ElektrijadaDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.ZahtjevDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -26,6 +28,8 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 
 public class DodavanjeDisciplineForm extends JFrame {
@@ -39,36 +43,35 @@ public class DodavanjeDisciplineForm extends JFrame {
 	private JTextField textField;
 	private DodavanjeDisciplineController dodavanjeDisciplineKontroler;
 	private JComboBox elektrijadeCB;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DodavanjeDisciplineForm frame = new DodavanjeDisciplineForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private NalogDTO nalogDTO;
+
 
 	/**
 	 * Create the frame.
 	 */
-	public DodavanjeDisciplineForm() {
+	public DodavanjeDisciplineForm(NalogDTO nalogDTO) {
 		dodavanjeDisciplineKontroler = new DodavanjeDisciplineController(this);
 		setTitle("Dodavanje discipline");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.nalogDTO = nalogDTO;
 		setBounds(100, 100, 450, 270);
 		contentPane = new JPanel();
 		contentPane_1 = new JPanel();
 		contentPane_1.setBackground(new Color(0, 0, 139));
 		contentPane_1.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane_1);
-		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent event) {
+				EventQueue.invokeLater(new Runnable() {
+
+					@Override
+					public void run() {
+						AccountFormController.resetDodavanjeDisciplineFormOpened();
+					}
+				});
+			}
+		});
+
 		JLabel lblNazivDiscipline = new JLabel("Naziv discipline:");
 		lblNazivDiscipline.setBounds(20, 210, 200, 25);
 		lblNazivDiscipline.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 15));
@@ -88,7 +91,7 @@ public class DodavanjeDisciplineForm extends JFrame {
 		JButton posaljiZahtjev = new JButton("Posalji zahtjev");
 		posaljiZahtjev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dodavanjeDisciplineKontroler.slanjeZahtjeva(elektrijadeCB);
+				dodavanjeDisciplineKontroler.slanjeZahtjeva(elektrijadeCB,textField);
 			}
 		});
 		posaljiZahtjev.setBounds(140, 430, 150, 35);
@@ -148,4 +151,10 @@ public class DodavanjeDisciplineForm extends JFrame {
 			elektrijadeCB.addItem(e.getLokacija() + ", " + newDf.format(datum));
 		}
 	}
+
+	public NalogDTO getNalogDTO() {
+		return nalogDTO;
+	}
+	
+	
 }

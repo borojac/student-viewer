@@ -64,6 +64,11 @@ public class ElektrijadaDTO {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "ElektrijadaDTO [id=" + id + ", datum=" + datum + ", lokacija=" + lokacija + "]";
+	}
 	
 	
 }

@@ -221,8 +221,7 @@ public class MainFormController {
 	}
 
 	public void initMouseHoverAction(MouseEvent event, JTable testoviTable) {
-		if (testoviTable.contains(event.getPoint())
-				&& testoviTable.getModel().getRowCount() > 0) {
+		if (testoviTable.contains(event.getPoint()) && testoviTable.getModel().getRowCount() > 0) {
 			int row = testoviTable.rowAtPoint(event.getPoint());
 			TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
 			testoviTable.setToolTipText(model.getRowAt(row).getNapomena());
@@ -247,7 +246,7 @@ public class MainFormController {
 			changeFormOpened = true;
 			ChangeForm cf = new ChangeForm(this, null, getMainTable().getStudent(selectedRow[0]), selectedRow[0]);
 			cf.setVisible(true);
-			
+
 		} else {
 			final String message = "Odaberite samo jednog studenta za izmjenu!";
 			JOptionPane.showMessageDialog(null, message, "Upozorenje", JOptionPane.WARNING_MESSAGE);
@@ -276,12 +275,13 @@ public class MainFormController {
 	public void postaviMainForm(PredmetDTO activePredmet, PredmetDTO lastPredmet) {
 		if (activePredmet != null) {
 			UndoRedoData.saveState(mainForm.getNalogDTO(), lastPredmet);
-			
+
 			StudentsForMainTable.initShowInMainTable(activePredmet, mainForm.getNalogDTO());
 
 			((DefaultTableModel) mainForm.getMainTable().getModel())
 					.setColumnIdentifiers(new Object[] { "Indeks", "Ime", "Prezime" });
-			ArrayList<StudentMainTableDTO> temp = StudentsForMainTable.initShowInMainTable(activePredmet, mainForm.getNalogDTO());
+			ArrayList<StudentMainTableDTO> temp = StudentsForMainTable.initShowInMainTable(activePredmet,
+					mainForm.getNalogDTO());
 
 			mainForm.getMainTable().setStudents(temp);
 			mainForm.getMainTable().changeView();
@@ -298,24 +298,31 @@ public class MainFormController {
 		}
 	}
 
-
 	public void prikaziDisciplinu(NalogDTO nalogDTO, JComboBox<String> disciplineCB) {
-		String nazivDiscipline = (String) disciplineCB.getSelectedItem();
-		DAOFactory dao = new MySQLDAOFactory();
-		ElektrijadaDAO deDAO = dao.getElektrijadaDAO();
-		ElektrijadaDTO elektrijadaDTO = deDAO.getElektrijadaDTO(nalogDTO.getNalogId(), nazivDiscipline);
-		DisciplinaDTO disciplinaDTO = new DisciplinaDTO(nazivDiscipline, elektrijadaDTO.getId());
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
+		if (disciplineCB.getSelectedIndex() == -1) {
+			EventQueue.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					JOptionPane.showMessageDialog(mainForm, "Nemate pristup disciplini.");
+				}
+			});
+		} else {
 
-				mainForm.setVisible(false);
-				ElektrijadaForm frame = new ElektrijadaForm(elektrijadaDTO, nalogDTO, disciplinaDTO,mainForm);
-				frame.setVisible(true);
-			}
-		});
-		
+			String nazivDiscipline = (String) disciplineCB.getSelectedItem();
+			DAOFactory dao = new MySQLDAOFactory();
+			ElektrijadaDAO deDAO = dao.getElektrijadaDAO();
+			ElektrijadaDTO elektrijadaDTO = deDAO.getElektrijadaDTO(nalogDTO.getNalogId(), nazivDiscipline);
+			DisciplinaDTO disciplinaDTO = new DisciplinaDTO(nazivDiscipline, elektrijadaDTO.getId());
+			EventQueue.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+
+					mainForm.setVisible(false);
+					ElektrijadaForm frame = new ElektrijadaForm(elektrijadaDTO, nalogDTO, disciplinaDTO, mainForm);
+					frame.setVisible(true);
+				}
+			});
+		}
 	}
-	
 
 }

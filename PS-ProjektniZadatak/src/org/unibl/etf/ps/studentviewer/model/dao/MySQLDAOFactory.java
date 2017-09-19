@@ -47,4 +47,9 @@ public class MySQLDAOFactory implements DAOFactory {
 		return new MySQLStudentMainTableDAO();
 	}
 
+	@Override
+	public ZahtjevDisciplinaDAO getZahtjevDiciplinaDAO() {
+		return new MySQLZahtjevDisciplinaDAO();
+	}
+
 }

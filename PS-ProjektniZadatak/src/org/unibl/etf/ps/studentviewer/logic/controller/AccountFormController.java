@@ -1,9 +1,11 @@
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
 import org.unibl.etf.ps.studentviewer.gui.view.AccountForm;
+import org.unibl.etf.ps.studentviewer.gui.view.BrisanjeDisciplineForm;
 import org.unibl.etf.ps.studentviewer.gui.view.BrisanjePredmetaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChangeAccountNameForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChangePasswordForm;
+import org.unibl.etf.ps.studentviewer.gui.view.DodavanjeDisciplineForm;
 import org.unibl.etf.ps.studentviewer.gui.view.DodavanjePredmetaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.LoginForm;
 
@@ -15,6 +17,8 @@ public class AccountFormController {
 	private static boolean changeAccountNameFormOpened = false;
 	private static boolean changePasswordFormOpened = false;
 	private static boolean dodavanjeDisciplineFormOpened = false;
+	private static boolean brisanjeDisciplineFormOpened = false;
+
 	
 	public AccountFormController() {
 		super();
@@ -94,9 +98,30 @@ public class AccountFormController {
 			return false;
 		
 		dodavanjeDisciplineFormOpened = true;
-		DodavanjePredmetaForm dodavanjePredmetaForm = new DodavanjePredmetaForm(accountForm.getNalogDTO());
-		dodavanjePredmetaForm.setVisible(true);
+		DodavanjeDisciplineForm dodavanjeDisciplineForm = new DodavanjeDisciplineForm(accountForm.getNalogDTO());
+		dodavanjeDisciplineForm.setVisible(true);
 		return true;
+		
+	}
+
+	public static void resetDodavanjeDisciplineFormOpened() {
+		dodavanjeDisciplineFormOpened = false;
+		
+	}
+
+	public  synchronized boolean createBrisanjeDisciplineForm() {
+		if(brisanjeDisciplineFormOpened)
+			return false;
+		
+		brisanjeDisciplineFormOpened = true;
+		BrisanjeDisciplineForm brisanjeeDisciplineForm = new BrisanjeDisciplineForm (accountForm.getNalogDTO(),accountForm.getMainFormController().getMainForm());
+		brisanjeeDisciplineForm.setVisible(true);
+		return true;
+		
+	}
+
+	public static void resetBrisanjeDisciplineFormOpened() {
+		brisanjeDisciplineFormOpened = false;
 		
 	}
 

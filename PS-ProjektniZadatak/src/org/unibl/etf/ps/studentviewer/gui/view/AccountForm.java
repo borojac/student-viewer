@@ -190,7 +190,7 @@ public class AccountForm extends JFrame {
 		brisanjeDisciplineBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				accountFormController.createBrisanjeDisciplineForm();
 			}
 		});
 		
