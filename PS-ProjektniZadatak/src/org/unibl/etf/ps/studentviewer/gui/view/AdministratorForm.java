@@ -45,7 +45,6 @@ public class AdministratorForm extends JFrame {
 	private JButton odobriBtn;
 	private JButton odbijBtn;
 	private JButton dodajPredmeteBtn;
-	private JButton dodajStudProgBtn;
 	private JButton odjavaBtn;
 	private JButton dodajDisciplinuBtn;
 	private JScrollPane	scrollPane;
@@ -145,29 +144,25 @@ public class AdministratorForm extends JFrame {
 		contentPane.add(scrollPane);
 		  
 		odobriBtn = new JButton("Odobri");
-		odobriBtn.setBounds(15, 11, 180, 40);
+		odobriBtn.setBounds(15, 29, 180, 40);
 		odobriBtn.setEnabled(false);
 		componentsPane.add(odobriBtn);
 		  
 		odbijBtn = new JButton("Odbij");
-		odbijBtn.setBounds(15, 62, 180, 40);
+		odbijBtn.setBounds(15, 84, 180, 40);
 		odbijBtn.setEnabled(false);
 		componentsPane.add(odbijBtn);
 		
 		dodajPredmeteBtn = new JButton("Dodaj predmete");
-		dodajPredmeteBtn.setBounds(15, 164, 180, 40);
+		dodajPredmeteBtn.setBounds(15, 192, 180, 40);
 		componentsPane.add(dodajPredmeteBtn);
 		
 		dodajDisciplinuBtn = new JButton("Dodaj disciplinu");
-		dodajDisciplinuBtn.setBounds(15, 215, 180, 40);
+		dodajDisciplinuBtn.setBounds(15, 246, 180, 40);
 		componentsPane.add(dodajDisciplinuBtn);
 		
-		dodajStudProgBtn = new JButton("Dodaj studijski program");
-		dodajStudProgBtn.setBounds(15, 266, 180, 40);
-		componentsPane.add(dodajStudProgBtn);
-		
 		odjavaBtn = new JButton("Odjava");
-		odjavaBtn.setBounds(15, 317, 180, 40);
+		odjavaBtn.setBounds(15, 300, 180, 40);
 		componentsPane.add(odjavaBtn);
 		/*Stankovic*/
 		JButton upravljanjeStudentimaBtn = new JButton("Upravljanje studentima");
@@ -177,7 +172,7 @@ public class AdministratorForm extends JFrame {
 				administratorFormController.createAdminStudentForm(AdministratorForm.this);
 			}
 		});
-		upravljanjeStudentimaBtn.setBounds(15, 113, 180, 40);
+		upravljanjeStudentimaBtn.setBounds(15, 138, 180, 40);
 		componentsPane.add(upravljanjeStudentimaBtn);
 		/*Stankovic end*/
 		    
@@ -211,20 +206,11 @@ public class AdministratorForm extends JFrame {
 			}
 		});
 		
-		dodajPredmeteBtn.addMouseListener(new MouseAdapter() {
+		dodajPredmeteBtn.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {
 				administratorFormController.createPredmetChooseAddTypeForm();
 			}
-		});
-		
-		dodajStudProgBtn.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e){
-				administratorFormController.dodajStudProg();
-			}
-			
 		});
 		
 		odbijBtn.addActionListener(new ActionListener() {
@@ -234,9 +220,9 @@ public class AdministratorForm extends JFrame {
 			}
 		});
 		
-		odjavaBtn.addMouseListener(new MouseAdapter() {
+		odjavaBtn.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				administratorFormController.odjava();
 			}
 		});

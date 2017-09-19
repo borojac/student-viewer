@@ -2,8 +2,8 @@ package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -24,8 +24,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
+import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorDodavanjePredmetaFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorDodavanjeStudijskogProgramaFormController;
-import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
@@ -46,21 +46,19 @@ public class AdministratorDodavanjeStudijskogProgramaForm extends JFrame {
 	private ArrayList<Short> ciklusiList;
 	private ArrayList<PredmetDTO> predmetiList;
 	private JButton button;
+	private AdministratorDodavanjePredmetaForm administratorDodavanjePredmetaForm;
 	private AdministratorDodavanjeStudijskogProgramaFormController administratorDodavanjeStudijskogProgramaFormController;
-	
-	public AdministratorDodavanjeStudijskogProgramaForm() {
-		
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public AdministratorDodavanjeStudijskogProgramaForm(AdministratorFormController administratorFormController) {
+	public AdministratorDodavanjeStudijskogProgramaForm(AdministratorDodavanjePredmetaForm administratorDodavanjePredmetaForm) {
+		this.administratorDodavanjePredmetaForm = administratorDodavanjePredmetaForm;
 		administratorDodavanjeStudijskogProgramaFormController = new AdministratorDodavanjeStudijskogProgramaFormController(this);
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
-				AdministratorFormController.resetDodajStudProgOpened();
+				AdministratorDodavanjePredmetaFormController.resetDodajSPOpened();
 			}
 		});
 		
@@ -99,6 +97,8 @@ public class AdministratorDodavanjeStudijskogProgramaForm extends JFrame {
 		
 		initComponents();
 		initButtonsListeners();
+		
+		getRootPane().setDefaultButton(button);
 	}
 	
 	public void initComponents() {
@@ -184,9 +184,9 @@ public class AdministratorDodavanjeStudijskogProgramaForm extends JFrame {
 	
 	private void initButtonsListeners() {
 		
-		button.addMouseListener(new MouseAdapter() {
+		button.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				administratorDodavanjeStudijskogProgramaFormController.dodajStudProg();
 			}
 		});
@@ -227,6 +227,10 @@ public class AdministratorDodavanjeStudijskogProgramaForm extends JFrame {
 	
 	public String getZvanje() {
 		return zvanjeTf.getText();
+	}
+	
+	public AdministratorDodavanjePredmetaForm getAdministratorDodavanjePredmetaForm() {
+		return administratorDodavanjePredmetaForm;
 	}
 
 }

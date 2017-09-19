@@ -40,7 +40,7 @@ public class ChangeStudentsController {
 				newStudent.setStudentId(student.getStudentId());
 				if(!isAdmin) {
 					dao.azurirajStudentaNaPredmetu(newStudent, mainFormController.getMainForm().getSelectedPredmet());
-				//mainFormController.getMainTable().setStudent(number, params.get(2), params.get(0), params.get(1), params.get(3)); //4 parametar je komentar
+					mainFormController.getMainTable().setStudent(number, params.get(2), params.get(0), params.get(1), params.get(3)); //4 parametar je komentar
 				}else
 					dao.azurirajStudentaUListi(newStudent, student.getBrojIndeksa());
 				final String message = "Uspjesno azuriranje!";
