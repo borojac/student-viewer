@@ -1,14 +1,18 @@
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
+import java.awt.EventQueue;
+
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 import org.unibl.etf.ps.studentviewer.gui.view.AddForm;
+import org.unibl.etf.ps.studentviewer.gui.view.AdminElektrijadaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdminStudentForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdministratorDodavanjePredmetaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdministratorForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChangeForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChooseAddTypeForm;
+import org.unibl.etf.ps.studentviewer.gui.view.ElektrijadaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.LoginForm;
 import org.unibl.etf.ps.studentviewer.gui.view.PredmetChooseAddTypeForm;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
@@ -178,6 +182,19 @@ public class AdministratorFormController {
 		administratorForm.dispose();
 		LoginForm loginForm = new LoginForm();
 		loginForm.setVisible(true);
+	}
+
+	public void elektrijadaOtvori() {
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+
+				administratorForm.setVisible(false);
+				AdminElektrijadaForm frame = new AdminElektrijadaForm(administratorForm);
+				frame.setVisible(true);
+			}
+		});
+		
 	}
 
 }

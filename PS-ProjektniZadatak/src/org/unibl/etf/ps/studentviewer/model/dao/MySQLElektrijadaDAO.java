@@ -15,7 +15,7 @@ import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
 public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 
 	@Override
-	public ElektrijadaDTO getElektrijadaDTO(int idNaloga, String disciplina) {
+	public ElektrijadaDTO getElektrijadaZaNalogDTO(int idNaloga, String disciplina) {
 		ElektrijadaDTO retVal = null;
 		int idElektrijade = 0;
 		String getIdElektrijadeQuery = "SELECT ElektrijadaId FROM zaduzen_za  WHERE NalogId=? AND Naziv=?";
@@ -117,6 +117,38 @@ public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 		} finally {
 			DBUtility.close(conn, rs, ps);
 		}
+		return retVal;
+	}
+
+	@Override
+	public ElektrijadaDTO getElektrijadaPoId(int idElektrijade) {
+		ElektrijadaDTO retVal = null;
+		String getIdElektrijadaQuery = "SELECT ElektrijadaId, Datum, Lokacija FROM elektrijada  WHERE ElektrijadaId=?";
+		
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getIdElektrijadaQuery);
+			ps.setInt(1, idElektrijade);
+			
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				retVal = new ElektrijadaDTO(rs.getInt(1), rs.getDate(2), rs.getString(3));
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+
 		return retVal;
 	}
 

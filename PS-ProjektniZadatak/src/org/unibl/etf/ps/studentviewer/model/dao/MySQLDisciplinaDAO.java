@@ -41,4 +41,77 @@ public class MySQLDisciplinaDAO implements DisciplinaDAO {
 		return retVal;
 	}
 
+	@Override
+	public List<DisciplinaDTO> getDisciplinePoElektrijadi(int idElektrijade) {
+		List<DisciplinaDTO> retVal = new ArrayList<DisciplinaDTO>();
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		String query = "SELECT Naziv, ElektrijadaId FROM disciplina WHERE ElektrijadaId=? ";
+
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, idElektrijade);
+			
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				retVal.add(new DisciplinaDTO(rs.getString(1), rs.getInt(2)));
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		return retVal;
+	}
+
+	@Override
+	public boolean addDisciplinu(DisciplinaDTO disciplinaDTO) {
+		boolean retVal = false;
+
+		String query = "INSERT INTO disciplina VALUE (?, ?)";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try {
+
+			conn = DBUtility.open();
+			conn.setAutoCommit(false);
+			ps = conn.prepareStatement(query);
+
+			
+			ps.setString(1, disciplinaDTO.getNaziv());
+			ps.setInt(2, disciplinaDTO.getElektrijadaId());
+
+			retVal = ps.executeUpdate() == 1;
+
+			if (retVal) {
+				conn.commit();
+			} else {
+				throw new SQLException("Rollback needed!");
+			}
+
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException ex) {
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+			}
+			DBUtility.close(conn, ps);
+		}
+
+		return retVal;
+	}
+
 }

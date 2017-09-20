@@ -321,7 +321,7 @@ public class MainFormController {
 			String nazivDiscipline = (String) disciplineCB.getSelectedItem();
 			DAOFactory dao = new MySQLDAOFactory();
 			ElektrijadaDAO deDAO = dao.getElektrijadaDAO();
-			ElektrijadaDTO elektrijadaDTO = deDAO.getElektrijadaDTO(nalogDTO.getNalogId(), nazivDiscipline);
+			ElektrijadaDTO elektrijadaDTO = deDAO.getElektrijadaZaNalogDTO(nalogDTO.getNalogId(), nazivDiscipline);
 			DisciplinaDTO disciplinaDTO = new DisciplinaDTO(nazivDiscipline, elektrijadaDTO.getId());
 			EventQueue.invokeLater(new Runnable() {
 				@Override

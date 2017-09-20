@@ -26,8 +26,8 @@ public class DodavanjeDisciplineController {
 		this.dodavanjeDisciplineForm = dodavanjeDisciplineForm;
 	}
 
-	public void slanjeZahtjeva(JComboBox elektrijadeCB, JTextField textField) {
-		if (textField.getText().length() == 0) {
+	public void slanjeZahtjeva(JComboBox elektrijadeCB, JComboBox disciplineCB) {
+		if (disciplineCB.getItemCount() <= 0) {
 			JOptionPane.showMessageDialog(dodavanjeDisciplineForm, "Unesite naziv discipline.");
 		} else {
 			MySQLDAOFactory dao = new MySQLDAOFactory();
@@ -36,12 +36,12 @@ public class DodavanjeDisciplineController {
 			
 			ElektrijadaDTO elektrijadaDTO = elektrijade.get(elektrijadeCB.getSelectedIndex());
 			
-			DisciplinaDTO disciplinaDTO = new DisciplinaDTO(textField.getText(),
+			DisciplinaDTO disciplinaDTO = new DisciplinaDTO((String)disciplineCB.getSelectedItem(),
 					elektrijadaDTO.getId());
 
 			NalogDTO nalogDTO = dodavanjeDisciplineForm.getNalogDTO();
 
-			ZahtjevDisciplinaDTO zahtjevDTO = new ZahtjevDisciplinaDTO(nalogDTO.getNalogId(), elektrijadaDTO.getId(), textField.getText());
+			ZahtjevDisciplinaDTO zahtjevDTO = new ZahtjevDisciplinaDTO(nalogDTO.getNalogId(), elektrijadaDTO.getId(), disciplinaDTO.getNaziv());
 			System.out.println(zahtjevDTO);
 			MySQLDAOFactory zahtjevFactory = new MySQLDAOFactory();
 			ZahtjevDisciplinaDAO zahtjevDAO = zahtjevFactory.getZahtjevDiciplinaDAO();

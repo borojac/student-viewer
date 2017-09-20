@@ -46,7 +46,7 @@ public class AdministratorForm extends JFrame {
 	private JButton odbijBtn;
 	private JButton dodajPredmeteBtn;
 	private JButton odjavaBtn;
-	private JButton dodajDisciplinuBtn;
+	private JButton elektrijadaBtn;
 	private JScrollPane	scrollPane;
 	private ArrayList<ZahtjevDTO> list;
 	
@@ -157,9 +157,9 @@ public class AdministratorForm extends JFrame {
 		dodajPredmeteBtn.setBounds(15, 192, 180, 40);
 		componentsPane.add(dodajPredmeteBtn);
 		
-		dodajDisciplinuBtn = new JButton("Dodaj disciplinu");
-		dodajDisciplinuBtn.setBounds(15, 246, 180, 40);
-		componentsPane.add(dodajDisciplinuBtn);
+		elektrijadaBtn = new JButton("Elektrijada");
+		elektrijadaBtn.setBounds(15, 246, 180, 40);
+		componentsPane.add(elektrijadaBtn);
 		
 		odjavaBtn = new JButton("Odjava");
 		odjavaBtn.setBounds(15, 300, 180, 40);
@@ -224,6 +224,13 @@ public class AdministratorForm extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				administratorFormController.odjava();
+			}
+		});
+		
+		elektrijadaBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				administratorFormController.elektrijadaOtvori();
 			}
 		});
 		

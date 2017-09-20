@@ -337,4 +337,48 @@ public class MySQLNalogDAO implements NalogDAO {
 		return retVal;
 	}
 
+	@Override
+	public boolean addDisciplinuNaNalog(DisciplinaDTO disciplinaDTO, NalogDTO nalog) {
+		boolean retVal = false;
+
+		String query = "INSERT INTO zaduzen_za VALUE (?, ?, ?)";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try {
+
+			conn = DBUtility.open();
+			conn.setAutoCommit(false);
+			ps = conn.prepareStatement(query);
+
+			ps.setInt(1, nalog.getNalogId());
+			ps.setString(2, disciplinaDTO.getNaziv());
+			ps.setInt(3, disciplinaDTO.getElektrijadaId());
+
+			retVal = ps.executeUpdate() == 1;
+
+			if (retVal) {
+				conn.commit();
+			} else {
+				throw new SQLException("Rollback needed!");
+			}
+
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException ex) {
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+			}
+			DBUtility.close(conn, ps);
+		}
+
+		return retVal;
+	}
+
 }

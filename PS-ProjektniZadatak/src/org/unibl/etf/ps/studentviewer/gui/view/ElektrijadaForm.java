@@ -85,7 +85,7 @@ public class ElektrijadaForm extends JFrame {
 
 		DAOFactory dao = new MySQLDAOFactory();
 		ElektrijadaDAO deDAO = dao.getElektrijadaDAO();
-		ElektrijadaDTO elektrijadaDTO = deDAO.getElektrijadaDTO(2, "Programiranje");
+		ElektrijadaDTO elektrijadaDTO = deDAO.getElektrijadaZaNalogDTO(2, "Programiranje");
 		NalogDAO naDAO = dao.getNalogDAO();
 		NalogDTO nalogDTO = naDAO.getNalog(2);
 		DisciplinaDAO diDAO = dao.getDisciplinaDAO();
@@ -227,6 +227,8 @@ public class ElektrijadaForm extends JFrame {
 			}
 		});
 
+		
+		
 		tableDodatneNastave.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2)
