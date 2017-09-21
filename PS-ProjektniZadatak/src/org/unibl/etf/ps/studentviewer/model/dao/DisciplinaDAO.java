@@ -8,4 +8,5 @@ public interface DisciplinaDAO {
 	public List<DisciplinaDTO> getDiscipline(int idElektrijade, int idNaloga);
 	public List<DisciplinaDTO> getDisciplinePoElektrijadi(int idElektrijade);
 	public boolean addDisciplinu(DisciplinaDTO disciplina);
+	public boolean deleteDisciplinu(DisciplinaDTO disciplina);
 }

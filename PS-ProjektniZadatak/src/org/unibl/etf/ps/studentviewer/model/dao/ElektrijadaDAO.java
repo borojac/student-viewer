@@ -10,4 +10,6 @@ public interface ElektrijadaDAO {
 	public abstract ElektrijadaDTO getElektrijadaPoId(int idElektrijade);
 	public abstract List<ElektrijadaDTO> getListuElektrijada(int idNaloga);
 	public abstract List<ElektrijadaDTO> getSveElektrijade();
+	public abstract boolean addElektrijada(ElektrijadaDTO elektrijadaDTO);
+	public abstract boolean deleteElektrijada(ElektrijadaDTO elektrijadaDTO);
 }
