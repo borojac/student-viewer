@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 public class PredmetChooseAddTypeFormController {
 
-	public PredmetChooseAddTypeFormController(AdministratorFormController administratorFormController, boolean one, boolean more, 
+	public PredmetChooseAddTypeFormController(AdminPredmetiFormController adminPredmetiFormController, boolean one, boolean more, 
 			PredmetChooseAddTypeForm predmetChoseAddTypeForm) {
 		
 		if (!(one || more)) {
@@ -20,7 +20,7 @@ public class PredmetChooseAddTypeFormController {
 			JOptionPane.showMessageDialog(predmetChoseAddTypeForm, message, "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 			predmetChoseAddTypeForm.setVisible(true);
 		} else if (one) {
-			administratorFormController.createAddPredmetForm();
+			adminPredmetiFormController.createAddPredmetForm();
 		} else {
 			try {
 				ImporterExcel importerExcel = new ImporterExcel();
@@ -87,7 +87,7 @@ public class PredmetChooseAddTypeFormController {
 					}
 					JOptionPane.showMessageDialog(predmetChoseAddTypeForm, message.toString(), "Upozorenje!", JOptionPane.WARNING_MESSAGE);
 				}
-				AdministratorFormController.resetChooseAddTypeFormOpened();
+				AdminPredmetiFormController.resetChooseAddTypeFormOpened();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

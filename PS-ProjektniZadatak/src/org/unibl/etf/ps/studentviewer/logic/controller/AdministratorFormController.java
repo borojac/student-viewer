@@ -7,14 +7,12 @@ import javax.swing.JTable;
 
 import org.unibl.etf.ps.studentviewer.gui.view.AddForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdminElektrijadaForm;
+import org.unibl.etf.ps.studentviewer.gui.view.AdminPredmetiForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdminStudentForm;
-import org.unibl.etf.ps.studentviewer.gui.view.AdministratorDodavanjePredmetaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdministratorForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChangeForm;
 import org.unibl.etf.ps.studentviewer.gui.view.ChooseAddTypeForm;
-import org.unibl.etf.ps.studentviewer.gui.view.ElektrijadaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.LoginForm;
-import org.unibl.etf.ps.studentviewer.gui.view.PredmetChooseAddTypeForm;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
@@ -29,6 +27,7 @@ import org.unibl.etf.ps.studentviewer.model.dto.ZahtjevDTO;
 public class AdministratorFormController {
 	
 	private AdministratorForm administratorForm;
+	private static boolean adminPredmetiFormOpened = false;
 	private static boolean predmetChooseAddTypeFormOpened = false;
 	private static boolean addFormOpened = false;
 	//Stankovic
@@ -119,26 +118,6 @@ public class AdministratorFormController {
 		this.administratorForm = administratorForm;
 	}
 	
-	public void createPredmetChooseAddTypeForm() {
-		if (predmetChooseAddTypeFormOpened)
-			return;
-
-		predmetChooseAddTypeFormOpened = true;
-
-		PredmetChooseAddTypeForm catf = new PredmetChooseAddTypeForm(this);
-		catf.setVisible(true);
-	}
-	
-	public void createAddPredmetForm() {
-		if (addFormOpened)
-			return;
-
-		addFormOpened = true;
-
-		AdministratorDodavanjePredmetaForm af = new AdministratorDodavanjePredmetaForm(this);
-		af.setVisible(true);
-	}
-	
 	public static void resetChooseAddTypeFormOpened() {
 		predmetChooseAddTypeFormOpened = false;
 	}
@@ -195,6 +174,20 @@ public class AdministratorFormController {
 			}
 		});
 		
+	}
+	
+	public void createAdminPredmetiForm() {
+		if(adminPredmetiFormOpened) {
+			return;
+		}
+		
+		adminPredmetiFormOpened = true;
+		AdminPredmetiForm adminPredmetiForm = new AdminPredmetiForm();
+		adminPredmetiForm.setVisible(true);
+	}
+	
+	public static void resetAdminPredmetiFormOpened() {
+		adminPredmetiFormOpened = false;
 	}
 
 }

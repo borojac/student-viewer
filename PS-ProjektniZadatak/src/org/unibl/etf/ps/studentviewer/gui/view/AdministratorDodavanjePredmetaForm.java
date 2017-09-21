@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;
+import org.unibl.etf.ps.studentviewer.logic.controller.AdminPredmetiFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorDodavanjePredmetaFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
@@ -63,14 +64,14 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 	private ArrayList<String> skolskeGodineList;
 
 	
-	public AdministratorDodavanjePredmetaForm(AdministratorFormController administratorFormController) {
+	public AdministratorDodavanjePredmetaForm() {
 		
 		administratorDodavanjePredmetaFormController = new AdministratorDodavanjePredmetaFormController(this);
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
-				AdministratorFormController.resetAddFormOpened();
-				AdministratorFormController.resetChooseAddTypeFormOpened();
+				AdminPredmetiFormController.resetAddFormOpened();
+				AdminPredmetiFormController.resetChooseAddTypeFormOpened();
 			}
 		});
 		

@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import org.imgscalr.Scalr;
+import org.unibl.etf.ps.studentviewer.logic.controller.AdminPredmetiFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.PredmetChooseAddTypeFormController;
 
@@ -33,10 +34,10 @@ public class PredmetChooseAddTypeForm extends JFrame {
 	JCheckBox chckbxNewCheckBoxJedan = new JCheckBox("");
 	JCheckBox chckbxNewCheckBoxVise = new JCheckBox("");
 
-	public PredmetChooseAddTypeForm(AdministratorFormController administratorFormController) {
+	public PredmetChooseAddTypeForm(AdminPredmetiFormController adminPredmetiFormController) {
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				AdministratorFormController.resetChooseAddTypeFormOpened();
+				AdminPredmetiFormController.resetChooseAddTypeFormOpened();
 			}
 		});
 		
@@ -80,7 +81,7 @@ public class PredmetChooseAddTypeForm extends JFrame {
 				boolean jedan = chckbxNewCheckBoxJedan.isSelected();
 				boolean vise = chckbxNewCheckBoxVise.isSelected();
 				PredmetChooseAddTypeForm.this.dispose();
-				new PredmetChooseAddTypeFormController(administratorFormController, jedan, vise, PredmetChooseAddTypeForm.this);	
+				new PredmetChooseAddTypeFormController(adminPredmetiFormController, jedan, vise, PredmetChooseAddTypeForm.this);	
 			}
 		});
 		chooseButton.setBounds(96, 217, 89, 29);

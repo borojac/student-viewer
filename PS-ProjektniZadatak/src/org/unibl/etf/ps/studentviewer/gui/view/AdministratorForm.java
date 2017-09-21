@@ -44,7 +44,7 @@ public class AdministratorForm extends JFrame {
 	private JPanel componentsPane;
 	private JButton odobriBtn;
 	private JButton odbijBtn;
-	private JButton dodajPredmeteBtn;
+	private JButton upravljanjePredmetimaBtn;
 	private JButton odjavaBtn;
 	private JButton elektrijadaBtn;
 	private JScrollPane	scrollPane;
@@ -153,9 +153,9 @@ public class AdministratorForm extends JFrame {
 		odbijBtn.setEnabled(false);
 		componentsPane.add(odbijBtn);
 		
-		dodajPredmeteBtn = new JButton("Dodaj predmete");
-		dodajPredmeteBtn.setBounds(15, 192, 180, 40);
-		componentsPane.add(dodajPredmeteBtn);
+		upravljanjePredmetimaBtn = new JButton("Upravljanje predmetima");
+		upravljanjePredmetimaBtn.setBounds(15, 192, 180, 40);
+		componentsPane.add(upravljanjePredmetimaBtn);
 		
 		elektrijadaBtn = new JButton("Elektrijada");
 		elektrijadaBtn.setBounds(15, 246, 180, 40);
@@ -206,10 +206,10 @@ public class AdministratorForm extends JFrame {
 			}
 		});
 		
-		dodajPredmeteBtn.addActionListener(new ActionListener() {
+		upravljanjePredmetimaBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				administratorFormController.createPredmetChooseAddTypeForm();
+				administratorFormController.createAdminPredmetiForm();
 			}
 		});
 		
