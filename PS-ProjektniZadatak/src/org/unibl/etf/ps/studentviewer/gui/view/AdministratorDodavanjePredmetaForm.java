@@ -24,6 +24,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.AdminPredmetiFormController;
@@ -141,6 +143,18 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 		nazivTf.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 16));
 		contentPane.add(nazivTf);
 		
+		nazivTf.getDocument().addDocumentListener(new DocumentListener() {
+		    public void changedUpdate(DocumentEvent e) {
+		    	nazivTf.setToolTipText(nazivTf.getText());
+		    }
+		    public void removeUpdate(DocumentEvent e) {
+		    	nazivTf.setToolTipText(nazivTf.getText());
+		    }
+		    public void insertUpdate(DocumentEvent e) {
+		    	nazivTf.setToolTipText(nazivTf.getText());
+		    }
+		});
+		
 		ectsLbl = new JLabel("ECTS bodovi");
  		ectsLbl.setBounds(15, 240, 250, 45);
  		ectsLbl.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 18));
@@ -190,7 +204,7 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 		PredmetDAO predmetDAO = factory.getPredmetDAO();
  		
 		ciklusiCB = new JComboBox<>();
-		studijskiProgramiCB = new JComboBox<>();
+		studijskiProgramiCB = new JComboBox<>();		
 		skolskeGodineCB = new JComboBox<>();
  		predmetiList = predmetDAO.getAllPredmet();
 		

@@ -58,14 +58,21 @@ public class AdminPredmetiFormController {
 	}
 	
 	public void obrisiPredmet() {
-		PredmetDTO predmetDTO = adminPredmetiForm.getSelectedPredmet();
+		int answer = JOptionPane.showOptionDialog(adminPredmetiForm, "Da li ste sigurni da zelite da obrisete odabrani predmet?", "Brisanje predmeta", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[] { "Da", "Ne" }, "default");
+		if(answer == JOptionPane.YES_OPTION) {
+			PredmetDTO predmetDTO = adminPredmetiForm.getSelectedPredmet();
 		
-		MySQLDAOFactory factory = new MySQLDAOFactory();
-		PredmetDAO predmetDAO = factory.getPredmetDAO();
+			MySQLDAOFactory factory = new MySQLDAOFactory();
+			PredmetDAO predmetDAO = factory.getPredmetDAO();
 		
-		if(predmetDAO.deletePredmet(predmetDTO)) {
-			JOptionPane.showMessageDialog(adminPredmetiForm, "Predmet uspjesno obrisan.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
-			adminPredmetiForm.removeSelectedRow();
+			if(predmetDAO.deletePredmet(predmetDTO)) {
+				JOptionPane.showMessageDialog(adminPredmetiForm, "Predmet uspjesno obrisan.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
+				adminPredmetiForm.removeSelectedRow();
+			}
+			
+			adminPredmetiForm.getPredmetiTbl().getSelectionModel().setSelectionInterval(-1, -1);
+			adminPredmetiForm.getIzmjeniBtn().setEnabled(false);
+			adminPredmetiForm.getObrisiBtn().setEnabled(false);
 		}
 	}
 

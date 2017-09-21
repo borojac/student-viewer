@@ -100,7 +100,6 @@ public class AdminPredmetiForm extends JFrame {
 		contentPane.add(whiteCorrectionLabel2);
 		
 		initTable();
-		initTableListener();
 		initButtons();
 		initButtonsListeners();
 	}
@@ -170,6 +169,8 @@ public class AdminPredmetiForm extends JFrame {
 		scroll = new JScrollPane(predmetiTbl);
 		scroll.setBounds(10, 130, 600, 252);
 		contentPane.add(scroll);
+		
+		initTableListener();
 	}
 	
 	private void initButtons() {
@@ -238,6 +239,18 @@ public class AdminPredmetiForm extends JFrame {
 		predmetiList.remove(predmetiTbl.getSelectedRow());
 		dtm.removeRow(predmetiTbl.getSelectedRow());
 		predmetiTbl.setModel(dtm);
+	}
+	
+	public JTable getPredmetiTbl() {
+		return predmetiTbl;
+	}
+	
+	public JButton getIzmjeniBtn() {
+		return izmjeniPredmetBtn;
+	}
+	
+	public JButton getObrisiBtn() {
+		return obrisiPredmetBtn;
 	}
 
 }

@@ -37,12 +37,15 @@ public class AdministratorIzmjenaPredmetaFormController {
 			
 			if(predmetDAO.updatePredmet(predmetStari, predmetNovi)) {
 				administratorIzmjenaPredmetaForm.getAdminPredmetiForm().initTable();
-				JOptionPane.showMessageDialog(administratorIzmjenaPredmetaForm, "Predmet uspjesno dodan.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(administratorIzmjenaPredmetaForm, "Predmet uspjesno izmjenjen.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
+				administratorIzmjenaPredmetaForm.getAdminPredmetiForm().getPredmetiTbl().getSelectionModel().setSelectionInterval(-1, -1);
+				administratorIzmjenaPredmetaForm.getAdminPredmetiForm().getIzmjeniBtn().setEnabled(false);
+				administratorIzmjenaPredmetaForm.getAdminPredmetiForm().getObrisiBtn().setEnabled(false);
 				administratorIzmjenaPredmetaForm.dispose();
 				AdminPredmetiFormController.resetChooseAddTypeFormOpened();
 				AdminPredmetiFormController.resetAddFormOpened();
 			} else {
-				JOptionPane.showMessageDialog(administratorIzmjenaPredmetaForm, "Predmet nije dodan.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(administratorIzmjenaPredmetaForm, "Predmet nije izmjenjen.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}

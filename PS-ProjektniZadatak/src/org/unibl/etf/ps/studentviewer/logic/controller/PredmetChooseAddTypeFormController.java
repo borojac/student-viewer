@@ -62,6 +62,9 @@ public class PredmetChooseAddTypeFormController {
 					if (predmetDAO.addPredmete(lista)) {
 						adminPredmetiFormController.getAdminPredmetiForm().initTable();
 						JOptionPane.showMessageDialog(predmetChoseAddTypeForm, "Uspjesno dodati predmeti!", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
+						adminPredmetiFormController.getAdminPredmetiForm().getPredmetiTbl().getSelectionModel().setSelectionInterval(-1, -1);
+						adminPredmetiFormController.getAdminPredmetiForm().getIzmjeniBtn().setEnabled(false);
+						adminPredmetiFormController.getAdminPredmetiForm().getObrisiBtn().setEnabled(false);
 					}
 					else {
 						JOptionPane.showMessageDialog(predmetChoseAddTypeForm, "Neuspjesno dodavanje predmeta!", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
