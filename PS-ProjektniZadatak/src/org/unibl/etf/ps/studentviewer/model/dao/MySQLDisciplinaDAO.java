@@ -114,4 +114,48 @@ public class MySQLDisciplinaDAO implements DisciplinaDAO {
 		return retVal;
 	}
 
+	@Override
+	public boolean deleteDisciplinu(DisciplinaDTO disciplinaDTO) {
+		boolean retVal = false;
+
+		String query = "DELETE FROM disciplina WHERE  Naziv=? AND ElektrijadaId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try {
+
+			conn = DBUtility.open();
+			conn.setAutoCommit(false);
+			ps = conn.prepareStatement(query);
+
+			
+			ps.setString(1, disciplinaDTO.getNaziv());
+			ps.setInt(2, disciplinaDTO.getElektrijadaId());
+
+			retVal = ps.executeUpdate() == 1;
+
+			if (retVal) {
+				conn.commit();
+			} else {
+				throw new SQLException("Rollback needed!");
+			}
+
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException ex) {
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+			}
+			DBUtility.close(conn, ps);
+		}
+
+		return retVal;
+	}
+
 }

@@ -5,7 +5,9 @@ import java.awt.EventQueue;
 import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.view.AdminBrisanjeDisciplineForm;
+import org.unibl.etf.ps.studentviewer.gui.view.AdminBrisanjeElektrijadeForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdminDodavanjeDisciplineForm;
+import org.unibl.etf.ps.studentviewer.gui.view.AdminDodavanjeElektrijadeForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdminElektrijadaForm;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
@@ -90,18 +92,27 @@ public class AdministratorElektrijadaFormController {
 
 	}
 
-	public void azurirajDisciplinu() {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	public void dodajElektrijadu() {
-		// TODO Auto-generated method stub
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				AdminDodavanjeElektrijadeForm frame = new AdminDodavanjeElektrijadeForm();
+				frame.setVisible(true);
+			}
+		});
 
 	}
 
 	public void obrisiElektrijadu() {
-		// TODO Auto-generated method stub
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				AdminBrisanjeElektrijadeForm frame = new AdminBrisanjeElektrijadeForm();
+				frame.setVisible(true);
+			}
+		});
 
 	}
 

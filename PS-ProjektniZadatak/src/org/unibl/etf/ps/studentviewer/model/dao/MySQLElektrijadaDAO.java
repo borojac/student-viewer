@@ -152,4 +152,93 @@ public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 		return retVal;
 	}
 
+	@Override
+	public boolean addElektrijada(ElektrijadaDTO elektrijadaDTO) {
+		boolean retVal = false;
+
+		String query = "INSERT INTO elektrijada VALUE (?, ?, ?)";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try {
+
+			conn = DBUtility.open();
+			conn.setAutoCommit(false);
+			ps = conn.prepareStatement(query);
+
+			ps.setInt(1, elektrijadaDTO.getId());
+			ps.setDate(2,new  java.sql.Date(elektrijadaDTO.getDatum().getTime()));
+			ps.setString(3, elektrijadaDTO.getLokacija());
+			
+
+			retVal = ps.executeUpdate() == 1;
+
+			if (retVal) {
+				conn.commit();
+			} else {
+				throw new SQLException("Rollback needed!");
+			}
+
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException ex) {
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+			}
+			DBUtility.close(conn, ps);
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public boolean deleteElektrijada(ElektrijadaDTO elektrijadaDTO) {
+		boolean retVal = false;
+
+		String query = "DELETE FROM elektrijada WHERE ElektrijadaId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try {
+
+			conn = DBUtility.open();
+			conn.setAutoCommit(false);
+			ps = conn.prepareStatement(query);
+
+			
+		
+			ps.setInt(1, elektrijadaDTO.getId());
+
+			retVal = ps.executeUpdate() == 1;
+
+			if (retVal) {
+				conn.commit();
+			} else {
+				throw new SQLException("Rollback needed!");
+			}
+
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException ex) {
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+			}
+			DBUtility.close(conn, ps);
+		}
+
+		return retVal;
+	}
+
 }

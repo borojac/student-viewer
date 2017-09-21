@@ -24,7 +24,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.AccountFormController;
-import org.unibl.etf.ps.studentviewer.logic.controller.AdminBrisanjeDisciplineFormController;
+import org.unibl.etf.ps.studentviewer.logic.controller.AdminBrisanjeElektrijadeController;
 import org.unibl.etf.ps.studentviewer.logic.controller.DodavanjeDisciplineController;
 import org.unibl.etf.ps.studentviewer.model.dao.DisciplinaDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.ElektrijadaDAO;
@@ -33,21 +33,22 @@ import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 
-public class AdminBrisanjeDisciplineForm extends JFrame {
+public class AdminBrisanjeElektrijadeForm extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel contentPane_1;
+	
+	private AdminBrisanjeElektrijadeController brisanjeElektrijadeKontroler;
 	private JComboBox elektrijadeCB;
-	private NalogDTO nalogDTO;
-	private JComboBox disciplineCB;
-	private AdminBrisanjeDisciplineFormController brisanjeDisciplineKontroler;
+
+
 	/**
 	 * Create the frame.
 	 */
-	public AdminBrisanjeDisciplineForm() {
-		brisanjeDisciplineKontroler = new AdminBrisanjeDisciplineFormController(this);
-		setTitle("Brisanje discipline");
-		this.nalogDTO = nalogDTO;
+	public AdminBrisanjeElektrijadeForm() {
+		brisanjeElektrijadeKontroler = new AdminBrisanjeElektrijadeController(this);
+		setTitle("Brisanje Elektrijade");
+		
 		
 		setBounds(100, 100, 450, 270);
 		contentPane = new JPanel();
@@ -62,16 +63,11 @@ public class AdminBrisanjeDisciplineForm extends JFrame {
 
 					@Override
 					public void run() {
-						brisanjeDisciplineKontroler.zatvoriProzor();
+						brisanjeElektrijadeKontroler.zatvoriProzor();
 					}
 				});
 			}
 		});
-
-		JLabel lblNazivDiscipline = new JLabel("Naziv discipline:");
-		lblNazivDiscipline.setBounds(20, 210, 200, 25);
-		lblNazivDiscipline.setFont(new Font("Century Gothic", Font.CENTER_BASELINE, 15));
-		lblNazivDiscipline.setForeground(Color.WHITE);
 
 		JLabel lblIzborElektrijade = new JLabel("Izbor Elektrijade:");
 		lblIzborElektrijade.setBounds(20, 210, 200, 25);
@@ -80,10 +76,10 @@ public class AdminBrisanjeDisciplineForm extends JFrame {
 
 		initElektrijadaComboBox();
 
-		JButton obrisiBtn = new JButton("Obri\u0161i");
+		JButton obrisiBtn = new JButton("Obrisi");
 		obrisiBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				brisanjeDisciplineKontroler.obrisiDisciplinu(elektrijadeCB,disciplineCB);
+				brisanjeElektrijadeKontroler.obrisiElektrijadu(elektrijadeCB);
 			}
 		});
 		obrisiBtn.setBounds(140, 430, 150, 35);
@@ -93,33 +89,24 @@ public class AdminBrisanjeDisciplineForm extends JFrame {
 			gl_contentPane_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane_1.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane_1.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_contentPane_1.createSequentialGroup()
-							.addComponent(obrisiBtn, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_contentPane_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(Alignment.TRAILING, gl_contentPane_1.createSequentialGroup()
+							.addComponent(obrisiBtn)
 							.addGap(156))
 						.addGroup(gl_contentPane_1.createSequentialGroup()
 							.addComponent(lblIzborElektrijade)
 							.addGap(18)
 							.addComponent(elektrijadeCB, 0, 264, Short.MAX_VALUE)
-							.addContainerGap())
-						.addGroup(gl_contentPane_1.createSequentialGroup()
-							.addComponent(lblNazivDiscipline)
-							.addGap(18)
-							.addComponent(disciplineCB, 0, 267, Short.MAX_VALUE)
 							.addContainerGap())))
 		);
 		gl_contentPane_1.setVerticalGroup(
 			gl_contentPane_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane_1.createSequentialGroup()
-					.addGap(24)
+					.addGap(49)
 					.addGroup(gl_contentPane_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblIzborElektrijade)
 						.addComponent(elektrijadeCB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(39)
-					.addGroup(gl_contentPane_1.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNazivDiscipline)
-						.addComponent(disciplineCB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
 					.addComponent(obrisiBtn)
 					.addGap(19))
 		);
@@ -128,7 +115,6 @@ public class AdminBrisanjeDisciplineForm extends JFrame {
 
 	private void initElektrijadaComboBox() {
 		elektrijadeCB = new JComboBox<>();
-		initDisciplineComboBox();
 		MySQLDAOFactory dao = new MySQLDAOFactory();
 		ElektrijadaDAO eleDAO = dao.getElektrijadaDAO();
 		ArrayList<ElektrijadaDTO> elektrijade = (ArrayList<ElektrijadaDTO>) eleDAO
@@ -147,37 +133,10 @@ public class AdminBrisanjeDisciplineForm extends JFrame {
 				elektrijadeCB.addItem(el.getLokacija() + ", " + newDf.format(datum));
 			}
 			
-			int indeks = elektrijadeCB.getSelectedIndex();
-			ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
-			DisciplinaDAO discDAO = dao.getDisciplinaDAO();
-			ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
-					.getDisciplinePoElektrijadi(selektovanaElektrijada.getId());
-			for (DisciplinaDTO di : discipline) {
-				disciplineCB.addItem(di.getNaziv());
-			}
-
-			elektrijadeCB.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					disciplineCB.removeAllItems();
-					int indeks = elektrijadeCB.getSelectedIndex();
-					ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
-					DisciplinaDAO discDAO = dao.getDisciplinaDAO();
-					ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
-							.getDisciplinePoElektrijadi(selektovanaElektrijada.getId());
-					
-					for (DisciplinaDTO di : discipline) {
-						disciplineCB.addItem(di.getNaziv());
-					}
-				}
-			});
+			
 		}
 	}
-	private void initDisciplineComboBox() {
-		disciplineCB = new JComboBox<>();
+	
 
-	}
-
-	public NalogDTO getNalogDTO() {
-		return nalogDTO;
-	}
+	
 }

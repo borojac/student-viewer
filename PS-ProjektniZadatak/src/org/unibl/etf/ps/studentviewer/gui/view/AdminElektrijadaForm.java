@@ -52,7 +52,6 @@ public class AdminElektrijadaForm extends JFrame {
 	private JButton odbijBtn;
 	private JButton obrisiDisciplinuBtn;
 	private JButton nazadBtn;
-	private JButton azurirajDisciplinuBtn;
 	private JButton dodajDisciplinuBtn;
 	private JButton dodajElektrijaduBtn;
 	private JButton obrisiElektrijaduBtn;
@@ -220,10 +219,6 @@ public class AdminElektrijadaForm extends JFrame {
 		obrisiDisciplinuBtn = new JButton("Obri\u0161 disciplinu");
 		obrisiDisciplinuBtn.setBounds(240, 500, 180, 40);
 		contentPane.add(obrisiDisciplinuBtn);
-		
-		azurirajDisciplinuBtn = new JButton("A\u017Euriraj disciplinu");
-		azurirajDisciplinuBtn.setBounds(240, 551, 180, 40);
-		contentPane.add(azurirajDisciplinuBtn);
 		  
 	}
 	
@@ -261,13 +256,6 @@ public class AdminElektrijadaForm extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				administratorElektrijadaFormController.obrisiDisciplinu();
-			}
-		});
-		
-		azurirajDisciplinuBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				administratorElektrijadaFormController.azurirajDisciplinu();
 			}
 		});
 		
