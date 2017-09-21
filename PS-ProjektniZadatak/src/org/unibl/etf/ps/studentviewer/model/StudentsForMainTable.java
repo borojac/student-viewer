@@ -167,9 +167,10 @@ public class StudentsForMainTable {
 	
 	public static void setOcjena(int id, int ocjena) {
 		for (StudentMainTableDTO student : getAllStudents())
-			if (student.getStudentId() == id)
+			if (student.getStudentId() == id) {
 				student.setOcjena(ocjena);
-		
+				break;
+			}
 		mainTable.setStudents(mainTable.getStudents());
 		mainTable.changeView();
 	}
