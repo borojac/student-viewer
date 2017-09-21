@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -99,6 +100,7 @@ public class AdminPredmetiForm extends JFrame {
 		contentPane.add(whiteCorrectionLabel2);
 		
 		initTable();
+		initTableListener();
 		initButtons();
 		initButtonsListeners();
 	}
@@ -177,10 +179,12 @@ public class AdminPredmetiForm extends JFrame {
 		
 		izmjeniPredmetBtn = new JButton("Izmjeni predmet");
 		izmjeniPredmetBtn.setBounds(245, 400, 135, 35);
+		izmjeniPredmetBtn.setEnabled(false);
 		contentPane.add(izmjeniPredmetBtn);
 		
 		obrisiPredmetBtn = new JButton("Obrisi predmet");
 		obrisiPredmetBtn.setBounds(430, 400, 135, 34);
+		obrisiPredmetBtn.setEnabled(false);
 		contentPane.add(obrisiPredmetBtn);
 	}
 	
@@ -193,6 +197,40 @@ public class AdminPredmetiForm extends JFrame {
 			}
 		});
 		
+		obrisiPredmetBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				adminPredmetiFormController.obrisiPredmet();
+			}
+		});
+		
+	}
+	
+	private void initTableListener() {
+		
+		predmetiTbl.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(predmetiTbl.getSelectedRow() != -1) {
+					izmjeniPredmetBtn.setEnabled(true);
+					obrisiPredmetBtn.setEnabled(true);
+				} else {
+					izmjeniPredmetBtn.setEnabled(false);
+					obrisiPredmetBtn.setEnabled(false);
+				}
+			}
+		});
+		
+	}
+	
+	public PredmetDTO getSelectedPredmet() {
+		return predmetiList.get(predmetiTbl.getSelectedRow());
+	}
+	
+	public void removeSelectedRow() {
+		predmetiList.remove(predmetiTbl.getSelectedRow());
+		dtm.removeRow(predmetiTbl.getSelectedRow());
+		predmetiTbl.setModel(dtm);
 	}
 
 }
