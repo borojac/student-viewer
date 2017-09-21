@@ -147,11 +147,14 @@ public class ShowForm extends JFrame {
 			testCheckBox.setSelected(true);
 		
 		JCheckBox ocjenaCheckBox = new JCheckBox("Ocjena");
+		ocjenaCheckBox.setBackground(new Color(0, 0, 139));
+		ocjenaCheckBox.setForeground(Color.WHITE);
+		ocjenaCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
 		elektrijadaCheckBox.setForeground(new Color(255, 255, 255));
 		elektrijadaCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
 		elektrijadaCheckBox.setBackground(new Color(0, 0, 139));
-		panel.add(elektrijadaCheckBox);
-		boxes.add(elektrijadaCheckBox);
+		panel.add(ocjenaCheckBox);
+		boxes.add(ocjenaCheckBox);
 		if (ShowViewData.getValue(ShowViewData.D_OCJENA))
 			elektrijadaCheckBox.setSelected(true);
 		

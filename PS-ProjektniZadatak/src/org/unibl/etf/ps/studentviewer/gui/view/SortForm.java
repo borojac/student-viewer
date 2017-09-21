@@ -38,6 +38,7 @@ public class SortForm extends JFrame {
 	private JCheckBox komentarCheckBox = null;
 	private JCheckBox elektrijadaCheckBox = null;
 	private JCheckBox testCheckBox = null;
+	private JCheckBox ocjenaCheckBox = null;
 
 	private JTextArea textArea = null;
 	private MainFormController mainFormController = null;
@@ -151,6 +152,8 @@ public class SortForm extends JFrame {
 			return elektrijadaCheckBox.isSelected();
 		}else if (Sort.KOMENTAR.equals(TYPE))
 			return komentarCheckBox.isSelected();
+		else if (Sort.OCJENA.equals(TYPE))
+			return ocjenaCheckBox.isSelected();
 		return false;
 	}
 	
@@ -196,6 +199,13 @@ public class SortForm extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				new SortFormController(mainFormController, SortForm.this).createSortChooseForm();
 				SortForm.this.setVisible(false);
+			}
+		});
+		
+		ocjenaCheckBox.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				new SortFormController(mainFormController, SortForm.this).addToSortParams(Sort.OCJENA);
 			}
 		});
 

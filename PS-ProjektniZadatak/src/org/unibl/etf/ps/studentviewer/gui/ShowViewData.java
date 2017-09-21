@@ -29,6 +29,11 @@ public class ShowViewData {
 		DD_TEST.put(exam, false);
 	}
 	
+	
+	public static void removeExam(String exam) {
+		DD_TEST.remove(exam);
+	}
+	
 	private static boolean checkTest() {
 		Collection<Boolean> bools = DD_TEST.values();
 		for (Boolean b : bools)

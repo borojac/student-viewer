@@ -135,7 +135,7 @@ public class TestController {
 					public void run() {
 						testForm.dispose();
 						testForm.getMainForm().refreshTestoviTable();
-						StudentsForMainTable.setTest(test, testForm.getMainForm().getMainTable());
+						StudentsForMainTable.setTest(test, testForm.getMainForm().getMainTable(), false);
 					}
 				});
 			}
@@ -563,7 +563,7 @@ public class TestController {
 								@Override
 								public void run() {
 									testForm.getMainForm().refreshTestoviTable();
-									StudentsForMainTable.setTest(test, testForm.getMainForm().getMainTable());
+									StudentsForMainTable.setTest(test, testForm.getMainForm().getMainTable(), false);
 								}
 							}).start();
 							testForm.dispose();
@@ -613,7 +613,7 @@ public class TestController {
 					public void run() {
 						testForm.dispose();
 						testForm.getMainForm().testoviClearSelection();
-						StudentsForMainTable.setTest(test, testForm.getMainForm().getMainTable());
+						StudentsForMainTable.setTest(test, testForm.getMainForm().getMainTable(), false);
 					}
 				});
 		} catch (SQLException e) {

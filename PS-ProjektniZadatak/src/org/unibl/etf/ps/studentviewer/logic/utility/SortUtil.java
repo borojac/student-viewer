@@ -16,7 +16,11 @@ public class SortUtil {
 				for (String param : params) {
 					int result = 0;
 					
-					if (Sort.BROJ_INDEKSA.equals(param)) {
+					if (Sort.OCJENA.equals(param)) {
+						Integer ocjena1 = new Integer(o1.getProperty(param));
+						Integer ocjena2 = new Integer(o2.getProperty(param));
+						result = ocjena2.compareTo(ocjena1);
+					}else if (Sort.BROJ_INDEKSA.equals(param)) {
 						Integer godina1 = new Integer(o1.getProperty(param).split("/")[1]);
 						Integer godina2 = new Integer(o2.getProperty(param).split("/")[1]);
 						result = godina2.compareTo(godina1);

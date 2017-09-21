@@ -29,9 +29,10 @@ public class MainTable extends JTable {
 		identifiers.add("Elektrijada");
 		identifiers.add("Komentar");
 		identifiers.addAll(Arrays.asList(StudentsForMainTable.getAllIspiti()));
-
+		identifiers.add("Ocjena");
+		
 		columnIdentifiers = new String[identifiers.size()];
-		for (int i = 0; i < columnIdentifiers.length; i++)
+		for (int i = 0; i < columnIdentifiers.length - 1; i++)
 			columnIdentifiers[i] = new String(identifiers.get(i));
 
 	}
@@ -48,14 +49,17 @@ public class MainTable extends JTable {
 		if (identifiers != null)
 			for (String s : identifiers)
 				list.add(s);
+		list.add("Ocjena");
 		columnIdentifiers = list.toArray(new String[list.size()]);
+		
 		
 		map.put("Indeks", ShowViewData.D_BROJINDEKSA);
 		map.put("Ime", ShowViewData.D_IME);
 		map.put("Prezime", ShowViewData.D_PREZIME);
 		map.put("Elektrijada", ShowViewData.D_ELEKTRIJADA);
 		map.put("Komentar", ShowViewData.D_KOMENTAR);
-		for (int i = 5; i < columnIdentifiers.length; i++)
+		map.put("Ocjena", ShowViewData.D_OCJENA);
+		for (int i = 5; i < columnIdentifiers.length - 1; i++)
 			map.put(columnIdentifiers[i], columnIdentifiers[i]);
 
 	}
@@ -98,7 +102,6 @@ public class MainTable extends JTable {
 		
 		ii = 0;
 		for (String s : columnIdentifiers) {
-
 			if (columnNames.contains(s) && !ShowViewData.getValue(map.get(s))) {
 				model.removeColumn(columnNames.indexOf(s));
 				columnNames.remove(s);
@@ -188,7 +191,9 @@ public class MainTable extends JTable {
 		map.put("Prezime", ShowViewData.D_PREZIME);
 		map.put("Elektrijada", ShowViewData.D_ELEKTRIJADA);
 		map.put("Komentar", ShowViewData.D_KOMENTAR);
-		for (int i = 5; i < columnIdentifiers.length; i++)
+		map.put("Ocjena", ShowViewData.D_OCJENA);
+		
+		for (int i = 5; i < columnIdentifiers.length - 1; i++)
 			map.put(columnIdentifiers[i], columnIdentifiers[i]);
 	}
 
@@ -233,5 +238,10 @@ public class MainTable extends JTable {
 		UndoRedoData.addState(tempList);
 		setStudents(tempList);
 		changeView();
+	}
+
+	public String getMap() {
+		// TODO Auto-generated method stub
+		return map.toString();
 	}
 }

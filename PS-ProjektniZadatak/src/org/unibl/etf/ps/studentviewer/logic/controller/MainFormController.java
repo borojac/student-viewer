@@ -217,7 +217,7 @@ public class MainFormController {
 					model.fireTableDataChanged();
 				}
 			});
-			StudentsForMainTable.setTest(null, mainForm.getMainTable());
+			StudentsForMainTable.setTest(test, mainForm.getMainTable(), true);
 		} catch (SQLException e) {
 			EventQueue.invokeLater(new Runnable() {
 

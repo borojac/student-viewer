@@ -127,6 +127,11 @@ public class StudentMainTableDTO extends StudentNaPredmetuDTO{
 	public void resetElektrijada() {
 		elektrijada = "NE";
 	}
+
+	public void resetExam(String exam) {
+		testovi.remove(exam);
+	}
+
 	
 	
 	

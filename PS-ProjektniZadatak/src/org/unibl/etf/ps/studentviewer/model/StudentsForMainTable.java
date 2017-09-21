@@ -2,6 +2,7 @@ package org.unibl.etf.ps.studentviewer.model;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.unibl.etf.ps.studentviewer.model.dao.StudentMainTableDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
@@ -70,6 +72,7 @@ public class StudentsForMainTable {
 		map.put(ShowViewData.D_BROJINDEKSA, true);
 		map.put(ShowViewData.D_ELEKTRIJADA, false);
 		map.put(ShowViewData.D_KOMENTAR, false);
+		map.put(ShowViewData.D_OCJENA, false);
 
 		ShowViewData.setNewHashMap(map);
 		ShowViewData.setNewTestHashMap(map2);
@@ -84,7 +87,7 @@ public class StudentsForMainTable {
 				tempList.add(s);
 			UndoRedoData.initAddStudents(tempList);
 			return tempList;
-		}else {
+		} else {
 			return UndoRedoData.loadFromBase(stanjeTabele);
 		}
 	}
@@ -103,18 +106,58 @@ public class StudentsForMainTable {
 	public static ArrayList<StudentMainTableDTO> getAllStudents() {
 		return allStudents;
 	}
-	
-	public static void setTest(TestDTO test, MainTable mainTable) {
-		System.out.println("USAO");
-		List<StudentNaTestuDTO> listOfStudents = test.getStudenti();
-		for (StudentNaTestuDTO student : listOfStudents) {
-			int id = student.getStudentId();
-			int brojBodova = student.getBrojBodova();
-			addTestToStudent(id, getDateFormat(test), brojBodova);
+
+	public static void setTest(TestDTO test, MainTable mainTable, boolean forDelete) {
+
+		List<String> examList = new ArrayList<String>();
+		for (String s : ispiti)
+			examList.add(s);
+
+		if (forDelete) {
+			examList.remove(getDateFormat(test));
+			ispiti = examList.toArray(new String[examList.size()]);
+			MainTable.setNewColumnIdentifiers(ispiti);
+			ShowViewData.removeExam(getDateFormat(test));
+			for (StudentMainTableDTO student : getAllStudents()) {
+				student.resetExam(getDateFormat(test));
+			}
+			
+		} else {
+			if (!examList.contains(getDateFormat(test))) {
+				examList.add(getDateFormat(test));
+				ispiti = examList.toArray(new String[examList.size()]);
+				ShowViewData.resetExam(getDateFormat(test));
+				MainTable.setNewColumnIdentifiers(ispiti);
+			}
+
+			List<StudentNaTestuDTO> listOfStudents = test.getStudenti();
+			for (StudentNaTestuDTO student : listOfStudents) {
+				int id = student.getStudentId();
+				int brojBodova = student.getBrojBodova();
+				addTestToStudent(id, getDateFormat(test), brojBodova);
+			}
+
+			for (StudentMainTableDTO student : getAllStudents()) {
+				boolean control = false;
+				if (!"/".equals(student.getTest(getDateFormat(test)))) {
+					for (StudentNaTestuDTO studentNaTestu : listOfStudents) {
+						if (studentNaTestu.getStudentId() == student.getStudentId()) {
+							control = true;
+							break;
+						}
+					}
+				}
+				if (!control) {
+					student.resetExam(getDateFormat(test));
+				}
+			}
+			
+			
+
 		}
+
 		mainTable.setStudents(mainTable.getStudents());
 		mainTable.changeView();
 	}
-	
-	
+
 }
