@@ -31,6 +31,7 @@ import javax.swing.border.EmptyBorder;
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.FilterFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
+import javax.swing.JCheckBox;
 
 public class FilterForm extends JFrame {
 
@@ -38,7 +39,11 @@ public class FilterForm extends JFrame {
 
 	private JComboBox elektrijadaComboBox = null;
 	private JComboBox komentarComboBox = null;
-
+	private JCheckBox imaFormulisanuOcjenuCheckBox = null;
+	private JCheckBox polozenPredmetCheckBox;
+	private JCheckBox nemaFormulisanuOcjenuCheckBox = null;
+	private JCheckBox nepolozenPredmetCheckBox;
+	
 	JPanel panel = null;
 
 
@@ -77,6 +82,14 @@ public class FilterForm extends JFrame {
 		model.addElement(test);
 	}
 	
+	public boolean isPolozen() {
+		return polozenPredmetCheckBox.isSelected();
+	}
+
+	public boolean isNepolozen() {
+		return nepolozenPredmetCheckBox.isSelected();
+	}
+	
 	public String getElektrijada() {
 		return (String) elektrijadaComboBox.getSelectedItem();
 	}
@@ -104,7 +117,7 @@ public class FilterForm extends JFrame {
 		setResizable(false);
 		this.mainFormController = mainFormControler;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 360, 383);
+		setBounds(100, 100, 360, 418);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -185,11 +198,11 @@ public class FilterForm extends JFrame {
 			}
 		});
 		btnNewButton.setFont(new Font("Century Gothic", Font.BOLD, 13));
-		btnNewButton.setBounds(139, 198, 119, 31);
+		btnNewButton.setBounds(139, 253, 119, 31);
 		contentPane.add(btnNewButton);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 198, 119, 84);
+		scrollPane.setBounds(10, 253, 119, 84);
 		contentPane.add(scrollPane);
 		
 		list = new JList(new DefaultListModel());
@@ -209,21 +222,37 @@ public class FilterForm extends JFrame {
 			}
 		});
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton_1.setBounds(139, 251, 119, 31);
+		btnNewButton_1.setBounds(139, 306, 119, 31);
 		contentPane.add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("Filtriraj");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				FilterFormController ffc = new FilterFormController(mainFormControler, FilterForm.this);
-				ffc.setParameters();
+				boolean control = ffc.setParameters();
+				if (!control)
+					return;
 				ffc.filter();
 				FilterForm.this.dispose();
 				mainFormControler.resetFilterFormOpened();
 			}
 		});
 		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton_2.setBounds(120, 313, 119, 31);
+		btnNewButton_2.setBounds(119, 348, 119, 31);
 		contentPane.add(btnNewButton_2);
+		
+		polozenPredmetCheckBox = new JCheckBox("polozen predmet");
+		polozenPredmetCheckBox.setBackground(new Color(0, 0, 139));
+		polozenPredmetCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		polozenPredmetCheckBox.setForeground(new Color(255, 255, 255));
+		polozenPredmetCheckBox.setBounds(10, 194, 228, 23);
+		contentPane.add(polozenPredmetCheckBox);
+		
+		nepolozenPredmetCheckBox = new JCheckBox("nepolozen predmet");
+		nepolozenPredmetCheckBox.setBackground(new Color(0, 0, 139));
+		nepolozenPredmetCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		nepolozenPredmetCheckBox.setForeground(new Color(255, 255, 255));
+		nepolozenPredmetCheckBox.setBounds(10, 220, 228, 23);
+		contentPane.add(nepolozenPredmetCheckBox);
 	}
 }

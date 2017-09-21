@@ -13,4 +13,6 @@ public interface Filter {
 	public static String NE_IDE_NA_ELEKTRIJADU = "F_NEIDENAELEKTRIJADU";
 	public static String IMA_KOMENTAR = "F_IMAKOMENTAR";
 	public static String NEMA_KOMENTAR = "F_NEMAKOMENTAR";
+	public static String PREDMET_POLOZEN = "F_PREDMET_POLOZEN";
+	public static String PREDMET_NEPOLOZEN = "F_PREDMET_NEPOLOZEN";
 }
