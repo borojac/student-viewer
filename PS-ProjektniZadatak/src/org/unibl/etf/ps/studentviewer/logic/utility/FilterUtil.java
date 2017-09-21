@@ -20,10 +20,20 @@ public class FilterUtil {
 		boolean neIdeNaElektrijadu = controlParams.contains(Filter.NE_IDE_NA_ELEKTRIJADU);
 		boolean imaKomentar = controlParams.contains(Filter.IMA_KOMENTAR);
 		boolean nemaKomentar = controlParams.contains(Filter.NEMA_KOMENTAR);
+		boolean polozenPredmet = controlParams.contains(Filter.PREDMET_POLOZEN);
+		boolean nepolozenPredmet = controlParams.contains(Filter.PREDMET_NEPOLOZEN);
 
 		Set<String> testovi = testoviMap.keySet();
 
 		for (StudentMainTableDTO s : currentStudents) {
+			if (nepolozenPredmet)
+				if (s.getOcjena() > 5)
+					continue;
+			
+			if (polozenPredmet)
+				if (5 == s.getOcjena() || 0 == s.getOcjena())
+					continue;
+			
 			if (ideNaElektrijadu)
 				if ("NE".equals(s.getElektrijada()))
 					continue;
