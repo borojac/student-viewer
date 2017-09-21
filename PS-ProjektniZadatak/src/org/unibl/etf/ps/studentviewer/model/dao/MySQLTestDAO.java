@@ -14,6 +14,8 @@ import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import java.sql.CallableStatement;
 /**
  * Nezavrseno, netestirano
@@ -221,7 +223,10 @@ public class MySQLTestDAO implements TestDAO {
 			// Ima studenata na ispitu pa se ne moze obrisati
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw e;
+			if (e instanceof MySQLIntegrityConstraintViolationException)
+				throw new SQLException("Test ne može biti obrisan. Lista studenata na testu mora biti prazna da bi se test mogao brisati.");
+			else
+				throw e;
 		} finally {
 			DBUtility.close(conn, ps);
 		}
