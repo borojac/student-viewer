@@ -161,11 +161,10 @@ public class GradeGenerationController {
 
 			if (studentDAO.gradeStudent(currentStudent.getStudentId(),
 					predmet.getPredmetId(), 
-					ocjena) && gradeForm.getMainTable() != null) {
+					ocjena)) {
 				System.out.println("Ocjena: " + ocjena);
 				StudentsForMainTable.setOcjena(currentStudent.getStudentId(), 
-						ocjena, 
-						gradeForm.getMainTable());
+						ocjena);
 
 			}
 

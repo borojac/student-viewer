@@ -54,7 +54,6 @@ public class GradeGenerationForm extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 
 	private GradeGenerationController controller;
-	private MainTable mainTable;
 
 	private JTextField brojIndeksaTextField;
 	private JTextField imeTextField;
@@ -295,13 +294,6 @@ public class GradeGenerationForm extends JDialog {
 		return Integer.parseInt(ocjenaTextField.getText());
 	}
 
-	public MainTable getMainTable() {
-		return mainTable;
-	}
-
-	public void setMainTable(MainTable mainTable) {
-		this.mainTable = mainTable;
-	}
 
 	public JButton getBtnDalje() {
 		return btnDalje;

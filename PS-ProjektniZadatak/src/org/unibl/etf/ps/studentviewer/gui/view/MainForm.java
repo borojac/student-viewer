@@ -244,9 +244,8 @@ public class MainForm extends JFrame {
 
 					@Override
 					public void run() {
-						GradeGenerationForm ggf = new GradeGenerationForm(getSelectedPredmet(), mainTable.getStudents());
-						ggf.setMainTable(mainTable);
-						ggf.setVisible(true);
+						new GradeGenerationForm(getSelectedPredmet(), mainTable.getStudents())
+						.setVisible(true);
 					}
 				});
 
