@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.view.AdminPredmetiForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdministratorDodavanjePredmetaForm;
+import org.unibl.etf.ps.studentviewer.gui.view.AdministratorIzmjenaPredmetaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.PredmetChooseAddTypeForm;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
@@ -49,6 +50,11 @@ public class AdminPredmetiFormController {
 	
 	public AdminPredmetiForm getAdminPredmetiForm() {
 		return adminPredmetiForm;
+	}
+	
+	public void izmjeniPredmet() {
+		AdministratorIzmjenaPredmetaForm administratorIzmjenaPredmetaForm = new AdministratorIzmjenaPredmetaForm(adminPredmetiForm);
+		administratorIzmjenaPredmetaForm.setVisible(true);
 	}
 	
 	public void obrisiPredmet() {

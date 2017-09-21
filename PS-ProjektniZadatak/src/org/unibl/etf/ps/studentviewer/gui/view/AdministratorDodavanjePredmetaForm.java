@@ -28,14 +28,13 @@ import javax.swing.border.EmptyBorder;
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.AdminPredmetiFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorDodavanjePredmetaFormController;
-import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 
 public class AdministratorDodavanjePredmetaForm extends JFrame {
 
-	private JPanel contentPane;
+	protected JPanel contentPane;
 	private JLabel sifraLbl;
 	private JLabel ectsLbl;
 	private JLabel tipPredmetaLbl;
@@ -44,20 +43,20 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 	private JLabel semestarLbl;
 	private JLabel skolskaGodinaLbl;
 	private JLabel ciklusLbl;
-	private JTextField sifraTf;
-	private JTextField nazivTf;
-	private JTextField ectsTf;
-	private JTextField semestarTf;
-	private JRadioButton obavezan;
-	private JRadioButton izborni;
-	private ButtonGroup bg;
-	private JButton potvrdiBtn;
-	private JButton dodajSPBtn;
-	private AdministratorDodavanjePredmetaFormController administratorDodavanjePredmetaFormController;
+	protected JTextField sifraTf;
+	protected JTextField nazivTf;
+	protected JTextField ectsTf;
+	protected JTextField semestarTf;
+	protected JRadioButton obavezan;
+	protected JRadioButton izborni;
+	protected ButtonGroup bg;
+	protected JButton potvrdiBtn;
+	protected JButton dodajSPBtn;
+	protected AdministratorDodavanjePredmetaFormController administratorDodavanjePredmetaFormController;
 	
-	private JComboBox<Short> ciklusiCB;
-	private JComboBox<String> studijskiProgramiCB;
-	private JComboBox<String> skolskeGodineCB;
+	protected JComboBox<Short> ciklusiCB;
+	protected JComboBox<String> studijskiProgramiCB;
+	protected JComboBox<String> skolskeGodineCB;
 	private ArrayList<PredmetDTO> predmetiList;
 	private ArrayList<Short> ciklusiList;
 	private ArrayList<String> studijskiProgramiList;

@@ -17,6 +17,7 @@ public interface PredmetDAO {
 	public boolean addPredmet(PredmetDTO predmetDTO);
 	public boolean addPredmete(ArrayList<PredmetDTO> predmeti);
 	public boolean deletePredmet(PredmetDTO predmetDTO);
+	public boolean updatePredmet(PredmetDTO predmetStari, PredmetDTO predmetNovi);
 	public boolean checkStudijskiProgram(String nazivSP, short ciklus);
 	public boolean addStudijskiProgram(String nazivSP, int ects, short ciklus, short trajanje, String zvanje);
 	public ArrayList<String> getAllStudijskiProgramAtCiklus(short ciklus);

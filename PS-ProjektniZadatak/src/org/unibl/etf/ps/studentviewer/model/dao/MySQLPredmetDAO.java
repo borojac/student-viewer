@@ -305,7 +305,7 @@ public class MySQLPredmetDAO implements PredmetDAO {
 		boolean retVal = false;
 		
 		String getSPId = "SELECT SPId FROM studijski_program WHERE NazivSP = ? and Ciklus = ?";
-		String deleteFromPredmet = "DELETE FROM predmet WHERE PredmetId = ?";
+		String deleteFromPredmet = "DELETE FROM predmet WHERE PredmetId = ? and SPId = ?";
 		String deleteFromPNaSP = "DELETE FROM p_na_sp WHERE SifraPredmeta = ? and SPId = ?";
 		String deleteFromPredmetNaFaklutetu = "DELETE FROM predmet_na_fakultetu WHERE SifraPredmeta = ?";
 		
@@ -330,6 +330,7 @@ public class MySQLPredmetDAO implements PredmetDAO {
 			
 			ps = conn.prepareStatement(deleteFromPredmet);
 			ps.setInt(1, predmetDTO.getPredmetId());
+			ps.setInt(2, spId);
 			
 			retVal = ps.executeUpdate() == 1;
 			
@@ -347,6 +348,116 @@ public class MySQLPredmetDAO implements PredmetDAO {
 		} catch(SQLException e) {
 			e.printStackTrace();
 		} finally {
+			DBUtility.close(conn, ps);
+		}
+		
+		return retVal;
+	}
+	
+	public boolean updatePredmet(PredmetDTO predmetStari, PredmetDTO predmetNovi) {
+		boolean retVal = false;
+		
+		String getSGIdNovi = "SELECT SGId FROM skolska_godina WHERE SkolskaGodina = ?";
+		String getSPIdStari = "SELECT SPId FROM studijski_program WHERE NazivSP = ? and Ciklus = ?";
+		String getSPIdNovi = "SELECT SPId FROM studijski_program WHERE NazivSP = ? and Ciklus = ?";
+		String addToPredmet = "UPDATE predmet SET SkolskaGodina = ?, SifraPredmeta = ?, SPId = ? WHERE PredmetId = ?";
+		String addToPredmetNaFakultetu = "UPDATE predmet_na_fakultetu SET SifraPredmeta = ?, Naziv = ?, ECTS = ? WHERE SifraPredmeta = ?";
+		String addToPNaSP = "UPDATE p_na_sp SET SifraPredmeta = ?, SPId = ?, Semestar = ?, TipPredmeta = ? WHERE SifraPredmeta = ? and SPId = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			conn.setAutoCommit(false);
+			
+			int sgIdNovi = 0;
+			int spIdStari = 0;
+			int spIdNovi = 0;
+			
+			ps = conn.prepareStatement(getSGIdNovi);
+			ps.setString(1, predmetNovi.getSkolskaGodina());
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				sgIdNovi = rs.getInt(1);
+			} else {
+				return false;
+			}
+			
+			ps = conn.prepareStatement(getSPIdStari);
+			ps.setString(1, predmetStari.getNazivSP());
+			ps.setShort(2, predmetStari.getCiklus());
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				spIdStari = rs.getInt(1);
+			} else {
+				return false;
+			}
+			
+			ps = conn.prepareStatement(getSPIdNovi);
+			ps.setString(1, predmetNovi.getNazivSP());
+			ps.setShort(2, predmetNovi.getCiklus());
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				spIdNovi = rs.getInt(1);
+			} else {
+				return false;
+			}
+			
+			ps = conn.prepareStatement(addToPredmetNaFakultetu);
+			ps.setString(1, predmetNovi.getSifraPredmeta());
+			ps.setString(2, predmetNovi.getNazivPredmeta());
+			ps.setShort(3, predmetNovi.getEcts());
+			ps.setString(4, predmetStari.getSifraPredmeta());
+			
+			retVal = ps.executeUpdate() == 1;
+			
+			if(!retVal) {
+				return false;
+			}
+			
+			ps = conn.prepareStatement(addToPNaSP);
+			ps.setString(1, predmetNovi.getSifraPredmeta());
+			ps.setInt(2, spIdNovi);
+			ps.setShort(3, predmetNovi.getSemestar());
+			ps.setString(4, String.valueOf(predmetNovi.getTipPredmeta()));
+			ps.setString(5, predmetStari.getSifraPredmeta());
+			ps.setInt(6, spIdStari);
+			
+			retVal = ps.executeUpdate() == 1;
+			
+			if(!retVal) {
+				return false;
+			}
+			
+			ps = conn.prepareStatement(addToPredmet);
+			ps.setInt(1, sgIdNovi);
+			ps.setString(2, predmetNovi.getSifraPredmeta());
+			ps.setInt(3, spIdNovi);
+			ps.setInt(4, predmetStari.getPredmetId());
+			
+			retVal = ps.executeUpdate() == 1;
+			
+			if(retVal) {
+				conn.commit();
+			} else {
+				throw new SQLException("Rollback needed!");
+			}
+			
+		} catch(SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException ex) {}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {}
 			DBUtility.close(conn, ps);
 		}
 		

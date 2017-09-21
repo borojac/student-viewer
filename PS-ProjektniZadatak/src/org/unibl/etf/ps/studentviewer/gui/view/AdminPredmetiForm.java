@@ -197,6 +197,13 @@ public class AdminPredmetiForm extends JFrame {
 			}
 		});
 		
+		izmjeniPredmetBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				adminPredmetiFormController.izmjeniPredmet();
+			}
+		});
+		
 		obrisiPredmetBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
