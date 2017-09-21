@@ -69,7 +69,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class MainForm extends JFrame {
-
+	
 	private JPanel contentPane;
 	private MainFormController mainFormController = new MainFormController(this);
 	private NalogDTO nalogDTO;
@@ -99,6 +99,11 @@ public class MainForm extends JFrame {
 
 	private JScrollPane scrollPane = null;
 
+	private static JScrollPane helpPane = null;
+	public static JScrollPane getScrollPane() {
+		return helpPane;
+	}
+	
 	private MainTable mainTable = null;
 
 	private JPanel testoviPanel;
@@ -228,7 +233,7 @@ public class MainForm extends JFrame {
 		setButtonsSize();
 
 		initTestoviPanel();
-
+		
 		initTable();
 		scrollPane = new JScrollPane(mainTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -236,7 +241,8 @@ public class MainForm extends JFrame {
 		scrollPane.setBorder(UIManager.getBorder("Button.border"));
 		scrollPane.setBounds(10, 219, 556, 382);
 		contentPane.add(scrollPane);
-
+		helpPane = scrollPane;
+		
 		JButton konacnaOcjenaButton = new JButton("STOKUCA");
 		konacnaOcjenaButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -322,6 +328,7 @@ public class MainForm extends JFrame {
 
 	private void initTable() {
 		mainTable = new MainTable();
+		
 		StudentsForMainTable.setMainTable(mainTable);
 		mainTable.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		mainTable.setForeground(new Color(0, 0, 139));

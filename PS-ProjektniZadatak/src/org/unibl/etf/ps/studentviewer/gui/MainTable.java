@@ -6,11 +6,11 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
-import org.apache.poi.ddf.EscherColorRef.SysIndexSource;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STUnsignedDecimalNumber;
+import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 
@@ -140,9 +140,17 @@ public class MainTable extends JTable {
 			divider = columnCount;
 		else
 			divider = 4;
+		
+		int dividend = 537;
+		
+		if (columnCount > 4 && getStudents().size() <= 21)
+			dividend += 17;
+		else if (columnCount <= 4 && getStudents().size() <= 22)
+			dividend +=17;
 
+		
 		for (; tc.hasMoreElements();)
-			tc.nextElement().setPreferredWidth(537 / divider);
+			tc.nextElement().setPreferredWidth(dividend / divider);
 	}
 
 	public ArrayList<StudentMainTableDTO> getStudents() {
