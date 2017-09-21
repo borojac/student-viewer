@@ -56,6 +56,7 @@ public class MySQLStudentMainTableDAO implements StudentMainTableDAO {
 					StudentMainTableDTO student = new StudentMainTableDTO(rs.getString(2), rs.getString(3),
 							rs.getString(4));
 					setCommentForStudent(student, rs.getInt(1));
+					setOcjenaForStudent(student, rs.getInt(1));
 					student.setStudentId(rs.getInt(1));
 					list.add(student);
 				}
@@ -67,6 +68,37 @@ public class MySQLStudentMainTableDAO implements StudentMainTableDAO {
 			}
 		}
 		return list;
+
+	}
+
+	@Override
+	public void setOcjenaForStudent(StudentMainTableDTO student, int id) {
+		String getOcjenaQuerry = "SELECT Ocjena FROM slusa WHERE StudentId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getOcjenaQuerry);
+			ps.setInt(1, id);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				String s = rs.getString(1);
+				if (s == null)
+					student.setOcjena(0);
+				else 
+					student.setOcjena(new Integer(s));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
 
 	}
 

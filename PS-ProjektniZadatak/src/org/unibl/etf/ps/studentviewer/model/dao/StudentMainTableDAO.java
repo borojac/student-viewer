@@ -11,4 +11,5 @@ public interface StudentMainTableDAO {
 	public void setCommentForStudent(StudentMainTableDTO student, int id);
 	public String getStateOfMainTable(PredmetDTO predmet, NalogDTO nalog);
 	public boolean setStateOfMainTable(PredmetDTO predmet, NalogDTO nalog, String stanje);
+	public void setOcjenaForStudent(StudentMainTableDTO student, int id);
 }
