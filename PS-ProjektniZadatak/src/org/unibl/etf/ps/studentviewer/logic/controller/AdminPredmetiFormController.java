@@ -30,7 +30,7 @@ public class AdminPredmetiFormController {
 
 		addFormOpened = true;
 
-		AdministratorDodavanjePredmetaForm af = new AdministratorDodavanjePredmetaForm();
+		AdministratorDodavanjePredmetaForm af = new AdministratorDodavanjePredmetaForm(adminPredmetiForm);
 		af.setVisible(true);
 	}
 	
@@ -40,6 +40,10 @@ public class AdminPredmetiFormController {
 	
 	public static void resetAddFormOpened() {
 		addFormOpened = false;
+	}
+	
+	public AdminPredmetiForm getAdminPredmetiForm() {
+		return adminPredmetiForm;
 	}
 
 }

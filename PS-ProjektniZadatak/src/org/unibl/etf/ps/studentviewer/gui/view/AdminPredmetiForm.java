@@ -44,6 +44,8 @@ public class AdminPredmetiForm extends JFrame {
 	private JButton izmjeniPredmetBtn;
 	private JButton obrisiPredmetBtn;
 	
+	private JScrollPane scroll;
+	
 	private DefaultTableModel dtm;
 	
 	private ArrayList<PredmetDTO> predmetiList;
@@ -101,7 +103,13 @@ public class AdminPredmetiForm extends JFrame {
 		initButtonsListeners();
 	}
 	
-	private void initTable() {
+	public void initTable() {
+		try {
+			contentPane.remove(scroll);
+		} catch(Exception e) {
+			
+		}
+		
 		MySQLDAOFactory factory = new MySQLDAOFactory();
 		PredmetDAO predmetDAO = factory.getPredmetDAO();
 		predmetiList = predmetDAO.getAllPredmet();
@@ -157,7 +165,7 @@ public class AdminPredmetiForm extends JFrame {
 		predmetiTbl.setForeground(new Color(0, 0, 139));
 		predmetiTbl.setBackground(new Color(173, 216, 230));
 		
-		JScrollPane scroll = new JScrollPane(predmetiTbl);
+		scroll = new JScrollPane(predmetiTbl);
 		scroll.setBounds(10, 130, 600, 252);
 		contentPane.add(scroll);
 	}

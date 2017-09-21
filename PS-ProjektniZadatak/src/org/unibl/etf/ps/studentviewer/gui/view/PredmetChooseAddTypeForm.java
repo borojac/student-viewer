@@ -22,7 +22,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.AdminPredmetiFormController;
-import org.unibl.etf.ps.studentviewer.logic.controller.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.PredmetChooseAddTypeFormController;
 
 import java.awt.Font;
