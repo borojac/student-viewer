@@ -159,5 +159,14 @@ public class StudentsForMainTable {
 		mainTable.setStudents(mainTable.getStudents());
 		mainTable.changeView();
 	}
+	
+	public static void setOcjena(int id, int ocjena, MainTable mainTable) {
+		for (StudentMainTableDTO student : getAllStudents())
+			if (student.getStudentId() == id)
+				student.setOcjena(ocjena);
+		
+		mainTable.setStudents(mainTable.getStudents());
+		mainTable.changeView();
+	}
 
 }

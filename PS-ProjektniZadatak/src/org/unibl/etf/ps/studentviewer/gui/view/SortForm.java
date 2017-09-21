@@ -80,7 +80,7 @@ public class SortForm extends JFrame {
 		
 		this.mainFormController = mainFormController;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 318, 438);
+		setBounds(100, 100, 318, 469);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -89,12 +89,12 @@ public class SortForm extends JFrame {
 
 		panel_1 = new JPanel();
 		panel_1.setBackground(new Color(0, 0, 139));
-		panel_1.setBounds(10, 159, 121, 188);
+		panel_1.setBounds(10, 159, 121, 221);
 		contentPane.add(panel_1);
 		panel_1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(141, 159, 151, 188);
+		scrollPane.setBounds(141, 159, 151, 221);
 		contentPane.add(scrollPane);
 
 		textArea = new JTextArea();
@@ -134,7 +134,7 @@ public class SortForm extends JFrame {
 				   SortForm.this.dispose();
 			}
 		});
-		sortButton.setBounds(102, 360, 89, 29);
+		sortButton.setBounds(103, 391, 89, 29);
 		contentPane.add(sortButton);
 
 		initCheckBoxes();
@@ -260,5 +260,11 @@ public class SortForm extends JFrame {
 		testCheckBox.setBackground(new Color(0, 0, 139));
 		testCheckBox.setForeground(new Color(255, 255, 255));
 		panel_1.add(testCheckBox);
+		
+		ocjenaCheckBox = new JCheckBox("Ocjena");
+		ocjenaCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		ocjenaCheckBox.setBackground(new Color(0, 0, 139));
+		ocjenaCheckBox.setForeground(new Color(255, 255, 255));
+		panel_1.add(ocjenaCheckBox);
 	}
 }

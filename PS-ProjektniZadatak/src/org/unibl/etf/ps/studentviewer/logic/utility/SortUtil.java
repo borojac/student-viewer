@@ -17,8 +17,17 @@ public class SortUtil {
 					int result = 0;
 					
 					if (Sort.OCJENA.equals(param)) {
-						Integer ocjena1 = new Integer(o1.getProperty(param));
-						Integer ocjena2 = new Integer(o2.getProperty(param));
+						Integer ocjena1;//new Integer(o1.getProperty(param));
+						Integer ocjena2;// = new Integer(o2.getProperty(param));
+						if ("/".equals(o1.getProperty(param)))
+							ocjena1 = 0;
+						else
+							ocjena1 = new Integer(o1.getProperty(param));
+
+						if ("/".equals(o2.getProperty(param)))
+							ocjena2 = 0;
+						else
+							ocjena2 = new Integer(o2.getProperty(param));
 						result = ocjena2.compareTo(ocjena1);
 					}else if (Sort.BROJ_INDEKSA.equals(param)) {
 						Integer godina1 = new Integer(o1.getProperty(param).split("/")[1]);
