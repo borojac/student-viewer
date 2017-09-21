@@ -18,6 +18,8 @@ public class AdministratorIzmjenaPredmetaForm extends AdministratorDodavanjePred
 	public AdministratorIzmjenaPredmetaForm(AdminPredmetiForm adminPredmetiForm) {
 		super(adminPredmetiForm);
 		
+		setTitle("Izmjena predmeta");
+		
 		administratorIzmjenaPredmetaFormController = new AdministratorIzmjenaPredmetaFormController(this);
 		predmetDTO = adminPredmetiForm.getSelectedPredmet();
 		

@@ -1,6 +1,7 @@
 package org.unibl.etf.ps.studentviewer.gui.view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,15 +15,18 @@ import java.util.Collections;
 
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -80,6 +84,7 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 		});
 		
 		setResizable(false);
+		setTitle("Dodavanje predmeta");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 360, 700);
 		contentPane =new JPanel();
@@ -204,7 +209,22 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 		PredmetDAO predmetDAO = factory.getPredmetDAO();
  		
 		ciklusiCB = new JComboBox<>();
-		studijskiProgramiCB = new JComboBox<>();		
+		studijskiProgramiCB = new JComboBox<>();
+		ListCellRenderer<? super String> comboRenderer = new DefaultListCellRenderer() {
+			
+			@Override
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				if(index >= 0) {
+					setToolTipText((String)value);
+					value = (String)value;
+					studijskiProgramiCB.setToolTipText((String)value);
+				}
+				return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+			}
+			
+		};
+		
+		studijskiProgramiCB.setRenderer(comboRenderer);
 		skolskeGodineCB = new JComboBox<>();
  		predmetiList = predmetDAO.getAllPredmet();
 		
