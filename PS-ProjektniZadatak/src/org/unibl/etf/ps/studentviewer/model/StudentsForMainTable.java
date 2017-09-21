@@ -22,6 +22,11 @@ import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 public class StudentsForMainTable {
 	private static ArrayList<StudentMainTableDTO> allStudents = null;
 	private static String[] ispiti = { "22.11.2017.", "02.08.2016." };
+	private static MainTable mainTable = null;
+	
+	public static void setMainTable(MainTable mainTable) {
+		StudentsForMainTable.mainTable = mainTable;
+	}
 
 	private static void addTestToStudent(int id, String termin, int brojBodova) {
 		for (StudentMainTableDTO s : allStudents) {
@@ -160,11 +165,12 @@ public class StudentsForMainTable {
 		mainTable.changeView();
 	}
 	
-	public static void setOcjena(int id, int ocjena, MainTable mainTable) {
+	public static void setOcjena(int id, int ocjena) {
 		for (StudentMainTableDTO student : getAllStudents())
-			if (student.getStudentId() == id)
+			if (student.getStudentId() == id) {
 				student.setOcjena(ocjena);
-		
+				break;
+			}
 		mainTable.setStudents(mainTable.getStudents());
 		mainTable.changeView();
 	}

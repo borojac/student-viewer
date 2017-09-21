@@ -323,6 +323,7 @@ public class MainForm extends JFrame {
 
 	private void initTable() {
 		mainTable = new MainTable();
+		StudentsForMainTable.setMainTable(mainTable);
 		mainTable.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		mainTable.setForeground(new Color(0, 0, 139));
 		mainTable.setBackground(new Color(173, 216, 230));
