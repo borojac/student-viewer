@@ -72,6 +72,7 @@ public class ShowViewData {
 	public static final String D_ELEKTRIJADA = "D_ELEKTRIJADA";
 	public static final String D_KOMENTAR = "D_KOMENTAR";
 	public static final String D_TEST = "D_TEST";
+	public static final String D_OCJENA = "D_OCJENA";
 	
 	
 	
@@ -84,5 +85,6 @@ public class ShowViewData {
 		dataMap.put(D_BROJINDEKSA, true);
 		dataMap.put(D_ELEKTRIJADA, false);
 		dataMap.put(D_KOMENTAR, false);
+		dataMap.put(D_OCJENA, false);
 	}
 }

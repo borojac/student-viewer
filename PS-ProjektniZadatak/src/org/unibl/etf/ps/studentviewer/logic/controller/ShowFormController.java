@@ -24,6 +24,7 @@ public class ShowFormController {
 		updatedHashMap.put(ShowViewData.D_ELEKTRIJADA, showViewList.get(3));
 		updatedHashMap.put(ShowViewData.D_KOMENTAR, showViewList.get(4));
 		updatedHashMap.put(ShowViewData.D_TEST, showViewList.get(5));
+		updatedHashMap.put(ShowViewData.D_OCJENA, showViewList.get(6));
 		ShowViewData.setNewHashMap(updatedHashMap);
 //		ArrayList<StudentMainTableDTO> tempList = new ArrayList<StudentMainTableDTO>();
 //		for (StudentMainTableDTO s : StudentsForMainTable.getAllStudents())

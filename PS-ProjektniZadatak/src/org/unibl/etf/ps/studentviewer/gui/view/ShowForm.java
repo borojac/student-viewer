@@ -146,7 +146,14 @@ public class ShowForm extends JFrame {
 		if (ShowViewData.getValue(ShowViewData.D_TEST))
 			testCheckBox.setSelected(true);
 		
-		
+		JCheckBox ocjenaCheckBox = new JCheckBox("Ocjena");
+		elektrijadaCheckBox.setForeground(new Color(255, 255, 255));
+		elektrijadaCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
+		elektrijadaCheckBox.setBackground(new Color(0, 0, 139));
+		panel.add(elektrijadaCheckBox);
+		boxes.add(elektrijadaCheckBox);
+		if (ShowViewData.getValue(ShowViewData.D_OCJENA))
+			elektrijadaCheckBox.setSelected(true);
 		
 		
 		JButton btnSacuvaj = new JButton("Sacuvaj");
@@ -160,6 +167,7 @@ public class ShowForm extends JFrame {
 				list.add(elektrijadaCheckBox.isSelected());
 				list.add(komentarCheckBox.isSelected());
 				list.add(testCheckBox.isSelected());
+				list.add(ocjenaCheckBox.isSelected());
 				new ShowFormController(mainFormControler).updateShowView(list);
 				setVisible(false);
 			}

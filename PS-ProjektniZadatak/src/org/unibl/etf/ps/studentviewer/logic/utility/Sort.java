@@ -7,4 +7,5 @@ public interface Sort {
 	public static String BROJ_INDEKSA = "S_BROJINDEKSA";
 	public static String KOMENTAR = "S_KOMENTAR";
 	public static String ELEKTRIJADA = "S_ELEKTRIJADA";
+	public static String OCJENA = "S_OCJENA";
 }

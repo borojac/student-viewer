@@ -6,6 +6,9 @@ import org.unibl.etf.ps.studentviewer.gui.ShowViewData;
 import org.unibl.etf.ps.studentviewer.logic.utility.Sort;
 
 public class StudentMainTableDTO extends StudentNaPredmetuDTO{
+	
+
+	private int ocjena = 0;
 	private String komentar = ""; // Mozda lista komentara
 	private String elektrijada = "NE";
 	private HashMap<String, String> testovi = new HashMap<String, String>();
@@ -18,6 +21,14 @@ public class StudentMainTableDTO extends StudentNaPredmetuDTO{
 			testovi.put(a, b);
 		}
 		
+	}
+	
+	public int getOcjena() {
+		return ocjena;
+	}
+
+	public void setOcjena(int ocjena) {
+		this.ocjena = ocjena;
 	}
 	
 	public String getKomentar() {
@@ -63,6 +74,9 @@ public class StudentMainTableDTO extends StudentNaPredmetuDTO{
 		if (type.startsWith(ShowViewData.D_TEST) || type.startsWith(Sort.TEST)) 
 			return (testovi.get(type.substring(7)) != null) ? testovi.get(type.substring(7)) : "/";
 		
+		if (ShowViewData.D_OCJENA.equals(type) || type.startsWith(Sort.OCJENA))
+			return (ocjena != 0)?new Integer(ocjena).toString():"/";
+			
 		return null;
 	}
 

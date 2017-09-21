@@ -105,6 +105,7 @@ public class StudentsForMainTable {
 	}
 	
 	public static void setTest(TestDTO test, MainTable mainTable) {
+		System.out.println("USAO");
 		List<StudentNaTestuDTO> listOfStudents = test.getStudenti();
 		for (StudentNaTestuDTO student : listOfStudents) {
 			int id = student.getStudentId();

@@ -172,6 +172,10 @@ public class MainTable extends JTable {
 				if (s != null && ShowViewData.getValue(s)) {
 					forRet[i][j++] = student.getTestForShowView(s);
 				}
+			
+			if (ShowViewData.getValue(ShowViewData.D_OCJENA))
+				forRet[i][j++] = new Integer(student.getOcjena()).toString();
+			
 			i++;
 		}
 		return forRet;
