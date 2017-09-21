@@ -18,6 +18,7 @@ import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
 import org.unibl.etf.ps.studentviewer.gui.GradingTableModel;
 import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.view.GradeGenerationForm;
+import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
@@ -156,19 +157,19 @@ public class GradeGenerationController {
 					null, options, options[1]);
 		}
 		if (proceed == JOptionPane.YES_OPTION) {
-			new Thread(new Runnable() {
+			final int ocjena = gradeForm.getOcjena();
 
-				@Override
-				public void run() {
+			if (studentDAO.gradeStudent(currentStudent.getStudentId(),
+					predmet.getPredmetId(), 
+					ocjena) && gradeForm.getMainTable() != null) {
+				System.out.println("Ocjena: " + ocjena);
+				StudentsForMainTable.setOcjena(currentStudent.getStudentId(), 
+						ocjena, 
+						gradeForm.getMainTable());
 
+			}
 
-					studentDAO.gradeStudent(currentStudent.getStudentId(),
-							predmet.getPredmetId(), 
-							gradeForm.getOcjena());
-
-				}
-			}).start();
-			loadStudentInfoNext((JButton) e.getSource());
+			loadStudentInfoNext(gradeForm.getBtnDalje());
 		}
 	}
 }

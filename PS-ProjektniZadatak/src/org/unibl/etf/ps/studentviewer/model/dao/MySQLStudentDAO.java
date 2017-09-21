@@ -696,7 +696,7 @@ String getAllStudentsQuerry = "select * from student where StudentId not in (sel
 
 	@Override
 	public boolean gradeStudent(int studentId, int predmetId, int grade) {
-		boolean retVal = true;
+		boolean retVal = false;
 		String query = "UPDATE slusa SET Ocjena=?, DatumPolaganja=? "
 				+ "WHERE StudentId=? AND PredmetId=?";
 		Connection conn = null;
@@ -708,13 +708,14 @@ String getAllStudentsQuerry = "select * from student where StudentId not in (sel
 			ps.setDate(2, new java.sql.Date(new Date().getTime()));
 			ps.setInt(3, studentId);
 			ps.setInt(4, predmetId);
-			retVal &= ps.executeUpdate() == 1;
+			retVal = ps.executeUpdate() == 1;
 			if (!retVal)
 				throw new SQLException();
 		} catch (SQLException e) {
-			JOptionPane.showInternalMessageDialog(null, "Greška sa serverom. Student nije ocjenjen.", "Greška",
+			JOptionPane.showMessageDialog(null, "Greška sa serverom. Student nije ocjenjen.", "Greška",
 					JOptionPane.ERROR_MESSAGE, null);
 			e.printStackTrace();
+			retVal = false;
 		} finally {
 			DBUtility.close(ps, conn);
 		}

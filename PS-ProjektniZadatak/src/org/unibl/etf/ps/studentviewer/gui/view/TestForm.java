@@ -245,6 +245,14 @@ public class TestForm extends JFrame {
 		nazivTextField.setColumns(10);
 		
 		studentiScrollPane = new JScrollPane();
+		studentiScrollPane.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.isControlDown() && 
+						(e.getKeyCode() == KeyEvent.VK_Z || e.getKeyCode() == KeyEvent.VK_Y))
+					testController.undoRedoAction((TestForm) testForm, e);
+			}
+		});
 		studentiScrollPane.setBackground(new Color(0, 0, 139));
 		studentiScrollPane.setBounds(10, 420, 514, 196);
 		studentiScrollPane.addMouseListener(new MouseAdapter() {
@@ -311,14 +319,16 @@ public class TestForm extends JFrame {
 			}
 		});
 		searchTextField.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		searchTextField.setBounds(90, 389, 311, 20);
+		searchTextField.setBounds(90, 389, 311, 23);
 		contentPane.add(searchTextField);
 		searchTextField.setColumns(10);
 
 		searchTextField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				testController.undoRedoAction((TestForm) testForm, e);
+				if (e.isControlDown() && 
+						(e.getKeyCode() == KeyEvent.VK_Z || e.getKeyCode() == KeyEvent.VK_Y))
+					testController.undoRedoAction((TestForm) testForm, e);
 			}
 		});
 
@@ -333,7 +343,7 @@ public class TestForm extends JFrame {
 						searchText);
 			}
 		});
-		btnPretrazi.setBounds(411, 389, 113, 22);
+		btnPretrazi.setBounds(411, 389, 113, 23);
 		contentPane.add(btnPretrazi);
 
 		dateChooserCombo = new DateChooserCombo();

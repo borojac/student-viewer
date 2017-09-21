@@ -19,6 +19,7 @@ import org.apache.log4j.lf5.viewer.LogFactor5LoadingDialog;
 import org.jdesktop.swingx.color.GradientTrackRenderer;
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
 import org.unibl.etf.ps.studentviewer.gui.GradingTableModel;
+import org.unibl.etf.ps.studentviewer.gui.MainTable;
 import org.unibl.etf.ps.studentviewer.logic.controller.GradeGenerationController;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
@@ -53,6 +54,7 @@ public class GradeGenerationForm extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 
 	private GradeGenerationController controller;
+	private MainTable mainTable;
 
 	private JTextField brojIndeksaTextField;
 	private JTextField imeTextField;
@@ -158,7 +160,6 @@ public class GradeGenerationForm extends JDialog {
 			}
 		});
 		buttonPane.add(btnOcijeni);
-		getRootPane().setDefaultButton(btnOcijeni);
 
 		btnDalje = new JButton("Dalje");
 		if (students.size() == 1) {
@@ -187,7 +188,7 @@ public class GradeGenerationForm extends JDialog {
 
 
 
-		controller.loadStudentInfoNext(btnOcijeni);
+		controller.loadStudentInfoNext(btnDalje);
 	}
 
 	public void printStudent(StudentNaPredmetuDTO student) {
@@ -199,6 +200,7 @@ public class GradeGenerationForm extends JDialog {
 				imeTextField.setText(student.getIme());
 				prezimeTextField.setText(student.getPrezime());
 				ocjenaTextField.setText("-");
+				table.clearSelection();
 			}
 		});
 	}
@@ -214,39 +216,34 @@ public class GradeGenerationForm extends JDialog {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				new Thread(new Runnable() {
+				if (table.getSelectedRowCount() > 0) {
+					EventQueue.invokeLater(new Runnable() {
 
-					@Override
-					public void run() {
-						if (table.getSelectedRowCount() > 0) {
-							EventQueue.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							btnOcijeni.setEnabled(true);
 
-								@Override
-								public void run() {
-									btnOcijeni.setEnabled(true);
-
-								}
-							});
-							new Thread(new Runnable() {
-
-								@Override
-								public void run() {
-									controller.calculateGrade();
-								}
-							}).start();
-						} else {
-							EventQueue.invokeLater(new Runnable() {
-
-								@Override
-								public void run() {
-									btnOcijeni.setEnabled(false);
-									ocjenaTextField.setText("-");
-									bodoviTextField.setText("");
-								}
-							});
 						}
-					}
-				}).start();
+					});
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+							controller.calculateGrade();
+						}
+					}).start();
+				} else {
+					EventQueue.invokeLater(new Runnable() {
+
+						@Override
+						public void run() {
+							btnOcijeni.setEnabled(false);
+							ocjenaTextField.setText("-");
+							bodoviTextField.setText("");
+						}
+					});
+				}
+
 			}
 		});
 		scrollPane.setViewportView(table);
@@ -297,6 +294,25 @@ public class GradeGenerationForm extends JDialog {
 	public int getOcjena() {
 		return Integer.parseInt(ocjenaTextField.getText());
 	}
+
+	public MainTable getMainTable() {
+		return mainTable;
+	}
+
+	public void setMainTable(MainTable mainTable) {
+		this.mainTable = mainTable;
+	}
+
+	public JButton getBtnDalje() {
+		return btnDalje;
+	}
+
+	public JButton getBtnNazad() {
+		return btnNazad;
+	}
+
+
+
 }
 
 
