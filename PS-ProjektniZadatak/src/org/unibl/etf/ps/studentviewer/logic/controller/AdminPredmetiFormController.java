@@ -1,8 +1,13 @@
 package org.unibl.etf.ps.studentviewer.logic.controller;
 
+import javax.swing.JOptionPane;
+
 import org.unibl.etf.ps.studentviewer.gui.view.AdminPredmetiForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdministratorDodavanjePredmetaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.PredmetChooseAddTypeForm;
+import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
+import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 
 public class AdminPredmetiFormController {
 	
@@ -30,7 +35,7 @@ public class AdminPredmetiFormController {
 
 		addFormOpened = true;
 
-		AdministratorDodavanjePredmetaForm af = new AdministratorDodavanjePredmetaForm();
+		AdministratorDodavanjePredmetaForm af = new AdministratorDodavanjePredmetaForm(adminPredmetiForm);
 		af.setVisible(true);
 	}
 	
@@ -40,6 +45,22 @@ public class AdminPredmetiFormController {
 	
 	public static void resetAddFormOpened() {
 		addFormOpened = false;
+	}
+	
+	public AdminPredmetiForm getAdminPredmetiForm() {
+		return adminPredmetiForm;
+	}
+	
+	public void obrisiPredmet() {
+		PredmetDTO predmetDTO = adminPredmetiForm.getSelectedPredmet();
+		
+		MySQLDAOFactory factory = new MySQLDAOFactory();
+		PredmetDAO predmetDAO = factory.getPredmetDAO();
+		
+		if(predmetDAO.deletePredmet(predmetDTO)) {
+			JOptionPane.showMessageDialog(adminPredmetiForm, "Predmet uspjesno obrisan.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
+			adminPredmetiForm.removeSelectedRow();
+		}
 	}
 
 }

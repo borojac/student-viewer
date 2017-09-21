@@ -39,6 +39,7 @@ public class AdministratorDodavanjePredmetaFormController {
 			PredmetDAO predmetDAO = factory.getPredmetDAO();
 			
 			if(predmetDAO.addPredmet(predmet)) {
+				administratorDodavanjePredmetaForm.getAdminPredmetiForm().initTable();
 				JOptionPane.showMessageDialog(administratorDodavanjePredmetaForm, "Predmet uspjesno dodan.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 				administratorDodavanjePredmetaForm.dispose();
 				AdminPredmetiFormController.resetChooseAddTypeFormOpened();

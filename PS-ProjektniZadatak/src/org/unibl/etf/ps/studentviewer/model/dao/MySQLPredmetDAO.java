@@ -301,6 +301,58 @@ public class MySQLPredmetDAO implements PredmetDAO {
 		return retVal;
 	}
 	
+	public boolean deletePredmet(PredmetDTO predmetDTO) {
+		boolean retVal = false;
+		
+		String getSPId = "SELECT SPId FROM studijski_program WHERE NazivSP = ? and Ciklus = ?";
+		String deleteFromPredmet = "DELETE FROM predmet WHERE PredmetId = ?";
+		String deleteFromPNaSP = "DELETE FROM p_na_sp WHERE SifraPredmeta = ? and SPId = ?";
+		String deleteFromPredmetNaFaklutetu = "DELETE FROM predmet_na_fakultetu WHERE SifraPredmeta = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getSPId);
+			ps.setString(1, predmetDTO.getNazivSP());
+			ps.setShort(2, predmetDTO.getCiklus());
+			rs = ps.executeQuery();
+			
+			int spId = 0;
+			if(rs.next()) {
+				spId = rs.getInt(1);
+			} else {
+				return false;
+			}
+			
+			ps = conn.prepareStatement(deleteFromPredmet);
+			ps.setInt(1, predmetDTO.getPredmetId());
+			
+			retVal = ps.executeUpdate() == 1;
+			
+			ps = conn.prepareStatement(deleteFromPNaSP);
+			ps.setString(1, predmetDTO.getSifraPredmeta());
+			ps.setInt(2, spId);
+			
+			retVal = ps.executeUpdate() == 1;
+			
+			ps = conn.prepareStatement(deleteFromPredmetNaFaklutetu);
+			ps.setString(1, predmetDTO.getSifraPredmeta());
+			
+			retVal = ps.executeUpdate() == 1;
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, ps);
+		}
+		
+		return retVal;
+	}
+	
 	public boolean checkStudijskiProgram(String nazivSP, short ciklus) {
 		boolean retVal = false;
 		

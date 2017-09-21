@@ -60,6 +60,7 @@ public class PredmetChooseAddTypeFormController {
 					MySQLDAOFactory factory = new MySQLDAOFactory();
 					PredmetDAO predmetDAO = factory.getPredmetDAO();
 					if (predmetDAO.addPredmete(lista)) {
+						adminPredmetiFormController.getAdminPredmetiForm().initTable();
 						JOptionPane.showMessageDialog(predmetChoseAddTypeForm, "Uspjesno dodati predmeti!", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 					}
 					else {

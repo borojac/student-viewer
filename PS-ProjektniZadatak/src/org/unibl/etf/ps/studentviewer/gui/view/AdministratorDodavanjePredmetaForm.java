@@ -62,9 +62,12 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 	private ArrayList<Short> ciklusiList;
 	private ArrayList<String> studijskiProgramiList;
 	private ArrayList<String> skolskeGodineList;
+	
+	private AdminPredmetiForm adminPredmetiForm;
 
 	
-	public AdministratorDodavanjePredmetaForm() {
+	public AdministratorDodavanjePredmetaForm(AdminPredmetiForm adminPredmetiForm) {
+		this.adminPredmetiForm = adminPredmetiForm;
 		
 		administratorDodavanjePredmetaFormController = new AdministratorDodavanjePredmetaFormController(this);
 		
@@ -344,6 +347,10 @@ public class AdministratorDodavanjePredmetaForm extends JFrame {
 	
 	public JComboBox<String> getStudijskiProgramiCB() {
 		return studijskiProgramiCB;
+	}
+	
+	public AdminPredmetiForm getAdminPredmetiForm() {
+		return adminPredmetiForm;
 	}
 
 }
