@@ -20,7 +20,7 @@ public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 		int idElektrijade = 0;
 		String getIdElektrijadeQuery = "SELECT ElektrijadaId FROM zaduzen_za  WHERE NalogId=? AND Naziv=?";
 		String getElektrijadaQuery = "SELECT ElektrijadaId, Datum, Lokacija FROM elektrijada WHERE ElektrijadaId=?";
-		
+
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -36,11 +36,11 @@ public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 			if (rs.next()) {
 				idElektrijade = rs.getInt(1);
 			}
-			
+
 			ps = conn.prepareStatement(getElektrijadaQuery);
 			ps.setInt(1, idElektrijade);
 			rs = ps.executeQuery();
-			if (rs.next()){
+			if (rs.next()) {
 				retVal = new ElektrijadaDTO(rs.getInt(1), rs.getDate(2), rs.getString(3));
 			}
 		} catch (SQLException e) {
@@ -67,12 +67,12 @@ public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 			conn = DBUtility.open();
 			ps = conn.prepareStatement(query);
 			ps.setInt(1, idNaloga);
-			
+
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				idElektrijade.add(rs.getInt(1));
 			}
-			for (int i : idElektrijade){
+			for (int i : idElektrijade) {
 				ps = conn.prepareStatement(query2);
 				ps.setInt(1, i);
 				rs = ps.executeQuery();
@@ -82,7 +82,7 @@ public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();			
+			e.printStackTrace();
 		} finally {
 			DBUtility.close(conn, rs, ps);
 		}
@@ -92,28 +92,26 @@ public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 	@Override
 	public List<ElektrijadaDTO> getSveElektrijade() {
 		List<ElektrijadaDTO> retVal = new ArrayList<ElektrijadaDTO>();
-		
+
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		String query = "SELECT  ElektrijadaId, Datum, Lokacija FROM elektrijada";
-		
+
 		try {
 
 			conn = DBUtility.open();
 			ps = conn.prepareStatement(query);
-			
-			
+
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				retVal.add(new ElektrijadaDTO(rs.getInt(1), rs.getDate(2), rs.getString(3)));
 			}
-		
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();			
+			e.printStackTrace();
 		} finally {
 			DBUtility.close(conn, rs, ps);
 		}
@@ -124,8 +122,7 @@ public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 	public ElektrijadaDTO getElektrijadaPoId(int idElektrijade) {
 		ElektrijadaDTO retVal = null;
 		String getIdElektrijadaQuery = "SELECT ElektrijadaId, Datum, Lokacija FROM elektrijada  WHERE ElektrijadaId=?";
-		
-		
+
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -135,14 +132,13 @@ public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 			conn = DBUtility.open();
 			ps = conn.prepareStatement(getIdElektrijadaQuery);
 			ps.setInt(1, idElektrijade);
-			
+
 			rs = ps.executeQuery();
 
 			if (rs.next()) {
 				retVal = new ElektrijadaDTO(rs.getInt(1), rs.getDate(2), rs.getString(3));
 			}
-			
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -168,9 +164,8 @@ public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 			ps = conn.prepareStatement(query);
 
 			ps.setInt(1, elektrijadaDTO.getId());
-			ps.setDate(2,new  java.sql.Date(elektrijadaDTO.getDatum().getTime()));
+			ps.setDate(2, new java.sql.Date(elektrijadaDTO.getDatum().getTime()));
 			ps.setString(3, elektrijadaDTO.getLokacija());
-			
 
 			retVal = ps.executeUpdate() == 1;
 
@@ -212,10 +207,52 @@ public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 			conn.setAutoCommit(false);
 			ps = conn.prepareStatement(query);
 
-			
-		
 			ps.setInt(1, elektrijadaDTO.getId());
 
+			retVal = ps.executeUpdate() == 1;
+
+			if (retVal) {
+				conn.commit();
+			} else {
+				throw new SQLException("Rollback needed!");
+			}
+
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException ex) {
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+			}
+			DBUtility.close(conn, ps);
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public boolean updateElektrijada(ElektrijadaDTO elektrijadaDTO) {
+		boolean retVal = false;
+
+		String query = "UPDATE elektrijada SET Datum = ?, Lokacija = ? WHERE ElektrijadaId = ?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try {
+
+			conn = DBUtility.open();
+			conn.setAutoCommit(false);
+			ps = conn.prepareStatement(query);
+
+			ps.setDate(1, new java.sql.Date(elektrijadaDTO.getDatum().getTime()));
+			ps.setString(2, elektrijadaDTO.getLokacija());
+			ps.setInt(3, elektrijadaDTO.getId());
+			
 			retVal = ps.executeUpdate() == 1;
 
 			if (retVal) {

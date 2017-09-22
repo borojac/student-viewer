@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JOptionPane;
 
+import org.unibl.etf.ps.studentviewer.gui.view.AdminAzuriranjeElektrijadeForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdminBrisanjeDisciplineForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdminBrisanjeElektrijadeForm;
 import org.unibl.etf.ps.studentviewer.gui.view.AdminDodavanjeDisciplineForm;
@@ -117,7 +118,13 @@ public class AdministratorElektrijadaFormController {
 	}
 
 	public void azurirajElektrijadu() {
-		// TODO Auto-generated method stub
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				AdminAzuriranjeElektrijadeForm frame = new AdminAzuriranjeElektrijadeForm();
+				frame.setVisible(true);
+			}
+		});
 
 	}
 
