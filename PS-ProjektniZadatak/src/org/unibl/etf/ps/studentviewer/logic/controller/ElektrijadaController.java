@@ -581,7 +581,11 @@ public class ElektrijadaController {
 		StudentDAO dsDAO = dao.getStudentDAO();
 		if(!this.listaStudenata.isEmpty())
 			this.listaStudenata.clear();
-		this.listaStudenata =new ArrayList<>( dsDAO.getStudentiZaElektrijadu(this.disciplinaDTO.getNaziv(), this.elektrijada.getId()));
+		if (dsDAO.getStudentiZaElektrijadu(this.disciplinaDTO.getNaziv(), this.elektrijada.getId()) == null){
+			this.listaStudenata = new ArrayList<>();
+		}else{
+			this.listaStudenata =new ArrayList<>( dsDAO.getStudentiZaElektrijadu(this.disciplinaDTO.getNaziv(), this.elektrijada.getId()));
+		}
 		
 	}
 

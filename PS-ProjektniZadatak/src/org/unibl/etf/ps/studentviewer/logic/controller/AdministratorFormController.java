@@ -170,6 +170,7 @@ public class AdministratorFormController {
 
 				administratorForm.setVisible(false);
 				AdminElektrijadaForm frame = new AdminElektrijadaForm(administratorForm);
+				frame.setNalogDTO(administratorForm.getNalogDTO());
 				frame.setVisible(true);
 			}
 		});
