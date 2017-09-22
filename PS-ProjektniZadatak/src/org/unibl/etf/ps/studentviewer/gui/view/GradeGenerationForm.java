@@ -65,6 +65,7 @@ public class GradeGenerationForm extends JDialog {
 	private JButton btnDalje;
 	private JButton btnNazad;
 	private JPanel buttonPane;
+	private JButton btnPonisti;
 
 	public GradeGenerationForm(PredmetDTO predmet, List<? extends StudentNaPredmetuDTO> students) {
 		setModal(true);
@@ -149,27 +150,6 @@ public class GradeGenerationForm extends JDialog {
 						controller.gradeBtnAction(e);
 					}
 				}).start();
-				EventQueue.invokeLater(new Runnable() {
-
-					@Override
-					public void run() {
-						btnOcijeni.setEnabled(false);
-					}
-				});
-			}
-		});
-		buttonPane.add(btnOcijeni);
-
-		btnDalje = new JButton("Dalje");
-		if (students.size() == 1) {
-			btnDalje.setEnabled(false);
-		}
-		btnDalje.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.loadStudentInfoNext(btnDalje);
-				btnNazad.setEnabled(true);
 			}
 		});
 
@@ -182,12 +162,41 @@ public class GradeGenerationForm extends JDialog {
 			}
 		});
 		buttonPane.add(btnNazad);
+
+		btnDalje = new JButton("Dalje");
+		btnDalje.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.loadStudentInfoNext(btnDalje);
+				btnNazad.setEnabled(true);
+			}
+		});
 		buttonPane.add(btnDalje);
-		buttonPane.add(btnOcijeni);
 
 
 
 		controller.loadStudentInfoNext(btnDalje);
+
+		btnPonisti = new JButton("Poni\u0161ti");
+		btnPonisti.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						controller.recallBtnAction(e);
+					}
+				}).start();
+			}
+		});
+		btnPonisti.setEnabled(false);
+		buttonPane.add(btnPonisti);
+		buttonPane.add(btnOcijeni);
+		if (students.size() == 1) {
+			btnDalje.setEnabled(false);
+		}
+		buttonPane.add(btnOcijeni);
 	}
 
 	public void printStudent(StudentNaPredmetuDTO student) {
@@ -224,13 +233,7 @@ public class GradeGenerationForm extends JDialog {
 
 						}
 					});
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-							controller.calculateGrade();
-						}
-					}).start();
+					controller.calculateGrade();
 				} else {
 					EventQueue.invokeLater(new Runnable() {
 
@@ -301,6 +304,14 @@ public class GradeGenerationForm extends JDialog {
 
 	public JButton getBtnNazad() {
 		return btnNazad;
+	}
+
+	public JButton getBtnOcijeni() {
+		return btnOcijeni;
+	}
+
+	public JButton getBtnPonisti() {
+		return btnPonisti;
 	}
 
 

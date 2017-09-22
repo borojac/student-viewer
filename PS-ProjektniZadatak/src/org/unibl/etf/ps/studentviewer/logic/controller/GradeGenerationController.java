@@ -88,11 +88,28 @@ public class GradeGenerationController {
 				public void run() {
 					DAOFactory factory = new MySQLDAOFactory();
 					PredmetDAO predmetDAO = factory.getPredmetDAO();
+					StudentDAO studentDAO = factory.getStudentDAO();
 					List<GradingInfoDTO> data = predmetDAO.getGradingInfo(
 							currentStudent.getStudentId(), 
 							predmet.getPredmetId()
 							);
 					gradeForm.getGradesTableModel().setData(data);
+					if (studentDAO.hasGrade(currentStudent.getStudentId(), predmet.getPredmetId())) {
+						EventQueue.invokeLater(new Runnable() {
+							
+							@Override
+							public void run() {
+								gradeForm.getBtnPonisti().setEnabled(true);
+							}
+						});
+					} else
+						EventQueue.invokeLater(new Runnable() {
+							
+							@Override
+							public void run() {
+								gradeForm.getBtnPonisti().setEnabled(false);
+							}
+						});
 				}
 			}).start();
 			EventQueue.invokeLater(new Runnable() {
@@ -122,11 +139,28 @@ public class GradeGenerationController {
 				public void run() {
 					DAOFactory factory = new MySQLDAOFactory();
 					PredmetDAO predmetDAO = factory.getPredmetDAO();
+					StudentDAO studentDAO = factory.getStudentDAO();
 					List<GradingInfoDTO> data = predmetDAO.getGradingInfo(
 							currentStudent.getStudentId(), 
 							predmet.getPredmetId()
 							);
 					gradeForm.getGradesTableModel().setData(data);
+					if (studentDAO.hasGrade(currentStudent.getStudentId(), predmet.getPredmetId())) {
+						EventQueue.invokeLater(new Runnable() {
+							
+							@Override
+							public void run() {
+								gradeForm.getBtnPonisti().setEnabled(true);
+							}
+						});
+					} else
+						EventQueue.invokeLater(new Runnable() {
+							
+							@Override
+							public void run() {
+								gradeForm.getBtnPonisti().setEnabled(false);
+							}
+						});
 				}
 			}).start();
 			EventQueue.invokeLater(new Runnable() {
@@ -165,10 +199,50 @@ public class GradeGenerationController {
 				
 				StudentsForMainTable.setOcjena(currentStudent.getStudentId(), 
 						ocjena);
-
+				EventQueue.invokeLater(new Runnable() {
+					
+					@Override
+					public void run() {
+						gradeForm.getBtnPonisti().setEnabled(true);
+					}
+				});
 			}
 
-			loadStudentInfoNext(gradeForm.getBtnDalje());
+//			loadStudentInfoNext(gradeForm.getBtnDalje());
+		}
+	}
+	
+	public void recallBtnAction(ActionEvent e) {
+		String[] options = {"	Da	", "	Ne	"};
+		int proceed = JOptionPane.showOptionDialog(gradeForm, 
+				"Da li ste sigurni da želite da poništite ocjenu?", 
+				"Potvrdite poništavanje",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+				null, options, options[1]);
+		if (proceed == JOptionPane.YES_OPTION) {
+			DAOFactory factory = new MySQLDAOFactory();
+			StudentDAO studentDAO = factory.getStudentDAO();
+			
+			if (studentDAO.recallGrade(currentStudent.getStudentId(), predmet.getPredmetId())) {
+				EventQueue.invokeLater(new Runnable() {
+					
+					@Override
+					public void run() {
+						JOptionPane.showMessageDialog(gradeForm, "Ocjena uspješno poništena");
+						gradeForm.getBtnPonisti().setEnabled(false);
+					}
+				});
+				StudentsForMainTable.setOcjena(currentStudent.getStudentId(), 
+						0);
+			} else {
+				EventQueue.invokeLater(new Runnable() {
+					
+					@Override
+					public void run() {
+						JOptionPane.showMessageDialog(gradeForm, "Greška. Pokušajte ponovo kasnije", "Greška", JOptionPane.ERROR_MESSAGE);
+					}
+				});
+			}
 		}
 	}
 }

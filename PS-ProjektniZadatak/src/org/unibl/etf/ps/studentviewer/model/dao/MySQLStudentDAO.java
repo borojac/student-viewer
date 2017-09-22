@@ -749,6 +749,28 @@ String getAllStudentsQuerry = "select * from student where StudentId not in (sel
 		return retVal;
 	}
 
+	@Override
+	public boolean recallGrade(int studentId, int predmetId) {
+		boolean retVal = false;
+		String query = "UPDATE slusa SET Ocjena=null, DatumPolaganja=null "
+				+ "WHERE StudentId=? AND PredmetId=?";
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, studentId);
+			ps.setInt(2, predmetId);
+			retVal = ps.executeUpdate() == 1;
+		} catch (SQLException e) {
+			retVal = false;
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, ps);
+		}
+		return retVal;
+	}
+
 	
 	
 }
