@@ -76,6 +76,14 @@ public class MainForm extends JFrame {
 	private PredmetDTO lastPredmet = null;
 
 	private ArrayList<PredmetDTO> predmetiList;
+	
+	ActionListener actionListener = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			mainFormController.postaviMainForm(getSelectedPredmet(), lastPredmet);
+			lastPredmet = getSelectedPredmet();
+		}
+	};
 
 	// ------- Components!!! ------- //
 	ArrayList<JButton> buttons = new ArrayList<JButton>();
@@ -692,28 +700,23 @@ public class MainForm extends JFrame {
 	}
 
 	private void initComboBoxListener() {
-		predmetiCB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mainFormController.postaviMainForm(getSelectedPredmet(), lastPredmet);
-				lastPredmet = getSelectedPredmet();
-			}
-		});
+		predmetiCB.addActionListener(actionListener);
 	}
 
 	public void resetPredmetiComboBox() {
+		predmetiCB.removeActionListener(actionListener);
 		predmetiCB.removeAllItems();
 		ArrayList<PredmetDTO> predmetiList = new ArrayList<>();
 		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
 		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
 
 		predmetiList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
-		System.out.println(predmetiList.size());
 
 		for (int i = 0; i < predmetiList.size(); i++) {
 			predmetiCB.addItem(
 					(predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
 		}
+		initComboBoxListener();
 	}
 
 	public void resetElektrijadaComboBox() {

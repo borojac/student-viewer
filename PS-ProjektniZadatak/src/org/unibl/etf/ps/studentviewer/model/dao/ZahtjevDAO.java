@@ -3,6 +3,7 @@ package org.unibl.etf.ps.studentviewer.model.dao;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ZahtjevDTO;
 
@@ -12,6 +13,7 @@ public interface ZahtjevDAO {
 	public boolean updateZahtjev(ZahtjevDTO zahtjevDTO);
 	public boolean deleteZahtjev(ZahtjevDTO zahtjevDTO);
 	public boolean deleteZahtjeve(PredmetDTO predmetDTO);
+	public boolean deleteZahtjeve(PredmetDTO predmetDTO, NalogDTO nalogDTO);
 	public ArrayList<ZahtjevDTO> getAllZahtjev();
 	public ArrayList<PredmetDTO> getPredmeteSaZahtjevomZaDan(int nalogId, Date date);
 

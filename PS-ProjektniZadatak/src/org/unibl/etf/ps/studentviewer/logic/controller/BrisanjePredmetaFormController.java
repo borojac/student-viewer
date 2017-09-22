@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import org.unibl.etf.ps.studentviewer.gui.view.BrisanjePredmetaForm;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
+import org.unibl.etf.ps.studentviewer.model.dao.ZahtjevDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 
@@ -26,10 +27,11 @@ public class BrisanjePredmetaFormController {
 		if(predmetDTO == null) {
 			
 		} else {
-			MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
-			NalogDAO nalogDAO = nalogFactory.getNalogDAO();
+			MySQLDAOFactory factory = new MySQLDAOFactory();
+			NalogDAO nalogDAO = factory.getNalogDAO();
+			ZahtjevDAO zahtjevDAO = factory.getZahtjevDAO();
 		
-			if(nalogDAO.removePredmet(predmetDTO, nalogDTO)) {
+			if(zahtjevDAO.deleteZahtjeve(predmetDTO, nalogDTO) && nalogDAO.removePredmet(predmetDTO, nalogDTO)) {
 				JOptionPane.showMessageDialog(brisanjePredmetaForm, "Predmet uspjesno uklonjen.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 				brisanjePredmetaForm.getMainForm().resetPredmetiComboBox();
 				brisanjePredmetaForm.dispose();

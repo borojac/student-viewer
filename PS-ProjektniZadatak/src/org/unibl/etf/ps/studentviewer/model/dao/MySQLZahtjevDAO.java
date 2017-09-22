@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
+import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ZahtjevDTO;
 
@@ -158,6 +159,48 @@ public class MySQLZahtjevDAO implements ZahtjevDAO {
 			
 			ps = conn.prepareStatement(deleteZahtjeve);
 			ps.setInt(1, predmetDTO.getPredmetId());
+			
+			retVal = ps.executeUpdate() == broj;
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		
+		return retVal;
+	}
+	
+	@Override
+	public boolean deleteZahtjeve(PredmetDTO predmetDTO, NalogDTO nalogDTO) {
+		boolean retVal = false;
+		
+		String getBroj = "SELECT DatumZahtjeva FROM zahtjev WHERE PredmetId = ? and NalogId = ?";
+		String deleteZahtjeve = "DELETE FROM zahtjev WHERE PredmetId = ? and NalogId = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getBroj);
+			ps.setInt(1, predmetDTO.getPredmetId());
+			ps.setInt(2, nalogDTO.getNalogId());
+			rs = ps.executeQuery();
+			
+			int broj = 0;
+			while(rs.next()) {
+				broj++;
+			}
+			if(broj == 0) {
+				return true;
+			}
+			
+			ps = conn.prepareStatement(deleteZahtjeve);
+			ps.setInt(1, predmetDTO.getPredmetId());
+			ps.setInt(2, nalogDTO.getNalogId());
 			
 			retVal = ps.executeUpdate() == broj;
 			
