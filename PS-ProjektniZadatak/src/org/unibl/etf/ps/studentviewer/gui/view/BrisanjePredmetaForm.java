@@ -135,7 +135,11 @@ public class BrisanjePredmetaForm extends JFrame {
 			ciklusiCB.addItem(ciklusiList.get(i));
 		}
 		
-		ciklusiCB.setSelectedIndex(0);
+		try {
+			ciklusiCB.setSelectedIndex(0);
+		} catch(IllegalArgumentException e) {
+			
+		}
 		
 		for(int i = 0; i < predmetiList.size(); i++) {
 			if(predmetiList.get(i).getCiklus() == getSelectedCiklus() && !studijskiProgramiList.contains(predmetiList.get(i).getNazivSP())) {

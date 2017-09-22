@@ -169,7 +169,9 @@ public class AccountForm extends JFrame {
 		brisanjePredmetaBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				accountFormController.createBrisanjePredmetaForm();
+				if(mainFormController.getMainForm().getSelectedPredmet() != null) {
+					accountFormController.createBrisanjePredmetaForm();
+				}
 			}
 		});
 		
