@@ -249,7 +249,7 @@ public class DodavanjePredmetaForm extends JFrame {
 		String s = (String)predmetiCB.getSelectedItem();
 		PredmetDTO predmetDTO = null;
 		for(int i = 0; i < predmetiList.size(); i++) {
-			if(s.equals(predmetiList.get(i).getNazivPredmeta())) {
+			if(s.equals(predmetiList.get(i).getNazivPredmeta()) && getSelectedCiklus() == predmetiList.get(i).getCiklus() && getSelectedStudijskiProgram().equals(predmetiList.get(i).getNazivSP()) && getSelectedSkolskaGodina().equals(predmetiList.get(i).getSkolskaGodina())) {
 				predmetDTO = predmetiList.get(i);
 				break;
 			}

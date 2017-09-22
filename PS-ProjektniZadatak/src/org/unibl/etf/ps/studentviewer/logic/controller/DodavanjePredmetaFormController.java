@@ -36,11 +36,11 @@ public class DodavanjePredmetaFormController {
 			ZahtjevDAO zahtjevDAO = zahtjevFactory.getZahtjevDAO();
 		
 			if(zahtjevDAO.addZahtjev(zahtjevDTO)) {
-				JOptionPane.showMessageDialog(dodavanjePredmetaForm, "Zahtjev je uspjesno poslan.");
+				JOptionPane.showMessageDialog(dodavanjePredmetaForm, "Zahtjev je uspjesno poslan.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 				dodavanjePredmetaForm.dispose();
 				AccountFormController.resetDodavanjePredmetaFormOpened();
 			} else {
-				JOptionPane.showMessageDialog(dodavanjePredmetaForm, "Zahtjev nije uspjesno poslan.");
+				JOptionPane.showMessageDialog(dodavanjePredmetaForm, "Zahtjev nije uspjesno poslan.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 		

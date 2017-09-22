@@ -30,12 +30,12 @@ public class BrisanjePredmetaFormController {
 			NalogDAO nalogDAO = nalogFactory.getNalogDAO();
 		
 			if(nalogDAO.removePredmet(predmetDTO, nalogDTO)) {
-				JOptionPane.showMessageDialog(brisanjePredmetaForm, "Predmet uspjesno uklonjen.");
+				JOptionPane.showMessageDialog(brisanjePredmetaForm, "Predmet uspjesno uklonjen.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 				brisanjePredmetaForm.getMainForm().resetPredmetiComboBox();
 				brisanjePredmetaForm.dispose();
 				AccountFormController.resetBrisanjePredmetaFormOpened();
 			} else {
-				JOptionPane.showMessageDialog(brisanjePredmetaForm, "Predmet nije uspjesno uklonjen.");
+				JOptionPane.showMessageDialog(brisanjePredmetaForm, "Predmet nije uspjesno uklonjen.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}
