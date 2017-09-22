@@ -38,7 +38,9 @@ public class AdministratorDodavanjePredmetaFormController {
 			MySQLDAOFactory factory = new MySQLDAOFactory();
 			PredmetDAO predmetDAO = factory.getPredmetDAO();
 			
-			if(predmetDAO.addPredmet(predmet)) {
+			if(predmetDAO.checkPredmetNaFakultetu(predmet) && predmetDAO.checkPNaSP(predmet) && predmetDAO.checkPredmet(predmet)) {
+				JOptionPane.showMessageDialog(administratorDodavanjePredmetaForm, "Uneseni predmet vec postoji.", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+			} else if(predmetDAO.addPredmet(predmet)) {
 				administratorDodavanjePredmetaForm.getAdminPredmetiForm().initTable();
 				JOptionPane.showMessageDialog(administratorDodavanjePredmetaForm, "Predmet uspjesno dodan.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 				administratorDodavanjePredmetaForm.getAdminPredmetiForm().getPredmetiTbl().getSelectionModel().setSelectionInterval(-1, -1);

@@ -245,27 +245,39 @@ public class MySQLPredmetDAO implements PredmetDAO {
 				return false;
 			}
 			
-			ps = conn.prepareStatement(addToPredmetNaFakultetu);
-			ps.setString(1, predmetDTO.getSifraPredmeta());
-			ps.setString(2, predmetDTO.getNazivPredmeta());
-			ps.setShort(3, predmetDTO.getEcts());
+			if(!checkPredmetNaFakultetu(predmetDTO)) {
+				ps = conn.prepareStatement(addToPredmetNaFakultetu);
+				ps.setString(1, predmetDTO.getSifraPredmeta());
+				ps.setString(2, predmetDTO.getNazivPredmeta());
+				ps.setShort(3, predmetDTO.getEcts());
 			
-			retVal = ps.executeUpdate() == 1;
+				retVal = ps.executeUpdate() == 1;
+			} else {
+				retVal = false;
+			}
 			
-			ps = conn.prepareStatement(addToPNaSP);
-			ps.setString(1, predmetDTO.getSifraPredmeta());
-			ps.setInt(2, spId);
-			ps.setShort(3, predmetDTO.getSemestar());
-			ps.setString(4, String.valueOf(predmetDTO.getTipPredmeta()));
+			if(!checkPNaSP(predmetDTO)) {
+				ps = conn.prepareStatement(addToPNaSP);
+				ps.setString(1, predmetDTO.getSifraPredmeta());
+				ps.setInt(2, spId);
+				ps.setShort(3, predmetDTO.getSemestar());
+				ps.setString(4, String.valueOf(predmetDTO.getTipPredmeta()));
 			
-			retVal = ps.executeUpdate() == 1;
+				retVal = ps.executeUpdate() == 1;
+			} else {
+				retVal = false;
+			}
 			
-			ps = conn.prepareStatement(addToPredmet);
-			ps.setInt(1, sgId);
-			ps.setString(2, predmetDTO.getSifraPredmeta());
-			ps.setInt(3, spId);
+			if(!checkPredmet(predmetDTO)) {
+				ps = conn.prepareStatement(addToPredmet);
+				ps.setInt(1, sgId);
+				ps.setString(2, predmetDTO.getSifraPredmeta());
+				ps.setInt(3, spId);
 			
-			retVal = ps.executeUpdate() == 1;
+				retVal = ps.executeUpdate() == 1;
+			} else {
+				retVal = false;
+			}
 			
 			if(retVal) {
 				conn.commit();
@@ -459,6 +471,136 @@ public class MySQLPredmetDAO implements PredmetDAO {
 				conn.setAutoCommit(true);
 			} catch (SQLException e) {}
 			DBUtility.close(conn, ps);
+		}
+		
+		return retVal;
+	}
+	
+	public boolean checkPredmetNaFakultetu(PredmetDTO predmetDTO) {
+		boolean retVal = false;
+		
+		String query = "SELECT Naziv FROM predmet_na_fakultetu WHERE SifraPredmeta = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			ps.setString(1, predmetDTO.getSifraPredmeta());
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				retVal = true;
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		
+		return retVal;
+	}
+	
+	public boolean checkPNaSP(PredmetDTO predmetDTO) {
+		boolean retVal = false;
+		
+		String getSPId = "SELECT SPId FROM studijski_program WHERE NazivSP = ? and Ciklus = ?";
+		String query = "SELECT * FROM p_na_sp WHERE SifraPredmeta = ? and SPId = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getSPId);
+			ps.setString(1, predmetDTO.getNazivSP());
+			ps.setShort(2, predmetDTO.getCiklus());
+			rs = ps.executeQuery();
+			
+			int spId = 0;
+			
+			if(rs.next()) {
+				spId = rs.getInt(1);
+			} else {
+				return false;
+			}
+			
+			ps = conn.prepareStatement(query);
+			ps.setString(1, predmetDTO.getSifraPredmeta());
+			ps.setInt(2, spId);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				retVal = true;
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		
+		return retVal;
+	}
+	
+	public boolean checkPredmet(PredmetDTO predmetDTO) {
+		boolean retVal = false;
+		
+		String getSGId = "SELECT SGId FROM skolska_godina WHERE SkolskaGodina = ?";
+		String getSPId = "SELECT SPId FROM studijski_program WHERE NazivSP = ? and Ciklus = ?";
+		String query = "SELECT PredmetId FROM predmet WHERE SkolskaGodina = ? and SifraPredmeta = ? and SPId = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getSGId);
+			ps.setString(1, predmetDTO.getSkolskaGodina());
+			rs = ps.executeQuery();
+			
+			int sgId = 0;
+			int spId = 0;
+			
+			if(rs.next()) {
+				sgId = rs.getInt(1);
+			} else {
+				return false;
+			}
+			
+			ps = conn.prepareStatement(getSPId);
+			ps.setString(1, predmetDTO.getNazivSP());
+			ps.setShort(2, predmetDTO.getCiklus());
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				spId = rs.getInt(1);
+			} else {
+				return false;
+			}
+			
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, sgId);
+			ps.setString(2, predmetDTO.getSifraPredmeta());
+			ps.setInt(3, spId);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				retVal = true;
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
 		}
 		
 		return retVal;

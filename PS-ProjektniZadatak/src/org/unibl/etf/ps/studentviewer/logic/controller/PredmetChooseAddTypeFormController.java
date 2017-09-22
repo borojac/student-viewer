@@ -59,7 +59,16 @@ public class PredmetChooseAddTypeFormController {
 				} else if(redSaGreskom == 0) {
 					MySQLDAOFactory factory = new MySQLDAOFactory();
 					PredmetDAO predmetDAO = factory.getPredmetDAO();
-					if (predmetDAO.addPredmete(lista)) {
+					for(int i = 0; i < lista.size(); i++) {
+						if(predmetDAO.checkPredmetNaFakultetu(lista.get(i)) && predmetDAO.checkPNaSP(lista.get(i)) && predmetDAO.checkPredmet(lista.get(i))) {
+							JOptionPane.showMessageDialog(predmetChoseAddTypeForm, lista.get(i).getNazivPredmeta() + " vec postoji.", "Upozorenje!", JOptionPane.WARNING_MESSAGE);
+							lista.remove(i);
+							i--;
+						}
+					}
+					if(lista.size() == 0) {
+						JOptionPane.showMessageDialog(predmetChoseAddTypeForm, "Neuspjesno dodavanje predmeta!", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
+					} else if(predmetDAO.addPredmete(lista)) {
 						adminPredmetiFormController.getAdminPredmetiForm().initTable();
 						JOptionPane.showMessageDialog(predmetChoseAddTypeForm, "Uspjesno dodati predmeti!", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 						adminPredmetiFormController.getAdminPredmetiForm().getPredmetiTbl().getSelectionModel().setSelectionInterval(-1, -1);
