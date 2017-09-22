@@ -129,6 +129,46 @@ public class MySQLZahtjevDAO implements ZahtjevDAO {
 		
 		return retVal;
 	}
+	
+	@Override
+	public boolean deleteZahtjeve(PredmetDTO predmetDTO) {
+		boolean retVal = false;
+		
+		String getBroj = "SELECT NalogId FROM zahtjev WHERE PredmetId = ?";
+		String deleteZahtjeve = "DELETE FROM zahtjev WHERE PredmetId = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getBroj);
+			ps.setInt(1, predmetDTO.getPredmetId());
+			rs = ps.executeQuery();
+			
+			int broj = 0;
+			while(rs.next()) {
+				broj++;
+			}
+			if(broj == 0) {
+				return true;
+			}
+			
+			ps = conn.prepareStatement(deleteZahtjeve);
+			ps.setInt(1, predmetDTO.getPredmetId());
+			
+			retVal = ps.executeUpdate() == broj;
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		
+		return retVal;
+	}
 
 	@Override
 	public ArrayList<ZahtjevDTO> getAllZahtjev() {

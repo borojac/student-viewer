@@ -275,6 +275,46 @@ public class MySQLNalogDAO implements NalogDAO {
 
 		return retVal;
 	}
+	
+	@Override
+	public boolean removePredmete(PredmetDTO predmetDTO) {
+		boolean retVal = false;
+		
+		String getBroj = "SELECT NalogId FROM predaje WHERE PredmetId = ?";
+		String deletePredmete = "DELETE FROM predaje WHERE PredmetId = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getBroj);
+			ps.setInt(1, predmetDTO.getPredmetId());
+			rs = ps.executeQuery();
+			
+			int broj = 0;
+			while(rs.next()) {
+				broj++;
+			}
+			if(broj == 0) {
+				return true;
+			}
+			
+			ps = conn.prepareStatement(deletePredmete);
+			ps.setInt(1, predmetDTO.getPredmetId());
+			
+			retVal = ps.executeUpdate() == broj;
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, ps);
+		}
+		
+		return retVal;
+	}
 
 	@Override
 	public ArrayList<PredmetDTO> getPredmeteNaNalogu(int nalogId) {

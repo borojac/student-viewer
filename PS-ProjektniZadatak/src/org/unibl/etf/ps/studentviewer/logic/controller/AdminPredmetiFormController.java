@@ -7,8 +7,12 @@ import org.unibl.etf.ps.studentviewer.gui.view.AdministratorDodavanjePredmetaFor
 import org.unibl.etf.ps.studentviewer.gui.view.AdministratorIzmjenaPredmetaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.PredmetChooseAddTypeForm;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
+import org.unibl.etf.ps.studentviewer.model.dao.ZahtjevDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
+
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 public class AdminPredmetiFormController {
 	
@@ -64,8 +68,10 @@ public class AdminPredmetiFormController {
 		
 			MySQLDAOFactory factory = new MySQLDAOFactory();
 			PredmetDAO predmetDAO = factory.getPredmetDAO();
-		
-			if(predmetDAO.deletePredmet(predmetDTO)) {
+			NalogDAO nalogDAO = factory.getNalogDAO();
+			ZahtjevDAO zahtjevDAO = factory.getZahtjevDAO();
+			
+			if(nalogDAO.removePredmete(predmetDTO) && zahtjevDAO.deleteZahtjeve(predmetDTO) && predmetDAO.deletePredmet(predmetDTO)) {
 				JOptionPane.showMessageDialog(adminPredmetiForm, "Predmet uspjesno obrisan.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 				adminPredmetiForm.removeSelectedRow();
 			}

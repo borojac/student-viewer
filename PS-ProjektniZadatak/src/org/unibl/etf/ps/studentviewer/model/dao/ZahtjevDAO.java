@@ -11,6 +11,7 @@ public interface ZahtjevDAO {
 	public boolean addZahtjev(ZahtjevDTO zahtjevDTO);
 	public boolean updateZahtjev(ZahtjevDTO zahtjevDTO);
 	public boolean deleteZahtjev(ZahtjevDTO zahtjevDTO);
+	public boolean deleteZahtjeve(PredmetDTO predmetDTO);
 	public ArrayList<ZahtjevDTO> getAllZahtjev();
 	public ArrayList<PredmetDTO> getPredmeteSaZahtjevomZaDan(int nalogId, Date date);
 
