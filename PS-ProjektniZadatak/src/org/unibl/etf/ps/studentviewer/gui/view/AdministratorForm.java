@@ -203,6 +203,9 @@ public class AdministratorForm extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				administratorFormController.odobriZahtjev();
+				adminZahtjeviJt.getSelectionModel().setSelectionInterval(-1, -1);
+				odbijBtn.setEnabled(false);
+				odobriBtn.setEnabled(false);
 			}
 		});
 		
@@ -217,6 +220,9 @@ public class AdministratorForm extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				administratorFormController.odbijZahtjev();
+				adminZahtjeviJt.getSelectionModel().setSelectionInterval(-1, -1);
+				odbijBtn.setEnabled(false);
+				odobriBtn.setEnabled(false);
 			}
 		});
 		
