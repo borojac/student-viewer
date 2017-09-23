@@ -12,13 +12,12 @@ import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.ZahtjevDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-
 public class AdminPredmetiFormController {
 	
 	private AdminPredmetiForm adminPredmetiForm;
 	private static boolean predmetChooseAddTypeFormOpened = false;
 	private static boolean addFormOpened = false;
+	private static boolean changeFormOpened = false;
 	
 	public AdminPredmetiFormController(AdminPredmetiForm adminPredmetiForm) {
 		this.adminPredmetiForm = adminPredmetiForm;
@@ -52,11 +51,20 @@ public class AdminPredmetiFormController {
 		addFormOpened = false;
 	}
 	
+	public static void resetChangeFormOpened() {
+		changeFormOpened = false;
+	}
+	
 	public AdminPredmetiForm getAdminPredmetiForm() {
 		return adminPredmetiForm;
 	}
 	
 	public void izmjeniPredmet() {
+		if(changeFormOpened) {
+			return;
+		}
+		changeFormOpened = true;
+		
 		AdministratorIzmjenaPredmetaForm administratorIzmjenaPredmetaForm = new AdministratorIzmjenaPredmetaForm(adminPredmetiForm);
 		administratorIzmjenaPredmetaForm.setVisible(true);
 	}

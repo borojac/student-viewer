@@ -30,8 +30,8 @@ import java.awt.Font;
 public class PredmetChooseAddTypeForm extends JFrame {
 
 	private JPanel contentPane;
-	JCheckBox chckbxNewCheckBoxJedan = new JCheckBox("");
-	JCheckBox chckbxNewCheckBoxVise = new JCheckBox("");
+	private JCheckBox chckbxNewCheckBoxJedan = new JCheckBox("");
+	private JCheckBox chckbxNewCheckBoxVise = new JCheckBox("");
 
 	public PredmetChooseAddTypeForm(AdminPredmetiFormController adminPredmetiFormController) {
 		addWindowListener(new WindowAdapter() {

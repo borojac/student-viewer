@@ -1,7 +1,6 @@
 package org.unibl.etf.ps.studentviewer.gui.view.nalog;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -19,7 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import org.imgscalr.Scalr;

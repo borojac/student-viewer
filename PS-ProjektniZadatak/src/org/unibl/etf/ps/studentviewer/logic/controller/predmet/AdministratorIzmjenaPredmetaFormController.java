@@ -44,6 +44,7 @@ public class AdministratorIzmjenaPredmetaFormController {
 				administratorIzmjenaPredmetaForm.dispose();
 				AdminPredmetiFormController.resetChooseAddTypeFormOpened();
 				AdminPredmetiFormController.resetAddFormOpened();
+				AdminPredmetiFormController.resetChangeFormOpened();
 			} else {
 				JOptionPane.showMessageDialog(administratorIzmjenaPredmetaForm, "Predmet nije izmjenjen.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 			}
