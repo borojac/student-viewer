@@ -352,10 +352,12 @@ public class MySQLPredmetDAO implements PredmetDAO {
 			
 			retVal = ps.executeUpdate() == 1;
 			
-			ps = conn.prepareStatement(deleteFromPredmetNaFaklutetu);
-			ps.setString(1, predmetDTO.getSifraPredmeta());
+			if(!checkPNaSP(predmetDTO.getSifraPredmeta()) && !checkPredmet(predmetDTO.getSifraPredmeta())) {
+				ps = conn.prepareStatement(deleteFromPredmetNaFaklutetu);
+				ps.setString(1, predmetDTO.getSifraPredmeta());
 			
-			retVal = ps.executeUpdate() == 1;
+				retVal = ps.executeUpdate() == 1;
+			}
 			
 		} catch(SQLException e) {
 			e.printStackTrace();
@@ -549,6 +551,35 @@ public class MySQLPredmetDAO implements PredmetDAO {
 		return retVal;
 	}
 	
+	public boolean checkPNaSP(String sifraPredmeta) {
+		boolean retVal = false;
+		
+		String query = "SELECT * FROM p_na_sp WHERE SifraPredmeta = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			ps.setString(1, sifraPredmeta);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				retVal = true;
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		
+		return retVal;
+	}
+	
 	public boolean checkPredmet(PredmetDTO predmetDTO) {
 		boolean retVal = false;
 		
@@ -591,6 +622,35 @@ public class MySQLPredmetDAO implements PredmetDAO {
 			ps.setInt(1, sgId);
 			ps.setString(2, predmetDTO.getSifraPredmeta());
 			ps.setInt(3, spId);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				retVal = true;
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		
+		return retVal;
+	}
+	
+	public boolean checkPredmet(String sifraPredmeta) {
+		boolean retVal = false;
+		
+		String query = "SELECT * FROM predmet WHERE SifraPredmeta = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			ps.setString(1, sifraPredmeta);
 			rs = ps.executeQuery();
 			
 			if(rs.next()) {

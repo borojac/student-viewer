@@ -22,10 +22,13 @@ public interface PredmetDAO {
 	public boolean updatePredmet(PredmetDTO predmetStari, PredmetDTO predmetNovi);
 	public boolean checkPredmetNaFakultetu(PredmetDTO predmetDTO);
 	public boolean checkPNaSP(PredmetDTO predmetDTO);
+	public boolean checkPNaSP(String sifraPredmeta);
 	public boolean checkPredmet(PredmetDTO predmetDTO);
+	public boolean checkPredmet(String sifraPredmeta);
 	public boolean checkStudijskiProgram(String nazivSP, short ciklus);
 	public boolean addStudijskiProgram(String nazivSP, int ects, short ciklus, short trajanje, String zvanje);
 	public ArrayList<String> getAllStudijskiProgramAtCiklus(short ciklus);
 	public List<StudentNaPredmetuDTO> getStudentsForGrading(int predmetId);
 	public List<GradingInfoDTO> getGradingInfo(int studentId, int predmetId);
+	
 }
