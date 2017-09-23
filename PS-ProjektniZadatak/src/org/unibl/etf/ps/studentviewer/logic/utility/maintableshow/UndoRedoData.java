@@ -1,4 +1,4 @@
-package org.unibl.etf.ps.studentviewer.gui.view.student;
+package org.unibl.etf.ps.studentviewer.logic.utility.maintableshow;
 
 import java.util.ArrayList;
 

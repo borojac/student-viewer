@@ -11,6 +11,8 @@ import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
 import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
+import org.unibl.etf.ps.studentviewer.logic.utility.maintableshow.ShowViewData;
+import org.unibl.etf.ps.studentviewer.logic.utility.maintableshow.UndoRedoData;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 

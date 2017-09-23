@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.student.ShowChooseFormController;
+import org.unibl.etf.ps.studentviewer.logic.utility.maintableshow.ShowViewData;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

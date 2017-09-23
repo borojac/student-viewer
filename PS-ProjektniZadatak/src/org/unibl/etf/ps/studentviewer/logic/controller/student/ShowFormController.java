@@ -5,8 +5,8 @@ import java.util.HashMap;
 
 import org.unibl.etf.ps.studentviewer.gui.view.student.ShowChooseForm;
 import org.unibl.etf.ps.studentviewer.gui.view.student.ShowForm;
-import org.unibl.etf.ps.studentviewer.gui.view.student.ShowViewData;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
+import org.unibl.etf.ps.studentviewer.logic.utility.maintableshow.ShowViewData;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 

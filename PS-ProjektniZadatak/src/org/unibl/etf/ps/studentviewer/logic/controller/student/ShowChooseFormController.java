@@ -5,7 +5,7 @@ import javax.swing.JList;
 
 import org.unibl.etf.ps.studentviewer.gui.view.student.ShowChooseForm;
 import org.unibl.etf.ps.studentviewer.gui.view.student.ShowForm;
-import org.unibl.etf.ps.studentviewer.gui.view.student.ShowViewData;
+import org.unibl.etf.ps.studentviewer.logic.utility.maintableshow.ShowViewData;
 
 public class ShowChooseFormController {
 	ShowChooseForm showChooseForm;

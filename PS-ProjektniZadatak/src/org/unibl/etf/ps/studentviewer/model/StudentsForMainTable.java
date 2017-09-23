@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.unibl.etf.ps.studentviewer.gui.view.student.MainTable;
-import org.unibl.etf.ps.studentviewer.gui.view.student.ShowViewData;
-import org.unibl.etf.ps.studentviewer.gui.view.student.UndoRedoData;
+import org.unibl.etf.ps.studentviewer.logic.utility.maintableshow.ShowViewData;
+import org.unibl.etf.ps.studentviewer.logic.utility.maintableshow.UndoRedoData;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentMainTableDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.StudentMainTableDAO;

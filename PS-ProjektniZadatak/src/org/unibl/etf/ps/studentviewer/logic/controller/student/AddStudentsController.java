@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.view.student.AddForm;
-import org.unibl.etf.ps.studentviewer.gui.view.student.UndoRedoData;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.nalog.AdministratorFormController;
+import org.unibl.etf.ps.studentviewer.logic.utility.maintableshow.UndoRedoData;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;

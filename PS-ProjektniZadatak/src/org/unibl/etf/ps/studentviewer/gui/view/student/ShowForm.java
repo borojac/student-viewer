@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.student.ShowFormController;
+import org.unibl.etf.ps.studentviewer.logic.utility.maintableshow.ShowViewData;
 
 import java.awt.Font;
 import javax.swing.JButton;
