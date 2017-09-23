@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
 import org.unibl.etf.ps.studentviewer.model.dto.ZahtjevDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ZahtjevDisciplinaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.dbutility.mysql.DBUtility;
 
 public class MySQLZahtjevDisciplinaDAO implements ZahtjevDisciplinaDAO {
 

@@ -10,11 +10,11 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
 import org.unibl.etf.ps.studentviewer.model.dto.GradingInfoDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
+import org.unibl.etf.ps.studentviewer.persistence.dbutility.mysql.DBUtility;
 
 public class MySQLPredmetDAO implements PredmetDAO {
 

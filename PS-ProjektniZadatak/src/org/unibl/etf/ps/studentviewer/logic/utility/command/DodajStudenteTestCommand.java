@@ -3,7 +3,7 @@ package org.unibl.etf.ps.studentviewer.logic.utility.command;
 import java.awt.EventQueue;
 import java.util.List;
 
-import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
+import org.unibl.etf.ps.studentviewer.gui.view.test.StudentTableModel;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 

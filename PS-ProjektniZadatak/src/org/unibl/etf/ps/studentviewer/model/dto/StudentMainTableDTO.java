@@ -2,7 +2,7 @@ package org.unibl.etf.ps.studentviewer.model.dto;
 
 import java.util.HashMap;
 
-import org.unibl.etf.ps.studentviewer.gui.ShowViewData;
+import org.unibl.etf.ps.studentviewer.gui.view.student.ShowViewData;
 import org.unibl.etf.ps.studentviewer.logic.utility.Sort;
 
 public class StudentMainTableDTO extends StudentNaPredmetuDTO{

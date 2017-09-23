@@ -46,10 +46,11 @@ import javax.swing.event.ListSelectionListener;
 
 import org.imgscalr.Scalr;
 import org.jdesktop.swingx.search.TableSearchable;
-import org.unibl.etf.ps.studentviewer.gui.MainTable;
-import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
-import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
-import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
+import org.unibl.etf.ps.studentviewer.gui.view.student.GradeGenerationForm;
+import org.unibl.etf.ps.studentviewer.gui.view.student.MainTable;
+import org.unibl.etf.ps.studentviewer.gui.view.student.MainTableModel;
+import org.unibl.etf.ps.studentviewer.gui.view.student.UndoRedoData;
+import org.unibl.etf.ps.studentviewer.gui.view.test.TestoviTableModel;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
