@@ -236,8 +236,9 @@ public class MainForm extends JFrame {
 		initButtons();
 		initButtonsListeners();
 		initPredmetiComboBox();
-		initComboBoxListener();
 		initElektrijadaComboBox();
+		initComboBoxListener();
+		
 
 		setButtonsSize();
 
@@ -641,7 +642,7 @@ public class MainForm extends JFrame {
 	private void initElektrijadaComboBox() {
 		elektrijadaCB = new JComboBox<>();
 		elektrijadaCB.setBounds(745, 252, 430, 35);
-
+		initDisciplineComboBox();
 		MySQLDAOFactory dao = new MySQLDAOFactory();
 		ElektrijadaDAO eleDAO = dao.getElektrijadaDAO();
 		ArrayList<ElektrijadaDTO> elektrijade = (ArrayList<ElektrijadaDTO>) eleDAO
@@ -661,7 +662,7 @@ public class MainForm extends JFrame {
 				}
 				elektrijadaCB.addItem(el.getLokacija() + ", " + newDf.format(datum));
 			}
-			initDisciplineComboBox();
+			
 			int indeks = elektrijadaCB.getSelectedIndex();
 			ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
 			DisciplinaDAO discDAO = dao.getDisciplinaDAO();

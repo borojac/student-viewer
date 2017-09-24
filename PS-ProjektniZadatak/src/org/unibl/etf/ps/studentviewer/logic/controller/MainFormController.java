@@ -311,7 +311,8 @@ public class MainFormController {
 	}
 
 	public void prikaziDisciplinu(NalogDTO nalogDTO, JComboBox<String> disciplineCB) {
-		if (disciplineCB.getSelectedIndex() == -1) {
+		
+		if (disciplineCB.getItemCount() == 0) {
 			EventQueue.invokeLater(new Runnable() {
 				@Override
 				public void run() {
