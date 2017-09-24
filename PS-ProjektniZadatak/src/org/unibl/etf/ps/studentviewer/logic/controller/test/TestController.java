@@ -234,7 +234,7 @@ public class TestController {
 
 						@Override
 						public void run() {
-							JOptionPane.showMessageDialog(testForm, "Eksportovanje nije uspjelo. Provjerite da li je fajl u dobrom formatu pa pokušajte ponovo.");
+							JOptionPane.showMessageDialog(testForm, "Importovanje nije uspjelo. Provjerite da li je fajl u dobrom formatu pa pokušajte ponovo.");
 						}
 					});
 				}
@@ -301,7 +301,7 @@ public class TestController {
 
 						@Override
 						public void run() {
-							JOptionPane.showMessageDialog(testForm, "Eksportovanje nije uspjelo. Provjerite da li je fajl u dobrom formatu pa pokušajte ponovo.");
+							JOptionPane.showMessageDialog(testForm, "Importovanje nije uspjelo. Provjerite da li je fajl u dobrom formatu pa pokušajte ponovo.");
 						}
 					});
 				}
