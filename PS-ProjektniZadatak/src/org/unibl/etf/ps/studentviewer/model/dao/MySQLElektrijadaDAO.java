@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.dbutility.mysql.DBUtility;
 
 public class MySQLElektrijadaDAO implements ElektrijadaDAO {
 

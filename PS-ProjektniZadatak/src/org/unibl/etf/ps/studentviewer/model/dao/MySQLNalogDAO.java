@@ -6,10 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
 import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
+import org.unibl.etf.ps.studentviewer.persistence.dbutility.mysql.DBUtility;
 
 public class MySQLNalogDAO implements NalogDAO {
 
@@ -273,6 +273,46 @@ public class MySQLNalogDAO implements NalogDAO {
 			DBUtility.close(conn, ps);
 		}
 
+		return retVal;
+	}
+	
+	@Override
+	public boolean removePredmete(PredmetDTO predmetDTO) {
+		boolean retVal = false;
+		
+		String getBroj = "SELECT NalogId FROM predaje WHERE PredmetId = ?";
+		String deletePredmete = "DELETE FROM predaje WHERE PredmetId = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(getBroj);
+			ps.setInt(1, predmetDTO.getPredmetId());
+			rs = ps.executeQuery();
+			
+			int broj = 0;
+			while(rs.next()) {
+				broj++;
+			}
+			if(broj == 0) {
+				return true;
+			}
+			
+			ps = conn.prepareStatement(deletePredmete);
+			ps.setInt(1, predmetDTO.getPredmetId());
+			
+			retVal = ps.executeUpdate() == broj;
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, ps);
+		}
+		
 		return retVal;
 	}
 

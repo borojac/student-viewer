@@ -50,4 +50,5 @@ public abstract class StudentDAO {
 	
 	public abstract boolean hasGrade(int studentId, int predmetId);
 	public abstract boolean gradeStudent(int studentId, int predmetId, int grade);
+	public abstract boolean recallGrade(int studentId, int predmetId);
 }

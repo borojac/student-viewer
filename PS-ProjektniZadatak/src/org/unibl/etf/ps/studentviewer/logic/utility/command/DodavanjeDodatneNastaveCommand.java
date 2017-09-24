@@ -1,6 +1,6 @@
 package org.unibl.etf.ps.studentviewer.logic.utility.command;
 
-import org.unibl.etf.ps.studentviewer.logic.controller.ElektrijadaController;
+import org.unibl.etf.ps.studentviewer.logic.controller.elektrijada.ElektrijadaController;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 
 public class DodavanjeDodatneNastaveCommand implements Command {

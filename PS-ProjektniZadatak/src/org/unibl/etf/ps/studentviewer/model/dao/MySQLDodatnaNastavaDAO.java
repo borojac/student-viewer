@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.dbutility.mysql.DBUtility;
 
 public class MySQLDodatnaNastavaDAO implements DodatnaNastavaDAO {
 

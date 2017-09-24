@@ -10,12 +10,12 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.unibl.etf.ps.studentviewer.dbutility.mysql.DBUtility;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
+import org.unibl.etf.ps.studentviewer.persistence.dbutility.mysql.DBUtility;
 
 public class MySQLStudentDAO extends StudentDAO {
 
@@ -745,6 +745,28 @@ String getAllStudentsQuerry = "select * from student where StudentId not in (sel
 			e.printStackTrace();
 		} finally {
 			DBUtility.close(conn, rs, ps);
+		}
+		return retVal;
+	}
+
+	@Override
+	public boolean recallGrade(int studentId, int predmetId) {
+		boolean retVal = false;
+		String query = "UPDATE slusa SET Ocjena=null, DatumPolaganja=null "
+				+ "WHERE StudentId=? AND PredmetId=?";
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, studentId);
+			ps.setInt(2, predmetId);
+			retVal = ps.executeUpdate() == 1;
+		} catch (SQLException e) {
+			retVal = false;
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, ps);
 		}
 		return retVal;
 	}

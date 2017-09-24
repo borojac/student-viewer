@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.ss.formula.functions.Even;
-import org.unibl.etf.ps.studentviewer.gui.StudentTableModel;
+import org.unibl.etf.ps.studentviewer.gui.view.test.StudentTableModel;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 

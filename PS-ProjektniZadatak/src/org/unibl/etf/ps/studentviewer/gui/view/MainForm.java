@@ -46,11 +46,12 @@ import javax.swing.event.ListSelectionListener;
 
 import org.imgscalr.Scalr;
 import org.jdesktop.swingx.search.TableSearchable;
-import org.unibl.etf.ps.studentviewer.gui.MainTable;
-import org.unibl.etf.ps.studentviewer.gui.MainTableModel;
-import org.unibl.etf.ps.studentviewer.gui.TestoviTableModel;
-import org.unibl.etf.ps.studentviewer.gui.UndoRedoData;
+import org.unibl.etf.ps.studentviewer.gui.view.student.GradeGenerationForm;
+import org.unibl.etf.ps.studentviewer.gui.view.student.MainTable;
+import org.unibl.etf.ps.studentviewer.gui.view.student.MainTableModel;
+import org.unibl.etf.ps.studentviewer.gui.view.test.TestoviTableModel;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
+import org.unibl.etf.ps.studentviewer.logic.utility.maintableshow.UndoRedoData;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.DisciplinaDAO;
@@ -76,6 +77,14 @@ public class MainForm extends JFrame {
 	private PredmetDTO lastPredmet = null;
 
 	private ArrayList<PredmetDTO> predmetiList;
+	
+	ActionListener actionListener = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			mainFormController.postaviMainForm(getSelectedPredmet(), lastPredmet);
+			lastPredmet = getSelectedPredmet();
+		}
+	};
 
 	// ------- Components!!! ------- //
 	ArrayList<JButton> buttons = new ArrayList<JButton>();
@@ -692,28 +701,23 @@ public class MainForm extends JFrame {
 	}
 
 	private void initComboBoxListener() {
-		predmetiCB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mainFormController.postaviMainForm(getSelectedPredmet(), lastPredmet);
-				lastPredmet = getSelectedPredmet();
-			}
-		});
+		predmetiCB.addActionListener(actionListener);
 	}
 
 	public void resetPredmetiComboBox() {
+		predmetiCB.removeActionListener(actionListener);
 		predmetiCB.removeAllItems();
 		ArrayList<PredmetDTO> predmetiList = new ArrayList<>();
 		MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
 		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
 
 		predmetiList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
-		System.out.println(predmetiList.size());
 
 		for (int i = 0; i < predmetiList.size(); i++) {
 			predmetiCB.addItem(
 					(predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
 		}
+		initComboBoxListener();
 	}
 
 	public void resetElektrijadaComboBox() {
