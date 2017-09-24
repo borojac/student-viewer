@@ -422,7 +422,7 @@ public class ElektrijadaController {
 		title.add("\n\n");
 
 		Paragraph spacing = new Paragraph("\n\n");
-		spacing.add("Studenti na testu:");
+		spacing.add("Studenti za Elektrijadu:");
 		spacing.add("\n\n");
 
 		Paragraph body = new Paragraph();
