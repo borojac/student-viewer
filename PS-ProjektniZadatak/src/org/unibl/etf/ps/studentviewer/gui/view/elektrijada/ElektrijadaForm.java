@@ -78,29 +78,29 @@ public class ElektrijadaForm extends JFrame {
 	 * Launch the application.
 	 * @throws IOException 
 	 */
-	public static void main(String[] args) throws IOException {
-		System.setProperty("javax.net.ssl.trustStore", "StudentViewer.jks");
-		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
-
-		DAOFactory dao = new MySQLDAOFactory();
-		ElektrijadaDAO deDAO = dao.getElektrijadaDAO();
-		ElektrijadaDTO elektrijadaDTO = deDAO.getElektrijadaZaNalogDTO(2, "Programiranje");
-		NalogDAO naDAO = dao.getNalogDAO();
-		NalogDTO nalogDTO = naDAO.getNalog(2);
-		DisciplinaDAO diDAO = dao.getDisciplinaDAO();
-		DisciplinaDTO disciplinaDTO = new DisciplinaDTO("Programiranje", 2);
-		MainForm mainForm = new MainForm(nalogDTO);
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ElektrijadaForm frame = new ElektrijadaForm(elektrijadaDTO,nalogDTO,disciplinaDTO,mainForm);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) throws IOException {
+//		System.setProperty("javax.net.ssl.trustStore", "StudentViewer.jks");
+//		System.setProperty("javax.net.ssl.trustStorePassword", "studentviewer");
+//
+//		DAOFactory dao = new MySQLDAOFactory();
+//		ElektrijadaDAO deDAO = dao.getElektrijadaDAO();
+//		ElektrijadaDTO elektrijadaDTO = deDAO.getElektrijadaZaNalogDTO(2, "Programiranje");
+//		NalogDAO naDAO = dao.getNalogDAO();
+//		NalogDTO nalogDTO = naDAO.getNalog(2);
+//		DisciplinaDAO diDAO = dao.getDisciplinaDAO();
+//		DisciplinaDTO disciplinaDTO = new DisciplinaDTO("Programiranje", 2);
+//		MainForm mainForm = new MainForm(nalogDTO);
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					ElektrijadaForm frame = new ElektrijadaForm(elektrijadaDTO,nalogDTO,disciplinaDTO,mainForm);
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
