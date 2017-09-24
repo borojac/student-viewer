@@ -39,6 +39,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -210,7 +211,10 @@ public class TestController {
 				if ("Bodovi".equals(titleRow.getCell(4).getStringCellValue().trim())
 						&& "Komentar".equals(titleRow.getCell(5).getStringCellValue().trim())) {
 					try {
-						brojBodova = Integer.parseInt(row.getCell(4).getStringCellValue().trim());
+						if (row.getCell(4).getCellTypeEnum() == CellType.STRING)
+							brojBodova = Integer.parseInt(row.getCell(4).getStringCellValue().trim());
+						else
+							brojBodova = (int) row.getCell(4).getNumericCellValue();
 					} catch (NumberFormatException ex) {}
 					komentar = row.getCell(5).getStringCellValue().trim();
 				}
@@ -225,7 +229,14 @@ public class TestController {
 				} catch (SQLException e) {
 					Logger logger = Logger.getLogger(TestController.class.getSimpleName());
 					logger.addAppender(new FileAppender(new SimpleLayout(), "log/" + logger.getName()));
-					logger.error("Ucitavanje iz excel fajla", e);
+					logger.error("Učitavanje iz excel fajla", e);
+					EventQueue.invokeLater(new Runnable() {
+
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(testForm, "Eksportovanje nije uspjelo. Provjerite da li je fajl u dobrom formatu pa pokušajte ponovo.");
+						}
+					});
 				}
 			}
 
@@ -268,7 +279,10 @@ public class TestController {
 				if ("Bodovi".equals(titleRow.getCell(4).getStringCellValue().trim())
 						&& "Komentar".equals(titleRow.getCell(5).getStringCellValue().trim())) {
 					try {
-						brojBodova = Integer.parseInt(row.getCell(4).getStringCellValue().trim());
+						if (row.getCell(4).getCellTypeEnum() == CellType.STRING)
+							brojBodova = Integer.parseInt(row.getCell(4).getStringCellValue().trim());
+						else
+							brojBodova = (int) row.getCell(4).getNumericCellValue();
 					} catch (NumberFormatException ex) {}
 					komentar = row.getCell(5).getStringCellValue().trim();
 				}
@@ -283,6 +297,13 @@ public class TestController {
 					Logger logger = Logger.getLogger(TestController.class.getSimpleName());
 					logger.addAppender(new FileAppender(new SimpleLayout(), "log/" + logger.getName()));
 					logger.error("Ucitavanje iz excel fajla", e);
+					EventQueue.invokeLater(new Runnable() {
+
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(testForm, "Eksportovanje nije uspjelo. Provjerite da li je fajl u dobrom formatu pa pokušajte ponovo.");
+						}
+					});
 				}
 
 			}

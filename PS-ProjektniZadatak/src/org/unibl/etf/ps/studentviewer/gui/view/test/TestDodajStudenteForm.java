@@ -97,6 +97,7 @@ public class TestDodajStudenteForm extends JDialog {
 			public void mouseClicked(MouseEvent me) {
 				if (me.getClickCount() == 2) {
 					testDodajStudenteController.addStudents(allStudentsList, toAddStudentsList);
+					allStudentsList.clearSelection();
 				}
 			}
 		});
@@ -116,6 +117,7 @@ public class TestDodajStudenteForm extends JDialog {
 			public void mouseClicked(MouseEvent me) {
 				if (me.getClickCount() == 2) {
 					testDodajStudenteController.removeStudents(allStudentsList, toAddStudentsList);
+					toAddStudentsList.clearSelection();
 				}
 			}
 		});
@@ -126,6 +128,7 @@ public class TestDodajStudenteForm extends JDialog {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				testDodajStudenteController.addStudents(allStudentsList, toAddStudentsList);
+				allStudentsList.clearSelection();
 			}
 		});
 		btnAdd.setBounds(320, 24, 50, 40);
@@ -136,6 +139,7 @@ public class TestDodajStudenteForm extends JDialog {
 		btnAddAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				testDodajStudenteController.addAll(allStudentsList, toAddStudentsList);
+				allStudentsList.clearSelection();
 			}
 		});
 		btnAddAll.setBounds(320, 75, 50, 40);
@@ -146,6 +150,7 @@ public class TestDodajStudenteForm extends JDialog {
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				testDodajStudenteController.removeStudents(allStudentsList, toAddStudentsList);
+				toAddStudentsList.clearSelection();
 			}
 		});
 		btnRemove.setBounds(320, 156, 50, 40);
@@ -156,6 +161,7 @@ public class TestDodajStudenteForm extends JDialog {
 		btnRemoveAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				testDodajStudenteController.removeAll(allStudentsList, toAddStudentsList);
+				toAddStudentsList.clearSelection();
 			}
 		});
 		btnRemoveAll.setBounds(320, 207, 50, 40);
