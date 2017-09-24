@@ -115,7 +115,7 @@ public class ElektrijadaForm extends JFrame {
 		this.disciplinaDTO = disciplinaDTO;
 		this.nalogDTO = nalogDTO;
 		this.mainForm = mainForm;
-		setTitle("Disciplina Naziv");
+		setTitle("Disciplina "+disciplinaDTO.getNaziv());
 		try {
 			File logFolder = new File("./log");
 			if (!logFolder.exists())
