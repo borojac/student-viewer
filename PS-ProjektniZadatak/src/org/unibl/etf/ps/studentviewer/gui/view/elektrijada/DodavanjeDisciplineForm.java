@@ -40,12 +40,11 @@ public class DodavanjeDisciplineForm extends JFrame {
 	private static final long serialVersionUID = 3934548610812262901L;
 	private JPanel contentPane;
 	private JPanel contentPane_1;
-	
+
 	private DodavanjeDisciplineController dodavanjeDisciplineKontroler;
 	private JComboBox elektrijadeCB;
 	private NalogDTO nalogDTO;
 	private JComboBox disciplineCB;
-
 
 	/**
 	 * Create the frame.
@@ -54,7 +53,7 @@ public class DodavanjeDisciplineForm extends JFrame {
 		dodavanjeDisciplineKontroler = new DodavanjeDisciplineController(this);
 		setTitle("Dodavanje discipline");
 		this.nalogDTO = nalogDTO;
-		
+
 		setBounds(100, 100, 450, 270);
 		contentPane = new JPanel();
 		contentPane_1 = new JPanel();
@@ -68,7 +67,7 @@ public class DodavanjeDisciplineForm extends JFrame {
 
 					@Override
 					public void run() {
-						AccountFormController.resetBrisanjeDisciplineFormOpened();
+						AccountFormController.resetDodavanjeDisciplineFormOpened();
 					}
 				});
 			}
@@ -124,8 +123,7 @@ public class DodavanjeDisciplineForm extends JFrame {
 		initDisciplineComboBox();
 		MySQLDAOFactory dao = new MySQLDAOFactory();
 		ElektrijadaDAO eleDAO = dao.getElektrijadaDAO();
-		ArrayList<ElektrijadaDTO> elektrijade = (ArrayList<ElektrijadaDTO>) eleDAO
-				.getSveElektrijade();
+		ArrayList<ElektrijadaDTO> elektrijade = (ArrayList<ElektrijadaDTO>) eleDAO.getSveElektrijade();
 		if (elektrijade.size() > 0) {
 			for (ElektrijadaDTO el : elektrijade) {
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -139,14 +137,27 @@ public class DodavanjeDisciplineForm extends JFrame {
 				}
 				elektrijadeCB.addItem(el.getLokacija() + ", " + newDf.format(datum));
 			}
-			
+
 			int indeks = elektrijadeCB.getSelectedIndex();
 			ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
 			DisciplinaDAO discDAO = dao.getDisciplinaDAO();
 			ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
 					.getDisciplinePoElektrijadi(selektovanaElektrijada.getId());
-			for (DisciplinaDTO di : discipline) {
-				disciplineCB.addItem(di.getNaziv());
+			
+
+			ArrayList<DisciplinaDTO> disciplineKorisnika = (ArrayList<DisciplinaDTO>) discDAO
+					.getDiscipline(selektovanaElektrijada.getId(), nalogDTO.getNalogId());
+			if (disciplineKorisnika.isEmpty()) {
+				for (DisciplinaDTO di : discipline) {
+					disciplineCB.addItem(di.getNaziv());
+				}
+			}else{
+				for (DisciplinaDTO di : discipline) {
+					for (DisciplinaDTO diKorisnika : disciplineKorisnika)
+						if (!(diKorisnika.getNaziv().equals(di.getNaziv())
+								&& diKorisnika.getElektrijadaId() == di.getElektrijadaId()))
+							disciplineCB.addItem(di.getNaziv());
+				}
 			}
 
 			elektrijadeCB.addActionListener(new ActionListener() {
@@ -157,9 +168,19 @@ public class DodavanjeDisciplineForm extends JFrame {
 					DisciplinaDAO discDAO = dao.getDisciplinaDAO();
 					ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
 							.getDisciplinePoElektrijadi(selektovanaElektrijada.getId());
-					
-					for (DisciplinaDTO di : discipline) {
-						disciplineCB.addItem(di.getNaziv());
+					ArrayList<DisciplinaDTO> disciplineKorisnika = (ArrayList<DisciplinaDTO>) discDAO
+							.getDiscipline(selektovanaElektrijada.getId(), nalogDTO.getNalogId());
+					if (disciplineKorisnika.isEmpty()) {
+						for (DisciplinaDTO di : discipline) {
+							disciplineCB.addItem(di.getNaziv());
+						}
+					}else{
+						for (DisciplinaDTO di : discipline) {
+							for (DisciplinaDTO diKorisnika : disciplineKorisnika)
+								if (!(diKorisnika.getNaziv().equals(di.getNaziv())
+										&& diKorisnika.getElektrijadaId() == di.getElektrijadaId()))
+									disciplineCB.addItem(di.getNaziv());
+						}
 					}
 				}
 			});
@@ -174,6 +195,5 @@ public class DodavanjeDisciplineForm extends JFrame {
 	public NalogDTO getNalogDTO() {
 		return nalogDTO;
 	}
-	
-	
+
 }

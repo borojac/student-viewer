@@ -361,17 +361,18 @@ public class ElektrijadaController {
 		if (!undoKomande.isEmpty()) {
 			String[] options = { "	Da	", "	Ne	" };
 			int result = JOptionPane.showOptionDialog(forma,
-					"Imate nesačuvanih izmjena. Da li ste sigurni da želite zatvoriti prozor? Izmjene neće biti sačuvane!",
+					"Imate nesačuvanih izmjena. Da li želite pri izlasku sačuvati izmjene?!",
 					"Potvrda zatvaranja", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
 					options[1]);
 			if (result == JOptionPane.YES_OPTION) {
+				sacuvajIzmjeneUBazu();
+				
+			}else{
 				if(!this.listaStudenata.isEmpty())
 					this.listaStudenata.clear();
 				forma.setVisible(false);
 				forma.dispose();
 				mainForm.setVisible(true);
-			} else {
-				this.sacuvajIzmjeneUBazu();
 			}
 		} else {
 			if(!this.listaStudenata.isEmpty())

@@ -8,9 +8,12 @@ import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.view.elektrijada.AdminBrisanjeDisciplineForm;
 import org.unibl.etf.ps.studentviewer.model.dao.DisciplinaDAO;
+import org.unibl.etf.ps.studentviewer.model.dao.DodatnaNastavaDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.ElektrijadaDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
+import org.unibl.etf.ps.studentviewer.model.dao.StudentDAO;
+import org.unibl.etf.ps.studentviewer.model.dao.ZahtjevDisciplinaDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
@@ -35,7 +38,14 @@ public class AdminBrisanjeDisciplineFormController {
 			ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO.getDisciplinePoElektrijadi(selektovanaElektrijada.getId());
 							
 			DisciplinaDTO disciplinaDTO = discipline.get(disciplineCB.getSelectedIndex());
-			
+			ZahtjevDisciplinaDAO zahtjevDAO = dao.getZahtjevDiciplinaDAO();
+			zahtjevDAO.deleteZahtjevPoDisciplini(disciplinaDTO);
+			DodatnaNastavaDAO dodatnaNastavaDao = dao.getDodatnaNastavaDAO();
+			dodatnaNastavaDao.obrisiDodatnuNastavuPoDisciplini(disciplinaDTO);
+			NalogDAO nalogDao = dao.getNalogDAO();
+			nalogDao.ukloniZaduzenjaPoDisciplini(disciplinaDTO);
+			StudentDAO studentDao = dao.getStudentDAO();
+			studentDao.ukloniUcescePoDisciplini(disciplinaDTO);
 
 			if (discDAO.deleteDisciplinu(disciplinaDTO)){
 				EventQueue.invokeLater(new Runnable() {

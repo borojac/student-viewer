@@ -84,7 +84,7 @@ public class BrisanjeDisciplineForm extends JFrame {
 
 		initElektrijadaComboBox();
 
-		JButton posaljiZahtjev = new JButton("Posalji zahtjev");
+		JButton posaljiZahtjev = new JButton("Obrisi");
 		posaljiZahtjev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				brisanjeDisciplineKontroler.ukloniDisciplinu(elektrijadeCB, disciplineCB);

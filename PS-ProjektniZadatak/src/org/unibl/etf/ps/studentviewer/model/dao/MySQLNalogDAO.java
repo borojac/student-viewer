@@ -421,4 +421,63 @@ public class MySQLNalogDAO implements NalogDAO {
 		return retVal;
 	}
 
+	@Override
+	public boolean ukloniZaduzenja(int id) {
+		boolean retVal = false;
+
+		String query = "DELETE FROM zaduzen_za WHERE  ElektrijadaId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+
+			ps.setInt(1, id);
+			
+
+			retVal = ps.executeUpdate() == 1;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, ps);
+		}
+
+		return retVal;
+		
+	}
+
+	@Override
+	public boolean ukloniZaduzenjaPoDisciplini(DisciplinaDTO disciplinaDTO) {
+		boolean retVal = false;
+
+		String query = "DELETE FROM zaduzen_za WHERE  Naziv=? AND ElektrijadaId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+
+			ps.setString(1, disciplinaDTO.getNaziv());
+			ps.setInt(2, disciplinaDTO.getElektrijadaId());
+			
+
+			retVal = ps.executeUpdate() == 1;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, ps);
+		}
+
+		return retVal;
+		
+	}
+
 }

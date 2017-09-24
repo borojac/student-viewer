@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 import org.unibl.etf.ps.studentviewer.persistence.dbutility.mysql.DBUtility;
 
@@ -146,6 +147,87 @@ public class MySQLDodatnaNastavaDAO implements DodatnaNastavaDAO {
 
 			ps = conn.prepareStatement(query);
 			ps.setInt(1, idDodatneNastave);
+
+			retVal = ps.executeUpdate() == 1;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+				retVal = true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DBUtility.close(conn, ps);
+
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public boolean obrisiDodatnuNastavuPoElektrijadi(int id) {
+		boolean retVal = false;
+
+		String query = "DELETE FROM dodatna_nastava WHERE ElektrijadaId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DBUtility.open();
+
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, id);
+
+			retVal = ps.executeUpdate() == 1;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+				retVal = true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DBUtility.close(conn, ps);
+
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public boolean obrisiDodatnuNastavuPoDisciplini(DisciplinaDTO disciplinaDTO) {
+		boolean retVal = false;
+
+		String query = "DELETE FROM dodatna_nastava WHERE Naziv=? AND ElektrijadaId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DBUtility.open();
+
+			ps = conn.prepareStatement(query);
+			ps.setString(1, disciplinaDTO.getNaziv());
+			ps.setInt(2, disciplinaDTO.getElektrijadaId());
 
 			retVal = ps.executeUpdate() == 1;
 

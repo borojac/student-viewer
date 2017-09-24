@@ -14,10 +14,12 @@ import org.unibl.etf.ps.studentviewer.model.dao.DisciplinaDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.ElektrijadaDAO;
 import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
+import org.unibl.etf.ps.studentviewer.model.dao.ZahtjevDisciplinaDAO;
 import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.ZahtjevDisciplinaDTO;
 
 public class BrisanjeDisciplineController {
 
@@ -44,10 +46,11 @@ public class BrisanjeDisciplineController {
 			
 			DisciplinaDTO disciplinaDTO = discipline.get(disciplineCB.getSelectedIndex());
 
-			MySQLDAOFactory nalogFactory = new MySQLDAOFactory();
-			NalogDAO nalogDAO = nalogFactory.getNalogDAO();
-
-			if (nalogDAO.removeDisciplina(disciplinaDTO, nalogDTO)) {
+			MySQLDAOFactory factory = new MySQLDAOFactory();
+			NalogDAO nalogDAO = factory.getNalogDAO();
+			ZahtjevDisciplinaDAO zahtjevDAO = factory.getZahtjevDiciplinaDAO();
+			
+			if (zahtjevDAO.deleteZahtjevPoNaloguIDisciplini(nalogDTO,disciplinaDTO) &&  nalogDAO.removeDisciplina(disciplinaDTO, nalogDTO)) {
 				JOptionPane.showMessageDialog(brisanjeDisciplineForm, "Disciplina uspjesna uklonjena.");
 				brisanjeDisciplineForm.getMainForm().resetElektrijadaComboBox();
 				brisanjeDisciplineForm.dispose();

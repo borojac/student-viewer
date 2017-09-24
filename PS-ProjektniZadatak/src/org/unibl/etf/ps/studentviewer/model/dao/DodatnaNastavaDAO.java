@@ -2,6 +2,7 @@ package org.unibl.etf.ps.studentviewer.model.dao;
 
 import java.util.List;
 
+import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 
 public interface DodatnaNastavaDAO {
@@ -13,4 +14,8 @@ public interface DodatnaNastavaDAO {
 	public boolean dodajDodatnuNastavu(DodatnaNastavaDTO dodatnaNastava);
 
 	public boolean obrisiDodatnuNastavu(int idDodatneNastave);
+
+	public boolean obrisiDodatnuNastavuPoElektrijadi(int id);
+
+	public boolean obrisiDodatnuNastavuPoDisciplini(DisciplinaDTO disciplinaDTO);
 }

@@ -3,6 +3,7 @@ package org.unibl.etf.ps.studentviewer.model.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
@@ -51,4 +52,8 @@ public abstract class StudentDAO {
 	public abstract boolean hasGrade(int studentId, int predmetId);
 	public abstract boolean gradeStudent(int studentId, int predmetId, int grade);
 	public abstract boolean recallGrade(int studentId, int predmetId);
+
+	public abstract boolean ukloniUcesce(int id) ;
+
+	public abstract boolean ukloniUcescePoDisciplini(DisciplinaDTO disciplinaDTO);
 }

@@ -29,7 +29,7 @@ public class DodavanjeDisciplineController {
 
 	public void slanjeZahtjeva(JComboBox elektrijadeCB, JComboBox disciplineCB) {
 		if (disciplineCB.getItemCount() <= 0) {
-			JOptionPane.showMessageDialog(dodavanjeDisciplineForm, "Unesite naziv discipline.");
+			JOptionPane.showMessageDialog(dodavanjeDisciplineForm, "Selektujte disciplinu.");
 		} else {
 			MySQLDAOFactory dao = new MySQLDAOFactory();
 			ElektrijadaDAO elektrijadaDAO = dao.getElektrijadaDAO();
@@ -43,14 +43,15 @@ public class DodavanjeDisciplineController {
 			NalogDTO nalogDTO = dodavanjeDisciplineForm.getNalogDTO();
 
 			ZahtjevDisciplinaDTO zahtjevDTO = new ZahtjevDisciplinaDTO(nalogDTO.getNalogId(), elektrijadaDTO.getId(), disciplinaDTO.getNaziv());
-			System.out.println(zahtjevDTO);
+			
 			MySQLDAOFactory zahtjevFactory = new MySQLDAOFactory();
 			ZahtjevDisciplinaDAO zahtjevDAO = zahtjevFactory.getZahtjevDiciplinaDAO();
 
 			if (zahtjevDAO.addZahtjev(zahtjevDTO)) {
 				JOptionPane.showMessageDialog(dodavanjeDisciplineForm, "Zahtjev je uspjesno poslan.");
-				dodavanjeDisciplineForm.dispose();
 				AccountFormController.resetDodavanjeDisciplineFormOpened();
+				dodavanjeDisciplineForm.dispose();
+				
 			} else {
 				JOptionPane.showMessageDialog(dodavanjeDisciplineForm, "Zahtjev nije uspjesno poslan.");
 			}

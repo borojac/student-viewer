@@ -19,4 +19,6 @@ public interface NalogDAO {
 	public boolean removePredmete(PredmetDTO predmetDTO);
 	public ArrayList<PredmetDTO> getPredmeteNaNalogu(int nalogId);
 	public boolean removeDisciplina(DisciplinaDTO disciplina, NalogDTO nalog);
+	public boolean ukloniZaduzenja(int id);
+	public boolean ukloniZaduzenjaPoDisciplini(DisciplinaDTO disciplinaDTO);
 }

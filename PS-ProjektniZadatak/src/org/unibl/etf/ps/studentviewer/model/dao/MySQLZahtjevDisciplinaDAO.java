@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
+import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ZahtjevDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ZahtjevDisciplinaDTO;
 import org.unibl.etf.ps.studentviewer.persistence.dbutility.mysql.DBUtility;
@@ -159,6 +161,90 @@ public class MySQLZahtjevDisciplinaDAO implements ZahtjevDisciplinaDAO {
 			ps.setInt(1, zahtjevDTO.getNalogId());
 			ps.setInt(2, zahtjevDTO.getElektrijadaId());
 			ps.setString(3, zahtjevDTO.getNaziv());
+			
+			retVal = ps.executeUpdate() == 1;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, ps);
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public boolean deleteZahtjevPoElektrijadi(int id) {
+		boolean retVal = false;
+
+		String query = "DELETE FROM zahtjev_disciplina WHERE  ElektrijadaId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+
+			ps.setInt(1, id);
+			
+			retVal = ps.executeUpdate() == 1;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, ps);
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public boolean deleteZahtjevPoDisciplini(DisciplinaDTO disciplinaDTO) {
+		boolean retVal = false;
+
+		String query = "DELETE FROM zahtjev_disciplina WHERE Naziv=? AND ElektrijadaId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+
+			ps.setString(1, disciplinaDTO.getNaziv());
+			ps.setInt(2, disciplinaDTO.getElektrijadaId());
+			
+			retVal = ps.executeUpdate() == 1;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, ps);
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public boolean deleteZahtjevPoNaloguIDisciplini(NalogDTO nalogDTO, DisciplinaDTO disciplinaDTO) {
+		boolean retVal = false;
+
+		String query = "DELETE FROM zahtjev_disciplina WHERE NalogId=? AND  Naziv=? AND ElektrijadaId=?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			
+			ps.setInt(1, nalogDTO.getNalogId());
+			ps.setString(2, disciplinaDTO.getNaziv());
+			ps.setInt(3, disciplinaDTO.getElektrijadaId());
 			
 			retVal = ps.executeUpdate() == 1;
 

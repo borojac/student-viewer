@@ -54,7 +54,6 @@ public class DodavanjeDodatneNastaveController {
 				tableNastavneTeme.setModel(dodatnaNastavaDataModel);
 				tableNastavneTeme.repaint();
 				kontroler.dodavanjeNastave(nastava);
-				nastavaForm.setVisible(false);
 				nastavaForm.dispose();
 				kontroler.getForma().setEnabled(true);
 			}
