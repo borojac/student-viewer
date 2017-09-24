@@ -397,7 +397,7 @@ public class ElektrijadaController {
 		});
 	}
 
-	public void exportPdf(Logger logger) throws DocumentException, IOException {
+	public void exportPdf() throws DocumentException, IOException {
 		JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
 		int retVal = fileChooser.showSaveDialog(null);
 		if (retVal != JFileChooser.APPROVE_OPTION)

@@ -287,7 +287,7 @@ public class ElektrijadaForm extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
-					elektrijadaController.exportPdf(logger);
+					elektrijadaController.exportPdf();
 				} catch (Exception e1) {
 					EventQueue.invokeLater(new Runnable() {
 
