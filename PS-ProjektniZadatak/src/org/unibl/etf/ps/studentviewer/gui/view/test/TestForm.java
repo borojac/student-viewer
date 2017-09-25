@@ -74,6 +74,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.Window.Type;
 import java.awt.Dialog.ModalExclusionType;
+import javax.swing.ScrollPaneConstants;
 
 public class TestForm extends JFrame {
 
@@ -102,9 +103,11 @@ public class TestForm extends JFrame {
 	private Logger logger = Logger.getLogger(TestForm.class);
 	private JTextArea statistikaTextArea;
 	private JComboBox procenatComboBox;
+	private JScrollPane napomenaScrollPane;
 
 
 	public TestForm(TestDTO testParam, MainForm mainForm) {
+		setAlwaysOnTop(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setType(Type.UTILITY);
@@ -245,6 +248,7 @@ public class TestForm extends JFrame {
 		nazivTextField.setColumns(10);
 		
 		studentiScrollPane = new JScrollPane();
+		studentiScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		studentiScrollPane.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -289,18 +293,29 @@ public class TestForm extends JFrame {
 			
 			@Override
 			public void tableChanged(TableModelEvent e) {
-
 				refreshStatistics();
-				
 			}
 		});
 
 		studentiTable.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				testController.undoRedoAction((TestForm) testForm, e);
-				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-					refreshStatistics();
+				if (e.isControlDown() && (e.getKeyCode() == KeyEvent.VK_Z || e.getKeyCode() == KeyEvent.VK_Y))
+					testController.undoRedoAction((TestForm) testForm, e);
+				else if (!e.isControlDown() && e.getKeyCode() == KeyEvent.VK_DELETE) {
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							if (studentiTable.getSelectedRowCount() > 0) {
+								List<StudentNaTestuDTO> forDelete = new ArrayList<>();
+								StudentTableModel model = (StudentTableModel) studentiTable.getModel();
+								for (int index : studentiTable.getSelectedRows())
+									forDelete.add(model.getRowAt(index));
+								testController.removeStudents(model, forDelete);
+							}
+						}
+					}).start();
+				}
 			}
 		});
 
@@ -329,10 +344,27 @@ public class TestForm extends JFrame {
 				if (e.isControlDown() && 
 						(e.getKeyCode() == KeyEvent.VK_Z || e.getKeyCode() == KeyEvent.VK_Y))
 					testController.undoRedoAction((TestForm) testForm, e);
+				else if (!e.isControlDown() && e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					EventQueue.invokeLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							searchTextField.setText("");
+						}
+					});
+					
+					((StudentTableModel) studentiTable.getModel()).setData(test.getStudenti());
+				}
 			}
 		});
 
 		btnPretrazi = new JButton("");
+		btnPretrazi.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				testController.undoRedoAction((TestForm) testForm, e);
+			}
+		});
 		btnPretrazi.setIcon(new ImageIcon("img/Search_14.png"));
 		btnPretrazi.setBackground(new Color(0, 0, 139));
 		btnPretrazi.addActionListener(new ActionListener() {
@@ -409,6 +441,12 @@ public class TestForm extends JFrame {
 
 	private void initBottomButtons() {
 		btnSacuvaj = new JButton("");
+		btnSacuvaj.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				testController.undoRedoAction(testForm, e);
+			}
+		});
 		btnSacuvaj.setIcon(new ImageIcon("img/Save_14.png"));
 		btnSacuvaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -425,6 +463,12 @@ public class TestForm extends JFrame {
 
 		
 		btnPrint = new JButton("");
+		btnPrint.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				testController.undoRedoAction(testForm, e);
+			}
+		});
 		btnPrint.setIcon(new ImageIcon("img/Print_14.png"));
 		btnPrint.setBackground(new Color(0, 0, 139));
 		btnPrint.addActionListener(new ActionListener() {
@@ -460,6 +504,12 @@ public class TestForm extends JFrame {
 		contentPane.add(btnPrint);
 
 		btnEksport = new JButton("");
+		btnEksport.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				testController.undoRedoAction(testForm, e);
+			}
+		});
 		btnEksport.setIcon(new ImageIcon("img/PDF_14.png"));
 		btnEksport.setBackground(new Color(0, 0, 139));
 		btnEksport.addActionListener(new ActionListener() {
@@ -493,6 +543,12 @@ public class TestForm extends JFrame {
 		contentPane.add(btnEksport);
 
 		btnDodaj = new JButton("");
+		btnDodaj.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				testController.undoRedoAction(testForm, e);
+			}
+		});
 		btnDodaj.setIcon(new ImageIcon("img/Add_14.png"));
 		btnDodaj.setBackground(new Color(0, 0, 139));
 		btnDodaj.addActionListener(new ActionListener() {
@@ -504,25 +560,43 @@ public class TestForm extends JFrame {
 		contentPane.add(btnDodaj);
 
 		btnUkloni = new JButton("");
+		btnUkloni.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				testController.undoRedoAction(testForm, e);
+			}
+		});
 		btnUkloni.setIcon(new ImageIcon("img/Delete_14.png"));
 		btnUkloni.setBackground(new Color(0, 0, 139));
 		btnUkloni.setEnabled(false);
 		btnUkloni.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (studentiTable.getSelectedRows().length > 0) {
-					List<StudentNaTestuDTO> forRemoving = new ArrayList<>();
-					StudentTableModel model = (StudentTableModel) studentiTable.getModel();
-					for (int index : studentiTable.getSelectedRows()) {
-						forRemoving.add(model.getRowAt(index));
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						if (studentiTable.getSelectedRowCount() > 0) {
+							List<StudentNaTestuDTO> forRemoving = new ArrayList<>();
+							StudentTableModel model = (StudentTableModel) studentiTable.getModel();
+							for (int index : studentiTable.getSelectedRows()) {
+								forRemoving.add(model.getRowAt(index));
+							}
+							testController.removeStudents(model, forRemoving);
+						}
 					}
-					testController.removeStudents(model, forRemoving);
-				}
+				}).start();
 			}
 		});
 		btnUkloni.setBounds(330, 627, 70, 23);
 		contentPane.add(btnUkloni);
 		
 		btnImport = new JButton("");
+		btnImport.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				testController.undoRedoAction(testForm, e);
+			}
+		});
 		btnImport.setIcon(new ImageIcon("img/Import_14.png"));
 		btnImport.setBackground(new Color(0, 0, 139));
 		btnImport.addActionListener(new ActionListener() {
@@ -657,17 +731,17 @@ public class TestForm extends JFrame {
 		});
 		procenatComboBox.setBounds(475, 12, 49, 20);
 		contentPane.add(procenatComboBox);
+				
+				napomenaScrollPane = new JScrollPane();
+				napomenaScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+				napomenaScrollPane.setBounds(121, 103, 280, 98);
+				contentPane.add(napomenaScrollPane);
 		
 				napomenaTextArea = new JTextArea();
-				napomenaTextArea.setBounds(121, 103, 280, 98);
-				contentPane.add(napomenaTextArea);
-				
-				JLabel lblPretraga = new JLabel("Pretraga:");
-				lblPretraga.setHorizontalAlignment(SwingConstants.RIGHT);
-				lblPretraga.setForeground(Color.WHITE);
-				lblPretraga.setFont(new Font("Tahoma", Font.PLAIN, 13));
-				lblPretraga.setBounds(10, 389, 70, 20);
-				contentPane.add(lblPretraga);
+				napomenaTextArea.setColumns(10);
+				napomenaTextArea.setLineWrap(true);
+				napomenaTextArea.setWrapStyleWord(true);
+				napomenaScrollPane.setViewportView(napomenaTextArea);
 				napomenaTextArea.addKeyListener(new KeyAdapter() {
 					@Override
 					public void keyReleased(KeyEvent e) {
@@ -696,6 +770,13 @@ public class TestForm extends JFrame {
 						
 					}
 				});
+				
+				JLabel lblPretraga = new JLabel("Pretraga:");
+				lblPretraga.setHorizontalAlignment(SwingConstants.RIGHT);
+				lblPretraga.setForeground(Color.WHITE);
+				lblPretraga.setFont(new Font("Tahoma", Font.PLAIN, 13));
+				lblPretraga.setBounds(10, 389, 70, 20);
+				contentPane.add(lblPretraga);
 	}
 	
 	public MainForm getMainForm() {

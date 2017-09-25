@@ -233,10 +233,14 @@ public class MainFormController {
 	}
 
 	public void initMouseHoverAction(MouseEvent event, JTable testoviTable) {
-		if (testoviTable.contains(event.getPoint()) && testoviTable.getModel().getRowCount() > 0) {
+		if (testoviTable.contains(event.getPoint()) 
+				&& testoviTable.getModel().getRowCount() >= testoviTable.rowAtPoint(event.getPoint())
+				&& testoviTable.columnAtPoint(event.getPoint()) == 2) {
+			
 			int row = testoviTable.rowAtPoint(event.getPoint());
 			TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
 			testoviTable.setToolTipText(model.getRowAt(row).getNapomena());
+			
 		}
 	}
 	// Stankovic begin//
