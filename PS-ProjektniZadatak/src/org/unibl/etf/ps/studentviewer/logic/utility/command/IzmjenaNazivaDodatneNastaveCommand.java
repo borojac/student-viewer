@@ -9,19 +9,19 @@ public class IzmjenaNazivaDodatneNastaveCommand extends IzmjenaDodatneNastaveCom
 
 	public IzmjenaNazivaDodatneNastaveCommand(DodatnaNastavaDTO dodatnaNastava, String noviNaziv) {
 		this.dodatnaNastava = dodatnaNastava;
-		stariNaziv = dodatnaNastava.getNaziv();
+		stariNaziv = dodatnaNastava.getNazivTeme();
 		this.noviNaziv = noviNaziv;
-		dodatnaNastava.setNaziv(noviNaziv);
+		dodatnaNastava.setNazivTeme(noviNaziv);
 	}
 
 	@Override
 	public void execute() {
-		dodatnaNastava.setNaziv(noviNaziv);
+		dodatnaNastava.setNazivTeme(noviNaziv);
 	}
 
 	@Override
 	public void unExecute() {
-		dodatnaNastava.setNaziv(stariNaziv);
+		dodatnaNastava.setNazivTeme(stariNaziv);
 	}
 
 	@Override
