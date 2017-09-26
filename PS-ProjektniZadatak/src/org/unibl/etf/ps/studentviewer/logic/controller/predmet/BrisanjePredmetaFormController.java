@@ -35,6 +35,7 @@ public class BrisanjePredmetaFormController {
 			if(zahtjevDAO.deleteZahtjeve(predmetDTO, nalogDTO) && nalogDAO.removePredmet(predmetDTO, nalogDTO)) {
 				JOptionPane.showMessageDialog(brisanjePredmetaForm, "Predmet uspjesno uklonjen.", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
 				brisanjePredmetaForm.getMainForm().resetPredmetiComboBox();
+				brisanjePredmetaForm.getMainForm().getMainFormController().postaviMainForm(brisanjePredmetaForm.getMainForm().getSelectedPredmet(), predmetDTO);
 				brisanjePredmetaForm.dispose();
 				AccountFormController.resetBrisanjePredmetaFormOpened();
 			} else {

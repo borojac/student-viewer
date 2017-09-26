@@ -717,10 +717,9 @@ public class MainForm extends JFrame {
 		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
 
 		predmetiList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
-
-		for (int i = 0; i < predmetiList.size(); i++) {
-			predmetiCB.addItem(
-					(predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
+		
+		for(int i = 0; i < predmetiList.size(); i++) {
+			predmetiCB.addItem((predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
 		}
 		initComboBoxListener();
 	}
