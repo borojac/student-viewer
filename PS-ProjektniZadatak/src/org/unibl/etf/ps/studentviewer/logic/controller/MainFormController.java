@@ -194,7 +194,6 @@ public class MainFormController {
 
 	public void initTestoviTable() {
 		PredmetDTO activePredmet = mainForm.getSelectedPredmet();
-		System.out.println(activePredmet);
 		if (activePredmet != null) {
 			DAOFactory testFactory = new MySQLDAOFactory();
 			TestDAO testDAO = testFactory.getTestDAO();
