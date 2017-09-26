@@ -13,6 +13,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -117,7 +118,16 @@ public class ElektrijadaForm extends JFrame {
 		this.disciplinaDTO = disciplinaDTO;
 		this.nalogDTO = nalogDTO;
 		this.mainForm = mainForm;
-		setTitle("Disciplina "+disciplinaDTO.getNaziv());
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat newDf = new SimpleDateFormat("dd.MM.yyyy");
+		java.util.Date datum = null;
+		try {
+			datum = df.parse(elektrijadaDTO.getDatum().toString());
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		setTitle("Elektrijada "+elektrijadaDTO.getLokacija()+" - "+newDf.format(datum)+", disciplina "+disciplinaDTO.getNaziv());
 		try {
 			File logFolder = new File("./log");
 			if (!logFolder.exists())

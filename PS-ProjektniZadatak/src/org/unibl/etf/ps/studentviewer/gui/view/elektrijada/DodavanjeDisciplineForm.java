@@ -85,7 +85,7 @@ public class DodavanjeDisciplineForm extends JFrame {
 
 		initElektrijadaComboBox();
 
-		JButton posaljiZahtjev = new JButton("Posalji zahtjev");
+		JButton posaljiZahtjev = new JButton("Pošalji zahtjev");
 		posaljiZahtjev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dodavanjeDisciplineKontroler.slanjeZahtjeva(elektrijadeCB, disciplineCB);

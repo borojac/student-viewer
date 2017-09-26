@@ -51,12 +51,12 @@ public class BrisanjeDisciplineController {
 			ZahtjevDisciplinaDAO zahtjevDAO = factory.getZahtjevDiciplinaDAO();
 			
 			if (zahtjevDAO.deleteZahtjevPoNaloguIDisciplini(nalogDTO,disciplinaDTO) &&  nalogDAO.removeDisciplina(disciplinaDTO, nalogDTO)) {
-				JOptionPane.showMessageDialog(brisanjeDisciplineForm, "Disciplina uspjesna uklonjena.");
+				JOptionPane.showMessageDialog(brisanjeDisciplineForm, "Disciplina uspješno uklonjena.");
 				brisanjeDisciplineForm.getMainForm().resetElektrijadaComboBox();
 				brisanjeDisciplineForm.dispose();
 				AccountFormController.resetBrisanjeDisciplineFormOpened();
 			} else {
-				JOptionPane.showMessageDialog(brisanjeDisciplineForm, "Disciplina nije uspjesna uklonjena.");
+				JOptionPane.showMessageDialog(brisanjeDisciplineForm, "Disciplina nije uspješno uklonjena.");
 			}
 
 		}

@@ -82,7 +82,7 @@ public class AdminElektrijadaForm extends JFrame {
 			}
 		});
 		setBounds(100, 10, 650, 640);
-		setTitle("Zahtjevi-");
+		setTitle("Elektrijada");
 		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 0, 139));
@@ -217,7 +217,7 @@ public class AdminElektrijadaForm extends JFrame {
 		dodajDisciplinuBtn.setBounds(240, 449, 180, 40);
 		contentPane.add(dodajDisciplinuBtn);
 		
-		obrisiDisciplinuBtn = new JButton("Obri\u0161 disciplinu");
+		obrisiDisciplinuBtn = new JButton("Obriši disciplinu");
 		obrisiDisciplinuBtn.setBounds(240, 500, 180, 40);
 		contentPane.add(obrisiDisciplinuBtn);
 		  

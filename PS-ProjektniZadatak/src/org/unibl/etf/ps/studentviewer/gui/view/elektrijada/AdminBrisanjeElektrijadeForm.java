@@ -76,7 +76,7 @@ public class AdminBrisanjeElektrijadeForm extends JFrame {
 
 		initElektrijadaComboBox();
 
-		JButton obrisiBtn = new JButton("Obrisi");
+		JButton obrisiBtn = new JButton("Obriši");
 		obrisiBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				brisanjeElektrijadeKontroler.obrisiElektrijadu(elektrijadeCB);

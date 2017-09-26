@@ -46,7 +46,7 @@ public class AdminAzuriranjeElektrijadeForm extends JFrame {
 	 */
 	public AdminAzuriranjeElektrijadeForm() {
 		adminAzuriranjeElektrijadeKontroler = new AdminAzuriranjeElektrijadeController(this);
-		setTitle("Azuriranje Elektrijade");
+		setTitle("Ažuriranje Elektrijade");
 
 		setBounds(100, 100, 450, 270);
 		new JPanel();

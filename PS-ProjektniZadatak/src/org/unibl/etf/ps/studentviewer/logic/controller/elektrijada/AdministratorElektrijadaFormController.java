@@ -37,7 +37,7 @@ public class AdministratorElektrijadaFormController {
 		DisciplinaDTO disciplinaDTO = new DisciplinaDTO(zahtjevDTO.getNaziv(), zahtjevDTO.getElektrijadaId());
 
 		if (zahtjevDAO.updateZahtjev(zahtjevDTO) && nalogDAO.addDisciplinuNaNalog(disciplinaDTO, nalogDTO)) {
-			JOptionPane.showMessageDialog(adminElektrijadaForm, "Zahtjev odobren.", "Obavjestenje",
+			JOptionPane.showMessageDialog(adminElektrijadaForm, "Zahtjev odobren.", "Obavještenje",
 					JOptionPane.INFORMATION_MESSAGE);
 			adminElektrijadaForm.removeSelectedRow();
 		}
@@ -62,7 +62,7 @@ public class AdministratorElektrijadaFormController {
 		ZahtjevDisciplinaDAO zahtjevDAO = zahtjevFactory.getZahtjevDiciplinaDAO();
 
 		if (zahtjevDAO.deleteZahtjev(zahtjevDTO)) {
-			JOptionPane.showMessageDialog(adminElektrijadaForm, "Zahtjev odbijen.", "Obavjestenje",
+			JOptionPane.showMessageDialog(adminElektrijadaForm, "Zahtjev odbijen.", "Obavještenje",
 					JOptionPane.INFORMATION_MESSAGE);
 			adminElektrijadaForm.removeSelectedRow();
 		}

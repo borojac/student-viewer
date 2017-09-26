@@ -59,7 +59,7 @@ public class AdminDodavanjeElektrijadeController {
 
 					@Override
 					public void run() {
-						JOptionPane.showMessageDialog(adminDodavanjeElektrijadeForm, "Greska u formi datuma.");
+						JOptionPane.showMessageDialog(adminDodavanjeElektrijadeForm, "Greška u formi datuma.");
 					}
 				});
 				
@@ -76,7 +76,7 @@ public class AdminDodavanjeElektrijadeController {
 
 						@Override
 						public void run() {
-							JOptionPane.showMessageDialog(adminDodavanjeElektrijadeForm, "Uspjesno dodana Elektrijada.");
+							JOptionPane.showMessageDialog(adminDodavanjeElektrijadeForm, "Uspješno dodana Elektrijada.");
 						}
 					});
 					adminDodavanjeElektrijadeForm.dispose();
@@ -94,7 +94,7 @@ public class AdminDodavanjeElektrijadeController {
 
 					@Override
 					public void run() {
-						JOptionPane.showMessageDialog(adminDodavanjeElektrijadeForm, "Greska u formi datuma.");
+						JOptionPane.showMessageDialog(adminDodavanjeElektrijadeForm, "Greška u formi datuma.");
 					}
 				});
 				

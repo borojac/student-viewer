@@ -47,7 +47,7 @@ public class AdminBrisanjeElektrijadeController {
 						@Override
 						public void run() {
 							JOptionPane.showMessageDialog(adminBrisanjeElektrijadeForm,
-									"Uspjesno obrisana Elektrijada.");
+									"Uspješno obrisana Elektrijada.");
 						}
 					});
 					adminBrisanjeElektrijadeForm.dispose();
@@ -57,7 +57,7 @@ public class AdminBrisanjeElektrijadeController {
 						@Override
 						public void run() {
 							JOptionPane.showMessageDialog(adminBrisanjeElektrijadeForm,
-									"Neuspjesno obrisana Elektrijada.");
+									"Neuspješno obrisana Elektrijada.");
 						}
 					});
 				}
@@ -84,7 +84,7 @@ public class AdminBrisanjeElektrijadeController {
 						@Override
 						public void run() {
 							JOptionPane.showMessageDialog(adminBrisanjeElektrijadeForm,
-									"Uspjesno obrisana Elektrijada.");
+									"Uspješno obrisana Elektrijada.");
 						}
 					});
 					adminBrisanjeElektrijadeForm.dispose();
@@ -94,7 +94,7 @@ public class AdminBrisanjeElektrijadeController {
 						@Override
 						public void run() {
 							JOptionPane.showMessageDialog(adminBrisanjeElektrijadeForm,
-									"Neuspjesno obrisana Elektrijada.");
+									"Neuspješno obrisana Elektrijada.");
 						}
 					});
 				}

@@ -53,7 +53,7 @@ public class AdminAzuriranjeElektrijadeController {
 
 					@Override
 					public void run() {
-						JOptionPane.showMessageDialog(adminAzuriranjeElektrijadeForm, "Greska u formi datuma.");
+						JOptionPane.showMessageDialog(adminAzuriranjeElektrijadeForm, "Greška u formi datuma.");
 					}
 				});
 
@@ -75,7 +75,7 @@ public class AdminAzuriranjeElektrijadeController {
 						@Override
 						public void run() {
 							JOptionPane.showMessageDialog(adminAzuriranjeElektrijadeForm,
-									"Uspjesno azurirana Elektrijada.");
+									"Uspješno ažurirana Elektrijada.");
 						}
 					});
 					adminAzuriranjeElektrijadeForm.dispose();
@@ -85,7 +85,7 @@ public class AdminAzuriranjeElektrijadeController {
 						@Override
 						public void run() {
 							JOptionPane.showMessageDialog(adminAzuriranjeElektrijadeForm,
-									"Nije moguce azurirati Elektrijadu.");
+									"Nije moguce ažurirati Elektrijadu.");
 						}
 					});
 				}
@@ -94,7 +94,7 @@ public class AdminAzuriranjeElektrijadeController {
 
 					@Override
 					public void run() {
-						JOptionPane.showMessageDialog(adminAzuriranjeElektrijadeForm, "Greska u formi datuma.");
+						JOptionPane.showMessageDialog(adminAzuriranjeElektrijadeForm, "Grešska u formi datuma.");
 					}
 				});
 

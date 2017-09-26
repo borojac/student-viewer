@@ -41,7 +41,7 @@ public class AdminDodavanjeDisciplineController {
 
 						@Override
 						public void run() {
-							JOptionPane.showMessageDialog(adminDodavanjeDisciplineForm, "Uspjesno dodana disciplina.");
+							JOptionPane.showMessageDialog(adminDodavanjeDisciplineForm, "Uspješno dodana disciplina.");
 						}
 					});
 					adminDodavanjeDisciplineForm.dispose();
