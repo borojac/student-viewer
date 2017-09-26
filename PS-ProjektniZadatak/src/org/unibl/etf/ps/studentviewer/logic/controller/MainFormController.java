@@ -194,14 +194,16 @@ public class MainFormController {
 
 	public void initTestoviTable() {
 		PredmetDTO activePredmet = mainForm.getSelectedPredmet();
+		System.out.println(activePredmet);
 		if (activePredmet != null) {
 			DAOFactory testFactory = new MySQLDAOFactory();
 			TestDAO testDAO = testFactory.getTestDAO();
 			List<TestDTO> data = testDAO.getAllTests(activePredmet.getPredmetId());
 
 			mainForm.getTestoviTable().setModel(new TestoviTableModel(data));
+		} else {
+			mainForm.getTestoviTable().setModel(new TestoviTableModel());
 		}
-
 	}
 
 	public void deleteTestAction() {
@@ -286,6 +288,13 @@ public class MainFormController {
 	}
 
 	public void postaviMainForm(PredmetDTO activePredmet, PredmetDTO lastPredmet) {
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				initTestoviTable();
+			}
+		}).start();
 		if (activePredmet != null) {
 			UndoRedoData.saveState(mainForm.getNalogDTO(), lastPredmet);
 
@@ -299,15 +308,6 @@ public class MainFormController {
 			mainForm.getMainTable().setStudents(temp);
 			mainForm.getMainTable().changeView();
 			showForm = new ShowForm(this);
-		}
-		if (activePredmet != null) {
-			new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					initTestoviTable();
-				}
-			}).start();
 		}
 	}
 
