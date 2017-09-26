@@ -58,7 +58,7 @@ public class DodavanjeDodatneNastaveController {
 				kontroler.getForma().setEnabled(true);
 			}
 		} else {
-			JOptionPane.showMessageDialog(nastavaForm, "Greska u formi datuma.");
+			JOptionPane.showMessageDialog(nastavaForm, "Greška u formi datuma.");
 		}
 
 	}

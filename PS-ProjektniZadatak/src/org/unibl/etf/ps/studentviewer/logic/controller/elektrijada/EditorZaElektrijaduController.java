@@ -62,7 +62,7 @@ public class EditorZaElektrijaduController {
 
 						elektrijadaController.izmjenaDatumaDodatneNastave(dodatnaNastava, startDate);
 					} else
-						JOptionPane.showMessageDialog(editorForma, "Greska u formi datuma.");
+						JOptionPane.showMessageDialog(editorForma, "Greška u formi datuma.");
 				} else if (column == 2) {
 
 					elektrijadaController.izmjenaNapomeneDodatneNastave(dodatnaNastava, procitano);

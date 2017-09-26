@@ -52,7 +52,7 @@ public class AdminBrisanjeDisciplineFormController {
 
 					@Override
 					public void run() {
-						JOptionPane.showMessageDialog(adminBrisanjeDisciplineForm, "Uspjesno obrisana disciplina.");
+						JOptionPane.showMessageDialog(adminBrisanjeDisciplineForm, "Uspješno obrisana disciplina.");
 					}
 				});
 				adminBrisanjeDisciplineForm.dispose();

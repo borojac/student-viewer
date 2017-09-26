@@ -275,7 +275,7 @@ public class ElektrijadaController {
 	public void brisanjeNastaveControl(JTable tableNastavneTeme, DodatnaNastavaDataTableModel dodatnaNastavaDataModel) {
 		int row = tableNastavneTeme.getSelectedRow();
 		if (row == -1) {
-			JOptionPane.showMessageDialog(forma, "Nije selektovana ni jedna dodatna nastava.");
+			JOptionPane.showMessageDialog(forma, "Nije selektovana niti jedna dodatna nastava.");
 		} else {
 			this.brisanjeNastave(listaDodatnihNastava.get(row));
 			listaDodatnihNastava.remove(row);
@@ -290,7 +290,7 @@ public class ElektrijadaController {
 			StudentiZaElektrijaduTableModel studentiZaElektrijaduDataModel) {
 		int[] redovi = tableStudenti.getSelectedRows();
 		if (redovi.length == 0) {
-			JOptionPane.showMessageDialog(forma, "Nije selektovan ni jedan student.");
+			JOptionPane.showMessageDialog(forma, "Nije selektovan niti jedan student.");
 		} else {
 			ArrayList<StudentZaElektrijaduDTO> listaUndoRedo = new ArrayList<>();
 			for (int i : redovi) {

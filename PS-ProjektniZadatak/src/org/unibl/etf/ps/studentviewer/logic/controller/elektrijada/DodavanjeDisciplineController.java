@@ -48,12 +48,12 @@ public class DodavanjeDisciplineController {
 			ZahtjevDisciplinaDAO zahtjevDAO = zahtjevFactory.getZahtjevDiciplinaDAO();
 
 			if (zahtjevDAO.addZahtjev(zahtjevDTO)) {
-				JOptionPane.showMessageDialog(dodavanjeDisciplineForm, "Zahtjev je uspjesno poslan.");
+				JOptionPane.showMessageDialog(dodavanjeDisciplineForm, "Zahtjev je uspješno poslan.");
 				AccountFormController.resetDodavanjeDisciplineFormOpened();
 				dodavanjeDisciplineForm.dispose();
 				
 			} else {
-				JOptionPane.showMessageDialog(dodavanjeDisciplineForm, "Zahtjev nije uspjesno poslan.");
+				JOptionPane.showMessageDialog(dodavanjeDisciplineForm, "Zahtjev nije uspješno poslan.");
 			}
 
 		}
