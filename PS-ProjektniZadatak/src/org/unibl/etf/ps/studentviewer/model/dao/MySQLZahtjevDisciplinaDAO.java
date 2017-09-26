@@ -28,7 +28,7 @@ public class MySQLZahtjevDisciplinaDAO implements ZahtjevDisciplinaDAO {
 			conn = DBUtility.open();
 			conn.setAutoCommit(false);
 			ps = conn.prepareStatement(query);
-			System.out.println(zahtjevDTO);
+			
 
 			ps.setInt(1, zahtjevDTO.getNalogId());
 			ps.setInt(2, zahtjevDTO.getElektrijadaId());

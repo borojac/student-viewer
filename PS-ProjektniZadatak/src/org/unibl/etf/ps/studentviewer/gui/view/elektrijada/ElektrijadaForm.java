@@ -50,6 +50,8 @@ import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
 import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
+import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
 
 public class ElektrijadaForm extends JFrame {
 
@@ -125,7 +127,7 @@ public class ElektrijadaForm extends JFrame {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		setBounds(100, 100, 832, 553);
+		setBounds(100, 100, 864, 549);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setBackground(new Color(0, 0, 139));
@@ -140,7 +142,7 @@ public class ElektrijadaForm extends JFrame {
 		scrollPaneStudenti.setBorder(UIManager.getBorder("Button.border"));
 		scrollPaneStudenti.setBounds(10, 219, 558, 382);
 
-		JLabel lblListaNastavnihTema = new JLabel("Dodatna nastava");
+		JLabel lblListaNastavnihTema = new JLabel("Dodatne nastave");
 		lblListaNastavnihTema.setForeground(Color.WHITE);
 		lblListaNastavnihTema.setFont(new Font("Century Gothic", Font.BOLD, 15));
 
@@ -235,7 +237,7 @@ public class ElektrijadaForm extends JFrame {
 			}
 		});
 
-		JButton btnBrisanjeListe = new JButton("Brisanje liste studenata");
+		JButton btnBrisanjeListe = new JButton("Brisanje liste ");
 		btnBrisanjeListe.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnBrisanjeListe.setToolTipText("Brisanje liste studenata");
 		btnBrisanjeListe.addActionListener(new ActionListener() {
@@ -244,7 +246,7 @@ public class ElektrijadaForm extends JFrame {
 			}
 		});
 
-		JButton btnBrisanjeNastavneTeme = new JButton("Brisanje dodatne nastave");
+		JButton btnBrisanjeNastavneTeme = new JButton("Brisanje");
 		btnBrisanjeNastavneTeme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				elektrijadaController.brisanjeNastaveControl(tableDodatneNastave, dodatnaNastavaDataModel);
@@ -253,7 +255,7 @@ public class ElektrijadaForm extends JFrame {
 		btnBrisanjeNastavneTeme.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnBrisanjeNastavneTeme.setToolTipText("Brisanje dodatne nastave");
 
-		JButton btnBrisanjeStudenta = new JButton("Brisanje studenta");
+		JButton btnBrisanjeStudenta = new JButton("Brisanje");
 		btnBrisanjeStudenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				elektrijadaController.brisanjeStudentaControl(tableStudenti, studentiZaElektrijaduDataModel);
@@ -262,7 +264,7 @@ public class ElektrijadaForm extends JFrame {
 		btnBrisanjeStudenta.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnBrisanjeStudenta.setToolTipText("Brisanje studenta");
 
-		JButton btnDodavanjeNastavneTeme = new JButton("Dodavanje dodatne nastave");
+		JButton btnDodavanjeNastavneTeme = new JButton("Dodavanje");
 		btnDodavanjeNastavneTeme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				elektrijadaController.dodavanjeNastaveControl(tableDodatneNastave, dodatnaNastavaDataModel);
@@ -271,7 +273,7 @@ public class ElektrijadaForm extends JFrame {
 		btnDodavanjeNastavneTeme.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnDodavanjeNastavneTeme.setToolTipText("Dodavanje dodatne nastave");
 
-		JButton btnDodajStudenta = new JButton("Dodaj studenta");
+		JButton btnDodajStudenta = new JButton("Dodavanje");
 		btnDodajStudenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				elektrijadaController.dodavanjeStudentaControl(tableStudenti, studentiZaElektrijaduDataModel);
@@ -281,7 +283,7 @@ public class ElektrijadaForm extends JFrame {
 		btnDodajStudenta.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnDodajStudenta.setToolTipText("Dodaj studenta");
 
-		JButton btnExportPdff = new JButton("Export pdf");
+		JButton btnExportPdff = new JButton("PDF");
 		btnExportPdff.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -308,7 +310,7 @@ public class ElektrijadaForm extends JFrame {
 		btnExportPdff.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnExportPdff.setToolTipText("Export pdf");
 
-		JButton btnExporttampa = new JButton("Export \u0161tampa\u010D");
+		JButton btnExporttampa = new JButton("Štampač");
 		btnExporttampa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -344,7 +346,8 @@ public class ElektrijadaForm extends JFrame {
 			}
 		});
 
-		JButton btnUndo = new JButton("Undo");
+		JButton btnUndo = new JButton("");
+		btnUndo.setIcon(new ImageIcon(ElektrijadaForm.class.getResource("/com/sun/javafx/scene/web/skin/Undo_16x16_JFX.png")));
 		btnUndo.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnUndo.setToolTipText("Undo");
 		btnUndo.addActionListener(new ActionListener() {
@@ -354,7 +357,8 @@ public class ElektrijadaForm extends JFrame {
 			}
 		});
 
-		JButton btnRedo = new JButton("Redo");
+		JButton btnRedo = new JButton("");
+		btnRedo.setIcon(new ImageIcon(ElektrijadaForm.class.getResource("/com/sun/javafx/scene/web/skin/Redo_16x16_JFX.png")));
 		btnRedo.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnRedo.setToolTipText("Redo");
 		btnRedo.addActionListener(new ActionListener() {
@@ -372,58 +376,100 @@ public class ElektrijadaForm extends JFrame {
 				elektrijadaController.sacuvajIzmjeneUBazu();
 			}
 		});
+		
+		JLabel lblExport = new JLabel("Export liste studenata");
+		lblExport.setForeground(Color.WHITE);
+		lblExport.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		
+		JLabel lblOperacijeSaStudentima = new JLabel("Operacije sa studentima");
+		lblOperacijeSaStudentima.setForeground(Color.WHITE);
+		lblOperacijeSaStudentima.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		
+		JLabel lblOperacijeSaDodatnim = new JLabel("Operacije sa dodatnim nastavama");
+		lblOperacijeSaDodatnim.setForeground(Color.WHITE);
+		lblOperacijeSaDodatnim.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup().addContainerGap()
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-								.addComponent(lblListaStudenata, Alignment.LEADING)
-								.addComponent(lblListaNastavnihTema, Alignment.LEADING)
-								.addComponent(scrollPaneNastavneTeme, Alignment.LEADING, GroupLayout.PREFERRED_SIZE,
-										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(scrollPaneStudenti, Alignment.LEADING, GroupLayout.PREFERRED_SIZE,
-										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGap(108)
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-								.addComponent(btnExporttampa, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-								.addComponent(btnExportPdff, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-								.addComponent(btnDodajStudenta, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-								.addComponent(btnDodavanjeNastavneTeme, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-								.addComponent(btnBrisanjeStudenta, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-								.addComponent(btnBrisanjeNastavneTeme, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-								.addComponent(btnBrisanjeListe, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-								.addGroup(gl_contentPane.createSequentialGroup()
-										.addComponent(
-												btnNewButton, GroupLayout.PREFERRED_SIZE, 107,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(18)
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblListaStudenata)
+								.addComponent(scrollPaneStudenti, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(scrollPaneNastavneTeme, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(53)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblExport, GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+									.addComponent(btnExportPdff, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(btnExporttampa, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(lblOperacijeSaStudentima, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(btnDodajStudenta, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(btnBrisanjeStudenta, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(btnBrisanjeListe, GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+									.addComponent(lblOperacijeSaDodatnim, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+									.addComponent(btnDodavanjeNastavneTeme, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(btnBrisanjeNastavneTeme, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
 										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-												.addComponent(btnNazad, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE,
-														107, Short.MAX_VALUE)
-												.addComponent(btnUndo, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE,
-														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addComponent(btnRedo, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE,
-														107, Short.MAX_VALUE))))
-						.addContainerGap()));
-		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
-				.createSequentialGroup().addContainerGap().addGroup(gl_contentPane
-						.createParallelGroup(Alignment.TRAILING).addGroup(gl_contentPane.createSequentialGroup()
-								.addComponent(lblListaStudenata).addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(scrollPaneStudenti, GroupLayout.PREFERRED_SIZE, 224,
-										GroupLayout.PREFERRED_SIZE)
-								.addGap(35).addComponent(lblListaNastavnihTema)
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(scrollPaneNastavneTeme, GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
-						.addGroup(gl_contentPane.createSequentialGroup().addComponent(btnExporttampa)
-								.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnExportPdff)
-								.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnDodajStudenta)
-								.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnDodavanjeNastavneTeme)
-								.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnBrisanjeStudenta)
-								.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnBrisanjeNastavneTeme)
-								.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnBrisanjeListe).addGap(18)
-								.addComponent(btnUndo).addGap(18).addComponent(btnRedo).addGap(18)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(btnNazad)
-										.addComponent(btnNewButton))))
-				.addGap(40)));
+											.addComponent(btnNazad, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addComponent(btnRedo, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addComponent(btnUndo, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))))))
+						.addComponent(lblListaNastavnihTema))
+					.addContainerGap())
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblListaStudenata)
+								.addComponent(lblExport))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(scrollPaneStudenti, GroupLayout.PREFERRED_SIZE, 224, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(btnExporttampa)
+									.addGap(11)
+									.addComponent(btnExportPdff)
+									.addGap(19)
+									.addComponent(lblOperacijeSaStudentima)
+									.addGap(13)
+									.addComponent(btnDodajStudenta)
+									.addGap(14)
+									.addComponent(btnBrisanjeStudenta)
+									.addGap(13)
+									.addComponent(btnBrisanjeListe)))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblOperacijeSaDodatnim)
+							.addGap(4)
+							.addComponent(lblListaNastavnihTema)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(28)
+									.addComponent(btnBrisanjeNastavneTeme)
+									.addGap(18)
+									.addComponent(btnUndo)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(btnRedo)
+									.addPreferredGap(ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+										.addComponent(btnNazad)
+										.addComponent(btnNewButton)))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(18)
+									.addComponent(scrollPaneNastavneTeme, GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE))))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(310)
+							.addComponent(btnDodavanjeNastavneTeme)))
+					.addContainerGap())
+		);
 
 		contentPane.setLayout(gl_contentPane);
 	}

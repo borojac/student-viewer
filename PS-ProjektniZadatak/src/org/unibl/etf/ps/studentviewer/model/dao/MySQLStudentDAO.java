@@ -71,7 +71,9 @@ public class MySQLStudentDAO extends StudentDAO {
 				ps.setInt(2, idElektrijade);
 				ps.setInt(3, retVal.get(i).getId());
 				rs = ps.executeQuery();
-				String odg = rs.getString(1);
+				String odg = "";
+				while(rs.next())
+					odg = rs.getString(1);
 				if (!odg.isEmpty())
 					retVal.get(i).setKomentar(odg);
 			}

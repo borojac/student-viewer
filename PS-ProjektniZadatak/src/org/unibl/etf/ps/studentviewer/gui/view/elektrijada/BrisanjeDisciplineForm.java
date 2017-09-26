@@ -93,27 +93,40 @@ public class BrisanjeDisciplineForm extends JFrame {
 		posaljiZahtjev.setBounds(140, 430, 150, 35);
 
 		GroupLayout gl_contentPane_1 = new GroupLayout(contentPane_1);
-		gl_contentPane_1.setHorizontalGroup(gl_contentPane_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane_1.createSequentialGroup().addContainerGap().addGroup(gl_contentPane_1
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING,
-								gl_contentPane_1.createSequentialGroup().addComponent(posaljiZahtjev).addGap(156))
-						.addGroup(gl_contentPane_1.createSequentialGroup().addComponent(lblIzborElektrijade).addGap(18)
-								.addComponent(elektrijadeCB, 0, 264, Short.MAX_VALUE).addContainerGap())
-						.addGroup(gl_contentPane_1.createSequentialGroup().addComponent(lblNazivDiscipline).addGap(18)
-								.addComponent(disciplineCB, 0, 267, Short.MAX_VALUE).addContainerGap()))));
-		gl_contentPane_1.setVerticalGroup(gl_contentPane_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane_1.createSequentialGroup().addGap(24)
-						.addGroup(gl_contentPane_1.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblIzborElektrijade).addComponent(elektrijadeCB,
-										GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addGap(39)
-						.addGroup(gl_contentPane_1.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblNazivDiscipline).addComponent(disciplineCB, GroupLayout.PREFERRED_SIZE,
-										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED, 74, Short.MAX_VALUE).addComponent(posaljiZahtjev)
-						.addGap(19)));
+		gl_contentPane_1.setHorizontalGroup(
+			gl_contentPane_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane_1.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane_1.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_contentPane_1.createSequentialGroup()
+							.addComponent(posaljiZahtjev, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+							.addGap(156))
+						.addGroup(gl_contentPane_1.createSequentialGroup()
+							.addComponent(lblIzborElektrijade)
+							.addGap(18)
+							.addComponent(elektrijadeCB, 0, 264, Short.MAX_VALUE)
+							.addContainerGap())
+						.addGroup(gl_contentPane_1.createSequentialGroup()
+							.addComponent(lblNazivDiscipline)
+							.addGap(18)
+							.addComponent(disciplineCB, 0, 267, Short.MAX_VALUE)
+							.addContainerGap())))
+		);
+		gl_contentPane_1.setVerticalGroup(
+			gl_contentPane_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane_1.createSequentialGroup()
+					.addGap(24)
+					.addGroup(gl_contentPane_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblIzborElektrijade)
+						.addComponent(elektrijadeCB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(39)
+					.addGroup(gl_contentPane_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNazivDiscipline)
+						.addComponent(disciplineCB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+					.addComponent(posaljiZahtjev)
+					.addGap(19))
+		);
 		contentPane_1.setLayout(gl_contentPane_1);
 	}
 
