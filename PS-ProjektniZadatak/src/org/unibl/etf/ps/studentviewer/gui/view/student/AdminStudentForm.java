@@ -11,7 +11,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.nalog.AdministratorFormController;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLStudentDAO;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;

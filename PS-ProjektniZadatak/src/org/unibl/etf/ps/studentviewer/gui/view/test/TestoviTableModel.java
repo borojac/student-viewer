@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.TestDTO;
 
 public class TestoviTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 6564093323102822526L;

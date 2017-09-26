@@ -16,10 +16,10 @@ import org.unibl.etf.ps.studentviewer.gui.view.elektrijada.DodatnaNastavaDataTab
 import org.unibl.etf.ps.studentviewer.gui.view.elektrijada.DodavanjeDodatneNastaveForm;
 import org.unibl.etf.ps.studentviewer.gui.view.elektrijada.ElektrijadaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.elektrijada.IzborDatumaZaDodatnuNastavuForm;
-import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.DodatnaNastavaDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.DodatnaNastavaDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.DodatnaNastavaDTO;
 
 public class DodavanjeDodatneNastaveController {
 	private DodavanjeDodatneNastaveForm nastavaForm;

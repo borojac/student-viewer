@@ -36,13 +36,13 @@ import javax.swing.table.TableCellRenderer;
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.gui.view.nalog.AdministratorForm;
 import org.unibl.etf.ps.studentviewer.logic.controller.elektrijada.AdministratorElektrijadaFormController;
-import org.unibl.etf.ps.studentviewer.model.dao.ElektrijadaDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.ZahtjevDisciplinaDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.ZahtjevDisciplinaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.ElektrijadaDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.NalogDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.ZahtjevDisciplinaDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.ElektrijadaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.NalogDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.ZahtjevDisciplinaDTO;
 
 public class AdminElektrijadaForm extends JFrame {
 

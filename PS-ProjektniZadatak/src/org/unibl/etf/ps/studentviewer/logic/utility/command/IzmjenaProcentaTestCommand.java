@@ -4,7 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JComboBox;
 
-import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.TestDTO;
 
 public class IzmjenaProcentaTestCommand extends TestCommand {
 	private int prethodniProcenat, sljedeciProcenat;

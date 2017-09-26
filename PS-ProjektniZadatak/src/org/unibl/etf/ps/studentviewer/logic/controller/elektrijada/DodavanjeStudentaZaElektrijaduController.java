@@ -9,10 +9,10 @@ import javax.swing.JTable;
 import org.unibl.etf.ps.studentviewer.gui.view.elektrijada.DodavanjeStudentaZaElektrijaduForm;
 import org.unibl.etf.ps.studentviewer.gui.view.elektrijada.ElektrijadaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.elektrijada.StudentiZaElektrijaduTableModel;
-import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.StudentDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.StudentDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentZaElektrijaduDTO;
 
 public class DodavanjeStudentaZaElektrijaduController {
 

@@ -16,11 +16,11 @@ import org.apache.poi.util.SystemOutLogger;
 import org.unibl.etf.ps.studentviewer.gui.view.elektrijada.DodatnaNastavaDataTableModel;
 import org.unibl.etf.ps.studentviewer.gui.view.elektrijada.EditorZaElektrijaduForm;
 import org.unibl.etf.ps.studentviewer.gui.view.elektrijada.ElektrijadaForm;
-import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.DodatnaNastavaDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.DodatnaNastavaDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.DodatnaNastavaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentZaElektrijaduDTO;
 
 public class EditorZaElektrijaduController {
 	private EditorZaElektrijaduForm editorForma;

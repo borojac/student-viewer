@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentNaTestuDTO;
 
 public class StudentListModel extends AbstractListModel<StudentNaTestuDTO> {
 

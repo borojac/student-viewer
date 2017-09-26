@@ -2,11 +2,11 @@ package org.unibl.etf.ps.studentviewer.logic.utility.maintableshow;
 
 import java.util.ArrayList;
 
-import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentMainTableDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.StudentsForMainTable;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLStudentMainTableDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.NalogDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.PredmetDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentMainTableDTO;
 
 public class UndoRedoData {
 	static int position = 0;

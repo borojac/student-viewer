@@ -14,16 +14,16 @@ import org.unibl.etf.ps.studentviewer.gui.view.student.AdminStudentForm;
 import org.unibl.etf.ps.studentviewer.gui.view.student.ChangeForm;
 import org.unibl.etf.ps.studentviewer.gui.view.student.ChooseAddTypeForm;
 import org.unibl.etf.ps.studentviewer.logic.controller.student.DeleteStudentsController;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.ZahtjevDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.ZahtjevDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLStudentDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.NalogDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.PredmetDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.ZahtjevDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.NalogDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.PredmetDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentMainTableDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentNaPredmetuDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.ZahtjevDTO;
 
 public class AdministratorFormController {
 	

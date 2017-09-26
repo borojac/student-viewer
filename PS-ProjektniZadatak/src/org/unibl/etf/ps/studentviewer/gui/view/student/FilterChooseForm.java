@@ -25,7 +25,7 @@ import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.student.FilterChooseFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.student.FilterFormController;
 import org.unibl.etf.ps.studentviewer.logic.utility.Filter;
-import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
+import org.unibl.etf.ps.studentviewer.persistence.model.StudentsForMainTable;
 
 public class FilterChooseForm extends JFrame {
 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.unibl.etf.ps.studentviewer.gui.view.student.MainTable;
 import org.unibl.etf.ps.studentviewer.gui.view.student.MainTableModel;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentMainTableDTO;
 
 public class SearchUtil {
 	public static ArrayList<StudentMainTableDTO> searchForStudents(MainFormController mainFormController, ArrayList<String> params){

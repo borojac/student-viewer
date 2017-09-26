@@ -8,16 +8,16 @@ import javax.swing.JTextField;
 
 import org.unibl.etf.ps.studentviewer.gui.view.elektrijada.DodavanjeDisciplineForm;
 import org.unibl.etf.ps.studentviewer.logic.controller.nalog.AccountFormController;
-import org.unibl.etf.ps.studentviewer.model.dao.ElektrijadaDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.ZahtjevDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.ZahtjevDisciplinaDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.ZahtjevDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.ZahtjevDisciplinaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.ElektrijadaDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.ZahtjevDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.ZahtjevDisciplinaDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.DisciplinaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.ElektrijadaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.NalogDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.PredmetDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.ZahtjevDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.ZahtjevDisciplinaDTO;
 
 public class DodavanjeDisciplineController {
 

@@ -2,9 +2,9 @@ package org.unibl.etf.ps.studentviewer.logic.controller.predmet;
 
 import org.unibl.etf.ps.studentviewer.gui.view.predmet.PredmetChooseAddTypeForm;
 import org.unibl.etf.ps.studentviewer.logic.utility.ImporterExcel;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.PredmetDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.PredmetDTO;
 
 import java.io.IOException;
 import java.util.ArrayList;

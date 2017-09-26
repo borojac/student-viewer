@@ -13,8 +13,8 @@ import org.unibl.etf.ps.studentviewer.gui.view.student.ChooseAddTypeForm;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.nalog.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.logic.utility.ImporterExcel;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLStudentDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentMainTableDTO;
 
 public class ChooseAddTypeController {
 	MainFormController mainFormController = null;

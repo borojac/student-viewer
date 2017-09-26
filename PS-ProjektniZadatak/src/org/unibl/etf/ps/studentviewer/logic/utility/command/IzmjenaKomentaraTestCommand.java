@@ -1,7 +1,7 @@
 package org.unibl.etf.ps.studentviewer.logic.utility.command;
 
 import org.unibl.etf.ps.studentviewer.gui.view.test.StudentTableModel;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentNaTestuDTO;
 
 public class IzmjenaKomentaraTestCommand implements Command {
 	

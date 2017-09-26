@@ -1,6 +1,6 @@
 package org.unibl.etf.ps.studentviewer.logic.utility.command;
 
-import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentZaElektrijaduDTO;
 
 public class IzmjenaPodatkaKomentarStudentaZaElektrijaduCommand extends IzmjenaStudentaZaElektrijaduCommand {
 

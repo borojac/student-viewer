@@ -25,9 +25,9 @@ import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaDatumaTestCom
 import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaNazivaTestaCommand;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaProcentaTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.UkloniStudenteTestCommand;
-import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.PredmetDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentNaTestuDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.TestDTO;
 
 import com.itextpdf.text.DocumentException;
 import javax.swing.JLabel;

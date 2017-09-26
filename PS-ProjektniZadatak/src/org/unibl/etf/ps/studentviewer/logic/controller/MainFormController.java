@@ -32,18 +32,18 @@ import org.unibl.etf.ps.studentviewer.logic.controller.student.DeleteStudentsCon
 import org.unibl.etf.ps.studentviewer.logic.utility.exec.ExecScheduler;
 import org.unibl.etf.ps.studentviewer.logic.utility.exec.SearchExec;
 import org.unibl.etf.ps.studentviewer.logic.utility.maintableshow.UndoRedoData;
-import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
-import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.ElektrijadaDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.StudentDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.StudentsForMainTable;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.ElektrijadaDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.StudentDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.TestDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.DisciplinaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.ElektrijadaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.NalogDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.PredmetDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentMainTableDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.TestDTO;
 
 public class MainFormController {
 	private static boolean sortFormOpened = false;

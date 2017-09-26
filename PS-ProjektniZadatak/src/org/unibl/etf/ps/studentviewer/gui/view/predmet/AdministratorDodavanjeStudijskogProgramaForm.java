@@ -26,9 +26,9 @@ import javax.swing.border.EmptyBorder;
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.predmet.AdministratorDodavanjePredmetaFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.predmet.AdministratorDodavanjeStudijskogProgramaFormController;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.PredmetDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.PredmetDTO;
 
 public class AdministratorDodavanjeStudijskogProgramaForm extends JFrame {
 

@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.utility.FilterUtil;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentMainTableDTO;
 
 public class FilterExec extends Exec {
 	HashMap<String, HashMap<String, String>> testovi;

@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.unibl.etf.ps.studentviewer.model.dto.GradingInfoDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.GradingInfoDTO;
 
 
 public class GradingTableModel extends AbstractTableModel {

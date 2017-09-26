@@ -5,7 +5,7 @@ package org.unibl.etf.ps.studentviewer.logic.controller.student;
 
 import java.util.ArrayList;
 
-import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentMainTableDTO;
 
 public class AddChangeStudentsHelpController {
 	ArrayList<String> params;

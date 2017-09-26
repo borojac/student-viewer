@@ -34,9 +34,9 @@ import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.nalog.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.student.AddStudentsController;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLStudentDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentMainTableDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentNaPredmetuDTO;
 
 public class AddForm extends JFrame {
 

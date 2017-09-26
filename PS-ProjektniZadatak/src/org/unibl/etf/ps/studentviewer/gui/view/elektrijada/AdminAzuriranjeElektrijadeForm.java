@@ -23,9 +23,10 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.elektrijada.AdminAzuriranjeElektrijadeController;
-import org.unibl.etf.ps.studentviewer.model.dao.ElektrijadaDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.ElektrijadaDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.ElektrijadaDTO;
+
 import javax.swing.JTextField;
 
 public class AdminAzuriranjeElektrijadeForm extends JFrame {

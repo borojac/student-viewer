@@ -24,7 +24,7 @@ import javax.swing.table.TableCellRenderer;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.elektrijada.DodavanjeStudentaZaElektrijaduController;
 import org.unibl.etf.ps.studentviewer.logic.controller.elektrijada.ElektrijadaController;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentZaElektrijaduDTO;
 
 public class DodavanjeStudentaZaElektrijaduForm extends JFrame {
 

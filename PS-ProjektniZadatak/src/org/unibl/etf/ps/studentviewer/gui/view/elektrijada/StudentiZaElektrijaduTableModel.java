@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentZaElektrijaduDTO;
 
 public class StudentiZaElektrijaduTableModel extends AbstractTableModel {
 	/**

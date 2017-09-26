@@ -18,10 +18,10 @@ import org.unibl.etf.ps.studentviewer.logic.controller.test.TestController;
 import org.unibl.etf.ps.studentviewer.logic.controller.test.TestDodajStudenteController;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.Command;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.DodajStudenteTestCommand;
-import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.TestDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.TestDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentNaTestuDTO;
 
 import javax.swing.JList;
 import java.awt.event.ActionListener;

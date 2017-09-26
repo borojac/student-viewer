@@ -1,6 +1,6 @@
 package org.unibl.etf.ps.studentviewer.logic.utility.command;
 
-import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.TestDTO;
 
 public abstract class TestCommand implements Command {
 	

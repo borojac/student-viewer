@@ -7,8 +7,8 @@ import org.unibl.etf.ps.studentviewer.gui.view.student.ShowChooseForm;
 import org.unibl.etf.ps.studentviewer.gui.view.student.ShowForm;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.utility.maintableshow.ShowViewData;
-import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.StudentsForMainTable;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentMainTableDTO;
 
 public class ShowFormController {
 	MainFormController mainFormController;

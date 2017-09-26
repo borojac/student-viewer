@@ -8,12 +8,12 @@ import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.view.predmet.DodavanjePredmetaForm;
 import org.unibl.etf.ps.studentviewer.logic.controller.nalog.AccountFormController;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.ZahtjevDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.ZahtjevDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.PredmetDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.ZahtjevDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.NalogDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.PredmetDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.ZahtjevDTO;
 
 public class DodavanjePredmetaFormController {
 	

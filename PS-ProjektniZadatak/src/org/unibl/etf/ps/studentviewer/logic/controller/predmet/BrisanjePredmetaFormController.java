@@ -7,11 +7,11 @@ import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.view.predmet.BrisanjePredmetaForm;
 import org.unibl.etf.ps.studentviewer.logic.controller.nalog.AccountFormController;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.ZahtjevDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.NalogDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.ZahtjevDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.NalogDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.PredmetDTO;
 
 public class BrisanjePredmetaFormController {
 	

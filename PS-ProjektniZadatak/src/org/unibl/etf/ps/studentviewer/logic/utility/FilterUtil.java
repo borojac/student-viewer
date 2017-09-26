@@ -7,7 +7,7 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentMainTableDTO;
 
 public class FilterUtil {
 

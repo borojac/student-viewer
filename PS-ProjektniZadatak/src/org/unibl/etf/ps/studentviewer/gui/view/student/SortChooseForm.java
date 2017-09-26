@@ -24,7 +24,7 @@ import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.student.SortChooseFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.student.SortFormController;
 import org.unibl.etf.ps.studentviewer.logic.utility.Sort;
-import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
+import org.unibl.etf.ps.studentviewer.persistence.model.StudentsForMainTable;
 
 public class SortChooseForm extends JFrame {
 

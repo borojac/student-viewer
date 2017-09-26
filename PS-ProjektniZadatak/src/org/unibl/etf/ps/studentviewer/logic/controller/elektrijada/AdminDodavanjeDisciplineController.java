@@ -8,11 +8,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.unibl.etf.ps.studentviewer.gui.view.elektrijada.AdminDodavanjeDisciplineForm;
-import org.unibl.etf.ps.studentviewer.model.dao.DisciplinaDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.ElektrijadaDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.DisciplinaDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.ElektrijadaDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.DisciplinaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.ElektrijadaDTO;
 
 public class AdminDodavanjeDisciplineController {
 

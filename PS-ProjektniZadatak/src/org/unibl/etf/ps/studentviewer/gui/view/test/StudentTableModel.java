@@ -8,8 +8,8 @@ import javax.swing.table.AbstractTableModel;
 import org.unibl.etf.ps.studentviewer.logic.controller.test.TestController;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaBrojaBodovaTestCommand;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaKomentaraTestCommand;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentNaTestuDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.TestDTO;
 
 public class StudentTableModel extends AbstractTableModel {
 	

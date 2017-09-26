@@ -28,12 +28,12 @@ import org.unibl.etf.ps.studentviewer.gui.view.MainForm;
 import org.unibl.etf.ps.studentviewer.logic.controller.elektrijada.BrisanjeDisciplineController;
 import org.unibl.etf.ps.studentviewer.logic.controller.elektrijada.DodavanjeDisciplineController;
 import org.unibl.etf.ps.studentviewer.logic.controller.nalog.AccountFormController;
-import org.unibl.etf.ps.studentviewer.model.dao.DisciplinaDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.ElektrijadaDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.DisciplinaDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.ElektrijadaDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.DisciplinaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.ElektrijadaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.NalogDTO;
 
 public class BrisanjeDisciplineForm extends JFrame {
 

@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
+import org.unibl.etf.ps.studentviewer.persistence.model.StudentsForMainTable;
 
 public class ShowViewData {
 	static HashMap<String, Boolean> dataMap = new HashMap<String, Boolean>();

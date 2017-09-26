@@ -6,11 +6,11 @@ import org.unibl.etf.ps.studentviewer.gui.view.predmet.AdminPredmetiForm;
 import org.unibl.etf.ps.studentviewer.gui.view.predmet.AdministratorDodavanjePredmetaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.predmet.AdministratorIzmjenaPredmetaForm;
 import org.unibl.etf.ps.studentviewer.gui.view.predmet.PredmetChooseAddTypeForm;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.NalogDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.ZahtjevDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.NalogDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.PredmetDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.ZahtjevDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.PredmetDTO;
 
 public class AdminPredmetiFormController {
 	

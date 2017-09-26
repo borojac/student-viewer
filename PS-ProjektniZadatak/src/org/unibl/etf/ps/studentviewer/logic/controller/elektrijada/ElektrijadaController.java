@@ -41,16 +41,16 @@ import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaDatumaDodatne
 import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaNapomeneDodatneNastaveCommand;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaNazivaDodatneNastaveCommand;
 import org.unibl.etf.ps.studentviewer.logic.utility.command.IzmjenaPodatkaKomentarStudentaZaElektrijaduCommand;
-import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.DodatnaNastavaDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.StudentDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.DisciplinaDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentNaTestuDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.DodatnaNastavaDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.StudentDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.DisciplinaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.DodatnaNastavaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.ElektrijadaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.NalogDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentNaTestuDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentZaElektrijaduDTO;
 
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;

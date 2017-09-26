@@ -17,16 +17,16 @@ import javax.swing.JOptionPane;
 import org.unibl.etf.ps.studentviewer.gui.view.student.GradeGenerationForm;
 import org.unibl.etf.ps.studentviewer.gui.view.student.GradingTableModel;
 import org.unibl.etf.ps.studentviewer.gui.view.student.MainTable;
-import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
-import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dao.PredmetDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.StudentDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.GradingInfoDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentNaPredmetuDTO;
-import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 import org.unibl.etf.ps.studentviewer.persistence.dbutility.mysql.DBUtility;
+import org.unibl.etf.ps.studentviewer.persistence.model.StudentsForMainTable;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.DAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.PredmetDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.StudentDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.GradingInfoDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.PredmetDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentNaPredmetuDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.TestDTO;
 
 public class GradeGenerationController {
 

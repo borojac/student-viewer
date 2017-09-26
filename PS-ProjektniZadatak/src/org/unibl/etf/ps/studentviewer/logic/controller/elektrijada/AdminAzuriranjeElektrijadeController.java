@@ -12,9 +12,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.unibl.etf.ps.studentviewer.gui.view.elektrijada.AdminAzuriranjeElektrijadeForm;
-import org.unibl.etf.ps.studentviewer.model.dao.ElektrijadaDAO;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLDAOFactory;
-import org.unibl.etf.ps.studentviewer.model.dto.ElektrijadaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.ElektrijadaDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.ElektrijadaDTO;
 
 public class AdminAzuriranjeElektrijadeController {
 

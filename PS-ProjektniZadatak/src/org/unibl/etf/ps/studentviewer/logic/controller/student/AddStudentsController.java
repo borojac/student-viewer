@@ -11,9 +11,9 @@ import org.unibl.etf.ps.studentviewer.gui.view.student.AddForm;
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.nalog.AdministratorFormController;
 import org.unibl.etf.ps.studentviewer.logic.utility.maintableshow.UndoRedoData;
-import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentMainTableDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.StudentsForMainTable;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLStudentDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentMainTableDTO;
 
 public class AddStudentsController {
 	ArrayList<String> params = new ArrayList<String>();

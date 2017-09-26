@@ -7,8 +7,8 @@ import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.MainFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.nalog.AdministratorFormController;
-import org.unibl.etf.ps.studentviewer.model.dao.MySQLStudentDAO;
-import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLStudentDAO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.PredmetDTO;
 
 public class DeleteStudentsController {
 	MainFormController mainFormController = null;

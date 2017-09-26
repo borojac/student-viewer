@@ -3,7 +3,7 @@ package org.unibl.etf.ps.studentviewer.logic.utility.command;
 import java.util.ArrayList;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.elektrijada.ElektrijadaController;
-import org.unibl.etf.ps.studentviewer.model.dto.StudentZaElektrijaduDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentZaElektrijaduDTO;
 
 public class DodavanjeStudentaZaElektrijaduCommand implements Command {
 

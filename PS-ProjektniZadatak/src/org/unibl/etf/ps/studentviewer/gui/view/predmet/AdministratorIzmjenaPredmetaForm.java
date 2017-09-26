@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.predmet.AdministratorIzmjenaPredmetaFormController;
-import org.unibl.etf.ps.studentviewer.model.dto.PredmetDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.PredmetDTO;
 
 public class AdministratorIzmjenaPredmetaForm extends AdministratorDodavanjePredmetaForm {
 	

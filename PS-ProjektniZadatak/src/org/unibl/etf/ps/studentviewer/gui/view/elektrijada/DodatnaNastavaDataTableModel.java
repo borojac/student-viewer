@@ -8,7 +8,7 @@ import java.util.Date;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.unibl.etf.ps.studentviewer.model.dto.DodatnaNastavaDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.DodatnaNastavaDTO;
 
 public class DodatnaNastavaDataTableModel extends AbstractTableModel {
 

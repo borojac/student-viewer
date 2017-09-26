@@ -21,7 +21,7 @@ import javax.swing.border.EmptyBorder;
 import org.imgscalr.Scalr;
 import org.unibl.etf.ps.studentviewer.logic.controller.nalog.AccountFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.nalog.ChangePasswordFormController;
-import org.unibl.etf.ps.studentviewer.model.dto.NalogDTO;
+import org.unibl.etf.ps.studentviewer.persistence.model.dto.NalogDTO;
 
 public class ChangePasswordForm extends JFrame {
 	
