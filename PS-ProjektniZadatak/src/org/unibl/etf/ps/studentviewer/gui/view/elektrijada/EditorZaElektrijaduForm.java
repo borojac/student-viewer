@@ -74,7 +74,7 @@ public class EditorZaElektrijaduForm extends JFrame {
 		contentPane.setBackground(new Color(0, 0, 139));
 		setContentPane(contentPane);
 
-		JLabel lblNoviUnos = new JLabel("Sadrzaj celije:");
+		JLabel lblNoviUnos = new JLabel("Sadržaj ćelije:");
 		lblNoviUnos.setForeground(Color.WHITE);
 		lblNoviUnos.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		textArea = new JTextArea();

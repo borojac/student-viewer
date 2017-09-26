@@ -264,11 +264,15 @@ public class ElektrijadaController {
 		for (int i = 0; i < redovi; i++) {
 			listaUndoRedo.add(listaStudenata.get(i));
 		}
-		this.izbaciListuIzListe(listaUndoRedo);
-		this.brisanjeStudenta(listaUndoRedo);
-		studentiZaElektrijaduDataModel.fireTableDataChanged();
-		tableStudenti.setModel(studentiZaElektrijaduDataModel);
-		tableStudenti.repaint();
+		if (listaUndoRedo.isEmpty()){
+			JOptionPane.showMessageDialog(forma, "Lista studenata je prazna.");
+		}else{
+			this.izbaciListuIzListe(listaUndoRedo);
+			this.brisanjeStudenta(listaUndoRedo);
+			studentiZaElektrijaduDataModel.fireTableDataChanged();
+			tableStudenti.setModel(studentiZaElektrijaduDataModel);
+			tableStudenti.repaint();
+		}
 
 	}
 
@@ -357,7 +361,7 @@ public class ElektrijadaController {
 		tableStudenti.repaint();
 	}
 
-	public void zatvoriProzor(ElektrijadaForm forma) {
+	public void zatvoriProzor() {
 		if (!undoKomande.isEmpty()) {
 			String[] options = { "	Da	", "	Ne	" };
 			int result = JOptionPane.showOptionDialog(forma,
@@ -591,15 +595,7 @@ public class ElektrijadaController {
 	}
 
 	public void nazadOpcija() {
-		EventQueue.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				forma.setVisible(false);
-				forma.dispose();
-				mainForm.setVisible(true);
-			}
-		});
+		zatvoriProzor();
 		
 	}
 

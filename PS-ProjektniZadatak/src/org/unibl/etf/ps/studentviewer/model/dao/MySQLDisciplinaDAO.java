@@ -158,4 +158,33 @@ public class MySQLDisciplinaDAO implements DisciplinaDAO {
 		return retVal;
 	}
 
+	@Override
+	public List<DisciplinaDTO> getDisciplinePoZahtjevima(int idElektrijade, int idNaloga) {
+		List<DisciplinaDTO> retVal = new ArrayList<DisciplinaDTO>();
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		String query = "SELECT Naziv, ElektrijadaId FROM zahtjev_disciplina WHERE ElektrijadaId=? AND NalogId=?";
+
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, idElektrijade);
+			ps.setInt(2, idNaloga);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				retVal.add(new DisciplinaDTO(rs.getString(1), rs.getInt(2)));
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+		return retVal;
+	}
+
 }

@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/org/unibl/etf/ps/studentviewer/gui/view/MainForm.java=UTF-8
+encoding//src/org/unibl/etf/ps/studentviewer/gui/view/elektrijada/EditorZaElektrijaduForm.java=UTF-8
 encoding//src/org/unibl/etf/ps/studentviewer/gui/view/elektrijada/ElektrijadaForm.java=UTF-8
 encoding//src/org/unibl/etf/ps/studentviewer/gui/view/test/TestForm.java=UTF-8
 encoding//src/org/unibl/etf/ps/studentviewer/logic/controller/elektrijada/ElektrijadaController.java=UTF-8

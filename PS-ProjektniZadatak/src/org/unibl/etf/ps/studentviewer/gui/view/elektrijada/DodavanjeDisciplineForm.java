@@ -147,6 +147,14 @@ public class DodavanjeDisciplineForm extends JFrame {
 
 			ArrayList<DisciplinaDTO> disciplineKorisnika = (ArrayList<DisciplinaDTO>) discDAO
 					.getDiscipline(selektovanaElektrijada.getId(), nalogDTO.getNalogId());
+			
+			
+			ArrayList<DisciplinaDTO> disciplineZahtjevi = (ArrayList<DisciplinaDTO>) discDAO.getDisciplinePoZahtjevima(selektovanaElektrijada.getId(),nalogDTO.getNalogId());
+			
+			for (DisciplinaDTO disciplinaZ : disciplineZahtjevi){
+				disciplineKorisnika.add(disciplinaZ);
+			}
+			
 			if (disciplineKorisnika.isEmpty()) {
 				for (DisciplinaDTO di : discipline) {
 					disciplineCB.addItem(di.getNaziv());

@@ -217,7 +217,7 @@ public class ElektrijadaForm extends JFrame {
 
 					@Override
 					public void run() {
-						elektrijadaController.zatvoriProzor(forma);
+						elektrijadaController.zatvoriProzor();
 					}
 				});
 			}
