@@ -15,5 +15,5 @@ public interface TestDAO {
 	public List<StudentNaTestuDTO> getStudentsOnTest(int idTesta);
 	public List<TestDTO> getAllTests(int predmetId);
 	public List<StudentNaTestuDTO> getStudentsOnPredmet(TestDTO test);
-	public boolean verifyStudent(String brojIndeksa, int idTesta) throws SQLException;
+	public boolean verifyStudent(String brojIndeksa, int idPredmeta) throws SQLException;
 }

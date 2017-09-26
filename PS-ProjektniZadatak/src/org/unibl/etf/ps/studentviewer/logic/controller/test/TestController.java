@@ -219,7 +219,7 @@ public class TestController {
 					komentar = row.getCell(5).getStringCellValue().trim();
 				}
 				try {
-					boolean verified = testDAO.verifyStudent(brojIndeksa, test.getTestId());
+					boolean verified = testDAO.verifyStudent(brojIndeksa, test.getPredmetId());
 
 					if (verified) {
 						StudentNaPredmetuDTO tmp = studentDAO.getStudentBy(brojIndeksa);
@@ -287,7 +287,7 @@ public class TestController {
 					komentar = row.getCell(5).getStringCellValue().trim();
 				}
 				try {
-					boolean verified = testDAO.verifyStudent(brojIndeksa, test.getTestId());
+					boolean verified = testDAO.verifyStudent(brojIndeksa, test.getPredmetId());
 					if (verified) {
 						StudentNaPredmetuDTO tmp = studentDAO.getStudentBy(brojIndeksa);
 						data.add(new StudentNaTestuDTO(tmp.getStudentId(), brojIndeksa, 

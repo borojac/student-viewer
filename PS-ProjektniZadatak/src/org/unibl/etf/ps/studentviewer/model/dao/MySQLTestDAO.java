@@ -334,7 +334,7 @@ public class MySQLTestDAO implements TestDAO {
 	}
 
 	@Override
-	public boolean verifyStudent(String brojIndeksa, int idTesta) throws SQLException {
+	public boolean verifyStudent(String brojIndeksa, int idPredmeta) throws SQLException {
 		boolean retVal = false;
 		String call = "{CALL verify_student(?, ?, ?)}";
 		
@@ -344,7 +344,7 @@ public class MySQLTestDAO implements TestDAO {
 			conn = DBUtility.open();
 			cs = conn.prepareCall(call);
 			cs.setString(1, brojIndeksa);
-			cs.setInt(2, idTesta);
+			cs.setInt(2, idPredmeta);
 			cs.registerOutParameter(3, Types.BOOLEAN);
 			cs.executeUpdate();
 			retVal = cs.getBoolean(3);
