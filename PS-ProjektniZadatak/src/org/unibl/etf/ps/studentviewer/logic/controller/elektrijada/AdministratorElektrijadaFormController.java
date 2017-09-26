@@ -29,19 +29,22 @@ public class AdministratorElektrijadaFormController {
 
 	public void odobriZahtjev() {
 		ZahtjevDisciplinaDTO zahtjevDTO = adminElektrijadaForm.getSelectedZahtjev();
-
-		MySQLDAOFactory factory = new MySQLDAOFactory();
-		ZahtjevDisciplinaDAO zahtjevDAO = factory.getZahtjevDiciplinaDAO();
-		NalogDAO nalogDAO = factory.getNalogDAO();
-		NalogDTO nalogDTO = nalogDAO.getNalog(zahtjevDTO.getNalogId());
-		DisciplinaDTO disciplinaDTO = new DisciplinaDTO(zahtjevDTO.getNaziv(), zahtjevDTO.getElektrijadaId());
-
-		if (zahtjevDAO.updateZahtjev(zahtjevDTO) && nalogDAO.addDisciplinuNaNalog(disciplinaDTO, nalogDTO)) {
-			JOptionPane.showMessageDialog(adminElektrijadaForm, "Zahtjev odobren.", "Obavještenje",
-					JOptionPane.INFORMATION_MESSAGE);
-			adminElektrijadaForm.removeSelectedRow();
+		if (zahtjevDTO!=null){
+			MySQLDAOFactory factory = new MySQLDAOFactory();
+			ZahtjevDisciplinaDAO zahtjevDAO = factory.getZahtjevDiciplinaDAO();
+			NalogDAO nalogDAO = factory.getNalogDAO();
+			NalogDTO nalogDTO = nalogDAO.getNalog(zahtjevDTO.getNalogId());
+			DisciplinaDTO disciplinaDTO = new DisciplinaDTO(zahtjevDTO.getNaziv(), zahtjevDTO.getElektrijadaId());
+	
+			if (zahtjevDAO.updateZahtjev(zahtjevDTO) && nalogDAO.addDisciplinuNaNalog(disciplinaDTO, nalogDTO)) {
+				JOptionPane.showMessageDialog(adminElektrijadaForm, "Zahtjev odobren.", "Obavještenje",
+						JOptionPane.INFORMATION_MESSAGE);
+				adminElektrijadaForm.removeSelectedRow();
+			}
+		}else{
+			JOptionPane.showMessageDialog(adminElektrijadaForm, "Prazna lista zahtjeva.");
 		}
-
+		
 	}
 
 	public void dodajDisciplinu() {
@@ -57,16 +60,18 @@ public class AdministratorElektrijadaFormController {
 
 	public void odbijZahtjev() {
 		ZahtjevDisciplinaDTO zahtjevDTO = adminElektrijadaForm.getSelectedZahtjev();
-
-		MySQLDAOFactory zahtjevFactory = new MySQLDAOFactory();
-		ZahtjevDisciplinaDAO zahtjevDAO = zahtjevFactory.getZahtjevDiciplinaDAO();
-
-		if (zahtjevDAO.deleteZahtjev(zahtjevDTO)) {
-			JOptionPane.showMessageDialog(adminElektrijadaForm, "Zahtjev odbijen.", "Obavještenje",
-					JOptionPane.INFORMATION_MESSAGE);
-			adminElektrijadaForm.removeSelectedRow();
+		if (zahtjevDTO!=null){
+			MySQLDAOFactory zahtjevFactory = new MySQLDAOFactory();
+			ZahtjevDisciplinaDAO zahtjevDAO = zahtjevFactory.getZahtjevDiciplinaDAO();
+	
+			if (zahtjevDAO.deleteZahtjev(zahtjevDTO)) {
+				JOptionPane.showMessageDialog(adminElektrijadaForm, "Zahtjev odbijen.", "Obavještenje",
+						JOptionPane.INFORMATION_MESSAGE);
+				adminElektrijadaForm.removeSelectedRow();
+			}
+		}else{
+			JOptionPane.showMessageDialog(adminElektrijadaForm, "Prazna lista zahtjeva.");
 		}
-
 	}
 
 	public void nazadNaAdminFormu() {

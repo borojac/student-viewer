@@ -309,8 +309,11 @@ public class AdminElektrijadaForm extends JFrame {
 	}
 	
 	public ZahtjevDisciplinaDTO getSelectedZahtjev() {
-		ZahtjevDisciplinaDTO zahtjevDTO = list.get(adminZahtjeviJt.getSelectedRow());
-		zahtjevDTO.setAdminId(nalogDTO.getNalogId());
+		ZahtjevDisciplinaDTO zahtjevDTO =null;
+		if (!list.isEmpty()){
+			zahtjevDTO = list.get(adminZahtjeviJt.getSelectedRow());
+			zahtjevDTO.setAdminId(nalogDTO.getNalogId());
+		}
 		return zahtjevDTO;
 	}
 	
