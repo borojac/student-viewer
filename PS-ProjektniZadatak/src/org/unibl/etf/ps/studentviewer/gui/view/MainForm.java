@@ -826,13 +826,7 @@ public class MainForm extends JFrame {
 			TestDAO testDAO = factory.getTestDAO();
 
 			List<TestDTO> data = testDAO.getAllTests(activePredmet.getPredmetId());
-			EventQueue.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					model.setData(data);
-				}
-			});
+			model.setData(data);
 		}
 	}
 

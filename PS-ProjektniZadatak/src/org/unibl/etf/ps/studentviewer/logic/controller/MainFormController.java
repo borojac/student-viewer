@@ -177,8 +177,11 @@ public class MainFormController {
 	}
 
 	public void editTestAction(JTable testoviTable) {
-		final TestDTO selected = ((TestoviTableModel) testoviTable.getModel()).getData()
-				.get(testoviTable.getSelectedRow());
+		int selectedRow = testoviTable.getSelectedRow();
+		mainForm.refreshTestoviTable();
+		if (selectedRow >= testoviTable.getRowCount() || selectedRow < 0) 
+			return;
+		final TestDTO selected = ((TestoviTableModel) testoviTable.getModel()).getRowAt(selectedRow);
 		EventQueue.invokeLater(new Runnable() {
 
 			@Override
@@ -207,18 +210,10 @@ public class MainFormController {
 		TestDAO testDAO = factory.getTestDAO();
 		TestDTO test = ((TestoviTableModel) testoviTable.getModel()).getRowAt(testoviTable.getSelectedRow());
 		try {
-			testDAO.deleteTest(test);
-			TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
-			List<TestDTO> data = model.getData();
-			data.remove(testoviTable.getSelectedRow());
-			EventQueue.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					model.fireTableDataChanged();
-				}
-			});
-			StudentsForMainTable.setTest(test, mainForm.getMainTable(), true);
+			if (testDAO.deleteTest(test)) {
+				mainForm.refreshTestoviTable();
+				StudentsForMainTable.setTest(test, mainForm.getMainTable(), true);
+			}
 		} catch (SQLException e) {
 			EventQueue.invokeLater(new Runnable() {
 
@@ -241,6 +236,8 @@ public class MainFormController {
 			TestoviTableModel model = (TestoviTableModel) testoviTable.getModel();
 			testoviTable.setToolTipText(model.getRowAt(row).getNapomena());
 			
+		} else {
+			testoviTable.setToolTipText(null);
 		}
 	}
 	// Stankovic begin//

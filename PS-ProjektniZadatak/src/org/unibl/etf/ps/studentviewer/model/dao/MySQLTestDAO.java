@@ -221,7 +221,6 @@ public class MySQLTestDAO implements TestDAO {
 
 		} catch (SQLException e) {
 			// Ima studenata na ispitu pa se ne moze obrisati
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			if (e instanceof MySQLIntegrityConstraintViolationException)
 				throw new SQLException("Test ne može biti obrisan. Lista studenata na testu mora biti prazna da bi se test mogao brisati.");

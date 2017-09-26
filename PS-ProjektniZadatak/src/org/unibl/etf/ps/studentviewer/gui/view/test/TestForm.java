@@ -78,6 +78,8 @@ import javax.swing.ScrollPaneConstants;
 
 public class TestForm extends JFrame {
 
+	private static final long serialVersionUID = -8038774276444482778L;
+	
 	private JPanel contentPane;
 	private JTextField nazivTextField;
 	private JTextArea napomenaTextArea;
@@ -107,10 +109,9 @@ public class TestForm extends JFrame {
 
 
 	public TestForm(TestDTO testParam, MainForm mainForm) {
-		setAlwaysOnTop(true);
+		setType(Type.UTILITY);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setType(Type.UTILITY);
 		if (testParam != null) {
 			test = new TestDTO(testParam.getTestId(), testParam.getNaziv(), testParam.getDatum(),
 					testParam.getNapomena(), testParam.getProcenat(), testParam.getPredmetId());
@@ -781,5 +782,9 @@ public class TestForm extends JFrame {
 	
 	public MainForm getMainForm() {
 		return parentForm;
+	}
+	
+	public List<StudentNaTestuDTO> getStudentsOnTest() {
+		return test.getStudenti();
 	}
 }

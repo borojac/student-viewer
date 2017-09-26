@@ -17,6 +17,7 @@ import javax.swing.table.AbstractTableModel;
 
 import org.apache.log4j.lf5.viewer.LogFactor5LoadingDialog;
 import org.jdesktop.swingx.color.GradientTrackRenderer;
+import org.unibl.etf.ps.studentviewer.gui.view.test.TestoviTableModel;
 import org.unibl.etf.ps.studentviewer.logic.controller.student.GradeGenerationController;
 import org.unibl.etf.ps.studentviewer.model.StudentsForMainTable;
 import org.unibl.etf.ps.studentviewer.model.dao.DAOFactory;
@@ -46,6 +47,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 public class GradeGenerationForm extends JDialog {
 
@@ -132,10 +134,12 @@ public class GradeGenerationForm extends JDialog {
 
 
 		buttonPane = new JPanel();
+		buttonPane.setBackground(new Color(0, 0, 139));
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
 		btnOcijeni = new JButton("Ocijeni");
+		btnOcijeni.setBackground(new Color(0, 0, 139));
 		btnOcijeni.setEnabled(false);
 		btnOcijeni.addActionListener(new ActionListener() {
 
@@ -152,6 +156,7 @@ public class GradeGenerationForm extends JDialog {
 		});
 
 		btnNazad = new JButton("Nazad");
+		btnNazad.setBackground(new Color(0, 0, 139));
 		btnNazad.setEnabled(false);
 		btnNazad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -162,6 +167,7 @@ public class GradeGenerationForm extends JDialog {
 		buttonPane.add(btnNazad);
 
 		btnDalje = new JButton("Dalje");
+		btnDalje.setBackground(new Color(0, 0, 139));
 		btnDalje.addActionListener(new ActionListener() {
 
 			@Override
@@ -177,6 +183,7 @@ public class GradeGenerationForm extends JDialog {
 		controller.loadStudentInfoNext(btnDalje);
 
 		btnPonisti = new JButton("Poni\u0161ti");
+		btnPonisti.setBackground(new Color(0, 0, 139));
 		btnPonisti.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable() {
@@ -218,6 +225,24 @@ public class GradeGenerationForm extends JDialog {
 		contentPanel.add(scrollPane);
 
 		table = new JTable();
+		table.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				if (table.contains(e.getPoint())
+						&& table.getModel().getRowCount() >= table.rowAtPoint(e.getPoint())
+						&& table.columnAtPoint(e.getPoint()) == 0) {
+
+					int row = table.rowAtPoint(e.getPoint());
+					GradingTableModel model = (GradingTableModel) table.getModel();
+					table.setToolTipText(model.getDataAt(row).getTest().getNaziv());
+				} else {
+					table.setToolTipText(null);
+				}
+			}
+		});
+		table.setForeground(new Color(0, 0, 139));
+		table.setBackground(new Color(173, 216, 230));
+		table.setFont(new Font("Century Gothic", Font.BOLD, 11));
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
 			@Override

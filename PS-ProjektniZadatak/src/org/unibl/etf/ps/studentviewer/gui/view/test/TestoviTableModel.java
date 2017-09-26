@@ -9,7 +9,8 @@ import javax.swing.table.AbstractTableModel;
 import org.unibl.etf.ps.studentviewer.model.dto.TestDTO;
 
 public class TestoviTableModel extends AbstractTableModel {
-
+	private static final long serialVersionUID = 6564093323102822526L;
+	
 	private List<TestDTO> data = new ArrayList<>();
 	private String[] columns = {"Naziv", "Datum", "Napomena"};
 	

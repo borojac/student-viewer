@@ -12,6 +12,12 @@ public class StudentListModel extends AbstractListModel<StudentNaTestuDTO> {
 	private static final long serialVersionUID = 6353517380860715L;
 	private List<StudentNaTestuDTO> data = new ArrayList<>();
 	
+	public StudentListModel() {}
+	
+	public StudentListModel(List<StudentNaTestuDTO> data) {
+		setData(data);
+	}
+	
 	public void setData(List<StudentNaTestuDTO> data) {
 		this.data = data;
 		fireContentsChanged(this, 0, data.size() - 1);

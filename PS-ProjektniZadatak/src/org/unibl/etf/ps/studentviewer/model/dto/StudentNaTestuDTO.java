@@ -4,7 +4,11 @@ public class StudentNaTestuDTO extends StudentNaPredmetuDTO {
 	private int brojBodova;
 	private String komentar;
 	
-	public StudentNaTestuDTO() {}
+	public StudentNaTestuDTO() {
+		super();
+		brojBodova = 0;
+		komentar = "";
+	}
 
 	public StudentNaTestuDTO(int studentId, String brojIndeksa, String ime, String prezime, 
 			int brojBodova, String komentar) {

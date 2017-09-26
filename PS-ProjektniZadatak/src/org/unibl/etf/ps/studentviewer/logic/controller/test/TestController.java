@@ -554,9 +554,15 @@ public class TestController {
 		for (StudentNaTestuDTO student : test.getStudenti()) {
 			String ime = student.getIme().toLowerCase();
 			String prezime = student.getPrezime().toLowerCase();
+			String komentar = (student.getKomentar() != null ? student.getKomentar() : "").toLowerCase();
 			query = query.toLowerCase();
-			if (ime.startsWith(query) || prezime.startsWith(query) || student.getBrojIndeksa().startsWith(query))
+			if (ime.startsWith(query) 
+					|| prezime.startsWith(query) 
+					|| student.getBrojIndeksa().startsWith(query)
+					|| komentar.startsWith(query)) {
+				
 				retList.add(student);
+			}
 		}
 		return retList;
 	}
@@ -634,6 +640,7 @@ public class TestController {
 					public void run() {
 						testForm.dispose();
 						testForm.getMainForm().testoviClearSelection();
+						testForm.getMainForm().refreshTestoviTable();
 						StudentsForMainTable.setTest(test, testForm.getMainForm().getMainTable(), false);
 					}
 				});

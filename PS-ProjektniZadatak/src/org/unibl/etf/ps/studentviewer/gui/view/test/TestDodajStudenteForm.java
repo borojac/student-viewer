@@ -78,16 +78,16 @@ public class TestDodajStudenteForm extends JDialog {
 		DAOFactory factory = new MySQLDAOFactory();
 		TestDAO testDAO = factory.getTestDAO();
 		
-		StudentListModel allStudentsListModel = new StudentListModel();
 
 		List<StudentNaTestuDTO> data = testDAO.getStudentsOnPredmet(testController.getTest());
-		allStudentsListModel.setData(data);
+		List<StudentNaTestuDTO> added = testForm.getStudentsOnTest();
+		data.removeAll(added);
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 11, 290, 256);
 		contentPanel.add(scrollPane);
 		
-		allStudentsList = new JList<>(allStudentsListModel);
+		allStudentsList = new JList<>(new StudentListModel(data));
 		scrollPane.setViewportView(allStudentsList);
 		allStudentsList.setFont(new Font("Century Gothic", Font.BOLD, 12));
 		allStudentsList.setForeground(new Color(0, 0, 139));
@@ -107,7 +107,7 @@ public class TestDodajStudenteForm extends JDialog {
 		scrollPane_1.setBounds(384, 11, 290, 256);
 		contentPanel.add(scrollPane_1);
 		
-		toAddStudentsList = new JList<>(new StudentListModel());
+		toAddStudentsList = new JList<>(new StudentListModel(added));
 		scrollPane_1.setViewportView(toAddStudentsList);
 		toAddStudentsList.setFont(new Font("Century Gothic", Font.BOLD, 12));
 		toAddStudentsList.setForeground(new Color(0, 0, 139));
