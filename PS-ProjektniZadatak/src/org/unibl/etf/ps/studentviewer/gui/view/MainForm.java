@@ -162,7 +162,7 @@ public class MainForm extends JFrame {
 
 		buttonPanel = new JPanel();
 		buttonPanel.setBackground(new Color(0, 0, 139));
-		buttonPanel.setBounds(578, 219, 147, 382);
+		buttonPanel.setBounds(578, 172, 147, 429);
 		contentPane.add(buttonPanel);
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 12));
 
@@ -233,6 +233,7 @@ public class MainForm extends JFrame {
 		elektrijadaLbl.setBounds(745, 225, 200, 25);
 		contentPane.add(elektrijadaLbl);
 
+		
 		initButtons();
 		initButtonsListeners();
 		initPredmetiComboBox();
@@ -243,6 +244,8 @@ public class MainForm extends JFrame {
 		setButtonsSize();
 
 		initTestoviPanel();
+		lastPredmet = getSelectedPredmet();
+
 		
 		initTable();
 		scrollPane = new JScrollPane(mainTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -253,23 +256,6 @@ public class MainForm extends JFrame {
 		contentPane.add(scrollPane);
 		helpPane = scrollPane;
 		
-		JButton konacnaOcjenaButton = new JButton("STOKUCA");
-		konacnaOcjenaButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				EventQueue.invokeLater(new Runnable() {
-
-					@Override
-					public void run() {
-						new GradeGenerationForm(getSelectedPredmet(), mainTable.getStudents())
-						.setVisible(true);
-					}
-				});
-
-			}
-		});
-		konacnaOcjenaButton.setBounds(628, 131, 89, 23);
-		contentPane.add(konacnaOcjenaButton);
-		lastPredmet = getSelectedPredmet();
 
 	}
 
@@ -514,6 +500,24 @@ public class MainForm extends JFrame {
 		contentPane.add(searchButton);
 
 		/* Buttons by Boroja */
+		
+				JButton konacnaOcjenaButton = new JButton("Ocjeni");
+				konacnaOcjenaButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						EventQueue.invokeLater(new Runnable() {
+
+							@Override
+							public void run() {
+								new GradeGenerationForm(getSelectedPredmet(), mainTable.getStudents())
+								.setVisible(true);
+							}
+						});
+
+					}
+				});
+				konacnaOcjenaButton.setBounds(628, 131, 89, 23);
+				buttons.add(konacnaOcjenaButton);
+				buttonPanel.add(konacnaOcjenaButton);
 		showViewBtn = new JButton("Prikaz");
 
 		buttonPanel.add(showViewBtn);
@@ -550,7 +554,7 @@ public class MainForm extends JFrame {
 		buttonPanel.add(deleteBtn);
 		buttons.add(deleteBtn);
 
-		changeBtn = new JButton("Izmijeni studente");
+		changeBtn = new JButton("Izmijeni studenta");
 		changeBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
