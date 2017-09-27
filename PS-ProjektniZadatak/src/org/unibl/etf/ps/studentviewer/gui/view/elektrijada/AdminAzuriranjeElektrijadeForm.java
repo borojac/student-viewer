@@ -23,6 +23,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.elektrijada.AdminAzuriranjeElektrijadeController;
+import org.unibl.etf.ps.studentviewer.logic.controller.elektrijada.AdministratorElektrijadaFormController;
 import org.unibl.etf.ps.studentviewer.persistence.model.dao.ElektrijadaDAO;
 import org.unibl.etf.ps.studentviewer.persistence.model.dao.MySQLDAOFactory;
 import org.unibl.etf.ps.studentviewer.persistence.model.dto.ElektrijadaDTO;
@@ -41,12 +42,14 @@ public class AdminAzuriranjeElektrijadeForm extends JFrame {
 	private JComboBox elektrijadeCB;
 	private JTextField textFieldDatum;
 	private JTextField textFieldLokacija;
-
+	private AdministratorElektrijadaFormController adminElektFormKontroler;
 	/**
 	 * Create the frame.
+	 * @param adminElektFormKontroler 
 	 */
-	public AdminAzuriranjeElektrijadeForm() {
-		adminAzuriranjeElektrijadeKontroler = new AdminAzuriranjeElektrijadeController(this);
+	public AdminAzuriranjeElektrijadeForm(AdministratorElektrijadaFormController adminElektFormKontroler) {
+		this.adminElektFormKontroler = adminElektFormKontroler;
+		adminAzuriranjeElektrijadeKontroler = new AdminAzuriranjeElektrijadeController(this,adminElektFormKontroler);
 		setTitle("Ažuriranje Elektrijade");
 
 		setBounds(100, 100, 450, 270);

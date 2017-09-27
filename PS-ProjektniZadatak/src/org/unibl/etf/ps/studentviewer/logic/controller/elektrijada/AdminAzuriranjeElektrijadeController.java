@@ -19,9 +19,10 @@ import org.unibl.etf.ps.studentviewer.persistence.model.dto.ElektrijadaDTO;
 public class AdminAzuriranjeElektrijadeController {
 
 	private AdminAzuriranjeElektrijadeForm adminAzuriranjeElektrijadeForm;
-
-	public AdminAzuriranjeElektrijadeController(AdminAzuriranjeElektrijadeForm adminAzuriranjeElektrijadeForm) {
+	private AdministratorElektrijadaFormController adminElektFormKontroler;
+	public AdminAzuriranjeElektrijadeController(AdminAzuriranjeElektrijadeForm adminAzuriranjeElektrijadeForm, AdministratorElektrijadaFormController adminElektFormKontroler) {
 		this.adminAzuriranjeElektrijadeForm = adminAzuriranjeElektrijadeForm;
+		this.adminElektFormKontroler = adminElektFormKontroler;
 	}
 
 	public void zatvoriProzor() {
@@ -78,6 +79,7 @@ public class AdminAzuriranjeElektrijadeController {
 									"Uspješno ažurirana Elektrijada.");
 						}
 					});
+					adminElektFormKontroler.getAdminElektrijadaForm().resetujStanje();
 					adminAzuriranjeElektrijadeForm.dispose();
 				} else {
 					EventQueue.invokeLater(new Runnable() {

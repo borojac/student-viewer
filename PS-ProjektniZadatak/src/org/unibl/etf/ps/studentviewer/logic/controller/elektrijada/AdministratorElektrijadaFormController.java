@@ -129,10 +129,11 @@ public class AdministratorElektrijadaFormController {
 	}
 
 	public void azurirajElektrijadu() {
+		AdministratorElektrijadaFormController adminElektFormKontroler = this;
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				AdminAzuriranjeElektrijadeForm frame = new AdminAzuriranjeElektrijadeForm();
+				AdminAzuriranjeElektrijadeForm frame = new AdminAzuriranjeElektrijadeForm(adminElektFormKontroler);
 				frame.setVisible(true);
 			}
 		});
