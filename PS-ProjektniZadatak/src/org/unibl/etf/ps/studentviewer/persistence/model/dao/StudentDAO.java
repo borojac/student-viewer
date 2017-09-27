@@ -56,4 +56,6 @@ public interface StudentDAO {
 	public abstract boolean ukloniUcesce(int id) ;
 
 	public abstract boolean ukloniUcescePoDisciplini(DisciplinaDTO disciplinaDTO);
+	
+	public abstract  boolean ucesnikElekrijade(int idStudenta);
 }

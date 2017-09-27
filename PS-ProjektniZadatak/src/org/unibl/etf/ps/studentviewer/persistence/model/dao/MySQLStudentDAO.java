@@ -855,6 +855,37 @@ String getAllStudentsQuerry = "select * from student where StudentId not in (sel
 		return retVal;
 	}
 
+	@Override
+	public boolean ucesnikElekrijade(int idStudenta) {
+		boolean retVal = false;
+		
+		String provjera = "SELECT StudentId"
+				+ " FROM ucestvuje WHERE StudentId = ?";
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+
+			conn = DBUtility.open();
+			ps = conn.prepareStatement(provjera);
+			ps.setInt(1, idStudenta);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				retVal = true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.close(conn, rs, ps);
+		}
+
+		return retVal;
+	}
+
 	
 	
 }
