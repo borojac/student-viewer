@@ -21,9 +21,10 @@ import org.unibl.etf.ps.studentviewer.persistence.model.dto.StudentZaElektrijadu
 public class AdminBrisanjeElektrijadeController {
 
 	private AdminBrisanjeElektrijadeForm adminBrisanjeElektrijadeForm;
-
-	public AdminBrisanjeElektrijadeController(AdminBrisanjeElektrijadeForm adminBrisanjeElektrijadeForm) {
+	private AdministratorElektrijadaFormController adminElektFormKontroler;
+	public AdminBrisanjeElektrijadeController(AdminBrisanjeElektrijadeForm adminBrisanjeElektrijadeForm, AdministratorElektrijadaFormController adminElektFormKontroler) {
 		this.adminBrisanjeElektrijadeForm = adminBrisanjeElektrijadeForm;
+		this.adminElektFormKontroler = adminElektFormKontroler;
 	}
 
 	public void zatvoriProzor() {
@@ -50,6 +51,7 @@ public class AdminBrisanjeElektrijadeController {
 									"Uspješno obrisana Elektrijada.");
 						}
 					});
+					adminElektFormKontroler.getAdminElektrijadaForm().resetujStanje();
 					adminBrisanjeElektrijadeForm.dispose();
 				} else {
 					EventQueue.invokeLater(new Runnable() {

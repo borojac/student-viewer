@@ -24,6 +24,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.elektrijada.AdminBrisanjeElektrijadeController;
+import org.unibl.etf.ps.studentviewer.logic.controller.elektrijada.AdministratorElektrijadaFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.elektrijada.DodavanjeDisciplineController;
 import org.unibl.etf.ps.studentviewer.logic.controller.nalog.AccountFormController;
 import org.unibl.etf.ps.studentviewer.persistence.model.dao.DisciplinaDAO;
@@ -39,14 +40,17 @@ public class AdminBrisanjeElektrijadeForm extends JFrame {
 	private JPanel contentPane_1;
 	
 	private AdminBrisanjeElektrijadeController brisanjeElektrijadeKontroler;
+	private AdministratorElektrijadaFormController adminElektFormKontroler;
 	private JComboBox elektrijadeCB;
 
 
 	/**
 	 * Create the frame.
+	 * @param adminElektFormKontroler 
 	 */
-	public AdminBrisanjeElektrijadeForm() {
-		brisanjeElektrijadeKontroler = new AdminBrisanjeElektrijadeController(this);
+	public AdminBrisanjeElektrijadeForm(AdministratorElektrijadaFormController adminElektFormKontroler) {
+		this.adminElektFormKontroler = adminElektFormKontroler;
+		brisanjeElektrijadeKontroler = new AdminBrisanjeElektrijadeController(this,adminElektFormKontroler);
 		setTitle("Brisanje Elektrijade");
 		
 		

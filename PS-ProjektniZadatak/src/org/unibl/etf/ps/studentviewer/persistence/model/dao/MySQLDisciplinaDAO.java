@@ -165,7 +165,7 @@ public class MySQLDisciplinaDAO implements DisciplinaDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		String query = "SELECT Naziv, ElektrijadaId FROM zahtjev_disciplina WHERE ElektrijadaId=? AND NalogId=?";
+		String query = "SELECT Naziv, ElektrijadaId FROM zahtjev_disciplina WHERE ElektrijadaId=? AND NalogId=? AND DatumOdobrenja IS NULL";
 
 		try {
 
@@ -175,6 +175,7 @@ public class MySQLDisciplinaDAO implements DisciplinaDAO {
 			ps.setInt(2, idNaloga);
 			rs = ps.executeQuery();
 			while (rs.next()) {
+				
 				retVal.add(new DisciplinaDTO(rs.getString(1), rs.getInt(2)));
 			}
 

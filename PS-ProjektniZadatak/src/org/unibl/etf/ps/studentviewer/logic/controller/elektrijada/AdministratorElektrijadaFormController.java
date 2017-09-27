@@ -23,6 +23,10 @@ public class AdministratorElektrijadaFormController {
 
 	private AdminElektrijadaForm adminElektrijadaForm;
 
+	public AdminElektrijadaForm getAdminElektrijadaForm() {
+		return adminElektrijadaForm;
+	}
+
 	public AdministratorElektrijadaFormController(AdminElektrijadaForm adminElektrijadaForm) {
 		this.adminElektrijadaForm = adminElektrijadaForm;
 	}
@@ -88,10 +92,11 @@ public class AdministratorElektrijadaFormController {
 	}
 
 	public void obrisiDisciplinu() {
+		AdministratorElektrijadaFormController adminElektFormKontroler = this;
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				AdminBrisanjeDisciplineForm frame = new AdminBrisanjeDisciplineForm();
+				AdminBrisanjeDisciplineForm frame = new AdminBrisanjeDisciplineForm(adminElektFormKontroler);
 				frame.setVisible(true);
 			}
 		});
@@ -112,10 +117,11 @@ public class AdministratorElektrijadaFormController {
 	}
 
 	public void obrisiElektrijadu() {
+		AdministratorElektrijadaFormController adminElektFormKontroler = this;
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				AdminBrisanjeElektrijadeForm frame = new AdminBrisanjeElektrijadeForm();
+				AdminBrisanjeElektrijadeForm frame = new AdminBrisanjeElektrijadeForm(adminElektFormKontroler);
 				frame.setVisible(true);
 			}
 		});

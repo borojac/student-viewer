@@ -7,6 +7,7 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 import org.unibl.etf.ps.studentviewer.gui.view.elektrijada.AdminBrisanjeDisciplineForm;
+import org.unibl.etf.ps.studentviewer.gui.view.elektrijada.AdminElektrijadaForm;
 import org.unibl.etf.ps.studentviewer.persistence.model.dao.DisciplinaDAO;
 import org.unibl.etf.ps.studentviewer.persistence.model.dao.DodatnaNastavaDAO;
 import org.unibl.etf.ps.studentviewer.persistence.model.dao.ElektrijadaDAO;
@@ -21,8 +22,10 @@ import org.unibl.etf.ps.studentviewer.persistence.model.dto.NalogDTO;
 public class AdminBrisanjeDisciplineFormController {
 
 	private AdminBrisanjeDisciplineForm adminBrisanjeDisciplineForm;
-	public AdminBrisanjeDisciplineFormController(AdminBrisanjeDisciplineForm adminBrisanjeDisciplineForm) {
+	private AdministratorElektrijadaFormController adminElektFormKontroler;
+	public AdminBrisanjeDisciplineFormController(AdminBrisanjeDisciplineForm adminBrisanjeDisciplineForm, AdministratorElektrijadaFormController adminElektFormKontroler) {
 		this.adminBrisanjeDisciplineForm = adminBrisanjeDisciplineForm;
+		this.adminElektFormKontroler = adminElektFormKontroler;
 	}
 
 	public void obrisiDisciplinu(JComboBox elektrijadeCB, JComboBox disciplineCB) {
@@ -55,6 +58,7 @@ public class AdminBrisanjeDisciplineFormController {
 						JOptionPane.showMessageDialog(adminBrisanjeDisciplineForm, "Uspješno obrisana disciplina.");
 					}
 				});
+				adminElektFormKontroler.getAdminElektrijadaForm().resetujStanje();
 				adminBrisanjeDisciplineForm.dispose();
 			}else{
 				EventQueue.invokeLater(new Runnable() {

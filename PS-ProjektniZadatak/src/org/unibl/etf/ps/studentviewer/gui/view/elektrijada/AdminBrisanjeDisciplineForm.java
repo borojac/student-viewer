@@ -24,6 +24,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import org.unibl.etf.ps.studentviewer.logic.controller.elektrijada.AdminBrisanjeDisciplineFormController;
+import org.unibl.etf.ps.studentviewer.logic.controller.elektrijada.AdministratorElektrijadaFormController;
 import org.unibl.etf.ps.studentviewer.logic.controller.elektrijada.DodavanjeDisciplineController;
 import org.unibl.etf.ps.studentviewer.logic.controller.nalog.AccountFormController;
 import org.unibl.etf.ps.studentviewer.persistence.model.dao.DisciplinaDAO;
@@ -40,12 +41,16 @@ public class AdminBrisanjeDisciplineForm extends JFrame {
 	private JComboBox elektrijadeCB;
 	private NalogDTO nalogDTO;
 	private JComboBox disciplineCB;
+	private AdministratorElektrijadaFormController adminElektFormKontroler;
 	private AdminBrisanjeDisciplineFormController brisanjeDisciplineKontroler;
 	/**
 	 * Create the frame.
+	 * @param adminElektFormKontroler 
 	 */
-	public AdminBrisanjeDisciplineForm() {
-		brisanjeDisciplineKontroler = new AdminBrisanjeDisciplineFormController(this);
+	public AdminBrisanjeDisciplineForm(AdministratorElektrijadaFormController adminElektFormKontroler) {
+		this.adminElektFormKontroler = adminElektFormKontroler;
+		brisanjeDisciplineKontroler = new AdminBrisanjeDisciplineFormController(this,adminElektFormKontroler);
+		
 		setTitle("Brisanje discipline");
 		this.nalogDTO = nalogDTO;
 		

@@ -143,28 +143,31 @@ public class DodavanjeDisciplineForm extends JFrame {
 			DisciplinaDAO discDAO = dao.getDisciplinaDAO();
 			ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
 					.getDisciplinePoElektrijadi(selektovanaElektrijada.getId());
-			
 
 			ArrayList<DisciplinaDTO> disciplineKorisnika = (ArrayList<DisciplinaDTO>) discDAO
 					.getDiscipline(selektovanaElektrijada.getId(), nalogDTO.getNalogId());
-			
-			
-			ArrayList<DisciplinaDTO> disciplineZahtjevi = (ArrayList<DisciplinaDTO>) discDAO.getDisciplinePoZahtjevima(selektovanaElektrijada.getId(),nalogDTO.getNalogId());
-			
-			for (DisciplinaDTO disciplinaZ : disciplineZahtjevi){
+
+			ArrayList<DisciplinaDTO> disciplineZahtjevi = (ArrayList<DisciplinaDTO>) discDAO
+					.getDisciplinePoZahtjevima(selektovanaElektrijada.getId(), nalogDTO.getNalogId());
+
+			for (DisciplinaDTO disciplinaZ : disciplineZahtjevi) {
 				disciplineKorisnika.add(disciplinaZ);
 			}
-			
+
 			if (disciplineKorisnika.isEmpty()) {
 				for (DisciplinaDTO di : discipline) {
 					disciplineCB.addItem(di.getNaziv());
 				}
-			}else{
+			} else {
 				for (DisciplinaDTO di : discipline) {
-					for (DisciplinaDTO diKorisnika : disciplineKorisnika)
-						if (!(diKorisnika.getNaziv().equals(di.getNaziv())
+					boolean prisutnaDisc = false;
+					for (DisciplinaDTO diKorisnika : disciplineKorisnika){
+						if ((diKorisnika.getNaziv().equals(di.getNaziv())
 								&& diKorisnika.getElektrijadaId() == di.getElektrijadaId()))
-							disciplineCB.addItem(di.getNaziv());
+							prisutnaDisc = true;
+					}
+					if (!prisutnaDisc)
+						disciplineCB.addItem(di.getNaziv());
 				}
 			}
 
@@ -178,16 +181,27 @@ public class DodavanjeDisciplineForm extends JFrame {
 							.getDisciplinePoElektrijadi(selektovanaElektrijada.getId());
 					ArrayList<DisciplinaDTO> disciplineKorisnika = (ArrayList<DisciplinaDTO>) discDAO
 							.getDiscipline(selektovanaElektrijada.getId(), nalogDTO.getNalogId());
+					ArrayList<DisciplinaDTO> disciplineZahtjevi = (ArrayList<DisciplinaDTO>) discDAO
+							.getDisciplinePoZahtjevima(selektovanaElektrijada.getId(), nalogDTO.getNalogId());
+
+					for (DisciplinaDTO disciplinaZ : disciplineZahtjevi) {
+						disciplineKorisnika.add(disciplinaZ);
+					}
+
 					if (disciplineKorisnika.isEmpty()) {
 						for (DisciplinaDTO di : discipline) {
 							disciplineCB.addItem(di.getNaziv());
 						}
-					}else{
+					} else {
 						for (DisciplinaDTO di : discipline) {
-							for (DisciplinaDTO diKorisnika : disciplineKorisnika)
-								if (!(diKorisnika.getNaziv().equals(di.getNaziv())
+							boolean prisutnaDisc = false;
+							for (DisciplinaDTO diKorisnika : disciplineKorisnika){
+								if ((diKorisnika.getNaziv().equals(di.getNaziv())
 										&& diKorisnika.getElektrijadaId() == di.getElektrijadaId()))
-									disciplineCB.addItem(di.getNaziv());
+									prisutnaDisc = true;
+							}
+							if (!prisutnaDisc)
+								disciplineCB.addItem(di.getNaziv());
 						}
 					}
 				}

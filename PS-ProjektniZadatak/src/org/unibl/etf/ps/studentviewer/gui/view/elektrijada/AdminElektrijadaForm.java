@@ -66,6 +66,10 @@ public class AdminElektrijadaForm extends JFrame {
 	
 	private DefaultTableModel dtm;
 	
+	public JTable getAdminZahtjeviJt() {
+		return adminZahtjeviJt;
+	}
+
 	public AdminElektrijadaForm(AdministratorForm administratorForm) {
 		administratorElektrijadaFormController = new AdministratorElektrijadaFormController(this);
 		this.administratorForm = administratorForm;
@@ -221,6 +225,32 @@ public class AdminElektrijadaForm extends JFrame {
 		obrisiDisciplinuBtn.setBounds(240, 500, 180, 40);
 		contentPane.add(obrisiDisciplinuBtn);
 		  
+	}
+	
+	public void resetujStanje(){
+		MySQLDAOFactory factory = new MySQLDAOFactory();
+		NalogDAO nalogDAO = factory.getNalogDAO();
+		ElektrijadaDAO elektrijadaDAO = factory.getElektrijadaDAO();
+		ZahtjevDisciplinaDAO zahtjevDisciplinaDAO = factory.getZahtjevDiciplinaDAO();
+		list = zahtjevDisciplinaDAO.getAllZahtjev();
+		
+		dtm = new DefaultTableModel();
+		dtm.addColumn("Ime");
+		dtm.addColumn("Prezime");
+		dtm.addColumn("Naziv discipline");
+		dtm.addColumn("Elektrijada");
+		dtm.addColumn("Datum zahtjeva");
+		for(int i = 0; i < list.size(); i++) {
+			int id1 = (list.get(i)).getNalogId();
+			NalogDTO nalogDTO = nalogDAO.getNalog(id1);
+			int id2 = list.get(i).getElektrijadaId();
+			ElektrijadaDTO elektrijadaDTO = elektrijadaDAO.getElektrijadaPoId(id2);
+	
+			Object[] rowData = { nalogDTO.getIme(), nalogDTO.getPrezime(), list.get(i).getNaziv(), elektrijadaDTO.getLokacija()+ ", " + elektrijadaDTO.getDatum(),list.get(i).getDatumZahtjeva() };
+			dtm.addRow(rowData);
+		}
+		adminZahtjeviJt.setModel(dtm);
+		dtm.fireTableDataChanged();
 	}
 	
 	private void initButtonsListeners() {
