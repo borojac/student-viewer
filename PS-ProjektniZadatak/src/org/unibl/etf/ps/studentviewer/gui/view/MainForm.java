@@ -71,14 +71,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class MainForm extends JFrame {
-	
+
 	private JPanel contentPane;
 	private MainFormController mainFormController = new MainFormController(this);
 	private NalogDTO nalogDTO;
 	private PredmetDTO lastPredmet = null;
 
 	private ArrayList<PredmetDTO> predmetiList;
-	
+
 	ActionListener actionListener = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -113,7 +113,7 @@ public class MainForm extends JFrame {
 	public static JScrollPane getScrollPane() {
 		return helpPane;
 	}
-	
+
 	private MainTable mainTable = null;
 
 	private JPanel testoviPanel;
@@ -234,20 +234,20 @@ public class MainForm extends JFrame {
 		elektrijadaLbl.setBounds(745, 225, 200, 25);
 		contentPane.add(elektrijadaLbl);
 
-		
+
 		initButtons();
 		initButtonsListeners();
 		initPredmetiComboBox();
 		initElektrijadaComboBox();
 		initComboBoxListener();
-		
+
 
 		setButtonsSize();
 
 		initTestoviPanel();
 		lastPredmet = getSelectedPredmet();
 
-		
+
 		initTable();
 		scrollPane = new JScrollPane(mainTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -256,7 +256,7 @@ public class MainForm extends JFrame {
 		scrollPane.setBounds(10, 219, 556, 382);
 		contentPane.add(scrollPane);
 		helpPane = scrollPane;
-		
+
 
 	}
 
@@ -325,7 +325,7 @@ public class MainForm extends JFrame {
 
 	private void initTable() {
 		mainTable = new MainTable();
-		
+
 		StudentsForMainTable.setMainTable(mainTable);
 		mainTable.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		mainTable.setForeground(new Color(0, 0, 139));
@@ -501,24 +501,26 @@ public class MainForm extends JFrame {
 		contentPane.add(searchButton);
 
 		/* Buttons by Boroja */
-		
-				JButton konacnaOcjenaButton = new JButton("Ocjeni");
-				konacnaOcjenaButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						EventQueue.invokeLater(new Runnable() {
 
-							@Override
-							public void run() {
-								new GradeGenerationForm(getSelectedPredmet(), mainTable.getStudents())
-								.setVisible(true);
-							}
-						});
+		JButton konacnaOcjenaButton = new JButton("Ocjeni");
+		konacnaOcjenaButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (getSelectedPredmet() != null) {
+					EventQueue.invokeLater(new Runnable() {
 
-					}
-				});
-				konacnaOcjenaButton.setBounds(628, 131, 89, 23);
-				buttons.add(konacnaOcjenaButton);
-				buttonPanel.add(konacnaOcjenaButton);
+						@Override
+						public void run() {
+							new GradeGenerationForm(getSelectedPredmet(), mainTable.getStudents())
+							.setVisible(true);
+						}
+					});
+				}
+
+			}
+		});
+		konacnaOcjenaButton.setBounds(628, 131, 89, 23);
+		buttons.add(konacnaOcjenaButton);
+		buttonPanel.add(konacnaOcjenaButton);
 		showViewBtn = new JButton("Prikaz");
 
 		buttonPanel.add(showViewBtn);
@@ -667,7 +669,7 @@ public class MainForm extends JFrame {
 				}
 				elektrijadaCB.addItem(el.getLokacija() + ", " + newDf.format(datum));
 			}
-			
+
 			int indeks = elektrijadaCB.getSelectedIndex();
 			ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
 			DisciplinaDAO discDAO = dao.getDisciplinaDAO();
@@ -718,7 +720,7 @@ public class MainForm extends JFrame {
 		NalogDAO nalogDAO = nalogFactory.getNalogDAO();
 
 		predmetiList = nalogDAO.getPredmeteNaNalogu(nalogDTO.getNalogId());
-		
+
 		for(int i = 0; i < predmetiList.size(); i++) {
 			predmetiCB.addItem((predmetiList.get(i)).getSifraPredmeta() + " - " + (predmetiList.get(i)).getNazivPredmeta());
 		}
@@ -726,45 +728,45 @@ public class MainForm extends JFrame {
 	}
 
 	public void resetElektrijadaComboBox() {
-//		MySQLDAOFactory dao = new MySQLDAOFactory();
-//		ElektrijadaDAO eleDAO = dao.getElektrijadaDAO();
-//		ArrayList<ElektrijadaDTO> elektrijade = (ArrayList<ElektrijadaDTO>) eleDAO
-//				.getListuElektrijada(nalogDTO.getNalogId()); 
-//		if (elektrijadaCB.getItemCount() > 0)
-//			elektrijadaCB.removeAllItems();
-//		if (elektrijade.size() > 0 ){
-//			int indeks = elektrijadaCB.getSelectedIndex();
-//			if (disciplineCB.getItemCount() > 0)
-//				disciplineCB.removeAllItems();
-//			if (indeks != -1) {			
-//				ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
-//				DisciplinaDAO discDAO = dao.getDisciplinaDAO();
-//				ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
-//						.getDiscipline(selektovanaElektrijada.getId(), nalogDTO.getNalogId());// nalogDTO
-//				// umjesto 2
-//				for (DisciplinaDTO di : discipline) {
-//					disciplineCB.addItem(di.getNaziv());
-//				}
-//			}
-//		}
-//		elektrijadaCB.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				if (disciplineCB.getItemCount() > 0)
-//					disciplineCB.removeAllItems();
-//				int indeks = elektrijadaCB.getSelectedIndex();
-//				if (indeks != -1) {
-//					ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
-//					DisciplinaDAO discDAO = dao.getDisciplinaDAO();
-//					ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
-//							.getDiscipline(selektovanaElektrijada.getId(), nalogDTO.getNalogId());// nalogDTO
-//					// umjesto
-//					// 2
-//					for (DisciplinaDTO di : discipline) {
-//						disciplineCB.addItem(di.getNaziv());
-//					}
-//				}
-//			}
-//		});
+		//		MySQLDAOFactory dao = new MySQLDAOFactory();
+		//		ElektrijadaDAO eleDAO = dao.getElektrijadaDAO();
+		//		ArrayList<ElektrijadaDTO> elektrijade = (ArrayList<ElektrijadaDTO>) eleDAO
+		//				.getListuElektrijada(nalogDTO.getNalogId()); 
+		//		if (elektrijadaCB.getItemCount() > 0)
+		//			elektrijadaCB.removeAllItems();
+		//		if (elektrijade.size() > 0 ){
+		//			int indeks = elektrijadaCB.getSelectedIndex();
+		//			if (disciplineCB.getItemCount() > 0)
+		//				disciplineCB.removeAllItems();
+		//			if (indeks != -1) {			
+		//				ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
+		//				DisciplinaDAO discDAO = dao.getDisciplinaDAO();
+		//				ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
+		//						.getDiscipline(selektovanaElektrijada.getId(), nalogDTO.getNalogId());// nalogDTO
+		//				// umjesto 2
+		//				for (DisciplinaDTO di : discipline) {
+		//					disciplineCB.addItem(di.getNaziv());
+		//				}
+		//			}
+		//		}
+		//		elektrijadaCB.addActionListener(new ActionListener() {
+		//			public void actionPerformed(ActionEvent e) {
+		//				if (disciplineCB.getItemCount() > 0)
+		//					disciplineCB.removeAllItems();
+		//				int indeks = elektrijadaCB.getSelectedIndex();
+		//				if (indeks != -1) {
+		//					ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
+		//					DisciplinaDAO discDAO = dao.getDisciplinaDAO();
+		//					ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
+		//							.getDiscipline(selektovanaElektrijada.getId(), nalogDTO.getNalogId());// nalogDTO
+		//					// umjesto
+		//					// 2
+		//					for (DisciplinaDTO di : discipline) {
+		//						disciplineCB.addItem(di.getNaziv());
+		//					}
+		//				}
+		//			}
+		//		});
 		if (elektrijadaCB.getItemCount() > 0 ) elektrijadaCB.removeAllItems();
 		if (disciplineCB.getItemCount() > 0 ) disciplineCB.removeAllItems();
 		MySQLDAOFactory dao = new MySQLDAOFactory();
@@ -786,7 +788,7 @@ public class MainForm extends JFrame {
 				}
 				elektrijadaCB.addItem(el.getLokacija() + ", " + newDf.format(datum));
 			}
-			
+
 			int indeks = elektrijadaCB.getSelectedIndex();
 			ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
 			DisciplinaDAO discDAO = dao.getDisciplinaDAO();
