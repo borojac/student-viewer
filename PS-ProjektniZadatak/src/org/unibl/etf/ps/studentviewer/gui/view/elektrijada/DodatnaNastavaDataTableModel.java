@@ -69,7 +69,7 @@ public class DodatnaNastavaDataTableModel extends AbstractTableModel {
 			Date date = null;
 			try {
 				DateFormat df = null;
-				if (nastava.getDatum().toString().contains("CEST")){
+				if (nastava.getDatum().toString().contains("CET") || nastava.getDatum().toString().contains("CEST") ){
 					 df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
 				}else{
 					 df = new SimpleDateFormat("yyyy-MM-dd hh:mm");

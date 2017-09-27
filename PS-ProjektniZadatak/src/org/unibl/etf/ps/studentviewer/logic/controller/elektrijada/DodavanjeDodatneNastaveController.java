@@ -37,30 +37,33 @@ public class DodavanjeDodatneNastaveController {
 			ElektrijadaController kontroler, DodatnaNastavaDataTableModel dodatnaNastavaDataModel) {
 		String naziv = textFieldNaziv.getText();
 		String datum = textFieldDatum.getText();
-		String napomena = textAreaNapomena.getText();
-		DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
-		Date startDate = null;
-		try {
-			startDate = df.parse(datum);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (kontroler.validnostDatuma(datum)) {
-			//dodatnaNastavaDataModel.setDateFormat(new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy"));
-			DodatnaNastavaDTO nastava = new DodatnaNastavaDTO(0,startDate,napomena,naziv,kontroler.getNalogDTO().getNalogId(),kontroler.getDisciplinaDTO().getNaziv(),kontroler.getElektrijada().getId());
-			if (kontroler.getListaDodatnihNastava().add(nastava)) {
-				dodatnaNastavaDataModel.fireTableDataChanged();
-				tableNastavneTeme.setModel(dodatnaNastavaDataModel);
-				tableNastavneTeme.repaint();
-				kontroler.dodavanjeNastave(nastava);
-				nastavaForm.dispose();
-				kontroler.getForma().setEnabled(true);
+		if (naziv.length() == 0 || datum.length() == 0 ){
+			JOptionPane.showMessageDialog(nastavaForm, "Popunite polja za naziv teme i za datum.");
+		}else{
+			String napomena = textAreaNapomena.getText();
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+			Date startDate = null;
+			try {
+				startDate = df.parse(datum);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} else {
-			JOptionPane.showMessageDialog(nastavaForm, "Greška u formi datuma.");
+			if (kontroler.validnostDatuma(datum)) {
+				//dodatnaNastavaDataModel.setDateFormat(new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy"));
+				DodatnaNastavaDTO nastava = new DodatnaNastavaDTO(0,startDate,napomena,naziv,kontroler.getNalogDTO().getNalogId(),kontroler.getDisciplinaDTO().getNaziv(),kontroler.getElektrijada().getId());
+				if (kontroler.getListaDodatnihNastava().add(nastava)) {
+					dodatnaNastavaDataModel.fireTableDataChanged();
+					tableNastavneTeme.setModel(dodatnaNastavaDataModel);
+					tableNastavneTeme.repaint();
+					kontroler.dodavanjeNastave(nastava);
+					nastavaForm.dispose();
+					kontroler.getForma().setEnabled(true);
+				}
+			} else {
+				JOptionPane.showMessageDialog(nastavaForm, "Greška u formi datuma.");
+			}
 		}
-
 	}
 
 	public void izborDatuma(DodavanjeDodatneNastaveForm nastavaForm, JTextField textFieldDatum) {
