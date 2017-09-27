@@ -32,13 +32,12 @@ public class MainTable extends JTable {
 		identifiers.add("Komentar");
 		identifiers.addAll(Arrays.asList(StudentsForMainTable.getAllIspiti()));
 		identifiers.add("Ocjena");
-		
+
 		columnIdentifiers = new String[identifiers.size()];
 		for (int i = 0; i < columnIdentifiers.length - 1; i++)
 			columnIdentifiers[i] = new String(identifiers.get(i));
 
 	}
-	
 
 	public static void setNewColumnIdentifiers(String[] identifiers) {
 		ArrayList<String> list = new ArrayList<String>();
@@ -53,8 +52,7 @@ public class MainTable extends JTable {
 				list.add(s);
 		list.add("Ocjena");
 		columnIdentifiers = list.toArray(new String[list.size()]);
-		
-		
+
 		map.put("Indeks", ShowViewData.D_BROJINDEKSA);
 		map.put("Ime", ShowViewData.D_IME);
 		map.put("Prezime", ShowViewData.D_PREZIME);
@@ -82,8 +80,7 @@ public class MainTable extends JTable {
 		ArrayList<String> columnNames = new ArrayList<String>();
 		for (int i = 0; i < getColumnCount(); i++)
 			columnNames.add(getColumnName(i));
-		
-		
+
 		// BRISANJE VISKA KOLONA
 		int ii = 0;
 		ArrayList<String> toDelete = new ArrayList<String>();
@@ -101,7 +98,6 @@ public class MainTable extends JTable {
 			columnNames.remove(s);
 		}
 
-		
 		ii = 0;
 		for (String s : columnIdentifiers) {
 			if (columnNames.contains(s) && !ShowViewData.getValue(map.get(s))) {
@@ -129,7 +125,7 @@ public class MainTable extends JTable {
 			}
 		}
 		model.setColumnIdentifiers(columnNames.toArray(new String[columnNames.size()]));
-		
+
 		model.fireTableStructureChanged();
 		setSizeOfColumns();
 	}
@@ -142,15 +138,14 @@ public class MainTable extends JTable {
 			divider = columnCount;
 		else
 			divider = 4;
-		
+
 		int dividend = 537;
-		
+
 		if (columnCount > 4 && getStudents().size() <= 21)
 			dividend += 17;
 		else if (columnCount <= 4 && getStudents().size() <= 22)
-			dividend +=17;
+			dividend += 17;
 
-		
 		for (; tc.hasMoreElements();)
 			tc.nextElement().setPreferredWidth(dividend / divider);
 	}
@@ -172,10 +167,10 @@ public class MainTable extends JTable {
 			if (ShowViewData.getValue(ShowViewData.D_IME))
 				forRet[i][j++] = student.getIme();
 
-			if (ShowViewData.getValue(ShowViewData.D_PREZIME)) 
+			if (ShowViewData.getValue(ShowViewData.D_PREZIME))
 				forRet[i][j++] = student.getPrezime();
-			
-			if (ShowViewData.getValue(ShowViewData.D_ELEKTRIJADA)) 
+
+			if (ShowViewData.getValue(ShowViewData.D_ELEKTRIJADA))
 				forRet[i][j++] = student.getElektrijada();
 
 			if (ShowViewData.getValue(ShowViewData.D_KOMENTAR))
@@ -185,7 +180,7 @@ public class MainTable extends JTable {
 				if (s != null && ShowViewData.getValue(s)) {
 					forRet[i][j++] = student.getTestForShowView(s);
 				}
-			
+
 			if (ShowViewData.getValue(ShowViewData.D_OCJENA))
 				if (new Integer(student.getOcjena()) > 0)
 					forRet[i][j++] = new Integer(student.getOcjena()).toString();
@@ -204,7 +199,7 @@ public class MainTable extends JTable {
 		map.put("Elektrijada", ShowViewData.D_ELEKTRIJADA);
 		map.put("Komentar", ShowViewData.D_KOMENTAR);
 		map.put("Ocjena", ShowViewData.D_OCJENA);
-		
+
 		for (int i = 5; i < columnIdentifiers.length - 1; i++)
 			map.put(columnIdentifiers[i], columnIdentifiers[i]);
 	}
@@ -242,7 +237,21 @@ public class MainTable extends JTable {
 		setStudents(students);
 		changeView();
 	}
-	
+
+	public void setStudentElektrijada(int idStudent, boolean b) {
+		for (StudentMainTableDTO s : getStudents()) {
+			if (s.getStudentId() == idStudent) {
+				if (b)
+					s.setElektrijada();
+				else
+					s.resetElektrijada();
+				break;
+			}
+		}
+		setStudents(students);
+		changeView();
+	}
+
 	public void tableChanged() {
 		ArrayList<StudentMainTableDTO> tempList = new ArrayList<>();
 		for (StudentMainTableDTO s : StudentsForMainTable.getAllStudents())

@@ -57,6 +57,11 @@ public class MySQLStudentMainTableDAO implements StudentMainTableDAO {
 							rs.getString(4));
 					setCommentForStudent(student, rs.getInt(1));
 					setOcjenaForStudent(student, rs.getInt(1));
+					if (new MySQLDAOFactory().getStudentDAO().ucesnikElekrijade(rs.getInt(1))) 
+						student.setElektrijada();
+					else
+						student.resetElektrijada();
+						
 					student.setStudentId(rs.getInt(1));
 					list.add(student);
 				}
