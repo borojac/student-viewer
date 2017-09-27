@@ -77,7 +77,11 @@ public class PredmetChooseAddTypeFormController {
 						adminPredmetiFormController.getAdminPredmetiForm().getObrisiBtn().setEnabled(false);
 					}
 					else {
-						JOptionPane.showMessageDialog(predmetChoseAddTypeForm, "Neuspjesno dodavanje predmeta!", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
+						adminPredmetiFormController.getAdminPredmetiForm().initTable();
+						JOptionPane.showMessageDialog(predmetChoseAddTypeForm, "Neuspjesno dodavanje svih predmeta!", "Obavjestenje", JOptionPane.INFORMATION_MESSAGE);
+						adminPredmetiFormController.getAdminPredmetiForm().getPredmetiTbl().getSelectionModel().setSelectionInterval(-1, -1);
+						adminPredmetiFormController.getAdminPredmetiForm().getIzmjeniBtn().setEnabled(false);
+						adminPredmetiFormController.getAdminPredmetiForm().getObrisiBtn().setEnabled(false);
 					}
 				} else {
 					StringBuilder message = new StringBuilder("Podaci nisu uneseni! Greska u ");
