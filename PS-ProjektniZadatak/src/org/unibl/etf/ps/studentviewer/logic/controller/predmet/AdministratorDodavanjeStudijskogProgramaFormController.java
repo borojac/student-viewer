@@ -17,10 +17,12 @@ public class AdministratorDodavanjeStudijskogProgramaFormController {
 	
 	public void dodajStudProg() {
 		String nazivSP = administratorDodavanjeStudijskogProgramaForm.getNazivSP();
+		nazivSP = nazivSP.substring(0, 1).toUpperCase() + nazivSP.substring(1).toLowerCase();
 		int ects = administratorDodavanjeStudijskogProgramaForm.getEcts();
 		short ciklus = administratorDodavanjeStudijskogProgramaForm.getCiklus();
 		short trajanje = administratorDodavanjeStudijskogProgramaForm.getTrajanje();
 		String zvanje = administratorDodavanjeStudijskogProgramaForm.getZvanje();
+		zvanje = zvanje.toLowerCase();
 		
 		if("".equals(nazivSP) || ects == -1 || ciklus == -1 || trajanje == -1 || "".equals(zvanje)) {
 			JOptionPane.showMessageDialog(administratorDodavanjeStudijskogProgramaForm, "Niste popunili sva polja.", "Upozorenje!", JOptionPane.WARNING_MESSAGE);

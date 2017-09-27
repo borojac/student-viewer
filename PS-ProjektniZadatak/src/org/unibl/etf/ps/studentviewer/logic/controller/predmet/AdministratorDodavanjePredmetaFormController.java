@@ -23,6 +23,7 @@ public class AdministratorDodavanjePredmetaFormController {
 	public void dodajPredmet() {
 		String sifra = administratorDodavanjePredmetaForm.getSifra();
 		String nazivPredmeta = administratorDodavanjePredmetaForm.getNazivPredmeta();
+		nazivPredmeta = nazivPredmeta.substring(0, 1).toUpperCase() + nazivPredmeta.substring(1).toLowerCase();
 		short ects = administratorDodavanjePredmetaForm.getEcts();
 		short semestar = administratorDodavanjePredmetaForm.getSemestar();
 		char tipPredmeta = administratorDodavanjePredmetaForm.getTipPredmeta();
