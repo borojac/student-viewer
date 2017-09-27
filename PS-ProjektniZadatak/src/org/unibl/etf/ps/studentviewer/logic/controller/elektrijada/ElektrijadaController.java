@@ -435,7 +435,7 @@ public class ElektrijadaController {
 		body.setFont(font);
 		body.setTabSettings(new TabSettings());
 		for (StudentZaElektrijaduDTO student : listaStudenata) {
-			final String studentString = student.getIndeks() + " " + student.getIme() + " " + student.getPrezime() + " "
+			final String studentString = student.getIndeks() + " " + student.getIme() + " " + student.getPrezime() + ", "
 					+ student.getKomentar();
 			body.add(new Chunk(studentString));
 			body.add("\n");
@@ -474,7 +474,7 @@ public class ElektrijadaController {
 		body.setFont(font);
 		body.setTabSettings(new TabSettings());
 		for (StudentZaElektrijaduDTO student : listaStudenata) {
-			final String studentString = student.getIndeks() + " " + student.getIme() + " " + student.getPrezime() + " "
+			final String studentString = student.getIndeks() + " " + student.getIme() + " " + student.getPrezime() + ", "
 					+ student.getKomentar();
 			body.add(new Chunk(studentString));
 			body.add("\n");
