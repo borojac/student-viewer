@@ -56,9 +56,9 @@ public class DodavanjeDodatneNastaveController {
 					dodatnaNastavaDataModel.fireTableDataChanged();
 					tableNastavneTeme.setModel(dodatnaNastavaDataModel);
 					tableNastavneTeme.repaint();
-					kontroler.dodavanjeNastave(nastava);
-					nastavaForm.dispose();
+					kontroler.dodavanjeNastave(nastava);					
 					kontroler.getForma().setEnabled(true);
+					nastavaForm.dispose();
 				}
 			} else {
 				JOptionPane.showMessageDialog(nastavaForm, "Greška u formi datuma.");

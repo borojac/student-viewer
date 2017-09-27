@@ -51,8 +51,9 @@ public class DodavanjeStudentaZaElektrijaduController {
 			studentiZaElektrijaduDataModel.fireTableDataChanged();
 			tableStudenti.setModel(studentiZaElektrijaduDataModel);
 			tableStudenti.repaint();
-			dodavanjeForma.dispose();
+			
 			kontroler.getForma().setEnabled(true);
+			dodavanjeForma.dispose();
 
 		}
 	}
