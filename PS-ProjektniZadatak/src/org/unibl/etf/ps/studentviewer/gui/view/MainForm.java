@@ -139,6 +139,7 @@ public class MainForm extends JFrame {
 
 	@Override
 	public void dispose() {
+		if (getSelectedPredmet() != null)
 		UndoRedoData.saveState(getNalogDTO(), getSelectedPredmet());
 		super.dispose();
 	}

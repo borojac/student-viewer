@@ -307,6 +307,9 @@ public class MainFormController {
 			mainForm.getMainTable().setStudents(temp);
 			mainForm.getMainTable().changeView();
 			showForm = new ShowForm(this);
+		}else {
+			getMainTable().setStudents(new ArrayList<StudentMainTableDTO>());
+			getMainTable().changeView();
 		}
 	}
 

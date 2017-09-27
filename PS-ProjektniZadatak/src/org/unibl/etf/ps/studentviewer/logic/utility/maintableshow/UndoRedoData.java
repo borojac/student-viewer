@@ -54,8 +54,8 @@ public class UndoRedoData {
 
 		for (String s : state) { // instead of i -> jmbg
 			StudentMainTableDTO student = StudentsForMainTable.getByBrojIndeksa(s);
-			if (student!=null)
-			students.add(student);
+			if (student != null)
+				students.add(student);
 		}
 
 		return students;
@@ -73,8 +73,8 @@ public class UndoRedoData {
 
 		for (String s : state) { // instead of i -> jmbg
 			StudentMainTableDTO student = StudentsForMainTable.getByBrojIndeksa(s);
-			if (student!=null)
-			students.add(student);
+			if (student != null)
+				students.add(student);
 		}
 
 		return students;
@@ -82,7 +82,7 @@ public class UndoRedoData {
 	}
 
 	public static void saveState(NalogDTO nalogDTO, PredmetDTO selectedPredmet) {
-		if (stateList.size() > 0) {
+		if (stateList.size() > 0 && selectedPredmet == null) {
 			StringBuilder sb = new StringBuilder("");
 			for (ArrayList<String> helpList : stateList) {
 				for (String s : helpList) {
@@ -90,7 +90,8 @@ public class UndoRedoData {
 				}
 				sb.append("#");
 			}
-			new MySQLStudentMainTableDAO().setStateOfMainTable(selectedPredmet, nalogDTO, sb.toString());
+			if (selectedPredmet != null)
+				new MySQLStudentMainTableDAO().setStateOfMainTable(selectedPredmet, nalogDTO, sb.toString());
 		}
 	}
 
@@ -105,16 +106,16 @@ public class UndoRedoData {
 					tempList.add(s);
 			stateList.add(tempList);
 		}
-		
+
 		position = lists.length - 1;
-		
+
 		ArrayList<String> temp = stateList.get(stateList.size() - 1);
 		ArrayList<StudentMainTableDTO> temp2 = new ArrayList<StudentMainTableDTO>();
 		for (String s : temp)
 			for (StudentMainTableDTO st : StudentsForMainTable.getAllStudents())
 				if (s.equals(st.getBrojIndeksa()))
 					temp2.add(st);
-		
+
 		return temp2;
 	}
 }
