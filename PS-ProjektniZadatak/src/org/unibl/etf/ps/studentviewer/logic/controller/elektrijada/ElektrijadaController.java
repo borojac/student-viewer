@@ -530,9 +530,19 @@ public class ElektrijadaController {
 			for (StudentZaElektrijaduDTO studentIzBaze : listaStudentaZaElektrijaduIzBaze) {
 				if (!listaStudenata.contains(studentIzBaze)) {
 					stDAO.obrisiStudentaZaElektrijadu(studentIzBaze.getId());
+					mainForm.getMainTable().setStudentElektrijada(studentIzBaze.getId(), false);
 				}
 			}
 
+			ArrayList<StudentZaElektrijaduDTO> listaZaSetovanje = (ArrayList<StudentZaElektrijaduDTO>) stDAO
+					.getStudentiZaElektrijadu(disciplinaDTO.getNaziv(), elektrijada.getId());
+			
+			for (StudentZaElektrijaduDTO studentZaSetovanje : listaZaSetovanje){
+				mainForm.getMainTable().setStudentElektrijada(studentZaSetovanje.getId(), true);
+				System.out.println(studentZaSetovanje.getId()+" ");
+			}
+			
+			
 			for (DodatnaNastavaDTO nastava : listaDodatnihNastava) {
 				boolean prisutna = false;
 				for (DodatnaNastavaDTO nastavaIzBaze : listaDodatnihNastavaIzBaze) {
