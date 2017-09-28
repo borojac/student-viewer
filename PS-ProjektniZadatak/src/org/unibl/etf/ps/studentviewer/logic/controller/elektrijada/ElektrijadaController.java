@@ -529,7 +529,7 @@ public class ElektrijadaController {
 
 			for (StudentZaElektrijaduDTO studentIzBaze : listaStudentaZaElektrijaduIzBaze) {
 				if (!listaStudenata.contains(studentIzBaze)) {
-					stDAO.obrisiStudentaZaElektrijadu(studentIzBaze.getId());
+					stDAO.obrisiStudentaZaElektrijadu(studentIzBaze.getId());					
 					mainForm.getMainTable().setStudentElektrijada(studentIzBaze.getId(), false);
 				}
 			}
@@ -539,7 +539,7 @@ public class ElektrijadaController {
 			
 			for (StudentZaElektrijaduDTO studentZaSetovanje : listaZaSetovanje){
 				mainForm.getMainTable().setStudentElektrijada(studentZaSetovanje.getId(), true);
-				System.out.println(studentZaSetovanje.getId()+" ");
+				
 			}
 			
 			
