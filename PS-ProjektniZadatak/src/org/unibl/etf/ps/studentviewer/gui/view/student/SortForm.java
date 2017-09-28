@@ -44,19 +44,19 @@ public class SortForm extends JFrame {
 	private MainFormController mainFormController = null;
 
 	private JPanel panel_1;
-	
+
 	ArrayList<String> examsToSort = new ArrayList<String>();
-	
+
 	/**
 	 * Create the frame.
 	 */
-	
-	
-	
+
+
+
 	public void setExamsToSort(ArrayList<String> exams) {
 		this.examsToSort = exams;
 	}
-	
+
 	public void resetTestCheckBox() {
 		testCheckBox.setSelected(false);
 	}
@@ -71,13 +71,13 @@ public class SortForm extends JFrame {
 
 	public SortForm(MainFormController mainFormController) {
 		setTitle("Sortiranje");
-		
+
 		addWindowListener(new WindowAdapter() {
-			   public void windowClosing(WindowEvent evt) {
-				   mainFormController.resetSortFormOpened();
-			   }
-			  });
-		
+			public void windowClosing(WindowEvent evt) {
+				mainFormController.resetSortFormOpened();
+			}
+		});
+
 		this.mainFormController = mainFormController;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 318, 469);
@@ -112,26 +112,27 @@ public class SortForm extends JFrame {
 			e.printStackTrace();
 		}
 		contentPane.add(label);
-		
+
 		JLabel label_1 = new JLabel("");
 		label_1.setBackground(Color.WHITE);
 		label_1.setOpaque(true);
 		label_1.setBounds(0, 0, 66, 120);
 		contentPane.add(label_1);
-		
+
 		JLabel label_2 = new JLabel("");
 		label_2.setBackground(Color.WHITE);
 		label_2.setOpaque(true);
 		label_2.setBounds(236, 0, 66, 120);
 		contentPane.add(label_2);
-		
+
 		JButton sortButton = new JButton("Sort");
 		sortButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				new SortFormController(mainFormController, SortForm.this).sort();
-				   mainFormController.resetSortFormOpened();
-				   SortForm.this.dispose();
+				if (!"".equals(textArea.getText()))
+					new SortFormController(mainFormController, SortForm.this).sort();
+				mainFormController.resetSortFormOpened();
+				SortForm.this.dispose();
 			}
 		});
 		sortButton.setBounds(103, 391, 89, 29);
@@ -156,9 +157,9 @@ public class SortForm extends JFrame {
 			return ocjenaCheckBox.isSelected();
 		return false;
 	}
-	
+
 	private void initCheckBoxesListeners() {
-		
+
 		imeCheckBox.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -193,15 +194,19 @@ public class SortForm extends JFrame {
 				new SortFormController(mainFormController, SortForm.this).addToSortParams(Sort.ELEKTRIJADA);
 			}
 		});
-		
+
 		testCheckBox.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				new SortFormController(mainFormController, SortForm.this).createSortChooseForm();
 				SortForm.this.setVisible(false);
+				if (!textArea.getText().contains(".")){
+					testCheckBox.setSelected(false);
+				}else
+					testCheckBox.setSelected(true);
 			}
 		});
-		
+
 		ocjenaCheckBox.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -210,9 +215,9 @@ public class SortForm extends JFrame {
 		});
 
 	}
-	
-	
-	
+
+
+
 	public String getSortParams() {
 		return textArea.getText();
 	}
@@ -224,7 +229,7 @@ public class SortForm extends JFrame {
 	private void initCheckBoxes() {
 
 		imeCheckBox = new JCheckBox("Ime");
-		
+
 		imeCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
 		imeCheckBox.setBackground(new Color(0, 0, 139));
 		imeCheckBox.setForeground(new Color(255, 255, 255));
@@ -255,12 +260,12 @@ public class SortForm extends JFrame {
 		panel_1.add(elektrijadaCheckBox);
 
 		testCheckBox = new JCheckBox("Test");
-		
+
 		testCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
 		testCheckBox.setBackground(new Color(0, 0, 139));
 		testCheckBox.setForeground(new Color(255, 255, 255));
 		panel_1.add(testCheckBox);
-		
+
 		ocjenaCheckBox = new JCheckBox("Ocjena");
 		ocjenaCheckBox.setFont(new Font("Century Gothic", Font.BOLD, 13));
 		ocjenaCheckBox.setBackground(new Color(0, 0, 139));

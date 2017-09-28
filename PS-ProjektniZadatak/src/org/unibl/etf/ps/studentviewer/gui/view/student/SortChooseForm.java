@@ -25,6 +25,8 @@ import org.unibl.etf.ps.studentviewer.logic.controller.student.SortChooseFormCon
 import org.unibl.etf.ps.studentviewer.logic.controller.student.SortFormController;
 import org.unibl.etf.ps.studentviewer.logic.utility.Sort;
 import org.unibl.etf.ps.studentviewer.persistence.model.StudentsForMainTable;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class SortChooseForm extends JFrame {
 
@@ -38,6 +40,12 @@ public class SortChooseForm extends JFrame {
 	 * Create the frame.
 	 */
 	public SortChooseForm(SortForm sf, SortFormController sfc) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				sf.setVisible(true);
+			}
+		});
 		setTitle("Izbor testova");
 		setResizable(false);
 		this.sfc = sfc;

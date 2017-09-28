@@ -768,7 +768,10 @@ public class MainForm extends JFrame {
 		//				}
 		//			}
 		//		});
-		if (elektrijadaCB.getItemCount() > 0 ) elektrijadaCB.removeAllItems();
+		if (elektrijadaCB.getItemCount() > 0 ){ 
+		
+			elektrijadaCB.removeAllItems();
+			}
 		if (disciplineCB.getItemCount() > 0 ) disciplineCB.removeAllItems();
 		MySQLDAOFactory dao = new MySQLDAOFactory();
 		ElektrijadaDAO eleDAO = dao.getElektrijadaDAO();
@@ -790,34 +793,34 @@ public class MainForm extends JFrame {
 				elektrijadaCB.addItem(el.getLokacija() + ", " + newDf.format(datum));
 			}
 
-			int indeks = elektrijadaCB.getSelectedIndex();
-			ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
-			DisciplinaDAO discDAO = dao.getDisciplinaDAO();
-			ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
-					.getDiscipline(selektovanaElektrijada.getId(), nalogDTO.getNalogId());// nalogDTO
-			// umjesto 2
-			for (DisciplinaDTO di : discipline) {
-				disciplineCB.addItem(di.getNaziv());
-			}
+//			int indeks = elektrijadaCB.getSelectedIndex();
+//			ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
+//			DisciplinaDAO discDAO = dao.getDisciplinaDAO();
+//			ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
+//					.getDiscipline(selektovanaElektrijada.getId(), nalogDTO.getNalogId());// nalogDTO
+//			// umjesto 2
+//			for (DisciplinaDTO di : discipline) {
+//				disciplineCB.addItem(di.getNaziv());
+//			}
 
-			elektrijadaCB.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if (disciplineCB.getItemCount() > 0)
-						disciplineCB.removeAllItems();
-					int indeks = elektrijadaCB.getSelectedIndex();
-					if (indeks != -1) {
-						ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
-						DisciplinaDAO discDAO = dao.getDisciplinaDAO();
-						ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
-								.getDiscipline(selektovanaElektrijada.getId(), nalogDTO.getNalogId());// nalogDTO
-						// umjesto
-						// 2
-						for (DisciplinaDTO di : discipline) {
-							disciplineCB.addItem(di.getNaziv());
-						}
-					}
-				}
-			});
+//			elektrijadaCB.addActionListener(new ActionListener() {
+//				public void actionPerformed(ActionEvent e) {
+//					if (disciplineCB.getItemCount() > 0)
+//						disciplineCB.removeAllItems();
+//					int indeks = elektrijadaCB.getSelectedIndex();
+//					if (indeks != -1) {
+//						ElektrijadaDTO selektovanaElektrijada = elektrijade.get(indeks);
+//						DisciplinaDAO discDAO = dao.getDisciplinaDAO();
+//						ArrayList<DisciplinaDTO> discipline = (ArrayList<DisciplinaDTO>) discDAO
+//								.getDiscipline(selektovanaElektrijada.getId(), nalogDTO.getNalogId());// nalogDTO
+//						// umjesto
+//						// 2
+//						for (DisciplinaDTO di : discipline) {
+//							disciplineCB.addItem(di.getNaziv());
+//						}
+//					}
+//				}
+//			});
 		}
 	}
 

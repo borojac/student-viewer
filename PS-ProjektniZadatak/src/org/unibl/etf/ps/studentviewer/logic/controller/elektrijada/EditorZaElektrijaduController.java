@@ -41,7 +41,7 @@ public class EditorZaElektrijaduController {
 			String procitano = textArea.getText();
 			DAOFactory dao = new MySQLDAOFactory();
 			DodatnaNastavaDAO dnDAO = dao.getDodatnaNastavaDAO();
-			if (procitano.length() > 0) {
+			if (procitano.length() >= 0) {
 				int row = target.getSelectedRow();
 				int column = target.getSelectedColumn();
 				DodatnaNastavaDTO dodatnaNastava = elektrijadaController.getListaDodatnihNastava().get(row);
@@ -69,14 +69,16 @@ public class EditorZaElektrijaduController {
 				}
 
 				target.setModel(dataModel);
-				editorForma.setVisible(false);
-				editorForma.dispose();
 				elektrijadaController.getForma().setEnabled(true);
+				editorForma.setVisible(false);
+				
+				editorForma.dispose();
+				
 			}
 		} else {
 			String izmjena = "";
 			String procitano = textArea.getText();
-			if (procitano.length() > 0) {
+			if (procitano.length() >= 0) {
 				int row = target.getSelectedRow();
 				int column = target.getSelectedColumn();
 				StudentZaElektrijaduDTO st = elektrijadaController.getListaStudenata().get(row);
@@ -85,9 +87,10 @@ public class EditorZaElektrijaduController {
 				}
 
 				target.setModel(dataModel);
+				elektrijadaController.getForma().setEnabled(true);
 				editorForma.setVisible(false);
 				editorForma.dispose();
-				elektrijadaController.getForma().setEnabled(true);
+				
 			}
 		}
 	}
